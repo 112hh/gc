@@ -1,0 +1,10 @@
+{
+  "name": "engineering-cell-admin-static-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static frontend version of the engineering cell admin system",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  }
+}
