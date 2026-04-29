@@ -1597,9 +1597,94 @@ const processModelLibrary = {
       { name: "培养温度", current: "36℃", suggested: "34℃", impact: "高", impactClass: "is-high" },
       { name: "DO值", current: "28%", suggested: "32%", impact: "高", impactClass: "is-high" },
       { name: "补料速率", current: "1.2 mL/min", suggested: "1.6 mL/min", impact: "中", impactClass: "is-mid" }
-    ]
+    ],
+    neuralDetail: {
+      networkType: "LSTM",
+      trainingData: "500批次",
+      accuracy: "92.5%",
+      status: "已部署",
+      architecture: [
+        { title: "输入层", meta: "24节点", tone: "is-input" },
+        { title: "LSTM层", meta: "128节点", tone: "is-lstm" },
+        { title: "Dropout", meta: "0.2", tone: "is-dropout" },
+        { title: "Dense", meta: "64节点", tone: "is-dense" },
+        { title: "输出层", meta: "1节点", tone: "is-output" }
+      ],
+      trainingParams: [
+        { label: "优化器", value: "Adam" },
+        { label: "学习率", value: "0.001" },
+        { label: "批大小", value: "32" },
+        { label: "训练轮次", value: "50" },
+        { label: "验证集比例", value: "20%" },
+        { label: "早停策略", value: "patience=10" }
+      ]
+    }
   }
 };
+
+function createProcessNeuralHistory(length = 50) {
+  const train = [];
+  const validation = [];
+
+  for (let index = 0; index < length; index += 1) {
+    const step = index + 1;
+    const base = 1.15 * Math.exp(-step / 10.4) + 0.24;
+    const trainValue = base + Math.sin(step * 0.82) * 0.032 + Math.cos(step * 0.24) * 0.018;
+    const validationValue = base + 0.05 + Math.sin(step * 0.8 + 0.7) * 0.05 + Math.cos(step * 0.18) * 0.022;
+    train.push(Number(Math.max(0.22, trainValue).toFixed(3)));
+    validation.push(Number(Math.max(0.24, validationValue).toFixed(3)));
+  }
+
+  return { train, validation };
+}
+
+function isNeuralProcessModel(item = {}) {
+  return String(item.model || "").includes("神经网络模型");
+}
+
+function buildDefaultProcessNeuralDetail(item = {}) {
+  const isLstm = String(item.name || "").toUpperCase().includes("LSTM");
+
+  return {
+    networkType: isLstm ? "LSTM" : "DNN",
+    trainingData: "500批次",
+    accuracy: "92.5%",
+    status: "已部署",
+    architecture: isLstm
+      ? [
+          { title: "输入层", meta: "24节点", tone: "is-input" },
+          { title: "LSTM层", meta: "128节点", tone: "is-lstm" },
+          { title: "Dropout", meta: "0.2", tone: "is-dropout" },
+          { title: "Dense", meta: "64节点", tone: "is-dense" },
+          { title: "输出层", meta: "1节点", tone: "is-output" }
+        ]
+      : [
+          { title: "输入层", meta: "24节点", tone: "is-input" },
+          { title: "Dense层", meta: "128节点", tone: "is-lstm" },
+          { title: "Dropout", meta: "0.2", tone: "is-dropout" },
+          { title: "Dense", meta: "64节点", tone: "is-dense" },
+          { title: "输出层", meta: "1节点", tone: "is-output" }
+        ],
+    trainingParams: [
+      { label: "优化器", value: "Adam" },
+      { label: "学习率", value: "0.001" },
+      { label: "批大小", value: "32" },
+      { label: "训练轮次", value: "50" },
+      { label: "验证集比例", value: "20%" },
+      { label: "早停策略", value: "patience=10" }
+    ],
+    history: createProcessNeuralHistory()
+  };
+}
+
+function getProcessNeuralDetail(item = {}) {
+  const detail = item.neuralDetail || buildDefaultProcessNeuralDetail(item);
+  return {
+    ...buildDefaultProcessNeuralDetail(item),
+    ...detail,
+    history: detail.history || createProcessNeuralHistory()
+  };
+}
 
 const fullProjectLibrary = {
   "full-1": {
@@ -1797,34 +1882,33 @@ function createServiceDefaultSections() {
 }
 
 function createServiceEmptyDraft() {
-  const sections = createServiceDefaultSections();
   return {
-    code: sections.basicInfo.code,
-    name: sections.basicInfo.name,
-    strain: sections.basicInfo.strain,
-    gene: sections.basicInfo.gene,
-    statusText: sections.basicInfo.statusText,
-    description: sections.basicInfo.description,
-    cultureCode: sections.cultureInfo.cultureCode,
-    cultureMode: sections.cultureInfo.cultureMode,
-    mediumFormula: sections.cultureInfo.mediumFormula,
-    temperature: sections.cultureInfo.temperature,
-    ph: sections.cultureInfo.ph,
-    rpm: sections.cultureInfo.rpm,
-    cultureStatus: sections.cultureInfo.cultureStatus,
-    optimizationRecord: sections.cultureInfo.optimizationRecord,
-    testCode: sections.analysisInfo.testCode,
-    testItem: sections.analysisInfo.testItem,
-    testMethod: sections.analysisInfo.testMethod,
-    cellActivity: sections.analysisInfo.cellActivity,
-    cellPurity: sections.analysisInfo.cellPurity,
-    testResult: sections.analysisInfo.testResult,
-    testDescription: sections.analysisInfo.testDescription,
-    applicationCode: sections.applicationInfo.applicationCode,
-    scenarioType: sections.applicationInfo.scenarioType,
-    applicationField: sections.applicationInfo.applicationField,
-    applicationStatus: sections.applicationInfo.applicationStatus,
-    applicationContent: sections.applicationInfo.applicationContent
+    code: "",
+    name: "",
+    strain: "",
+    gene: "",
+    statusText: "",
+    description: "",
+    cultureCode: "",
+    cultureMode: "",
+    mediumFormula: "",
+    temperature: "",
+    ph: "",
+    rpm: "",
+    cultureStatus: "",
+    optimizationRecord: "",
+    testCode: "",
+    testItem: "",
+    testMethod: "",
+    cellActivity: "",
+    cellPurity: "",
+    testResult: "",
+    testDescription: "",
+    applicationCode: "",
+    scenarioType: "",
+    applicationField: "",
+    applicationStatus: "",
+    applicationContent: ""
   };
 }
 
@@ -1884,7 +1968,8 @@ function buildFallbackProcessItem(item) {
     optimizedYield: item.optimizedYield || "88.0 g/L",
     confidenceRange: item.confidenceRange || "84.0 - 90.0 g/L",
     processNodes: processModelLibrary["process-1"].processNodes,
-    optimizationParams: processModelLibrary["process-1"].optimizationParams
+    optimizationParams: processModelLibrary["process-1"].optimizationParams,
+    neuralDetail: isNeuralProcessModel(item) ? buildDefaultProcessNeuralDetail(item) : null
   };
 }
 
@@ -1900,6 +1985,8 @@ function hydrateProcessItem(item) {
   processModelLibrary[item.id] = {
     processNodes: preset?.processNodes || processModelLibrary["process-1"].processNodes,
     optimizationParams: preset?.optimizationParams || processModelLibrary["process-1"].optimizationParams,
+    neuralDetail:
+      preset?.neuralDetail || (isNeuralProcessModel(hydrated) ? buildDefaultProcessNeuralDetail(hydrated) : null),
     ...hydrated
   };
 
@@ -2020,7 +2107,11 @@ function hydrateServiceItem(item) {
 }
 
 function buildServiceDraft(item = null) {
-  const current = item ? hydrateServiceItem(item) : buildFallbackServiceItem({});
+  if (!item) {
+    return createServiceEmptyDraft();
+  }
+
+  const current = hydrateServiceItem(item);
   return {
     ...createServiceEmptyDraft(),
     code: current.basicInfo.code,
@@ -3549,17 +3640,23 @@ function renderHeader(page) {
   return `
     <header class="app-header">
       ${renderBreadcrumb(page.breadcrumb)}
-      ${
-        page.headerTools
-          ? `
-            <div class="header-actions">
-              <button class="header-tool" type="button" data-header-tool="search">${icon("i-search")}</button>
-              <button class="header-tool" type="button" data-header-tool="filter">${icon("i-filter")}</button>
-              <button class="header-tool" type="button" data-header-tool="settings">${icon("i-settings")}</button>
-            </div>
-          `
-          : `<div></div>`
-      }
+      <div class="header-user-panel">
+        ${
+          page.headerTools
+            ? `
+              <div class="header-actions">
+                <button class="header-tool" type="button" data-header-tool="search">${icon("i-search")}</button>
+                <button class="header-tool" type="button" data-header-tool="filter">${icon("i-filter")}</button>
+                <button class="header-tool" type="button" data-header-tool="settings">${icon("i-settings")}</button>
+              </div>
+            `
+            : ""
+        }
+        <button class="header-logout-button" type="button" data-logout="header">
+          <span class="header-icon">${icon("i-arrow-left")}</span>
+          <span>退出系统</span>
+        </button>
+      </div>
     </header>
   `;
 }
@@ -3655,6 +3752,15 @@ function renderSensorListPage(module) {
 
   return `
     <div class="page-section sensor-page">
+      <div class="page-title-row">
+        <h1 class="page-title">${module.label}</h1>
+        <div class="action-cluster">
+          <button class="outline-button" type="button" data-open-modal="import|${module.key}">批量导入</button>
+          <button class="outline-button" type="button" data-open-modal="threshold|${module.key}">阈值配置</button>
+          <button class="outline-button is-primary" type="button" data-open-form="${module.key}">新增录入</button>
+        </div>
+      </div>
+
       <div class="sensor-layout">
         <aside class="batch-panel">
           <div class="panel-head">
@@ -3686,14 +3792,7 @@ function renderSensorListPage(module) {
         </aside>
 
         <section class="sensor-main">
-          <div class="summary-strip">
-            ${renderSummaryCards(module.summary)}
-            <div class="action-cluster">
-              <button class="outline-button" type="button" data-open-modal="import|${module.key}">批量导入</button>
-              <button class="outline-button" type="button" data-open-modal="threshold|${module.key}">阈值配置</button>
-              <button class="outline-button is-primary" type="button" data-open-form="${module.key}">新增录入</button>
-            </div>
-          </div>
+          <div class="summary-strip">${renderSummaryCards(module.summary)}</div>
 
           <section class="records-panel">
             <div class="records-head">
@@ -3723,28 +3822,104 @@ function renderSensorListPage(module) {
   `;
 }
 
+function toDateTimeLocalValue(value = "") {
+  const raw = String(value || "").trim();
+  if (!raw) {
+    return "";
+  }
+
+  const normalized = raw.replace(/\//g, "-").replace(" ", "T");
+  const match = normalized.match(/^(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2})(?::\d{2})?$/);
+  return match ? `${match[1]}T${match[2]}` : "";
+}
+
+function fromDateTimeLocalValue(value = "") {
+  const raw = String(value || "").trim();
+  if (!raw) {
+    return "";
+  }
+
+  const normalized = raw.replace("T", " ");
+  return /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/.test(normalized) ? `${normalized}:00` : normalized;
+}
+
+function renderSensorSelectOptions(options = [], selectedValue = "") {
+  return options
+    .map((option) => {
+      const normalized = typeof option === "string" ? { value: option, label: option } : option;
+      const value = String(normalized?.value ?? "").trim();
+      const label = String(normalized?.label ?? value).trim();
+      return `<option value="${escapeHtml(value)}" ${value === String(selectedValue || "").trim() ? "selected" : ""}>${escapeHtml(label)}</option>`;
+    })
+    .join("");
+}
+
+function getSensorFieldPlaceholder(label, prefix = "请输入") {
+  const raw = String(label || "").trim();
+  const normalized = raw.replace(/[\(（].*$/, "").trim();
+  return normalized ? `${prefix}${normalized}` : prefix;
+}
+
+function getSensorFormDefinition(module) {
+  const basicSource =
+    module.key === "biological" ? [module.basicFields[0], ...module.basicFields.slice(2)] : module.basicFields;
+
+  return {
+    basicFields: basicSource.map((field) => ({
+      ...field,
+      value: module.key === "biological" && field.type !== "select" ? "" : field.value,
+      placeholder:
+        field.placeholder ||
+        (field.type === "text"
+          ? getSensorFieldPlaceholder(field.label)
+          : field.type === "datetime" || field.type === "date"
+            ? "请选择时间"
+            : "")
+    })),
+    paramFields: module.paramFields.map((field) => ({
+      ...field,
+      value: module.key === "biological" ? "" : field.value,
+      placeholder: field.placeholder || getSensorFieldPlaceholder(field.label)
+    }))
+  };
+}
+
 function renderFormField(field) {
-  const iconName = field.type === "select" ? "i-chevron" : field.type === "datetime" || field.type === "date" ? "i-calendar" : "";
   const sensorAttr =
     field.name && field.moduleKey
       ? `data-sensor-module="${field.moduleKey}" data-sensor-field="${field.name}"`
       : "";
-  const control =
-    field.type === "select"
-      ? `
+  const control = (() => {
+    if (field.type === "select") {
+      return `
         <div class="input-wrap">
-          <select class="select-control has-icon" ${sensorAttr}>
-            <option>${field.value}</option>
+          <select class="select-control" ${sensorAttr}>
+            ${renderSensorSelectOptions(field.options || [], field.value)}
           </select>
-          <span class="trailing-icon">${icon("i-chevron")}</span>
-        </div>
-      `
-      : `
-        <div class="input-wrap">
-          <input class="input-control ${iconName ? "has-icon" : ""}" type="text" ${sensorAttr} value="${field.value || ""}" placeholder="${field.placeholder || ""}" />
-          ${iconName ? `<span class="trailing-icon">${icon(iconName)}</span>` : ""}
         </div>
       `;
+    }
+
+    if (field.type === "datetime" || field.type === "date") {
+      return `
+        <div class="input-wrap">
+          <input
+            class="input-control datetime-local"
+            type="datetime-local"
+            ${sensorAttr}
+            value="${escapeHtml(toDateTimeLocalValue(field.value || ""))}"
+            placeholder="${escapeHtml(field.placeholder || "")}"
+          />
+        </div>
+      `;
+    }
+
+    return `
+      <div class="input-wrap">
+        <input class="input-control" type="text" ${sensorAttr} value="${escapeHtml(field.value || "")}" placeholder="${escapeHtml(field.placeholder || "")}" />
+      </div>
+    `;
+  })();
 
   return `
     <div class="form-field">
@@ -3756,12 +3931,24 @@ function renderFormField(field) {
 }
 
 function renderSensorFormPage(module) {
-  const basicFields = module.basicFields.map((field, index) => ({
+  const formDefinition = getSensorFormDefinition(module);
+  const basicFields = formDefinition.basicFields.map((field, index) => ({
     ...field,
+    options:
+      index === 0 && field.type === "select"
+        ? module.batches.map((batch) => ({
+            value: batch.id,
+            label: batch.badge ? `${batch.id}(${batch.badge})` : batch.id
+          }))
+        : field.options,
+    value:
+      index === 0 && field.type === "select"
+        ? state.activeBatch[module.key] || module.batches[0]?.id || ""
+        : field.value,
     moduleKey: module.key,
     name: `${module.key}-basic-${index}`
   }));
-  const paramFields = module.paramFields.map((field, index) => ({
+  const paramFields = formDefinition.paramFields.map((field, index) => ({
     ...field,
     moduleKey: module.key,
     name: `${module.key}-param-${index}`
@@ -3974,6 +4161,296 @@ function getGeneProject(projectId) {
   return geneProjectLibrary[projectId] || geneProjectLibrary["gene-lysine"];
 }
 
+const geneSnpAnnotationLibrary = {
+  lysA: {
+    geneFunction: "二氨基庚二酸脱羧酶",
+    molecularFunction: "参与L-赖氨酸生物合成末端催化步骤，影响目标产物累积效率。",
+    biologicalProcess: "L-赖氨酸生物合成过程、天冬氨酸家族氨基酸代谢过程。",
+    cellularComponent: "细胞质。",
+    keggPathway: "赖氨酸生物合成通路（map00300）、氨基酸合成网络。",
+    aminoAcidChange: "Gly → Ser（甘氨酸 → 丝氨酸）"
+  },
+  metB: {
+    geneFunction: "胱硫醚γ-合成酶",
+    molecularFunction: "参与含硫氨基酸支路代谢，影响代谢流向与前体供给。",
+    biologicalProcess: "蛋氨酸生物合成过程、硫代谢过程。",
+    cellularComponent: "细胞质。",
+    keggPathway: "半胱氨酸与蛋氨酸代谢通路（map00270）。",
+    aminoAcidChange: "Val → Ile（缬氨酸 → 异亮氨酸）"
+  },
+  thrC: {
+    geneFunction: "苏氨酸合成酶",
+    molecularFunction: "催化苏氨酸合成关键反应，影响支链代谢底物流量。",
+    biologicalProcess: "苏氨酸生物合成过程、氨基酸代谢过程。",
+    cellularComponent: "细胞质。",
+    keggPathway: "甘氨酸、丝氨酸和苏氨酸代谢通路（map00260）。",
+    aminoAcidChange: "Ala → Thr（丙氨酸 → 苏氨酸）"
+  },
+  dapA: {
+    geneFunction: "二氢二吡啶羧酸合成酶",
+    molecularFunction: "参与赖氨酸前体合成，调节二氨基庚二酸支路通量。",
+    biologicalProcess: "二氨基庚二酸生物合成过程、氨基酸代谢过程。",
+    cellularComponent: "细胞质。",
+    keggPathway: "赖氨酸生物合成通路（map00300）。",
+    aminoAcidChange: "Asp → Asn（天冬氨酸 → 天冬酰胺）"
+  },
+  asd: {
+    geneFunction: "天冬氨酸半醛脱氢酶",
+    molecularFunction: "影响天冬氨酸家族氨基酸共有前体生成效率。",
+    biologicalProcess: "天冬氨酸代谢过程、氨基酸生物合成过程。",
+    cellularComponent: "细胞质。",
+    keggPathway: "赖氨酸、苏氨酸与蛋氨酸合成相关通路。",
+    aminoAcidChange: "Leu → Pro（亮氨酸 → 脯氨酸）"
+  },
+  pyc: {
+    geneFunction: "丙酮酸羧化酶",
+    molecularFunction: "增强草酰乙酸补充能力，影响中心代谢与产物前体供给。",
+    biologicalProcess: "三羧酸循环补料过程、碳代谢过程。",
+    cellularComponent: "细胞质。",
+    keggPathway: "丙酮酸代谢通路（map00620）、TCA循环（map00020）。",
+    aminoAcidChange: "Arg → Lys（精氨酸 → 赖氨酸）"
+  },
+  ppc: {
+    geneFunction: "磷酸烯醇式丙酮酸羧化酶",
+    molecularFunction: "催化PEP向草酰乙酸转化，影响碳流分配效率。",
+    biologicalProcess: "中心碳代谢过程、阴离子固定过程。",
+    cellularComponent: "细胞质。",
+    keggPathway: "丙酮酸代谢通路（map00620）。",
+    aminoAcidChange: "Ser → Gly（丝氨酸 → 甘氨酸）"
+  },
+  zwf: {
+    geneFunction: "葡萄糖-6-磷酸脱氢酶",
+    molecularFunction: "参与氧化戊糖磷酸途径，影响还原力NADPH供应。",
+    biologicalProcess: "戊糖磷酸途径、还原力代谢过程。",
+    cellularComponent: "细胞质。",
+    keggPathway: "戊糖磷酸途径（map00030）。",
+    aminoAcidChange: "Thr → Ala（苏氨酸 → 丙氨酸）"
+  },
+  gdhA: {
+    geneFunction: "谷氨酸脱氢酶",
+    molecularFunction: "影响氮源同化与谷氨酸生成，关联细胞氮代谢平衡。",
+    biologicalProcess: "谷氨酸生物合成过程、氮代谢过程。",
+    cellularComponent: "细胞质。",
+    keggPathway: "丙氨酸、天冬氨酸和谷氨酸代谢通路（map00250）。",
+    aminoAcidChange: "Glu → Lys（谷氨酸 → 赖氨酸）"
+  },
+  lysC: {
+    geneFunction: "天冬氨酸激酶",
+    molecularFunction: "调节赖氨酸合成支路起始限速步骤。",
+    biologicalProcess: "赖氨酸生物合成起始过程、反馈调控过程。",
+    cellularComponent: "细胞质。",
+    keggPathway: "赖氨酸生物合成通路（map00300）。",
+    aminoAcidChange: "His → Tyr（组氨酸 → 酪氨酸）"
+  },
+  HSP30: {
+    geneFunction: "热休克蛋白30",
+    molecularFunction: "参与膜应激响应与乙醇耐受调节。",
+    biologicalProcess: "细胞应激反应、膜稳态调控过程。",
+    cellularComponent: "细胞膜。",
+    keggPathway: "应激响应与能量代谢相关调控网络。",
+    aminoAcidChange: "Leu → Phe（亮氨酸 → 苯丙氨酸）"
+  },
+  PDR1: {
+    geneFunction: "耐药调控转录因子",
+    molecularFunction: "调控外排泵与耐受相关基因表达，提升环境适应性。",
+    biologicalProcess: "转录调控过程、应激响应过程。",
+    cellularComponent: "细胞核。",
+    keggPathway: "ABC转运与环境应答调控网络。",
+    aminoAcidChange: "Arg → Gln（精氨酸 → 谷氨酰胺）"
+  },
+  TPS1: {
+    geneFunction: "海藻糖-6-磷酸合成酶",
+    molecularFunction: "参与海藻糖代谢与渗透压保护。",
+    biologicalProcess: "碳水化合物代谢过程、耐逆过程。",
+    cellularComponent: "细胞质。",
+    keggPathway: "淀粉和蔗糖代谢通路（map00500）。",
+    aminoAcidChange: "Gly → Asp（甘氨酸 → 天冬氨酸）"
+  },
+  SNF1: {
+    geneFunction: "丝氨酸/苏氨酸蛋白激酶",
+    molecularFunction: "介导能量感知与碳源利用调控。",
+    biologicalProcess: "信号转导过程、碳代谢调控过程。",
+    cellularComponent: "细胞质/细胞核。",
+    keggPathway: "AMPK样能量调控网络。",
+    aminoAcidChange: "Ile → Val（异亮氨酸 → 缬氨酸）"
+  },
+  aprE: {
+    geneFunction: "碱性蛋白酶",
+    molecularFunction: "参与胞外蛋白降解与分泌表型调节。",
+    biologicalProcess: "蛋白水解过程、分泌相关过程。",
+    cellularComponent: "胞外区域。",
+    keggPathway: "蛋白加工与分泌相关通路。",
+    aminoAcidChange: "Ala → Val（丙氨酸 → 缬氨酸）"
+  },
+  degU: {
+    geneFunction: "双组分应答调节蛋白",
+    molecularFunction: "调控分泌、运动与生长状态切换。",
+    biologicalProcess: "信号应答过程、转录调控过程。",
+    cellularComponent: "细胞质。",
+    keggPathway: "双组分系统通路（map02020）。",
+    aminoAcidChange: "Thr → Met（苏氨酸 → 甲硫氨酸）"
+  }
+};
+
+function parseGeneNumericPosition(value = "") {
+  const numeric = Number(String(value || "").replace(/[^\d]/g, ""));
+  return Number.isFinite(numeric) ? numeric : 0;
+}
+
+function formatGeneNumericPosition(value = 0) {
+  return String(Math.max(0, Number(value) || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+function formatGeneEffect(effect = "") {
+  const text = String(effect || "").trim();
+  if (!text) {
+    return "--";
+  }
+  return /^[+-]/.test(text) ? text : `+${text}`;
+}
+
+function buildDefaultGeneSnpAnnotation(gene = "") {
+  return {
+    geneFunction: `${gene || "候选"}相关功能蛋白`,
+    molecularFunction: `参与${gene || "候选基因"}相关的代谢调控与表型形成过程。`,
+    biologicalProcess: "氨基酸代谢过程、细胞应答过程、目标表型调控过程。",
+    cellularComponent: "细胞质。",
+    keggPathway: "中心碳代谢与目标产物合成相关通路。",
+    aminoAcidChange: "Gly → Ser（甘氨酸 → 丝氨酸）"
+  };
+}
+
+function getGeneSnpDetail(projectId, snpId) {
+  const project = getGeneProject(projectId);
+  const snp = project.snps.find((item) => item.snpId === snpId) || project.snps[0];
+  if (!snp) {
+    return null;
+  }
+
+  const previewRow = project.dataset.preview.find((item) => item.id === snp.snpId);
+  const annotation = {
+    ...buildDefaultGeneSnpAnnotation(snp.gene),
+    ...(geneSnpAnnotationLibrary[snp.gene] || {})
+  };
+  const numericPosition = parseGeneNumericPosition(snp.position);
+  const geneStart = numericPosition ? Math.floor(numericPosition / 10000) * 10000 : 0;
+  const geneEnd = geneStart ? geneStart + 10000 : 0;
+  const effectValue = formatGeneEffect(snp.effect);
+  const isNegative = effectValue.startsWith("-");
+
+  return {
+    project,
+    snp,
+    annotation,
+    effectValue,
+    directionText: isNegative ? "负调控" : "正调控",
+    directionClass: isNegative ? "is-negative" : "is-positive",
+    geneLocation: geneStart ? `${snp.chromosome}:${formatGeneNumericPosition(geneStart)}-${formatGeneNumericPosition(geneEnd)}` : `${snp.chromosome}:${snp.position}`,
+    referenceBase: previewRow?.ref || "G",
+    alternateBase: previewRow?.alt || "A",
+    sequencePrefix: "...ATCG",
+    sequenceSuffix: "TACA..."
+  };
+}
+
+function renderGeneSnpModal(projectId, snpId) {
+  const detail = getGeneSnpDetail(projectId, snpId);
+  if (!detail) {
+    return "";
+  }
+
+  return renderGeneModalShell({
+    title: "SNP位点详情",
+    sizeClass: "gene-snp-modal",
+    body: `
+      <div class="gene-snp-detail-view">
+        <section class="gene-snp-section">
+          <div class="gene-snp-section-title">
+            <span class="gene-snp-section-icon is-target"></span>
+            <h4>SNP基本信息</h4>
+          </div>
+          <div class="gene-snp-grid">
+            <div class="gene-snp-item">
+              <span>SNP ID</span>
+              <strong class="is-link">${escapeHtml(detail.snp.snpId)}</strong>
+            </div>
+            <div class="gene-snp-item">
+              <span>染色体</span>
+              <strong>${escapeHtml(detail.snp.chromosome)}</strong>
+            </div>
+            <div class="gene-snp-item">
+              <span>位置</span>
+              <strong>${escapeHtml(detail.snp.position)}</strong>
+            </div>
+            <div class="gene-snp-item">
+              <span>P值</span>
+              <strong class="is-danger">${escapeHtml(detail.snp.pValue)}</strong>
+            </div>
+            <div class="gene-snp-item">
+              <span>效应值</span>
+              <strong>${escapeHtml(detail.effectValue)}</strong>
+            </div>
+            <div class="gene-snp-item">
+              <span>关联基因</span>
+              <strong class="is-link">${escapeHtml(detail.snp.gene)}</strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="gene-snp-section">
+          <div class="gene-snp-section-title">
+            <span class="gene-snp-section-icon is-gene"></span>
+            <h4>基因信息</h4>
+          </div>
+          <div class="gene-snp-grid">
+            <div class="gene-snp-item">
+              <span>基因名称</span>
+              <strong>${escapeHtml(detail.snp.gene)}</strong>
+            </div>
+            <div class="gene-snp-item">
+              <span>基因功能</span>
+              <strong>${escapeHtml(detail.annotation.geneFunction)}</strong>
+            </div>
+            <div class="gene-snp-item">
+              <span>调控方向</span>
+              <strong><span class="gene-snp-badge ${detail.directionClass}">${escapeHtml(detail.directionText)}</span></strong>
+            </div>
+            <div class="gene-snp-item is-wide">
+              <span>基因位置</span>
+              <strong>${escapeHtml(detail.geneLocation)}</strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="gene-snp-section">
+          <div class="gene-snp-section-title">
+            <span class="gene-snp-section-icon is-note"></span>
+            <h4>功能注释</h4>
+          </div>
+          <div class="gene-snp-note-card">
+            <p><strong>分子功能：</strong>${escapeHtml(detail.annotation.molecularFunction)}</p>
+            <p><strong>生物学过程：</strong>${escapeHtml(detail.annotation.biologicalProcess)}</p>
+            <p><strong>细胞组分：</strong>${escapeHtml(detail.annotation.cellularComponent)}</p>
+            <p><strong>KEGG通路：</strong>${escapeHtml(detail.annotation.keggPathway)}</p>
+          </div>
+        </section>
+
+        <section class="gene-snp-section">
+          <div class="gene-snp-section-title">
+            <span class="gene-snp-section-icon is-seq"></span>
+            <h4>参考序列</h4>
+          </div>
+          <div class="gene-snp-seq-card">
+            <p><strong>参考序列（Ref）：</strong>${escapeHtml(detail.sequencePrefix)}<span class="gene-snp-base is-ref">${escapeHtml(detail.referenceBase)}</span>${escapeHtml(detail.sequenceSuffix)}</p>
+            <p><strong>变异序列（Alt）：</strong>${escapeHtml(detail.sequencePrefix)}<span class="gene-snp-base is-alt">${escapeHtml(detail.alternateBase)}</span>${escapeHtml(detail.sequenceSuffix)}</p>
+            <p><strong>氨基酸变化：</strong>${escapeHtml(detail.annotation.aminoAcidChange)}</p>
+          </div>
+        </section>
+      </div>
+    `
+  });
+}
+
 function geneStatusClass(status) {
   if (status === "已完成") {
     return "is-normal";
@@ -4001,23 +4478,84 @@ function renderGeneModalShell({ title, sizeClass = "", body, footer = "" }) {
   `;
 }
 
+function resolveSelectFieldValue(field) {
+  if (field.type !== "select") {
+    return field.value || "";
+  }
+
+  const shouldStartEmpty =
+    field.allowEmpty ||
+    state.modal?.type === "gene-create" ||
+    (state.modal?.type === "analysis-form" && state.modal.mode === "create");
+
+  if (shouldStartEmpty) {
+    return "";
+  }
+
+  if (field.value !== undefined && field.value !== null && String(field.value).trim() !== "") {
+    return field.value;
+  }
+
+  if (field.defaultValue !== undefined && field.defaultValue !== null && String(field.defaultValue).trim() !== "") {
+    return field.defaultValue;
+  }
+
+  if (field.allowEmpty) {
+    return "";
+  }
+
+  return field.options?.[0] || "";
+}
+
+function normalizePromptLabel(label = "") {
+  return String(label || "")
+    .replace(/[\(（].*$/, "")
+    .replace(/[:：*]/g, "")
+    .trim();
+}
+
+function resolveSelectPlaceholder(field) {
+  if (field.placeholder) {
+    return field.placeholder;
+  }
+
+  const normalizedLabel = normalizePromptLabel(field.label);
+  return normalizedLabel ? `请选择${normalizedLabel}` : "请选择";
+}
+
+function renderSelectOptions(field, selectedValue) {
+  const options = Array.isArray(field.options) ? field.options : [];
+  const shouldRenderPlaceholder =
+    field.allowEmpty ||
+    state.modal?.type === "gene-create" ||
+    (state.modal?.type === "analysis-form" && state.modal.mode === "create");
+  const placeholderOption = shouldRenderPlaceholder
+    ? `<option value="" ${selectedValue === "" ? "selected" : ""} disabled hidden>${escapeHtml(resolveSelectPlaceholder(field))}</option>`
+    : "";
+
+  return `${placeholderOption}${options
+    .map((option) => {
+      const normalized = typeof option === "string" ? { value: option, label: option } : option;
+      const value = String(normalized?.value ?? normalized?.label ?? "").trim();
+      const label = String(normalized?.label ?? normalized?.value ?? "").trim();
+      return `<option value="${escapeHtml(value)}" ${value === String(selectedValue || "").trim() ? "selected" : ""}>${escapeHtml(label)}</option>`;
+    })
+    .join("")}`;
+}
+
 function renderGeneField(field) {
   const fieldClass = `gene-field ${field.full ? "is-full" : ""}`;
   const label = `<label>${escapeHtml(field.label)}</label>`;
   const fieldName = escapeHtml(field.name || "");
+  const rawValue = state.modal?.type === "gene-create" && field.name === "threshold" ? "" : field.value || "";
 
   if (field.type === "select") {
+    const selectedValue = resolveSelectFieldValue(field);
     return `
       <div class="${fieldClass}">
         ${label}
         <select class="gene-control" data-gene-field="${fieldName}">
-          ${field.options
-            .map(
-              (option) => `
-                <option ${option === field.value ? "selected" : ""}>${escapeHtml(option)}</option>
-              `
-            )
-            .join("")}
+          ${renderSelectOptions(field, selectedValue)}
         </select>
       </div>
     `;
@@ -4035,7 +4573,7 @@ function renderGeneField(field) {
   return `
     <div class="${fieldClass}">
       ${label}
-      <input class="gene-control" type="text" data-gene-field="${fieldName}" value="${escapeHtml(field.value || "")}" placeholder="${escapeHtml(field.placeholder || "")}" />
+      <input class="gene-control" type="text" data-gene-field="${fieldName}" value="${escapeHtml(rawValue)}" placeholder="${escapeHtml(field.placeholder || "")}" />
     </div>
   `;
 }
@@ -4047,15 +4585,10 @@ function renderAnalysisField(field) {
 function renderAnalysisControl(field) {
   const fieldName = escapeHtml(field.name || "");
   if (field.type === "select") {
+    const selectedValue = resolveSelectFieldValue(field);
     return `
       <select class="gene-control" data-gene-field="${fieldName}">
-        ${field.options
-          .map(
-            (option) => `
-              <option ${option === field.value ? "selected" : ""}>${escapeHtml(option)}</option>
-            `
-          )
-          .join("")}
+        ${renderSelectOptions(field, selectedValue)}
       </select>
     `;
   }
@@ -4068,6 +4601,8 @@ function renderAnalysisControl(field) {
 }
 
 function renderFullModuleOptions(selectedModules = []) {
+  const activeSelections =
+    state.modal?.type === "analysis-form" && state.modal.mode === "create" && state.modal.moduleKey === "full" ? [] : selectedModules;
   const options = [
     { id: "genotype", label: "基因型-表型分析" },
     { id: "omics", label: "组学数据分析" },
@@ -4081,9 +4616,8 @@ function renderFullModuleOptions(selectedModules = []) {
         .map(
           (option) => `
             <label class="full-module-item">
-              <input type="checkbox" data-analysis-module="${option.id}" ${selectedModules.includes(option.id) ? "checked" : ""} />
-              <span class="full-module-check"></span>
-              <span>${escapeHtml(option.label)}</span>
+              <input class="full-module-input" type="checkbox" data-analysis-module="${option.id}" ${activeSelections.includes(option.id) ? "checked" : ""} />
+              <span class="full-module-label">${escapeHtml(option.label)}</span>
             </label>
           `
         )
@@ -4125,7 +4659,7 @@ function renderOmicsFormModal(mode, itemId = "") {
   const uploadBox =
     mode === "edit"
       ? `
-        <div class="gene-field is-full">
+        <div class="gene-field is-full full-module-field">
           <div class="omics-upload-panel">
             <div class="omics-upload-icon">${icon("i-upload")}</div>
             <p>已上传：${escapeHtml(current?.fileName || "model.xml")} <button class="table-link" type="button">点击重新上传</button></p>
@@ -4160,6 +4694,166 @@ function renderOmicsFormModal(mode, itemId = "") {
     `
   });
 }
+
+function createOmicsEmptyDraft() {
+  return {
+    name: "",
+    strain: "",
+    source: "文件导入",
+    reactions: "",
+    metabolites: "",
+    description: "",
+    fileName: "",
+    importSize: ""
+  };
+}
+
+function buildOmicsDraft(item = null) {
+  if (!item) {
+    return createOmicsEmptyDraft();
+  }
+
+  const current = hydrateOmicsItem(item);
+  return {
+    ...createOmicsEmptyDraft(),
+    name: current.name || "",
+    strain: current.strain || "",
+    source: current.source || "文件导入",
+    reactions: current.reactions || "",
+    metabolites: current.metabolites || "",
+    description: current.description || "",
+    fileName: current.fileName || "",
+    importSize: current.importSize || ""
+  };
+}
+
+function syncOmicsDraftFromDom() {
+  if (state.modal?.type !== "analysis-form" || state.modal.moduleKey !== "omics") {
+    return createOmicsEmptyDraft();
+  }
+
+  const current = state.modal.itemId ? hydrateOmicsItem(getAnalysisRow("omics", state.modal.itemId) || {}) : null;
+  const values = [...document.querySelectorAll("[data-gene-field^='analysis-']")].reduce((result, node) => {
+    result[node.dataset.geneField.replace("analysis-", "")] = node.value.trim();
+    return result;
+  }, {});
+
+  const nextDraft = {
+    ...buildOmicsDraft(current),
+    ...(state.modal.omicsDraft || {}),
+    ...values
+  };
+
+  state.modal = {
+    ...state.modal,
+    omicsDraft: nextDraft
+  };
+
+  return nextDraft;
+}
+
+function renderOmicsSourceUploadPanel(source, draft) {
+  const selectedFileName = draft.fileName || "";
+  const importSize = draft.importSize ? Number(draft.importSize) : 0;
+  const label = source === "数据库导入" ? "导入文件" : "上传模型文件";
+  const prompt = selectedFileName ? `已选择文件：${selectedFileName}` : "点击按钮选择文件";
+  const note = selectedFileName
+    ? `文件大小：${formatFileSize(importSize)}`
+    : "支持 .xml、.json、.mat、.csv、.xlsx、.xls，文件不超过 200MB";
+
+  return `
+    <div class="gene-field is-full">
+      <label><span class="omics-required">*</span>${escapeHtml(label)}</label>
+      <div class="omics-upload-panel">
+        <div class="omics-upload-icon">${icon("i-upload")}</div>
+        <p>${escapeHtml(prompt)}</p>
+        <span>${escapeHtml(note)}</span>
+        <div class="omics-upload-actions">
+          <button class="modal-outline" type="button" data-omics-upload-trigger>${selectedFileName ? "重新选择文件" : "选择文件"}</button>
+        </div>
+        <input type="hidden" data-gene-field="analysis-fileName" value="${escapeHtml(selectedFileName)}" />
+        <input type="hidden" data-gene-field="analysis-importSize" value="${escapeHtml(String(draft.importSize || ""))}" />
+        <input type="file" data-omics-file-input accept=".xml,.json,.mat,.csv,.xlsx,.xls" hidden />
+      </div>
+    </div>
+  `;
+}
+
+function renderOmicsSourceManualFields(draft) {
+  return `
+    <div class="omics-source-grid">
+      <div class="gene-field">
+        <label>反应数</label>
+        ${renderAnalysisControl({ name: "analysis-reactions", value: draft.reactions || "", placeholder: "请输入反应数量" })}
+      </div>
+      <div class="gene-field">
+        <label>代谢物数</label>
+        ${renderAnalysisControl({ name: "analysis-metabolites", value: draft.metabolites || "", placeholder: "请输入代谢物数量" })}
+      </div>
+    </div>
+  `;
+}
+
+renderOmicsFormModal = function renderOmicsFormModalV2(mode, itemId = "") {
+  const current = itemId ? hydrateOmicsItem(getAnalysisRow("omics", itemId) || {}) : null;
+  const title = mode === "edit" ? "编辑代谢模型" : "新建组学数据分析项目";
+  const footerLabel = mode === "edit" ? "保存修改" : "确认创建";
+  const draft =
+    state.modal?.type === "analysis-form" && state.modal.moduleKey === "omics"
+      ? {
+          ...buildOmicsDraft(current),
+          ...(state.modal.omicsDraft || {})
+        }
+      : buildOmicsDraft(current);
+  const source = draft.source || "文件导入";
+  const sourceBlock =
+    source === "手动构建" ? renderOmicsSourceManualFields(draft) : renderOmicsSourceUploadPanel(source, draft);
+
+  return renderGeneModalShell({
+    title,
+    sizeClass: "is-gene-form",
+    body: `
+      <div class="omics-form-grid">
+        <div class="gene-field">
+          <label><span class="omics-required">*</span>模型名称</label>
+          ${renderAnalysisControl({ name: "analysis-name", value: draft.name || "", placeholder: "请输入代谢模型名称" })}
+        </div>
+        <div class="gene-field">
+          <label><span class="omics-required">*</span>菌株类型</label>
+          ${renderAnalysisControl({
+            name: "analysis-strain",
+            type: "select",
+            value: draft.strain || "",
+            options: ["大肠杆菌", "酵母菌", "枯草芽孢杆菌"]
+          })}
+        </div>
+        <div class="gene-field">
+          <label><span class="omics-required">*</span>模型来源</label>
+          ${renderAnalysisControl({
+            name: "analysis-source",
+            type: "select",
+            value: source,
+            options: ["文件导入", "数据库导入", "手动构建"]
+          })}
+        </div>
+        ${sourceBlock}
+        <div class="gene-field is-full">
+          <label>模型描述</label>
+          ${renderAnalysisControl({
+            name: "analysis-description",
+            type: "textarea",
+            value: draft.description || "",
+            placeholder: "请输入模型描述信息"
+          })}
+        </div>
+      </div>
+    `,
+    footer: `
+      <button class="modal-secondary" type="button" data-close-modal="analysis">取消</button>
+      <button class="modal-primary" type="button" data-analysis-submit="${mode}|omics|${itemId}">${footerLabel}</button>
+    `
+  });
+};
 
 function renderOmicsBasicInfoGrid(item) {
   const infoItems = [
@@ -4700,7 +5394,7 @@ function renderProcessFormModal(mode, itemId = "") {
   });
 }
 
-function renderProcessFlow(item) {
+function renderBasicProcessFlow(item) {
   return `
     <div class="process-flow-shell">
       ${item.processNodes
@@ -4715,6 +5409,102 @@ function renderProcessFlow(item) {
       <div class="process-flow-tail is-blue"></div>
       <div class="process-flow-tail is-red"></div>
       <div class="process-flow-tail is-green"></div>
+    </div>
+  `;
+}
+
+function renderProcessFlow(item) {
+  const nodeLabels = Array.isArray(item.processNodes) ? item.processNodes.map((node) => String(node.label || "")) : [];
+  const shouldRenderReplica = nodeLabels.some((label) => label.includes("G6P") || label.includes("PEP"));
+
+  if (!shouldRenderReplica) {
+    return renderBasicProcessFlow(item);
+  }
+
+  const gradientPrefix = `process-flow-${String(item.id || "default").replace(/[^a-z0-9_-]/gi, "").toLowerCase()}`;
+  const nodes = [
+    { label: "葡萄糖", className: "is-indigo", x: 52, y: 96, width: 24, height: 174, textX: 80, textY: 183 },
+    { label: "G6P", className: "is-royal", x: 164, y: 108, width: 24, height: 150, textX: 194, textY: 183 },
+    { label: "F6P", className: "is-lime", x: 276, y: 126, width: 24, height: 114, textX: 306, textY: 183 },
+    { label: "PEP", className: "is-amber", x: 388, y: 126, width: 24, height: 114, textX: 420, textY: 183 },
+    { label: "丙酮酸", className: "is-coral", x: 496, y: 84, width: 24, height: 198, textX: 526, textY: 183 },
+    { label: "乙酰辅酶A", className: "is-violet", x: 610, y: 118, width: 24, height: 132, textX: 640, textY: 183 },
+    { label: "TCA循环", className: "is-cyan", x: 724, y: 112, width: 24, height: 164, textX: 754, textY: 183 },
+    { label: "ATP", className: "is-sky", x: 838, y: 44, width: 24, height: 172, textX: 870, textY: 98 },
+    { label: "NADH", className: "is-green", x: 838, y: 146, width: 24, height: 120, textX: 870, textY: 204 },
+    { label: "谷氨酸", className: "is-pink", x: 838, y: 246, width: 24, height: 82, textX: 870, textY: 287 }
+  ];
+  const flows = [
+    { d: "M76 183 C108 183 132 183 164 183", width: 118, gradient: `${gradientPrefix}-blue` },
+    { d: "M188 183 C220 183 244 183 276 183", width: 106, gradient: `${gradientPrefix}-blue-green` },
+    { d: "M300 183 C332 183 356 183 388 183", width: 96, gradient: `${gradientPrefix}-green-amber` },
+    { d: "M412 183 C446 183 466 162 496 162", width: 104, gradient: `${gradientPrefix}-amber-coral` },
+    { d: "M520 162 C552 162 578 183 610 183", width: 94, gradient: `${gradientPrefix}-coral-violet` },
+    { d: "M634 183 C668 183 692 183 724 183", width: 82, gradient: `${gradientPrefix}-violet-cyan` },
+    { d: "M748 152 C782 152 804 98 838 98", width: 70, gradient: `${gradientPrefix}-cyan-sky` },
+    { d: "M748 186 C782 186 804 186 838 186", width: 60, gradient: `${gradientPrefix}-cyan-green` },
+    { d: "M748 216 C782 216 804 286 838 286", width: 56, gradient: `${gradientPrefix}-cyan-pink` }
+  ];
+
+  return `
+    <div class="process-flow-replica">
+      <div class="process-flow-canvas">
+        <svg viewBox="0 0 960 344" preserveAspectRatio="xMinYMid meet" class="process-flow-svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="${gradientPrefix}-blue" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="rgba(62, 86, 232, 0.34)" />
+              <stop offset="100%" stop-color="rgba(80, 105, 244, 0.28)" />
+            </linearGradient>
+            <linearGradient id="${gradientPrefix}-blue-green" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="rgba(80, 105, 244, 0.28)" />
+              <stop offset="100%" stop-color="rgba(76, 207, 21, 0.24)" />
+            </linearGradient>
+            <linearGradient id="${gradientPrefix}-green-amber" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="rgba(76, 207, 21, 0.24)" />
+              <stop offset="100%" stop-color="rgba(255, 175, 15, 0.22)" />
+            </linearGradient>
+            <linearGradient id="${gradientPrefix}-amber-coral" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="rgba(255, 175, 15, 0.24)" />
+              <stop offset="100%" stop-color="rgba(255, 76, 82, 0.22)" />
+            </linearGradient>
+            <linearGradient id="${gradientPrefix}-coral-violet" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="rgba(255, 76, 82, 0.22)" />
+              <stop offset="100%" stop-color="rgba(110, 42, 215, 0.2)" />
+            </linearGradient>
+            <linearGradient id="${gradientPrefix}-violet-cyan" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="rgba(110, 42, 215, 0.2)" />
+              <stop offset="100%" stop-color="rgba(28, 190, 194, 0.2)" />
+            </linearGradient>
+            <linearGradient id="${gradientPrefix}-cyan-sky" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="rgba(28, 190, 194, 0.22)" />
+              <stop offset="100%" stop-color="rgba(36, 134, 245, 0.24)" />
+            </linearGradient>
+            <linearGradient id="${gradientPrefix}-cyan-green" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="rgba(28, 190, 194, 0.2)" />
+              <stop offset="100%" stop-color="rgba(85, 200, 29, 0.22)" />
+            </linearGradient>
+            <linearGradient id="${gradientPrefix}-cyan-pink" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="rgba(28, 190, 194, 0.18)" />
+              <stop offset="100%" stop-color="rgba(230, 42, 157, 0.2)" />
+            </linearGradient>
+          </defs>
+          ${flows
+            .map(
+              (flow) => `
+                <path d="${flow.d}" stroke="url(#${flow.gradient})" stroke-width="${flow.width}" class="process-flow-band" />
+              `
+            )
+            .join("")}
+          ${nodes
+            .map(
+              (node) => `
+                <rect x="${node.x}" y="${node.y}" width="${node.width}" height="${node.height}" class="process-flow-bar ${node.className}"></rect>
+                <text x="${node.textX}" y="${node.textY}" class="process-flow-label">${escapeHtml(node.label)}</text>
+              `
+            )
+            .join("")}
+        </svg>
+      </div>
     </div>
   `;
 }
@@ -4774,10 +5564,165 @@ function renderProcessResultPanel(item) {
   `;
 }
 
+function renderProcessNeuralSectionHead(title) {
+  return `
+    <div class="process-neural-section-head">
+      <span class="process-neural-section-icon" aria-hidden="true"></span>
+      <h4>${escapeHtml(title)}</h4>
+    </div>
+  `;
+}
+
+function renderProcessNeuralInfoGrid(items, className = "") {
+  return `
+    <div class="process-neural-info-grid ${className}">
+      ${items
+        .map(
+          (item) => `
+            <div class="process-neural-info-item ${item.full ? "is-full" : ""}">
+              <span>${escapeHtml(item.label)}</span>
+              <strong>${item.html || escapeHtml(item.value || "")}</strong>
+            </div>
+          `
+        )
+        .join("")}
+    </div>
+  `;
+}
+
+function renderProcessNeuralArchitecture(detail) {
+  return `
+    <div class="process-neural-surface">
+      <div class="process-neural-architecture">
+        ${detail.architecture
+          .map(
+            (layer, index) => `
+              <div class="process-neural-layer">
+                <div class="process-neural-layer-badge ${layer.tone}">${escapeHtml(layer.title)}</div>
+                <span>${escapeHtml(layer.meta)}</span>
+              </div>
+              ${
+                index < detail.architecture.length - 1
+                  ? `<div class="process-neural-layer-arrow" aria-hidden="true">&rarr;</div>`
+                  : ""
+              }
+            `
+          )
+          .join("")}
+      </div>
+    </div>
+  `;
+}
+
+function renderProcessNeuralHistory(detail) {
+  const chartWidth = 920;
+  const chartHeight = 320;
+  const padding = { top: 22, right: 18, bottom: 48, left: 52 };
+  const plotWidth = chartWidth - padding.left - padding.right;
+  const plotHeight = chartHeight - padding.top - padding.bottom;
+  const xTicks = [0, 10, 20, 30, 40, 50];
+  const yTicks = [0, 0.3, 0.6, 0.9, 1.2, 1.5];
+  const maxEpoch = Math.max(detail.history.train.length, detail.history.validation.length, 50);
+  const toPoints = (series) =>
+    series
+      .map((value, index) => {
+        const x = padding.left + ((index + 1) / maxEpoch) * plotWidth;
+        const y = padding.top + plotHeight - (value / 1.5) * plotHeight;
+        return `${x.toFixed(2)},${y.toFixed(2)}`;
+      })
+      .join(" ");
+
+  return `
+    <div class="process-neural-chart-card">
+      <div class="process-neural-legend">
+        <span><i class="is-train"></i>训练损失</span>
+        <span><i class="is-validation"></i>验证损失</span>
+      </div>
+      <svg viewBox="0 0 ${chartWidth} ${chartHeight}" preserveAspectRatio="none" class="process-neural-chart-svg" aria-hidden="true">
+        ${yTicks
+          .map((tick) => {
+            const y = padding.top + plotHeight - (tick / 1.5) * plotHeight;
+            return `
+              <line x1="${padding.left}" y1="${y}" x2="${chartWidth - padding.right}" y2="${y}" class="process-neural-grid-line" />
+              <text x="${padding.left - 10}" y="${y + 4}" text-anchor="end" class="process-neural-tick-text">${tick}</text>
+            `;
+          })
+          .join("")}
+        ${xTicks
+          .map((tick) => {
+            const x = padding.left + (tick / 50) * plotWidth;
+            return `
+              <line x1="${x}" y1="${padding.top}" x2="${x}" y2="${chartHeight - padding.bottom}" class="process-neural-grid-line is-vertical" />
+              <text x="${x}" y="${chartHeight - 18}" text-anchor="middle" class="process-neural-tick-text">${tick}</text>
+            `;
+          })
+          .join("")}
+        <line x1="${padding.left}" y1="${padding.top}" x2="${padding.left}" y2="${chartHeight - padding.bottom}" class="process-neural-axis-line" />
+        <line x1="${padding.left}" y1="${chartHeight - padding.bottom}" x2="${chartWidth - padding.right}" y2="${chartHeight - padding.bottom}" class="process-neural-axis-line" />
+        <polyline points="${toPoints(detail.history.train)}" class="process-neural-history-line is-train"></polyline>
+        <polyline points="${toPoints(detail.history.validation)}" class="process-neural-history-line is-validation"></polyline>
+        <text x="${chartWidth / 2}" y="${chartHeight - 2}" text-anchor="middle" class="process-neural-axis-text">训练步数</text>
+      </svg>
+    </div>
+  `;
+}
+
+function renderProcessNeuralDetailModal(item) {
+  const detail = getProcessNeuralDetail(item);
+  const statusText =
+    detail.status || (typeof item.status === "string" ? item.status : item.status?.text) || "已部署";
+  const infoItems = [
+    { label: "模型名称", html: `<span class="process-name-link">${escapeHtml(item.name)}</span>` },
+    { label: "网络类型", value: detail.networkType },
+    { label: "菌株类型", value: item.strain },
+    { label: "优化目标", value: item.goal },
+    { label: "训练数据", value: detail.trainingData },
+    { label: "预测精度", html: `<span class="process-neural-accent">${escapeHtml(detail.accuracy)}</span>` },
+    { label: "创建时间", value: item.createdAt },
+    { label: "状态", html: `<span class="process-neural-status">${escapeHtml(statusText)}</span>` }
+  ];
+
+  return renderGeneModalShell({
+    title: `神经网络模型详情 - ${item.name}`,
+    sizeClass: "is-gene-large process-detail-modal process-neural-detail-modal",
+    body: `
+      <div class="process-neural-layout">
+        <section class="process-neural-section">
+          ${renderProcessNeuralSectionHead("基本信息")}
+          ${renderProcessNeuralInfoGrid(infoItems)}
+        </section>
+
+        <section class="process-neural-section">
+          ${renderProcessNeuralSectionHead("网络架构")}
+          ${renderProcessNeuralArchitecture(detail)}
+        </section>
+
+        <section class="process-neural-section">
+          ${renderProcessNeuralSectionHead("训练参数")}
+          ${renderProcessNeuralInfoGrid(detail.trainingParams, "is-params")}
+        </section>
+
+        <section class="process-neural-section">
+          ${renderProcessNeuralSectionHead("训练历史")}
+          ${renderProcessNeuralHistory(detail)}
+        </section>
+      </div>
+    `,
+    footer: `
+      <button class="modal-outline" type="button" data-close-modal="analysis">关闭</button>
+      <button class="modal-primary" type="button" data-analysis-open="edit|process|${item.id}">编辑</button>
+    `
+  });
+}
+
 function renderProcessDetailModal(itemId) {
   const item = hydrateProcessItem(getAnalysisRow("process", itemId) || {});
   if (!item.id) {
     return "";
+  }
+
+  if (isNeuralProcessModel(item)) {
+    return renderProcessNeuralDetailModal(item);
   }
 
   const infoItems = [
@@ -4794,7 +5739,7 @@ function renderProcessDetailModal(itemId) {
   return renderGeneModalShell({
     title: `代谢网络模型详情 - ${item.name}`,
     sizeClass: "is-gene-large process-detail-modal",
-    body: `
+    body: stripLeadingDetailHero(`
       ${renderDetailHero({
         eyebrow: "发酵过程分析",
         title: item.name,
@@ -4833,7 +5778,7 @@ function renderProcessDetailModal(itemId) {
         </div>
         ${renderProcessResultPanel(item)}
       </section>
-    `,
+    `),
     footer: `
       <button class="modal-outline" type="button" data-close-modal="analysis">关闭</button>
       <button class="modal-primary" type="button" data-analysis-open="edit|process|${item.id}">编辑</button>
@@ -4869,6 +5814,7 @@ function renderFullFormModal(mode, itemId = "") {
   const current = itemId ? hydrateFullItem(getAnalysisRow("full", itemId) || {}) : null;
   const title = mode === "edit" ? "编辑分析项目" : "新建分析项目";
   const footerLabel = mode === "edit" ? "保存修改" : "确认创建";
+  const selectedModules = mode === "edit" ? current?.modules || [] : ["genotype"];
 
   return renderGeneModalShell({
     title,
@@ -4899,7 +5845,7 @@ function renderFullFormModal(mode, itemId = "") {
         </div>
         <div class="gene-field is-full">
           <label>选择分析模块</label>
-          ${renderFullModuleOptions(current?.modules || [])}
+          ${renderFullModuleOptions(selectedModules)}
         </div>
       </div>
     `,
@@ -5310,11 +6256,10 @@ function renderServiceControl(field) {
   const attr = escapeHtml(field.name || "");
 
   if (field.type === "select") {
+    const selectedValue = resolveSelectFieldValue(field);
     return `
       <select class="gene-control" data-service-field="${attr}">
-        ${(field.options || [])
-          .map((option) => `<option ${option === field.value ? "selected" : ""}>${escapeHtml(option)}</option>`)
-          .join("")}
+        ${renderSelectOptions(field, selectedValue)}
       </select>
     `;
   }
@@ -5807,7 +6752,133 @@ function renderDetailHero({ eyebrow = "", title = "", description = "", meta = [
   `;
 }
 
+function stripLeadingDetailHero(markup = "") {
+  return String(markup).replace(/\s*<section class="detail-hero-card">[\s\S]*?<\/section>\s*/, "");
+}
+
+function clampGeneChartValue(value, min, max) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function roundGeneChartMax(value, step = 10) {
+  if (!Number.isFinite(value) || value <= 0) {
+    return step;
+  }
+  return Math.max(step, Math.ceil(value / step) * step);
+}
+
+function buildGeneScatterCloud(points = []) {
+  const source =
+    Array.isArray(points) && points.length
+      ? points
+      : [
+          { x: 8, y: 18 },
+          { x: 16, y: 24 },
+          { x: 24, y: 30 },
+          { x: 36, y: 56, highlight: true },
+          { x: 48, y: 34 },
+          { x: 62, y: 48, highlight: true },
+          { x: 78, y: 28 },
+          { x: 88, y: 42, highlight: true }
+        ];
+
+  return source.flatMap((point, index) => {
+    const basePoint = {
+      x: clampGeneChartValue(point.x, 2, 98),
+      y: clampGeneChartValue(point.y, 4, 96),
+      highlight: Boolean(point.highlight),
+      faint: false
+    };
+
+    if (basePoint.highlight) {
+      return [basePoint];
+    }
+
+    return [
+      {
+        x: clampGeneChartValue(basePoint.x + (index % 2 === 0 ? -1.6 : 1.4), 2, 98),
+        y: clampGeneChartValue(basePoint.y - 5 - (index % 3), 4, 96),
+        highlight: false,
+        faint: true
+      },
+      basePoint
+    ];
+  });
+}
+
+function interpolateGeneChartSeries(values = [], targetCount = 17) {
+  const source =
+    Array.isArray(values) && values.length
+      ? values.map((value) => {
+          const numeric = Number(value);
+          return Number.isFinite(numeric) ? numeric : 0;
+        })
+      : [0];
+
+  if (source.length === targetCount) {
+    return source;
+  }
+
+  if (source.length === 1) {
+    return Array.from({ length: targetCount }, () => source[0]);
+  }
+
+  return Array.from({ length: targetCount }, (_, index) => {
+    const position = (index / (targetCount - 1)) * (source.length - 1);
+    const lowerIndex = Math.floor(position);
+    const upperIndex = Math.min(source.length - 1, Math.ceil(position));
+    const weight = position - lowerIndex;
+    return Number((source[lowerIndex] + (source[upperIndex] - source[lowerIndex]) * weight).toFixed(2));
+  });
+}
+
 function renderGeneScatter(points) {
+  const chartWidth = 520;
+  const chartHeight = 280;
+  const padding = { top: 18, right: 18, bottom: 44, left: 56 };
+  const plotWidth = chartWidth - padding.left - padding.right;
+  const plotHeight = chartHeight - padding.top - padding.bottom;
+  const xTicks = [0, 10000, 20000, 30000, 40000];
+  const yTicks = [0, 3, 6, 9, 12];
+  const cloud = buildGeneScatterCloud(points);
+
+  return `
+    <div class="gene-chart-frame gene-scatter-chart">
+      <svg viewBox="0 0 ${chartWidth} ${chartHeight}" preserveAspectRatio="none" class="gene-chart-svg" aria-hidden="true">
+        ${yTicks
+          .map((tick) => {
+            const y = padding.top + plotHeight - (tick / 12) * plotHeight;
+            return `
+              <line x1="${padding.left}" y1="${y}" x2="${chartWidth - padding.right}" y2="${y}" class="gene-chart-grid-line" />
+              <text x="${padding.left - 10}" y="${y + 4}" text-anchor="end" class="gene-chart-tick-text">${tick}</text>
+            `;
+          })
+          .join("")}
+        ${xTicks
+          .map((tick) => {
+            const x = padding.left + (tick / 40000) * plotWidth;
+            return `
+              <line x1="${x}" y1="${padding.top}" x2="${x}" y2="${chartHeight - padding.bottom}" class="gene-chart-grid-line is-vertical" />
+              <text x="${x}" y="${chartHeight - 16}" text-anchor="middle" class="gene-chart-tick-text">${tick.toLocaleString("zh-CN")}</text>
+            `;
+          })
+          .join("")}
+        <line x1="${padding.left}" y1="${padding.top}" x2="${padding.left}" y2="${chartHeight - padding.bottom}" class="gene-chart-axis-line" />
+        <line x1="${padding.left}" y1="${chartHeight - padding.bottom}" x2="${chartWidth - padding.right}" y2="${chartHeight - padding.bottom}" class="gene-chart-axis-line" />
+        ${cloud
+          .map((point) => {
+            const cx = padding.left + (point.x / 100) * plotWidth;
+            const cy = padding.top + plotHeight - (point.y / 100) * plotHeight;
+            const pointClass = point.highlight ? "is-highlight" : point.faint ? "is-faint" : "";
+            const radius = point.highlight ? 5 : point.faint ? 2.8 : 3.8;
+            return `<circle cx="${cx}" cy="${cy}" r="${radius}" class="gene-scatter-point ${pointClass}"></circle>`;
+          })
+          .join("")}
+        <text x="${chartWidth / 2}" y="${chartHeight - 4}" text-anchor="middle" class="gene-chart-axis-text">染色体位置（bp）</text>
+        <text x="18" y="${chartHeight / 2}" text-anchor="middle" transform="rotate(-90 18 ${chartHeight / 2})" class="gene-chart-axis-text">-log10(P)</text>
+      </svg>
+    </div>
+  `;
   return `
     <div class="gene-scatter">
       <div class="gene-chart-gridlines"></div>
@@ -5828,6 +6899,50 @@ function renderGeneScatter(points) {
 }
 
 function renderGeneHistogram(values) {
+  const chartWidth = 420;
+  const chartHeight = 280;
+  const padding = { top: 18, right: 14, bottom: 48, left: 52 };
+  const plotWidth = chartWidth - padding.left - padding.right;
+  const plotHeight = chartHeight - padding.top - padding.bottom;
+  const yMax = 250;
+  const rawSeries = interpolateGeneChartSeries(values, 17);
+  const rawMax = Math.max(...rawSeries, 1);
+  const series = rawSeries.map((value) => Math.min(yMax, Math.round((value / rawMax) * 210 + 18)));
+  const yTicks = [0, 50, 100, 150, 200, 250];
+  const slotWidth = plotWidth / series.length;
+  const barWidth = Math.max(8, slotWidth * 0.54);
+
+  return `
+    <div class="gene-chart-frame gene-histogram-chart">
+      <svg viewBox="0 0 ${chartWidth} ${chartHeight}" preserveAspectRatio="none" class="gene-chart-svg" aria-hidden="true">
+        ${yTicks
+          .map((tick) => {
+            const y = padding.top + plotHeight - (tick / yMax) * plotHeight;
+            return `
+              <line x1="${padding.left}" y1="${y}" x2="${chartWidth - padding.right}" y2="${y}" class="gene-chart-grid-line" />
+              <text x="${padding.left - 10}" y="${y + 4}" text-anchor="end" class="gene-chart-tick-text">${tick}</text>
+            `;
+          })
+          .join("")}
+        <line x1="${padding.left}" y1="${padding.top}" x2="${padding.left}" y2="${chartHeight - padding.bottom}" class="gene-chart-axis-line" />
+        <line x1="${padding.left}" y1="${chartHeight - padding.bottom}" x2="${chartWidth - padding.right}" y2="${chartHeight - padding.bottom}" class="gene-chart-axis-line" />
+        ${series
+          .map((value, index) => {
+            const height = (value / yMax) * plotHeight;
+            const x = padding.left + index * slotWidth + (slotWidth - barWidth) / 2;
+            const y = padding.top + plotHeight - height;
+            const label = (index * 0.06).toFixed(2);
+            return `
+              <rect x="${x}" y="${y}" width="${barWidth}" height="${height}" rx="4" class="gene-histogram-bar"></rect>
+              <text x="${x + barWidth / 2}" y="${chartHeight - 16}" text-anchor="middle" class="gene-chart-tick-text is-dense">${label}</text>
+            `;
+          })
+          .join("")}
+        <text x="${chartWidth / 2}" y="${chartHeight - 4}" text-anchor="middle" class="gene-chart-axis-text">P值区间</text>
+        <text x="18" y="${chartHeight / 2}" text-anchor="middle" transform="rotate(-90 18 ${chartHeight / 2})" class="gene-chart-axis-text">频次</text>
+      </svg>
+    </div>
+  `;
   return `
     <div class="gene-histogram">
       ${values
@@ -5845,6 +6960,54 @@ function renderGeneHistogram(values) {
 }
 
 function renderGeneChromosomeBars(items) {
+  const chartWidth = 760;
+  const chartHeight = 300;
+  const padding = { top: 18, right: 20, bottom: 52, left: 52 };
+  const plotWidth = chartWidth - padding.left - padding.right;
+  const plotHeight = chartHeight - padding.top - padding.bottom;
+  const values = items.map((item) => {
+    const numeric = Number(item.value);
+    return Number.isFinite(numeric) ? numeric : 0;
+  });
+  const yMax = roundGeneChartMax(Math.max(...values, 10), 10);
+  const yTicks = Array.from({ length: 5 }, (_, index) => (yMax / 4) * index);
+  const slotWidth = plotWidth / Math.max(items.length, 1);
+  const barWidth = Math.min(56, slotWidth * 0.5);
+  const palette = ["#165DFF", "#4080FF", "#0E42D2", "#00B42A", "#FF7D00", "#F53F3F", "#4E5969", "#86909C"];
+
+  return `
+    <div class="gene-chart-frame gene-chromosome-chart">
+      <svg viewBox="0 0 ${chartWidth} ${chartHeight}" preserveAspectRatio="none" class="gene-chart-svg" aria-hidden="true">
+        ${yTicks
+          .map((tick) => {
+            const y = padding.top + plotHeight - (tick / yMax) * plotHeight;
+            return `
+              <line x1="${padding.left}" y1="${y}" x2="${chartWidth - padding.right}" y2="${y}" class="gene-chart-grid-line" />
+              <text x="${padding.left - 10}" y="${y + 4}" text-anchor="end" class="gene-chart-tick-text">${Number.isInteger(tick) ? tick : tick.toFixed(0)}</text>
+            `;
+          })
+          .join("")}
+        <line x1="${padding.left}" y1="${padding.top}" x2="${padding.left}" y2="${chartHeight - padding.bottom}" class="gene-chart-axis-line" />
+        <line x1="${padding.left}" y1="${chartHeight - padding.bottom}" x2="${chartWidth - padding.right}" y2="${chartHeight - padding.bottom}" class="gene-chart-axis-line" />
+        ${items
+          .map((item, index) => {
+            const value = values[index];
+            const height = (value / yMax) * plotHeight;
+            const x = padding.left + index * slotWidth + (slotWidth - barWidth) / 2;
+            const y = padding.top + plotHeight - height;
+            const label = formatGeneSitesChromosome(item.label);
+            return `
+              <rect x="${x}" y="${y}" width="${barWidth}" height="${height}" rx="8" class="gene-chromosome-bar" style="fill:${palette[index % palette.length]}"></rect>
+              <text x="${x + barWidth / 2}" y="${y - 10}" text-anchor="middle" class="gene-chart-value-text">${escapeHtml(String(value))}</text>
+              <text x="${x + barWidth / 2}" y="${chartHeight - 18}" text-anchor="middle" class="gene-chart-tick-text">${escapeHtml(label)}</text>
+            `;
+          })
+          .join("")}
+        <text x="${chartWidth / 2}" y="${chartHeight - 2}" text-anchor="middle" class="gene-chart-axis-text">染色体编号</text>
+        <text x="18" y="${chartHeight / 2}" text-anchor="middle" transform="rotate(-90 18 ${chartHeight / 2})" class="gene-chart-axis-text">位点数量</text>
+      </svg>
+    </div>
+  `;
   return `
     <div class="gene-horizontal-bars">
       ${items
@@ -5865,8 +7028,10 @@ function renderGeneChromosomeBars(items) {
 }
 
 function renderGeneChartCard(title, content, description = "") {
+  const cardClass = content.includes("gene-chromosome-chart") ? "gene-chart-card is-wide" : "gene-chart-card";
+
   return `
-    <section class="gene-chart-card">
+    <section class="${cardClass}">
       <div class="gene-chart-head">
         <div>
           <h4>${escapeHtml(title)}</h4>
@@ -5876,6 +7041,174 @@ function renderGeneChartCard(title, content, description = "") {
       ${content}
     </section>
   `;
+}
+
+function getDefaultGeneSitesFilters() {
+  return {
+    chromosome: "all",
+    pValueRange: "all",
+    gene: ""
+  };
+}
+
+function parseGenePValue(value = "") {
+  const numeric = Number(String(value || "").trim());
+  return Number.isFinite(numeric) ? numeric : Number.NaN;
+}
+
+function formatGeneSitesChromosome(value = "") {
+  const match = String(value || "").trim().match(/(\d+)/);
+  if (!match) {
+    return String(value || "").trim().toLowerCase();
+  }
+  return `chr${match[1].padStart(2, "0")}`;
+}
+
+function geneSitesPValueClass(value = "") {
+  const numeric = parseGenePValue(value);
+  if (!Number.isFinite(numeric)) {
+    return "";
+  }
+  if (numeric < 1e-6) {
+    return "is-critical";
+  }
+  if (numeric < 1e-5) {
+    return "is-warning";
+  }
+  return "";
+}
+
+function matchesGenePValueRange(range = "all", value = "") {
+  const numeric = parseGenePValue(value);
+  if (!Number.isFinite(numeric) || range === "all") {
+    return true;
+  }
+  if (range === "lt-1e-6") {
+    return numeric < 1e-6;
+  }
+  if (range === "1e-6-1e-5") {
+    return numeric >= 1e-6 && numeric < 1e-5;
+  }
+  if (range === "gte-1e-5") {
+    return numeric >= 1e-5;
+  }
+  return true;
+}
+
+function getGeneSitesFilterValues() {
+  return [...document.querySelectorAll("[data-gene-sites-field]")].reduce((result, node) => {
+    result[node.dataset.geneSitesField] = node.value.trim();
+    return result;
+  }, getDefaultGeneSitesFilters());
+}
+
+function getFilteredGeneSites(project, filters = getDefaultGeneSitesFilters()) {
+  return project.snps
+    .filter((row) => {
+      const chromosomeMatch = filters.chromosome === "all" || row.chromosome === filters.chromosome;
+      const pValueMatch = matchesGenePValueRange(filters.pValueRange, row.pValue);
+      const geneMatch = !filters.gene || row.gene.toLowerCase().includes(String(filters.gene).toLowerCase());
+      return chromosomeMatch && pValueMatch && geneMatch;
+    })
+    .map((row, index) => ({
+      ...row,
+      displayRank: index + 1
+    }));
+}
+
+function renderGeneSitesModal(projectId) {
+  const project = getGeneProject(projectId);
+  const filters = state.modal?.type === "gene-sites" ? { ...getDefaultGeneSitesFilters(), ...(state.modal.filters || {}) } : getDefaultGeneSitesFilters();
+  const chromosomeOptions = [
+    "all",
+    ...[...new Set(project.snps.map((row) => row.chromosome))].sort((left, right) => parseGeneNumericPosition(left) - parseGeneNumericPosition(right))
+  ];
+  const rows = getFilteredGeneSites(project, filters);
+
+  return renderGeneModalShell({
+    title: `全部显著位点列表 - ${project.name}`,
+    sizeClass: "gene-sites-modal",
+    body: `
+      <div class="gene-sites-view">
+        <section class="gene-sites-toolbar">
+          <label class="gene-sites-filter">
+            <span>染色体</span>
+            <select data-gene-sites-field="chromosome">
+              ${chromosomeOptions
+                .map((option) => {
+                  const label = option === "all" ? "全部" : formatGeneSitesChromosome(option);
+                  return `<option value="${escapeHtml(option)}" ${filters.chromosome === option ? "selected" : ""}>${escapeHtml(label)}</option>`;
+                })
+                .join("")}
+            </select>
+          </label>
+          <label class="gene-sites-filter">
+            <span>P值范围</span>
+            <select data-gene-sites-field="pValueRange">
+              <option value="all" ${filters.pValueRange === "all" ? "selected" : ""}>全部</option>
+              <option value="lt-1e-6" ${filters.pValueRange === "lt-1e-6" ? "selected" : ""}>&lt;1e-6</option>
+              <option value="1e-6-1e-5" ${filters.pValueRange === "1e-6-1e-5" ? "selected" : ""}>1e-6 ~ 1e-5</option>
+              <option value="gte-1e-5" ${filters.pValueRange === "gte-1e-5" ? "selected" : ""}>&gt;=1e-5</option>
+            </select>
+          </label>
+          <label class="gene-sites-filter is-grow">
+            <span>基因</span>
+            <input type="text" value="${escapeHtml(filters.gene)}" placeholder="输入基因名称" data-gene-sites-field="gene" />
+          </label>
+          <div class="gene-sites-actions">
+            <button class="modal-primary gene-sites-button" type="button" data-gene-sites-action="search">查询</button>
+            <button class="modal-outline gene-sites-button" type="button" data-gene-sites-action="reset">重置</button>
+          </div>
+        </section>
+
+        <section class="gene-sites-table-card">
+          <div class="table-scroll gene-inner-table">
+            <table class="data-table gene-snp-table is-sites-table">
+              <thead>
+                <tr>
+                  <th>排名</th>
+                  <th>染色体</th>
+                  <th>位置</th>
+                  <th>SNP ID</th>
+                  <th>P值</th>
+                  <th>效应值</th>
+                  <th>关联基因</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${
+                  rows.length
+                    ? rows
+                        .map(
+                          (row) => `
+                            <tr>
+                              <td>${escapeHtml(String(row.displayRank))}</td>
+                              <td>${escapeHtml(formatGeneSitesChromosome(row.chromosome))}</td>
+                              <td>${escapeHtml(row.position)}</td>
+                              <td>${escapeHtml(row.snpId)}</td>
+                              <td><span class="gene-sites-pvalue ${geneSitesPValueClass(row.pValue)}">${escapeHtml(row.pValue)}</span></td>
+                              <td>${escapeHtml(row.effect)}</td>
+                              <td>${escapeHtml(row.gene)}</td>
+                              <td><button class="table-link" type="button" data-gene-open="snp|${project.id}|${row.snpId}">详情</button></td>
+                            </tr>
+                          `
+                        )
+                        .join("")
+                    : `
+                      <tr class="table-empty-row">
+                        <td colspan="8">${renderEmptyState("暂无数据", "当前筛选条件下没有显著位点记录")}</td>
+                      </tr>
+                    `
+                }
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    `,
+    footer: `<button class="modal-outline" type="button" data-close-modal="gene">关闭</button>`
+  });
 }
 
 function renderGeneSnpTable(rows, options = {}) {
@@ -5910,7 +7243,7 @@ function renderGeneSnpTable(rows, options = {}) {
                   <td>${escapeHtml(row.gene)}</td>
                   ${
                     showAction
-                      ? `<td><button class="table-link" type="button" data-gene-open="detail|${projectId}">查看详情</button></td>`
+                      ? `<td><button class="table-link" type="button" data-gene-open="snp|${projectId}|${row.snpId}">查看详情</button></td>`
                       : ""
                   }
                 </tr>
@@ -6020,10 +7353,10 @@ function renderGeneUploadModal(projectId) {
     sizeClass: "is-gene-form",
     body: `
       <div class="gene-form-grid">
-        ${renderGeneField({ name: "datasetName", label: "数据集名称", value: project.dataset.name, placeholder: "请输入数据集名称" })}
-        ${renderGeneField({ name: "datasetType", label: "数据类型", type: "select", value: project.dataset.type, options: ["VCF", "BED", "FAM", "PHE", "CSV"] })}
-        ${renderGeneField({ name: "strain", label: "菌株类型", type: "select", value: project.strain, options: ["大肠杆菌", "酵母菌", "芽孢杆菌"] })}
-        ${renderGeneField({ name: "datasetSize", label: "数据大小", value: project.dataset.size, placeholder: "例如 256.78 MB" })}
+        ${renderGeneField({ name: "datasetName", label: "数据集名称", value: "", placeholder: "请输入数据集名称" })}
+        ${renderGeneField({ name: "datasetType", label: "数据类型", type: "select", value: "", allowEmpty: true, placeholder: "请选择数据类型", options: ["VCF", "BED", "FAM", "PHE", "CSV"] })}
+        ${renderGeneField({ name: "strain", label: "菌株类型", type: "select", value: "", allowEmpty: true, placeholder: "请选择菌株类型", options: ["大肠杆菌", "酵母菌", "芽孢杆菌"] })}
+        ${renderGeneField({ name: "datasetSize", label: "数据大小", value: "", placeholder: "例如 256.78 MB" })}
         <div class="gene-field is-full">
           <label>上传文件</label>
           <div class="gene-upload-box">
@@ -6102,7 +7435,7 @@ function renderGeneResultModal(projectId) {
       <section class="gene-section-card">
         <div class="gene-section-head">
           <div><h4>显著位点列表</h4><p class="section-caption">展示当前项目识别到的关键 SNP 位点</p></div>
-          <button class="table-link" type="button" data-gene-open="detail|${project.id}">查看全部</button>
+          <button class="table-link" type="button" data-gene-open="sites|${project.id}">查看全部</button>
         </div>
         ${renderGeneSnpTable(project.snps, { showAction: true, projectId: project.id })}
       </section>
@@ -6239,9 +7572,450 @@ function renderGeneDetailModal(projectId, tab = "project") {
   });
 }
 
+function renderGeneDetailModal(projectId, tab = "project") {
+  const project = getGeneProject(projectId);
+  const dataset = project.dataset;
+  const projectInfo = [
+    { label: "项目名称", value: project.name },
+    { label: "菌株类型", value: project.strain },
+    { label: "表型类型", value: project.phenotype },
+    { label: "分析方法", value: project.method },
+    { label: "显著性阈值", value: project.threshold },
+    { label: "分析状态", html: `<span class="status-chip ${geneStatusClass(project.status)}">${project.status}</span>` },
+    { label: "样本数", value: project.samples },
+    { label: "显著位点", value: project.sites },
+    { label: "创建时间", value: project.createdAt },
+    { label: "更新时间", value: project.updatedAt }
+  ];
+  const datasetInfo = [
+    { label: "数据集名称", value: dataset.name },
+    { label: "文件类型", value: dataset.type },
+    { label: "样本数", value: project.samples },
+    { label: "位点数", value: dataset.sites },
+    { label: "数据大小", value: dataset.size },
+    { label: "上传时间", value: dataset.uploadedAt }
+  ];
+
+  const projectTabBody = `
+    <section class="gene-section-card">
+      <div class="gene-section-head">
+        <div><h4>项目信息</h4><p class="section-caption">查看项目基础属性、阈值与时间信息</p></div>
+      </div>
+      ${renderGeneInfoGrid(projectInfo)}
+    </section>
+    <section class="gene-chart-grid">
+      ${renderGeneChartCard("全基因组关联分析", renderGeneScatter(project.points), "以散点形式展示关联显著性分布")}
+      ${renderGeneChartCard("P值分布情况", renderGeneHistogram(project.pValueBars), "观察各区段 P 值频次分布")}
+      ${renderGeneChartCard("显著位点染色体分布情况", renderGeneChromosomeBars(project.chromosomeBars), "对比各染色体显著位点数量")}
+    </section>
+    <section class="gene-section-card">
+      <div class="gene-section-head">
+        <div><h4>Top 10 SNP位点</h4><p class="section-caption">按照显著性排序展示关键位点</p></div>
+      </div>
+      ${renderGeneSnpTable(project.snps.slice(0, 10))}
+    </section>
+    <section class="gene-section-card">
+      <div class="gene-section-head">
+        <div><h4>基因型组合预测</h4><p class="section-caption">给出推荐组合、预测产量与置信信息</p></div>
+      </div>
+      <div class="gene-predict-card">
+        <div>
+          <span>系统推荐组合</span>
+          <strong>${escapeHtml(project.prediction.combo)}</strong>
+        </div>
+        <div>
+          <span>预测产量</span>
+          <strong>${escapeHtml(project.prediction.yield)}</strong>
+        </div>
+        <div>
+          <span>置信区间</span>
+          <strong>${escapeHtml(project.prediction.interval)}</strong>
+        </div>
+        <div>
+          <span>置信度</span>
+          <strong>${escapeHtml(project.prediction.confidence)}</strong>
+        </div>
+      </div>
+    </section>
+  `;
+
+  const datasetTabBody = `
+    <section class="gene-section-card">
+      <div class="gene-section-head">
+        <div><h4>数据信息</h4><p class="section-caption">查看数据集类型、规模与上传信息</p></div>
+      </div>
+      ${renderGeneInfoGrid(datasetInfo)}
+    </section>
+    <section class="gene-section-card">
+      <div class="gene-section-head">
+        <div><h4>数据预览</h4><p class="section-caption">展示数据集前几行内容用于快速核验</p></div>
+      </div>
+      ${renderGeneDatasetPreview(dataset)}
+    </section>
+    <section class="gene-quality-grid">
+      ${dataset.qualityStats
+        .map(
+          (item) => `
+            <article class="gene-quality-card">
+              <strong>${escapeHtml(item.value)}</strong>
+              <span>${escapeHtml(item.label)}</span>
+            </article>
+          `
+        )
+        .join("")}
+    </section>
+    <section class="gene-section-card">
+      <div class="gene-section-head">
+        <div><h4>位点质量分布</h4><p class="section-caption">展示位点质量统计柱状分布</p></div>
+      </div>
+      ${renderGeneHistogram(dataset.qualityBars)}
+    </section>
+  `;
+
+  return renderGeneModalShell({
+    title: "详情",
+    sizeClass: "is-gene-large",
+    body: `
+      <div class="gene-tabs">
+        <button class="gene-tab ${tab === "project" ? "is-active" : ""}" type="button" data-gene-tab="project">项目信息</button>
+        <button class="gene-tab ${tab === "dataset" ? "is-active" : ""}" type="button" data-gene-tab="dataset">数据信息</button>
+      </div>
+      ${tab === "dataset" ? datasetTabBody : projectTabBody}
+    `,
+    footer: `
+      <button class="modal-outline" type="button" data-close-modal="gene">关闭</button>
+      <button class="modal-primary" type="button" data-gene-open="edit|${project.id}">编辑项目</button>
+    `
+  });
+}
+
+function stripServiceOverviewCard(markup = "") {
+  return String(markup).replace(/\s*<section class="service-overview-card">[\s\S]*?<\/section>\s*/, "");
+}
+
+function stripDetailSummaryBlocks(markup = "") {
+  return stripServiceOverviewCard(stripLeadingDetailHero(markup));
+}
+
+const __renderProcessDetailModal = renderProcessDetailModal;
+renderProcessDetailModal = function renderProcessDetailModalPatched(itemId) {
+  return stripDetailSummaryBlocks(__renderProcessDetailModal(itemId));
+};
+
+const __renderFullDetailModal = renderFullDetailModal;
+renderFullDetailModal = function renderFullDetailModalPatched(itemId) {
+  return stripDetailSummaryBlocks(__renderFullDetailModal(itemId));
+};
+
+const __renderFullGpaDetailModal = renderFullGpaDetailModal;
+renderFullGpaDetailModal = function renderFullGpaDetailModalPatched(itemId) {
+  return stripDetailSummaryBlocks(__renderFullGpaDetailModal(itemId));
+};
+
+const __renderFullPredictDetailModal = renderFullPredictDetailModal;
+renderFullPredictDetailModal = function renderFullPredictDetailModalPatched(itemId) {
+  return stripDetailSummaryBlocks(__renderFullPredictDetailModal(itemId));
+};
+
+const __renderServiceDetailModal = renderServiceDetailModal;
+renderServiceDetailModal = function renderServiceDetailModalPatched(itemId) {
+  return stripDetailSummaryBlocks(__renderServiceDetailModal(itemId));
+};
+
+function buildFullPredictionSummary(item) {
+  return {
+    geneCombo: item?.gpaSummary?.recommendedGenes || "glnA(AA)+gdh(AA)",
+    fermentationParams: item?.comprehensivePrediction?.fermentationParams || "温度37℃, pH 7.0, 溶氧30%",
+    improvement: item?.processSummary?.improvement || item?.gpaSummary?.improvement || "+18.5%",
+    confidence: item?.comprehensivePrediction?.confidence || "92.5%"
+  };
+}
+
+function renderFullPredictionSummaryPanel(item) {
+  const summary = buildFullPredictionSummary(item);
+  const rows = [
+    { label: "最优基因型组合", value: summary.geneCombo, accent: false },
+    { label: "推荐发酵参数", value: summary.fermentationParams, accent: false },
+    { label: "预测产量提升", value: summary.improvement, accent: true },
+    { label: "置信度", value: summary.confidence, accent: true }
+  ];
+
+  return `
+    <div class="full-predict-panel">
+      <p class="full-predict-intro">说明：整合基因型-表型分析结果和发酵过程分析结果，提供综合参数预测</p>
+      <div class="gene-prediction-panel full-predict-summary">
+        ${rows
+          .map(
+            (row) => `
+              <div class="gene-prediction-row full-predict-row">
+                <span>${escapeHtml(row.label)}</span>
+                <strong class="${row.accent ? "is-green" : ""}">${escapeHtml(row.value)}</strong>
+              </div>
+            `
+          )
+          .join("")}
+      </div>
+    </div>
+  `;
+}
+
+renderFullDetailModal = function renderFullDetailModalV2(itemId) {
+  const item = hydrateFullItem(getAnalysisRow("full", itemId) || {});
+  if (!item.id) {
+    return "";
+  }
+
+  const predictionSection = renderFullAccordion("综合参数预测模型", "is-bulb", renderFullPredictionSummaryPanel(item), true);
+  const gpaSection = renderFullAccordion("GPA分析结果整合", "is-bars", renderFullSummaryTable("gpa", item), true);
+  const processSection = renderFullAccordion("发酵过程分析结果整合", "is-chart", renderFullSummaryTable("process", item), true);
+
+  return stripDetailSummaryBlocks(
+    renderGeneModalShell({
+      title: `项目详情 - ${item.name}`,
+      sizeClass: "is-gene-large full-detail-modal",
+      body: `
+        ${renderDetailHero({
+          eyebrow: "全流程数据分析",
+          title: item.name,
+          description: "整合 GPA 与发酵过程分析结果，统一展示项目级结论。",
+          meta: [
+            { value: item.strain },
+            { value: item.targetProduct },
+            { value: item.patentRisk },
+            { html: `<span class="status-chip is-normal">已完成</span>` }
+          ]
+        })}
+        ${renderFullInfoPanel(item)}
+        ${predictionSection}
+        ${gpaSection}
+        ${processSection}
+      `,
+      footer: `<button class="modal-outline" type="button" data-close-modal="analysis">关闭</button>`
+    })
+  );
+};
+
+function renderGeneDetailBasicGridV2(items = []) {
+  return `
+    <div class="gene-detail-basic-grid">
+      ${items
+        .map(
+          (item) => `
+            <div class="gene-detail-basic-item">
+              <span>${escapeHtml(item.label)}</span>
+              <strong>${item.html || escapeHtml(item.value || "-")}</strong>
+            </div>
+          `
+        )
+        .join("")}
+    </div>
+  `;
+}
+
+function renderGeneDetailPredictionPanelV2(prediction = {}) {
+  const rows = [
+    { label: "系统推荐组合", value: prediction.combo || "-" },
+    { label: "预测产量", value: prediction.yield || "-", accent: true },
+    { label: "置信区间", value: prediction.interval || "-" },
+    { label: "置信度", value: prediction.confidence || "-", accent: true }
+  ];
+
+  return `
+    <div class="gene-prediction-panel">
+      ${rows
+        .map(
+          (row) => `
+            <div class="gene-prediction-row">
+              <span>${escapeHtml(row.label)}</span>
+              <strong class="${row.accent ? "is-green" : ""}">${escapeHtml(row.value)}</strong>
+            </div>
+          `
+        )
+        .join("")}
+    </div>
+  `;
+}
+
+function renderGeneDetailTopTenTableV2(project) {
+  const rows = Array.isArray(project?.snps) ? project.snps.slice(0, 10) : [];
+
+  return `
+    <div class="table-scroll gene-inner-table">
+      <table class="data-table gene-snp-table">
+        <thead>
+          <tr>
+            <th>排名</th>
+            <th>染色体</th>
+            <th>位置</th>
+            <th>SNP ID</th>
+            <th>P值</th>
+            <th>效应值</th>
+            <th>关联基因</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${
+            rows.length
+              ? rows
+                  .map(
+                    (row) => `
+                      <tr>
+                        <td>${escapeHtml(String(row.rank ?? "-"))}</td>
+                        <td>${escapeHtml(formatGeneSitesChromosome(row.chromosome || "-"))}</td>
+                        <td>${escapeHtml(row.position || "-")}</td>
+                        <td>${escapeHtml(row.snpId || "-")}</td>
+                        <td><span class="gene-sites-pvalue ${geneSitesPValueClass(row.pValue)}">${escapeHtml(row.pValue || "-")}</span></td>
+                        <td>${escapeHtml(row.effect || "-")}</td>
+                        <td>${escapeHtml(row.gene || "-")}</td>
+                      </tr>
+                    `
+                  )
+                  .join("")
+              : `
+                <tr class="table-empty-row">
+                  <td colspan="7">${renderEmptyState("暂无数据", "当前项目还没有显著位点结果")}</td>
+                </tr>
+              `
+          }
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+renderGeneDetailModal = function renderGeneDetailModalV3(projectId, tab = "project") {
+  const project = getGeneProject(projectId);
+  const dataset = project.dataset;
+  const projectInfo = [
+    { label: "项目名称", value: project.name },
+    { label: "菌株类型", value: project.strain },
+    { label: "样本数量", value: project.samples },
+    { label: "显著位点数量", value: project.sites },
+    { label: "创建时间", value: project.createdAt },
+    { label: "分析方法", value: project.method }
+  ];
+  const datasetInfo = [
+    { label: "数据集名称", value: dataset.name },
+    { label: "文件类型", value: dataset.type },
+    { label: "样本数量", value: project.samples },
+    { label: "位点数量", value: dataset.sites },
+    { label: "数据大小", value: dataset.size },
+    { label: "上传时间", value: dataset.uploadedAt }
+  ];
+
+  const projectTabBody = `
+    <div class="gene-detail-view">
+      <section class="gene-detail-section">
+        <div class="gene-detail-section-head">
+          <h4>基本信息</h4>
+        </div>
+        ${renderGeneDetailBasicGridV2(projectInfo)}
+      </section>
+
+      <section class="gene-detail-section">
+        <div class="gene-detail-section-head">
+          <h4>可视化结果</h4>
+        </div>
+        <div class="gene-detail-visual-grid">
+          ${renderGeneChartCard("全基因组关联分析", renderGeneScatter(project.points), "以散点形式展示关联显著性分布")}
+          ${renderGeneChartCard("P值分布情况", renderGeneHistogram(project.pValueBars), "观察各区间 P 值频次分布")}
+        </div>
+      </section>
+
+      <section class="gene-detail-section">
+        <div class="gene-detail-section-head">
+          <h4>显著位点列表（Top 10）</h4>
+        </div>
+        ${renderGeneDetailTopTenTableV2(project)}
+      </section>
+
+      <section class="gene-detail-section">
+        <div class="gene-detail-section-head">
+          <h4>基因型组合预测</h4>
+        </div>
+        ${renderGeneDetailPredictionPanelV2(project.prediction)}
+      </section>
+    </div>
+  `;
+
+  const datasetTabBody = `
+    <div class="gene-detail-view">
+      <section class="gene-detail-section">
+        <div class="gene-detail-section-head">
+          <h4>数据集信息</h4>
+        </div>
+        ${renderGeneDetailBasicGridV2(datasetInfo)}
+      </section>
+
+      <section class="gene-detail-section">
+        <div class="gene-detail-section-head">
+          <h4>数据预览</h4>
+        </div>
+        ${renderGeneDatasetPreview(dataset)}
+      </section>
+
+      <section class="gene-quality-grid">
+        ${dataset.qualityStats
+          .map(
+            (item) => `
+              <article class="gene-quality-card">
+                <strong>${escapeHtml(item.value)}</strong>
+                <span>${escapeHtml(item.label)}</span>
+              </article>
+            `
+          )
+          .join("")}
+      </section>
+
+      <section class="gene-detail-section is-quality-chart">
+        <div class="gene-detail-section-head">
+          <h4>位点质量分布</h4>
+        </div>
+        ${renderGeneHistogram(dataset.qualityBars)}
+      </section>
+    </div>
+  `;
+
+  return renderGeneModalShell({
+    title: `项目详情 - ${project.name}`,
+    sizeClass: "is-gene-large gene-project-detail-modal",
+    body: `
+      <div class="gene-tabs">
+        <button class="gene-tab ${tab === "project" ? "is-active" : ""}" type="button" data-gene-tab="project">项目信息</button>
+        <button class="gene-tab ${tab === "dataset" ? "is-active" : ""}" type="button" data-gene-tab="dataset">数据信息</button>
+      </div>
+      ${tab === "dataset" ? datasetTabBody : projectTabBody}
+    `,
+    footer: `
+      <button class="modal-outline" type="button" data-close-modal="gene">关闭</button>
+      <button class="modal-primary" type="button" data-gene-open="edit|${project.id}">编辑项目</button>
+    `
+  });
+};
+
 function openGeneModal(actionKey, projectId = "", extra = {}) {
   if (actionKey === "create") {
     state.modal = { type: "gene-create" };
+    return;
+  }
+
+  if (actionKey === "sites") {
+    state.modal = {
+      type: "gene-sites",
+      projectId,
+      filters: getDefaultGeneSitesFilters(),
+      returnTo: state.modal ? deepClone(state.modal) : null
+    };
+    return;
+  }
+
+  if (actionKey === "snp") {
+    state.modal = {
+      type: "gene-snp",
+      projectId,
+      snpId: extra.snpId || "",
+      returnTo: state.modal ? deepClone(state.modal) : null
+    };
     return;
   }
 
@@ -6393,7 +8167,7 @@ function openAnalysisModal(action, moduleKey, itemId = "") {
         itemId,
         serviceMethod: action === "edit" ? "manual" : "file",
         serviceStep: 1,
-        serviceDraft: buildServiceDraft(current)
+        serviceDraft: action === "edit" ? buildServiceDraft(current) : createServiceEmptyDraft()
       };
       return;
     }
@@ -6709,6 +8483,67 @@ async function submitAnalysisAction(action, moduleKey, itemId) {
   await loadAnalysisModules();
 }
 
+const __submitAnalysisAction = submitAnalysisAction;
+submitAnalysisAction = async function submitAnalysisActionPatched(action, moduleKey, itemId) {
+  if (moduleKey !== "omics") {
+    return __submitAnalysisAction(action, moduleKey, itemId);
+  }
+
+  const values = getAnalysisFormValues();
+  const current = itemId ? hydrateOmicsItem(getAnalysisRow(moduleKey, itemId) || {}) : null;
+  const defaultFileName = values.source === "数据库导入" ? "database_import.xlsx" : "model_v2.xml";
+  const defaultReactionCount = values.source === "手动构建" ? "0" : "2,156";
+  const defaultMetaboliteCount = values.source === "手动构建" ? "0" : "1,892";
+
+  if (action === "create") {
+    await apiRequest("/api/analysis-items", {
+      method: "POST",
+      body: JSON.stringify({
+        module: "omics",
+        name: values.name,
+        strain: values.strain,
+        source: values.source,
+        description: values.description,
+        importSize: values.importSize || "",
+        type: "基于基因组",
+        reactions: values.reactions || defaultReactionCount,
+        metabolites: values.metabolites || defaultMetaboliteCount,
+        flux: "3.24",
+        targetProduct: "乙酸",
+        fileName: values.fileName || defaultFileName,
+        statusText: "已验证",
+        statusClass: "is-valid",
+        createdAt: new Date().toISOString().slice(0, 16).replace("T", " ")
+      })
+    });
+  } else if (action === "edit" && current) {
+    await apiRequest(`/api/analysis-items/${itemId}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        ...current,
+        name: values.name,
+        strain: values.strain,
+        source: values.source,
+        description: values.description,
+        reactions: values.source === "手动构建" ? values.reactions || current.reactions || "0" : current.reactions || "2,156",
+        metabolites: values.source === "手动构建" ? values.metabolites || current.metabolites || "0" : current.metabolites || "1,892",
+        fileName: values.fileName || current.fileName || defaultFileName,
+        importSize: values.importSize || current.importSize || "",
+        type: current.type || "基于基因组",
+        targetProduct: current.targetProduct || "乙酸",
+        statusText: current.status?.text || "已验证",
+        statusClass: current.status?.className || "is-valid"
+      })
+    });
+  } else if (action === "delete") {
+    await apiRequest(`/api/analysis-items/${itemId}`, {
+      method: "DELETE"
+    });
+  }
+
+  await loadAnalysisModules();
+};
+
 function sensorStatusClass(moduleKey, metrics) {
   const numericValues = metrics
     .map((item) => Number(String(item.value).replace(/[^\d.-]/g, "")))
@@ -6733,9 +8568,17 @@ function sensorStatusClass(moduleKey, metrics) {
 async function submitSensorAction(action, moduleKey) {
   const values = getSensorFormValues(moduleKey);
   const module = sensorModules[moduleKey];
+  const formDefinition = getSensorFormDefinition(module);
+  const timeFieldIndex = formDefinition.basicFields.findIndex((field) => field.type === "datetime");
+  const userFieldIndex = formDefinition.basicFields.findIndex((field, index) => index > timeFieldIndex && field.type === "text");
+  const batchId = values[`${moduleKey}-basic-0`] || state.activeBatch[moduleKey] || module.batches[0]?.id || "";
+  const resolvedUser = userFieldIndex >= 0 ? values[`${moduleKey}-basic-${userFieldIndex}`] || "系统录入" : "系统录入";
+  const resolvedTime =
+    (timeFieldIndex >= 0 ? fromDateTimeLocalValue(values[`${moduleKey}-basic-${timeFieldIndex}`]) : "") ||
+    new Date().toISOString().slice(0, 19).replace("T", " ");
   const user = values[`${moduleKey}-basic-2`] || "系统录入";
-  const time = values[`${moduleKey}-basic-1`] || new Date().toISOString().slice(0, 19).replace("T", " ");
-  const metricValues = module.paramFields
+  const time = fromDateTimeLocalValue(values[`${moduleKey}-basic-1`]) || new Date().toISOString().slice(0, 19).replace("T", " ");
+  const metricValues = formDefinition.paramFields
     .map((field, index) => ({
       label: field.label,
       value: values[`${moduleKey}-param-${index}`]
@@ -6746,9 +8589,9 @@ async function submitSensorAction(action, moduleKey) {
   const statusText = statusClass === "is-error" ? "异常" : statusClass === "is-warning" ? "预警" : "正常";
   const record = {
     module: moduleKey,
-    batchId: state.activeBatch[moduleKey],
-    time,
-    user,
+    batchId,
+    time: resolvedTime,
+    user: resolvedUser,
     statusText,
     statusClass,
     metrics: metricValues.slice(0, 4).map((item) => ({
@@ -6765,6 +8608,7 @@ async function submitSensorAction(action, moduleKey) {
     body: JSON.stringify(record)
   });
 
+  state.activeBatch[moduleKey] = batchId;
   mergeSensorRecord(moduleKey, payload.item);
   recalcSensorSummary(moduleKey);
 }
@@ -6774,6 +8618,35 @@ function findRecord(moduleKey, batchId, recordId) {
   const batch = module.batches.find((item) => item.id === batchId);
   const record = batch?.records.find((item) => item.id === recordId);
   return { module, batch, record };
+}
+
+function getThresholdDecimalPlaces(value) {
+  const match = String(value ?? "").trim().match(/\.(\d+)/);
+  return match ? match[1].length : 0;
+}
+
+function getThresholdInputStep(row) {
+  const decimals = Math.max(
+    getThresholdDecimalPlaces(row?.min),
+    getThresholdDecimalPlaces(row?.max),
+    getThresholdDecimalPlaces(row?.alert)
+  );
+  return decimals > 0 ? `0.${"0".repeat(Math.max(0, decimals - 1))}1` : "1";
+}
+
+function renderThresholdNumberInput(row, fieldKey) {
+  const step = getThresholdInputStep(row);
+  const value = row?.[fieldKey] ?? "";
+
+  return `
+    <input
+      class="config-input config-input-number"
+      type="number"
+      inputmode="decimal"
+      step="${step}"
+      value="${escapeHtml(String(value))}"
+    />
+  `;
 }
 
 function collectThresholdRowsFromModal(moduleKey) {
@@ -6820,9 +8693,9 @@ function renderThresholdModal(module) {
                   (row) => `
                     <tr>
                       <td>${row.label}</td>
-                      <td><input class="config-input" type="text" value="${row.min}" /></td>
-                      <td><input class="config-input" type="text" value="${row.max}" /></td>
-                      <td><input class="config-input" type="text" value="${row.alert}" /></td>
+                      <td>${renderThresholdNumberInput(row, "min")}</td>
+                      <td>${renderThresholdNumberInput(row, "max")}</td>
+                      <td>${renderThresholdNumberInput(row, "alert")}</td>
                     </tr>
                   `
                 )
@@ -7023,6 +8896,14 @@ function renderModal() {
     return renderGeneResultModal(state.modal.projectId);
   }
 
+  if (state.modal.type === "gene-sites") {
+    return renderGeneSitesModal(state.modal.projectId);
+  }
+
+  if (state.modal.type === "gene-snp") {
+    return renderGeneSnpModal(state.modal.projectId, state.modal.snpId);
+  }
+
   if (state.modal.type === "gene-detail") {
     return renderGeneDetailModal(state.modal.projectId, state.modal.tab || "project");
   }
@@ -7047,13 +8928,13 @@ function renderDashboardView() {
     isSensorMenu() && state.sensorView[state.activeMenu] === "form"
       ? {
           breadcrumb: sensorModules[state.activeMenu].formBreadcrumb,
-          headerTools: false,
+          headerTools: true,
           content: renderSensorFormPage(sensorModules[state.activeMenu])
         }
       : isSensorMenu()
         ? {
             breadcrumb: sensorModules[state.activeMenu].listBreadcrumb,
-            headerTools: false,
+            headerTools: true,
             content: renderSensorListPage(sensorModules[state.activeMenu])
           }
         : {
@@ -7245,11 +9126,27 @@ function handleRecoverSubmit(form) {
   showToast("密码已重置，请重新登录");
 }
 
+function handleLogout() {
+  state.scene = "auth";
+  state.authView = "login";
+  state.modal = null;
+  state.sidebarOpen = false;
+  refreshCaptcha("login");
+  renderApp();
+  showToast("\u5df2\u9000\u51fa\u7cfb\u7edf\uff0c\u8bf7\u91cd\u65b0\u767b\u5f55");
+}
+
 document.addEventListener("click", async (event) => {
   const authViewButton = event.target.closest("[data-auth-view]");
   if (authViewButton) {
     state.authView = authViewButton.dataset.authView;
     renderApp();
+    return;
+  }
+
+  const logoutButton = event.target.closest("[data-logout]");
+  if (logoutButton) {
+    handleLogout();
     return;
   }
 
@@ -7322,15 +9219,25 @@ document.addEventListener("click", async (event) => {
 
   const closeModalButton = event.target.closest("[data-close-modal]");
   if (closeModalButton) {
-    state.modal = null;
+    state.modal = state.modal?.returnTo || null;
     renderApp();
     return;
   }
 
   const geneOpenButton = event.target.closest("[data-gene-open]");
   if (geneOpenButton) {
-    const [actionKey, projectId] = geneOpenButton.dataset.geneOpen.split("|");
-    openGeneModal(actionKey, projectId);
+    const [actionKey, projectId, detailId] = geneOpenButton.dataset.geneOpen.split("|");
+    openGeneModal(actionKey, projectId, detailId ? { snpId: detailId } : {});
+    renderApp();
+    return;
+  }
+
+  const geneSitesActionButton = event.target.closest("[data-gene-sites-action]");
+  if (geneSitesActionButton && state.modal?.type === "gene-sites") {
+    state.modal = {
+      ...state.modal,
+      filters: geneSitesActionButton.dataset.geneSitesAction === "reset" ? getDefaultGeneSitesFilters() : getGeneSitesFilterValues()
+    };
     renderApp();
     return;
   }
@@ -7346,6 +9253,12 @@ document.addEventListener("click", async (event) => {
   const serviceUploadTrigger = event.target.closest("[data-service-upload-trigger]");
   if (serviceUploadTrigger && state.modal?.type === "analysis-form" && state.modal.moduleKey === "service") {
     document.querySelector("[data-service-file-input]")?.click();
+    return;
+  }
+
+  const omicsUploadTrigger = event.target.closest("[data-omics-upload-trigger]");
+  if (omicsUploadTrigger && state.modal?.type === "analysis-form" && state.modal.moduleKey === "omics") {
+    document.querySelector("[data-omics-file-input]")?.click();
     return;
   }
 
@@ -7665,6 +9578,19 @@ document.addEventListener("change", async (event) => {
     return;
   }
 
+  if (event.target.matches("[data-gene-field='analysis-source']") && state.modal?.type === "analysis-form" && state.modal.moduleKey === "omics") {
+    const draft = syncOmicsDraftFromDom();
+    state.modal = {
+      ...state.modal,
+      omicsDraft: {
+        ...draft,
+        source: event.target.value.trim()
+      }
+    };
+    renderApp();
+    return;
+  }
+
   if (event.target.matches("[data-service-field]") && state.modal?.type === "analysis-form" && state.modal.moduleKey === "service") {
     state.modal = {
       ...state.modal,
@@ -7674,6 +9600,36 @@ document.addEventListener("change", async (event) => {
         [event.target.dataset.serviceField]: event.target.value.trim()
       }
     };
+    return;
+  }
+
+  if (event.target.matches("[data-omics-file-input]") && state.modal?.type === "analysis-form" && state.modal.moduleKey === "omics") {
+    const [file] = [...(event.target.files || [])];
+    if (!file) {
+      return;
+    }
+
+    const extension = `.${String(file.name).split(".").pop() || ""}`.toLowerCase();
+    if (![".xml", ".json", ".mat", ".csv", ".xlsx", ".xls"].includes(extension)) {
+      showToast("仅支持上传 .xml、.json、.mat、.csv、.xlsx、.xls 文件");
+      return;
+    }
+    if (file.size > 200 * 1024 * 1024) {
+      showToast("文件大小不能超过 200MB");
+      return;
+    }
+
+    const draft = syncOmicsDraftFromDom();
+    state.modal = {
+      ...state.modal,
+      omicsDraft: {
+        ...draft,
+        fileName: file.name,
+        importSize: String(file.size)
+      }
+    };
+    renderApp();
+    showToast(`已选择文件：${file.name}`);
     return;
   }
 
