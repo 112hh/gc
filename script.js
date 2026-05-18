@@ -990,6 +990,408 @@ const analysisPages = {
   }
 };
 
+const systemPages = {
+  "system-users": {
+    key: "system-users",
+    title: "用户管理",
+    breadcrumb: ["首页", "系统管理", "用户管理"],
+    primaryButton: "新增用户",
+    headerTools: true,
+    stats: [
+      { icon: "i-user", iconClass: "is-blue", value: "128", label: "用户总数" },
+      { icon: "i-check", iconClass: "is-green", value: "112", label: "启用用户" },
+      { icon: "i-lock", iconClass: "is-yellow", value: "16", label: "冻结用户" },
+      { icon: "i-clock", iconClass: "is-cyan", value: "24", label: "今日登录" }
+    ],
+    filters: [
+      { label: "用户姓名", type: "input", placeholder: "请输入用户姓名" },
+      { label: "账号", type: "input", placeholder: "请输入登录账号" },
+      { label: "所属角色", type: "select", options: ["全部", "系统管理员", "研发主管", "实验员", "访客"] },
+      { label: "状态", type: "select", options: ["全部", "启用", "停用"] }
+    ],
+    columns: [
+      { key: "name", label: "用户姓名" },
+      { key: "account", label: "登录账号" },
+      { key: "role", label: "所属角色" },
+      { key: "department", label: "所属部门" },
+      { key: "status", label: "状态" },
+      { key: "lastLogin", label: "最后登录时间" }
+    ],
+    rows: [
+      { id: "user-1", name: "张明", account: "zhangming", role: "系统管理员", department: "平台运维部", status: { text: "启用", className: "is-valid" }, lastLogin: "2026-05-18 09:32" },
+      { id: "user-2", name: "李倩", account: "liqian", role: "研发主管", department: "菌株研发部", status: { text: "启用", className: "is-valid" }, lastLogin: "2026-05-18 08:46" },
+      { id: "user-3", name: "王超", account: "wangchao", role: "实验员", department: "发酵实验室", status: { text: "停用", className: "is-pending" }, lastLogin: "2026-05-16 18:15" },
+      { id: "user-4", name: "赵琳", account: "zhaolin", role: "访客", department: "合作机构", status: { text: "启用", className: "is-valid" }, lastLogin: "2026-05-18 10:05" }
+    ],
+    footer: "共 4 条记录，每页 10 条"
+  },
+  "system-roles": {
+    key: "system-roles",
+    title: "角色管理",
+    breadcrumb: ["首页", "系统管理", "角色管理"],
+    primaryButton: "新增角色",
+    headerTools: true,
+    stats: [
+      { icon: "i-settings", iconClass: "is-blue", value: "8", label: "角色总数" },
+      { icon: "i-bars", iconClass: "is-green", value: "42", label: "权限节点数" },
+      { icon: "i-user", iconClass: "is-yellow", value: "128", label: "角色关联用户" },
+      { icon: "i-doc", iconClass: "is-cyan", value: "6", label: "系统内置角色" }
+    ],
+    filters: [
+      { label: "角色名称", type: "input", placeholder: "请输入角色名称" },
+      { label: "角色编码", type: "input", placeholder: "请输入角色编码" },
+      { label: "类型", type: "select", options: ["全部", "系统内置", "自定义"] },
+      { label: "状态", type: "select", options: ["全部", "启用", "停用"] }
+    ],
+    columns: [
+      { key: "name", label: "角色名称" },
+      { key: "code", label: "角色编码" },
+      { key: "type", label: "角色类型" },
+      { key: "userCount", label: "关联用户数" },
+      { key: "status", label: "状态" },
+      { key: "updatedAt", label: "更新时间" }
+    ],
+    rows: [
+      { id: "role-1", name: "系统管理员", code: "admin", type: "系统内置", userCount: "3", status: { text: "启用", className: "is-valid" }, updatedAt: "2026-05-10 14:00" },
+      { id: "role-2", name: "研发主管", code: "rd_manager", type: "自定义", userCount: "12", status: { text: "启用", className: "is-valid" }, updatedAt: "2026-05-12 09:20" },
+      { id: "role-3", name: "实验员", code: "lab_operator", type: "自定义", userCount: "46", status: { text: "启用", className: "is-valid" }, updatedAt: "2026-05-15 16:40" },
+      { id: "role-4", name: "访客", code: "guest", type: "系统内置", userCount: "8", status: { text: "停用", className: "is-pending" }, updatedAt: "2026-05-08 11:30" }
+    ],
+    footer: "共 4 条记录，每页 10 条"
+  },
+  "system-menus": {
+    key: "system-menus",
+    title: "菜单管理",
+    breadcrumb: ["首页", "系统管理", "菜单管理"],
+    primaryButton: "新增菜单",
+    headerTools: true,
+    stats: [
+      { icon: "i-doc", iconClass: "is-blue", value: "26", label: "菜单总数" },
+      { icon: "i-table", iconClass: "is-green", value: "6", label: "一级菜单" },
+      { icon: "i-bars", iconClass: "is-yellow", value: "14", label: "二级菜单" },
+      { icon: "i-settings", iconClass: "is-cyan", value: "6", label: "按钮权限" }
+    ],
+    filters: [
+      { label: "菜单名称", type: "input", placeholder: "请输入菜单名称" },
+      { label: "菜单类型", type: "select", options: ["全部", "目录", "菜单", "按钮"] },
+      { label: "显示状态", type: "select", options: ["全部", "显示", "隐藏"] },
+      { label: "权限标识", type: "input", placeholder: "请输入权限标识" }
+    ],
+    columns: [
+      { key: "name", label: "菜单名称" },
+      { key: "type", label: "菜单类型" },
+      { key: "route", label: "路由地址" },
+      { key: "permission", label: "权限标识" },
+      { key: "status", label: "显示状态" },
+      { key: "sort", label: "排序" }
+    ],
+    rows: [
+      { id: "menu-1", name: "系统管理", type: "目录", route: "/system", permission: "system", status: { text: "显示", className: "is-valid" }, sort: "90" },
+      { id: "menu-2", name: "用户管理", type: "菜单", route: "/system/users", permission: "system:user:view", status: { text: "显示", className: "is-valid" }, sort: "91" },
+      { id: "menu-3", name: "角色管理", type: "菜单", route: "/system/roles", permission: "system:role:view", status: { text: "显示", className: "is-valid" }, sort: "92" },
+      { id: "menu-4", name: "平台配置", type: "菜单", route: "/system/config", permission: "system:config:view", status: { text: "隐藏", className: "is-pending" }, sort: "95" }
+    ],
+    footer: "共 4 条记录，每页 10 条"
+  },
+  "system-logs": {
+    key: "system-logs",
+    title: "操作日志",
+    breadcrumb: ["首页", "系统管理", "操作日志"],
+    primaryButton: "导出日志",
+    headerTools: true,
+    stats: [
+      { icon: "i-clock", iconClass: "is-blue", value: "2,856", label: "日志总量" },
+      { icon: "i-check", iconClass: "is-green", value: "2,801", label: "成功操作" },
+      { icon: "i-warning", iconClass: "is-yellow", value: "41", label: "告警记录" },
+      { icon: "i-lock", iconClass: "is-cyan", value: "14", label: "失败操作" }
+    ],
+    filters: [
+      { label: "操作人", type: "input", placeholder: "请输入操作人" },
+      { label: "操作模块", type: "select", options: ["全部", "用户管理", "角色管理", "菜单管理", "平台配置"] },
+      { label: "操作结果", type: "select", options: ["全部", "成功", "失败"] },
+      { label: "IP地址", type: "input", placeholder: "请输入IP地址" }
+    ],
+    columns: [
+      { key: "name", label: "操作人" },
+      { key: "module", label: "操作模块" },
+      { key: "content", label: "操作内容" },
+      { key: "ip", label: "IP地址" },
+      { key: "status", label: "操作结果" },
+      { key: "createdAt", label: "操作时间" }
+    ],
+    rows: [
+      { id: "log-1", name: "张明", module: "用户管理", content: "新增用户“刘畅”", ip: "10.10.1.25", status: { text: "成功", className: "is-valid" }, createdAt: "2026-05-18 09:40" },
+      { id: "log-2", name: "李倩", module: "角色管理", content: "修改角色权限“研发主管”", ip: "10.10.1.41", status: { text: "成功", className: "is-valid" }, createdAt: "2026-05-18 10:12" },
+      { id: "log-3", name: "王超", module: "平台配置", content: "更新预警阈值参数", ip: "10.10.1.63", status: { text: "失败", className: "is-fail" }, createdAt: "2026-05-18 10:26" },
+      { id: "log-4", name: "赵琳", module: "菜单管理", content: "调整菜单排序", ip: "10.10.1.88", status: { text: "成功", className: "is-valid" }, createdAt: "2026-05-18 11:03" }
+    ],
+    footer: "共 4 条记录，每页 10 条"
+  },
+  "system-config": {
+    key: "system-config",
+    title: "平台配置",
+    breadcrumb: ["首页", "系统管理", "平台配置"],
+    primaryButton: "新增配置",
+    headerTools: true,
+    stats: [
+      { icon: "i-settings", iconClass: "is-blue", value: "18", label: "配置项总数" },
+      { icon: "i-check", iconClass: "is-green", value: "12", label: "已启用配置" },
+      { icon: "i-warning", iconClass: "is-yellow", value: "3", label: "待确认配置" },
+      { icon: "i-doc", iconClass: "is-cyan", value: "6", label: "通知模板数" }
+    ],
+    filters: [
+      { label: "配置名称", type: "input", placeholder: "请输入配置名称" },
+      { label: "配置分组", type: "select", options: ["全部", "基础配置", "安全配置", "通知配置", "存储配置"] },
+      { label: "状态", type: "select", options: ["全部", "启用", "停用"] },
+      { label: "配置编码", type: "input", placeholder: "请输入配置编码" }
+    ],
+    columns: [
+      { key: "name", label: "配置名称" },
+      { key: "code", label: "配置编码" },
+      { key: "group", label: "配置分组" },
+      { key: "value", label: "当前值" },
+      { key: "status", label: "状态" },
+      { key: "updatedAt", label: "更新时间" }
+    ],
+    rows: [
+      { id: "config-1", name: "登录失败锁定次数", code: "security.lock.threshold", group: "安全配置", value: "5 次", status: { text: "启用", className: "is-valid" }, updatedAt: "2026-05-10 09:00" },
+      { id: "config-2", name: "会话超时时间", code: "security.session.timeout", group: "安全配置", value: "30 分钟", status: { text: "启用", className: "is-valid" }, updatedAt: "2026-05-11 14:30" },
+      { id: "config-3", name: "告警通知模板", code: "notify.alert.template", group: "通知配置", value: "模板A", status: { text: "启用", className: "is-valid" }, updatedAt: "2026-05-14 16:10" },
+      { id: "config-4", name: "对象存储桶名称", code: "storage.bucket.name", group: "存储配置", value: "ai-test-prod", status: { text: "停用", className: "is-pending" }, updatedAt: "2026-05-16 10:45" }
+    ],
+    footer: "共 4 条记录，每页 10 条"
+  }
+};
+
+Object.assign(analysisPages, systemPages);
+
+Object.assign(systemPages, {
+  "system-users": {
+    key: "system-users",
+    title: "用户管理",
+    breadcrumb: ["首页", "系统管理", "用户管理"],
+    primaryButton: "新增用户",
+    headerTools: true,
+    stats: [
+      { icon: "i-user", iconClass: "is-blue", value: "4", label: "用户总数" },
+      { icon: "i-check", iconClass: "is-green", value: "3", label: "启用用户" },
+      { icon: "i-lock", iconClass: "is-yellow", value: "1", label: "停用用户" },
+      { icon: "i-clock", iconClass: "is-cyan", value: "3", label: "今日登录" }
+    ],
+    filters: [
+      { label: "用户名", type: "input", placeholder: "请输入用户名" },
+      { label: "姓名", type: "input", placeholder: "请输入姓名" },
+      { label: "手机号", type: "input", placeholder: "请输入手机号" },
+      { label: "状态", type: "select", options: ["全部", "启用", "停用"] }
+    ],
+    columns: [
+      { key: "username", label: "用户名" },
+      { key: "name", label: "姓名" },
+      { key: "mobile", label: "手机号" },
+      { key: "gender", label: "性别" },
+      { key: "email", label: "邮箱" },
+      { key: "organization", label: "所属机构" },
+      { key: "status", label: "状态" },
+      { key: "createdAt", label: "创建时间" },
+      { key: "actions", label: "操作" }
+    ],
+    rows: [
+      { id: "user-1", username: "admin", name: "张明", mobile: "13800138001", gender: "男", email: "zhangming@gkexin.cn", organization: "国科信平台主管部", status: { text: "启用" }, createdAt: "2026-05-12 09:32" },
+      { id: "user-2", username: "liqian", name: "李倩", mobile: "13900139002", gender: "女", email: "liqian@gkexin.cn", organization: "菌株研发中心", status: { text: "启用" }, createdAt: "2026-05-13 10:18" },
+      { id: "user-3", username: "wangchao", name: "王超", mobile: "13700137003", gender: "男", email: "wangchao@gkexin.cn", organization: "发酵实验室", status: { text: "停用" }, createdAt: "2026-05-15 14:06" },
+      { id: "user-4", username: "zhaolin", name: "赵琳", mobile: "13600136004", gender: "女", email: "zhaolin@gkexin.cn", organization: "合作机构管理组", status: { text: "启用" }, createdAt: "2026-05-17 08:52" }
+    ],
+    footer: "共 4 条记录，每页 10 条"
+  },
+  "system-roles": {
+    key: "system-roles",
+    title: "角色管理",
+    breadcrumb: ["首页", "系统管理", "角色管理"],
+    primaryButton: "新增角色",
+    headerTools: true,
+    stats: [
+      { icon: "i-settings", iconClass: "is-blue", value: "4", label: "角色总数" },
+      { icon: "i-bars", iconClass: "is-green", value: "42", label: "权限节点数" },
+      { icon: "i-user", iconClass: "is-yellow", value: "69", label: "关联用户数" },
+      { icon: "i-doc", iconClass: "is-cyan", value: "2", label: "系统内置角色" }
+    ],
+    filters: [
+      { label: "角色名称", type: "input", placeholder: "请输入角色名称" },
+      { label: "角色编码", type: "input", placeholder: "请输入角色编码" },
+      { label: "角色类型", type: "select", options: ["全部", "系统内置", "自定义"] },
+      { label: "状态", type: "select", options: ["全部", "启用", "停用"] }
+    ],
+    columns: [
+      { key: "name", label: "角色名称" },
+      { key: "code", label: "角色编码" },
+      { key: "type", label: "角色类型" },
+      { key: "userCount", label: "关联用户数" },
+      { key: "status", label: "状态" },
+      { key: "updatedAt", label: "更新时间" },
+      { key: "actions", label: "操作" }
+    ],
+    rows: [
+      { id: "role-1", name: "系统管理员", code: "admin", type: "系统内置", userCount: "3", status: { text: "启用" }, updatedAt: "2026-05-10 14:00" },
+      { id: "role-2", name: "研发主管", code: "rd_manager", type: "自定义", userCount: "12", status: { text: "启用" }, updatedAt: "2026-05-12 09:20" },
+      { id: "role-3", name: "实验员", code: "lab_operator", type: "自定义", userCount: "46", status: { text: "启用" }, updatedAt: "2026-05-15 16:40" },
+      { id: "role-4", name: "访客", code: "guest", type: "系统内置", userCount: "8", status: { text: "停用" }, updatedAt: "2026-05-08 11:30" }
+    ],
+    footer: "共 4 条记录，每页 10 条"
+  },
+  "system-menus": {
+    key: "system-menus",
+    title: "菜单管理",
+    breadcrumb: ["首页", "系统管理", "菜单管理"],
+    primaryButton: "新增菜单",
+    headerTools: true,
+    stats: [
+      { icon: "i-doc", iconClass: "is-blue", value: "5", label: "菜单总数" },
+      { icon: "i-table", iconClass: "is-green", value: "1", label: "一级菜单" },
+      { icon: "i-bars", iconClass: "is-yellow", value: "3", label: "二级菜单" },
+      { icon: "i-settings", iconClass: "is-cyan", value: "1", label: "按钮权限" }
+    ],
+    filters: [
+      { label: "菜单名称", type: "input", placeholder: "请输入菜单名称" },
+      { label: "菜单类型", type: "select", options: ["全部", "目录", "菜单", "按钮"] },
+      { label: "显示状态", type: "select", options: ["全部", "显示", "隐藏"] },
+      { label: "权限标识", type: "input", placeholder: "请输入权限标识" }
+    ],
+    columns: [
+      { key: "name", label: "菜单名称" },
+      { key: "type", label: "菜单类型" },
+      { key: "route", label: "路由地址" },
+      { key: "permission", label: "权限标识" },
+      { key: "status", label: "显示状态" },
+      { key: "sort", label: "排序" },
+      { key: "actions", label: "操作" }
+    ],
+    rows: [
+      { id: "menu-1", name: "系统管理", type: "目录", route: "/system", permission: "system", status: { text: "显示" }, sort: "90" },
+      { id: "menu-2", name: "用户管理", type: "菜单", route: "/system/users", permission: "system:user:view", status: { text: "显示" }, sort: "91" },
+      { id: "menu-3", name: "角色管理", type: "菜单", route: "/system/roles", permission: "system:role:view", status: { text: "显示" }, sort: "92" },
+      { id: "menu-4", name: "平台配置", type: "菜单", route: "/system/config", permission: "system:config:view", status: { text: "隐藏" }, sort: "95" },
+      { id: "menu-5", name: "导出日志", type: "按钮", route: "-", permission: "system:log:export", status: { text: "显示" }, sort: "96" }
+    ],
+    footer: "共 5 条记录，每页 10 条"
+  },
+  "system-logs": {
+    key: "system-logs",
+    title: "操作日志",
+    breadcrumb: ["首页", "系统管理", "操作日志"],
+    primaryButton: "导出日志",
+    headerTools: true,
+    stats: [
+      { icon: "i-clock", iconClass: "is-blue", value: "4", label: "日志总量" },
+      { icon: "i-check", iconClass: "is-green", value: "3", label: "成功操作" },
+      { icon: "i-warning", iconClass: "is-yellow", value: "1", label: "异常记录" },
+      { icon: "i-lock", iconClass: "is-cyan", value: "1", label: "失败操作" }
+    ],
+    filters: [
+      { label: "操作人", type: "input", placeholder: "请输入操作人" },
+      { label: "操作模块", type: "select", options: ["全部", "用户管理", "角色管理", "菜单管理", "平台配置"] },
+      { label: "操作结果", type: "select", options: ["全部", "成功", "失败"] },
+      { label: "IP地址", type: "input", placeholder: "请输入IP地址" }
+    ],
+    columns: [
+      { key: "name", label: "操作人" },
+      { key: "module", label: "操作模块" },
+      { key: "content", label: "操作内容" },
+      { key: "ip", label: "IP地址" },
+      { key: "status", label: "操作结果" },
+      { key: "createdAt", label: "操作时间" }
+    ],
+    rows: [
+      { id: "log-1", name: "张明", module: "用户管理", content: "新增用户“刘畅”", ip: "10.10.1.25", status: { text: "成功" }, createdAt: "2026-05-18 09:40" },
+      { id: "log-2", name: "李倩", module: "角色管理", content: "修改角色权限“研发主管”", ip: "10.10.1.41", status: { text: "成功" }, createdAt: "2026-05-18 10:12" },
+      { id: "log-3", name: "王超", module: "平台配置", content: "更新预警阈值参数", ip: "10.10.1.63", status: { text: "失败" }, createdAt: "2026-05-18 10:26" },
+      { id: "log-4", name: "赵琳", module: "菜单管理", content: "调整菜单排序", ip: "10.10.1.88", status: { text: "成功" }, createdAt: "2026-05-18 11:03" }
+    ],
+    footer: "共 4 条记录，每页 10 条"
+  },
+  "system-config": {
+    key: "system-config",
+    title: "平台配置",
+    breadcrumb: ["首页", "系统管理", "平台配置"],
+    primaryButton: "新增配置",
+    headerTools: true,
+    stats: [
+      { icon: "i-settings", iconClass: "is-blue", value: "4", label: "配置项总数" },
+      { icon: "i-check", iconClass: "is-green", value: "3", label: "启用配置" },
+      { icon: "i-warning", iconClass: "is-yellow", value: "1", label: "停用配置" },
+      { icon: "i-doc", iconClass: "is-cyan", value: "2", label: "基础配置" }
+    ],
+    filters: [
+      { label: "配置名称", type: "input", placeholder: "请输入配置名称" },
+      { label: "配置分组", type: "select", options: ["全部", "基础配置", "安全配置", "通知配置", "存储配置"] },
+      { label: "状态", type: "select", options: ["全部", "启用", "停用"] },
+      { label: "配置编码", type: "input", placeholder: "请输入配置编码" }
+    ],
+    columns: [
+      { key: "name", label: "配置名称" },
+      { key: "code", label: "配置编码" },
+      { key: "group", label: "配置分组" },
+      { key: "value", label: "当前值" },
+      { key: "status", label: "状态" },
+      { key: "updatedAt", label: "更新时间" },
+      { key: "actions", label: "操作" }
+    ],
+    rows: [
+      { id: "config-1", name: "登录失败锁定次数", code: "security.lock.threshold", group: "安全配置", value: "5 次", status: { text: "启用" }, updatedAt: "2026-05-10 09:00" },
+      { id: "config-2", name: "会话超时时间", code: "security.session.timeout", group: "安全配置", value: "30 分钟", status: { text: "启用" }, updatedAt: "2026-05-11 14:30" },
+      { id: "config-3", name: "告警通知模板", code: "notify.alert.template", group: "通知配置", value: "模板A", status: { text: "启用" }, updatedAt: "2026-05-14 16:10" },
+      { id: "config-4", name: "对象存储桶名称", code: "storage.bucket.name", group: "存储配置", value: "ai-test-prod", status: { text: "停用" }, updatedAt: "2026-05-16 10:45" }
+    ],
+    footer: "共 4 条记录，每页 10 条"
+  }
+});
+
+const systemFormConfigs = {
+  "system-users": {
+    title: "用户",
+    fields: [
+      { name: "username", label: "用户名", placeholder: "请输入用户名" },
+      { name: "name", label: "姓名", placeholder: "请输入姓名" },
+      { name: "mobile", label: "手机号", placeholder: "请输入手机号" },
+      { name: "gender", label: "性别", type: "select", options: ["男", "女", "未知"] },
+      { name: "email", label: "邮箱", placeholder: "请输入邮箱" },
+      { name: "organization", label: "所属机构", placeholder: "请输入所属机构" },
+      { name: "statusText", label: "状态", type: "select", options: ["启用", "停用"] }
+    ]
+  },
+  "system-roles": {
+    title: "角色",
+    fields: [
+      { name: "name", label: "角色名称", placeholder: "请输入角色名称" },
+      { name: "code", label: "角色编码", placeholder: "请输入角色编码" },
+      { name: "type", label: "角色类型", type: "select", options: ["系统内置", "自定义"] },
+      { name: "statusText", label: "状态", type: "select", options: ["启用", "停用"] }
+    ]
+  },
+  "system-menus": {
+    title: "菜单",
+    fields: [
+      { name: "name", label: "菜单名称", placeholder: "请输入菜单名称" },
+      { name: "type", label: "菜单类型", type: "select", options: ["目录", "菜单", "按钮"] },
+      { name: "route", label: "路由地址", placeholder: "请输入路由地址" },
+      { name: "permission", label: "权限标识", placeholder: "请输入权限标识" },
+      { name: "statusText", label: "显示状态", type: "select", options: ["显示", "隐藏"] },
+      { name: "sort", label: "排序", placeholder: "请输入排序值" }
+    ]
+  },
+  "system-config": {
+    title: "配置",
+    fields: [
+      { name: "name", label: "配置名称", placeholder: "请输入配置名称" },
+      { name: "code", label: "配置编码", placeholder: "请输入配置编码" },
+      { name: "group", label: "配置分组", type: "select", options: ["基础配置", "安全配置", "通知配置", "存储配置"] },
+      { name: "value", label: "当前值", placeholder: "请输入当前值" },
+      { name: "statusText", label: "状态", type: "select", options: ["启用", "停用"] }
+    ]
+  }
+};
+
+Object.assign(analysisPages, systemPages);
+
 const geneProjectLibrary = {
   "gene-lysine": {
     id: "gene-lysine",
@@ -1488,6 +1890,8 @@ const analysisFormConfigs = {
     ]
   }
 };
+
+Object.assign(analysisFormConfigs, systemFormConfigs);
 
 const omicsModelLibrary = {
   "omics-1": {
@@ -2403,6 +2807,310 @@ function generateLocalId(prefix) {
   return `${prefix}_${randomPart}`;
 }
 
+const SYSTEM_PAGE_STORE_KEY = "engineering-cell-admin-system-pages-v1";
+const systemInteractiveModules = ["system-users", "system-roles", "system-menus", "system-config"];
+
+function getSystemStatusClass(moduleKey, statusText = "") {
+  const mapping = {
+    "system-users": { 启用: "is-valid", 停用: "is-pending" },
+    "system-roles": { 启用: "is-valid", 停用: "is-pending" },
+    "system-menus": { 显示: "is-valid", 隐藏: "is-pending" },
+    "system-logs": { 成功: "is-valid", 失败: "is-fail" },
+    "system-config": { 启用: "is-valid", 停用: "is-pending" }
+  };
+  return mapping[moduleKey]?.[statusText] || "is-valid";
+}
+
+function getSystemToggleTargetStatus(moduleKey, currentStatus = "") {
+  if (moduleKey === "system-menus") {
+    return currentStatus === "显示" ? "隐藏" : "显示";
+  }
+  return currentStatus === "启用" ? "停用" : "启用";
+}
+
+function getSystemRowDisplayName(moduleKey, row = {}) {
+  if (moduleKey === "system-users") {
+    return row.name || row.username || row.id || "-";
+  }
+  return row.name || row.code || row.id || "-";
+}
+
+function buildSystemActions(moduleKey, statusText = "") {
+  if (!systemInteractiveModules.includes(moduleKey)) {
+    return [];
+  }
+  const toggleLabel = getSystemToggleTargetStatus(moduleKey, statusText);
+  return [
+    { id: "edit", label: "编辑", tone: "blue" },
+    { id: "toggle", label: toggleLabel, tone: toggleLabel === "停用" || toggleLabel === "隐藏" ? "danger" : "blue" },
+    { id: "delete", label: "删除", tone: "danger" }
+  ];
+}
+
+function hydrateSystemRow(moduleKey, row = {}) {
+  const statusText = row.status?.text || row.statusText || "";
+  return {
+    ...row,
+    status: {
+      text: statusText,
+      className: row.status?.className || getSystemStatusClass(moduleKey, statusText)
+    },
+    actions: buildSystemActions(moduleKey, statusText)
+  };
+}
+
+function refreshSystemPageMeta(moduleKey) {
+  const page = systemPages[moduleKey];
+  if (!page) {
+    return;
+  }
+
+  page.rows = (page.rows || []).map((row) => hydrateSystemRow(moduleKey, row));
+  page.footer = `共 ${page.rows.length} 条记录，每页 10 条`;
+
+  if (moduleKey === "system-users") {
+    const enabled = page.rows.filter((row) => row.status.text === "启用").length;
+    const disabled = page.rows.filter((row) => row.status.text === "停用").length;
+    const todayLogins = page.rows.filter((row) => String(row.createdAt || "").startsWith(todayStringLocal())).length;
+    page.stats[0].value = String(page.rows.length);
+    page.stats[1].value = String(enabled);
+    page.stats[2].value = String(disabled);
+    page.stats[3].value = String(todayLogins);
+  }
+
+  if (moduleKey === "system-roles") {
+    page.stats[0].value = String(page.rows.length);
+    page.stats[2].value = String(page.rows.reduce((sum, row) => sum + Number(row.userCount || 0), 0));
+    page.stats[3].value = String(page.rows.filter((row) => row.type === "系统内置").length);
+  }
+
+  if (moduleKey === "system-menus") {
+    page.stats[0].value = String(page.rows.length);
+    page.stats[1].value = String(page.rows.filter((row) => row.type === "目录").length);
+    page.stats[2].value = String(page.rows.filter((row) => row.type === "菜单").length);
+    page.stats[3].value = String(page.rows.filter((row) => row.type === "按钮").length);
+  }
+
+  if (moduleKey === "system-logs") {
+    page.stats[0].value = String(page.rows.length);
+    page.stats[1].value = String(page.rows.filter((row) => row.status.text === "成功").length);
+    page.stats[2].value = String(page.rows.filter((row) => row.status.text === "失败").length);
+    page.stats[3].value = String(page.rows.filter((row) => row.status.text === "失败").length);
+  }
+
+  if (moduleKey === "system-config") {
+    page.stats[0].value = String(page.rows.length);
+    page.stats[1].value = String(page.rows.filter((row) => row.status.text === "启用").length);
+    page.stats[2].value = String(page.rows.filter((row) => row.status.text === "停用").length);
+    page.stats[3].value = String(page.rows.filter((row) => row.group === "基础配置").length);
+  }
+}
+
+function serializeSystemRows(rows = []) {
+  return rows.map((row) => {
+    const nextRow = deepClone(row);
+    delete nextRow.actions;
+    return nextRow;
+  });
+}
+
+function readSystemPageStore() {
+  try {
+    const raw = window.localStorage.getItem(SYSTEM_PAGE_STORE_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch (error) {
+    return {};
+  }
+}
+
+function writeSystemPageStore() {
+  try {
+    const payload = Object.fromEntries(
+      Object.keys(systemPages).map((moduleKey) => [moduleKey, serializeSystemRows(systemPages[moduleKey].rows || [])])
+    );
+    window.localStorage.setItem(SYSTEM_PAGE_STORE_KEY, JSON.stringify(payload));
+  } catch (error) {
+    console.warn("system page store write failed", error);
+  }
+}
+
+function applyPersistedSystemPages() {
+  const store = readSystemPageStore();
+  Object.keys(systemPages).forEach((moduleKey) => {
+    if (Array.isArray(store[moduleKey])) {
+      systemPages[moduleKey].rows = deepClone(store[moduleKey]);
+    }
+    refreshSystemPageMeta(moduleKey);
+    analysisPages[moduleKey] = systemPages[moduleKey];
+  });
+}
+
+function getSystemRow(moduleKey, itemId) {
+  return systemPages[moduleKey]?.rows.find((row) => row.id === itemId) || null;
+}
+
+function getSystemPageKeyFromPrimaryAction(actionValue = "") {
+  if (isSystemMenu(actionValue)) {
+    return actionValue;
+  }
+  return Object.keys(systemPages).find((moduleKey) => systemPages[moduleKey].primaryButton === actionValue) || "";
+}
+
+function buildSystemPayload(moduleKey, values, current = null) {
+  if (moduleKey === "system-users") {
+    const statusText = values.statusText || current?.status?.text || "启用";
+    return {
+      id: current?.id || generateLocalId("user"),
+      username: values.username || current?.username || "",
+      name: values.name || current?.name || "",
+      mobile: values.mobile || current?.mobile || "",
+      gender: values.gender || current?.gender || "",
+      email: values.email || current?.email || "",
+      organization: values.organization || current?.organization || "",
+      status: { text: statusText, className: getSystemStatusClass(moduleKey, statusText) },
+      createdAt: current?.createdAt || nowDateTimeStringLocal()
+    };
+  }
+
+  if (moduleKey === "system-roles") {
+    const statusText = values.statusText || current?.status?.text || "启用";
+    return {
+      id: current?.id || generateLocalId("role"),
+      name: values.name || current?.name || "",
+      code: values.code || current?.code || "",
+      type: values.type || current?.type || "自定义",
+      userCount: current?.userCount || "0",
+      status: { text: statusText, className: getSystemStatusClass(moduleKey, statusText) },
+      updatedAt: nowDateTimeStringLocal()
+    };
+  }
+
+  if (moduleKey === "system-menus") {
+    const statusText = values.statusText || current?.status?.text || "显示";
+    return {
+      id: current?.id || generateLocalId("menu"),
+      name: values.name || current?.name || "",
+      type: values.type || current?.type || "菜单",
+      route: values.route || current?.route || "",
+      permission: values.permission || current?.permission || "",
+      status: { text: statusText, className: getSystemStatusClass(moduleKey, statusText) },
+      sort: values.sort || current?.sort || "100"
+    };
+  }
+
+  if (moduleKey === "system-config") {
+    const statusText = values.statusText || current?.status?.text || "启用";
+    return {
+      id: current?.id || generateLocalId("config"),
+      name: values.name || current?.name || "",
+      code: values.code || current?.code || "",
+      group: values.group || current?.group || "基础配置",
+      value: values.value || current?.value || "",
+      status: { text: statusText, className: getSystemStatusClass(moduleKey, statusText) },
+      updatedAt: nowDateTimeStringLocal()
+    };
+  }
+
+  return current || {};
+}
+
+async function submitSystemAction(action, moduleKey, itemId = "") {
+  const page = systemPages[moduleKey];
+  if (!page) {
+    return;
+  }
+
+  if (action === "export") {
+    return;
+  }
+
+  const rowIndex = page.rows.findIndex((row) => row.id === itemId);
+  const current = rowIndex >= 0 ? page.rows[rowIndex] : null;
+
+  if (action === "create" || action === "edit") {
+    const values = getAnalysisFormValues();
+    const nextRow = hydrateSystemRow(moduleKey, buildSystemPayload(moduleKey, values, current));
+    if (action === "create") {
+      page.rows.unshift(nextRow);
+    } else if (rowIndex >= 0) {
+      page.rows.splice(rowIndex, 1, nextRow);
+    }
+    refreshSystemPageMeta(moduleKey);
+    writeSystemPageStore();
+    return;
+  }
+
+  if (action === "toggle" && current) {
+    const nextStatusText = getSystemToggleTargetStatus(moduleKey, current.status.text);
+    page.rows.splice(
+      rowIndex,
+      1,
+      hydrateSystemRow(moduleKey, {
+        ...current,
+        status: {
+          text: nextStatusText,
+          className: getSystemStatusClass(moduleKey, nextStatusText)
+        }
+      })
+    );
+    refreshSystemPageMeta(moduleKey);
+    writeSystemPageStore();
+    return;
+  }
+
+  if (action === "delete" && current) {
+    page.rows.splice(rowIndex, 1);
+    refreshSystemPageMeta(moduleKey);
+    writeSystemPageStore();
+  }
+}
+
+function renderSystemToggleModal(moduleKey, itemId) {
+  const row = getSystemRow(moduleKey, itemId);
+  if (!row) {
+    return "";
+  }
+
+  const actionLabel = getSystemToggleTargetStatus(moduleKey, row.status.text);
+  const name = getSystemRowDisplayName(moduleKey, row);
+
+  return renderGeneModalShell({
+    title: `确认${actionLabel}`,
+    sizeClass: "is-gene-delete",
+    body: `
+      <div class="gene-delete-body">
+        <div class="gene-delete-icon">${icon("i-warning")}</div>
+        <h4>确定要${actionLabel}该记录吗？</h4>
+        <p>${escapeHtml(name)}</p>
+        <span>确认后将立即更新当前记录状态，刷新页面后仍会保留。</span>
+      </div>
+    `,
+    footer: `
+      <button class="modal-secondary" type="button" data-close-modal="analysis">取消</button>
+      <button class="modal-primary" type="button" data-system-submit="toggle|${moduleKey}|${itemId}">确认${actionLabel}</button>
+    `
+  });
+}
+
+function renderSystemExportModal(moduleKey) {
+  return renderGeneModalShell({
+    title: "导出操作日志",
+    sizeClass: "is-gene-delete",
+    body: `
+      <div class="gene-delete-body">
+        <div class="gene-delete-icon">${icon("i-doc")}</div>
+        <h4>确认导出当前操作日志吗？</h4>
+        <p>导出范围为当前页面已展示的日志记录。</p>
+        <span>确认后将生成导出任务，便于后续统一下载留档。</span>
+      </div>
+    `,
+    footer: `
+      <button class="modal-secondary" type="button" data-close-modal="analysis">取消</button>
+      <button class="modal-primary" type="button" data-system-submit="export|${moduleKey}|">确认导出</button>
+    `
+  });
+}
+
 function buildAnalysisActions(moduleKey) {
   return moduleKey === "service"
     ? [
@@ -3312,6 +4020,24 @@ function isSensorMenu(menuKey = state.activeMenu) {
   return menuKey === "physical" || menuKey === "biological";
 }
 
+function isSystemMenu(menuKey = state.activeMenu) {
+  return Object.prototype.hasOwnProperty.call(systemPages, menuKey);
+}
+
+function getDashboardPageConfig(menuKey = state.activeMenu) {
+  return analysisPages[menuKey] || systemPages[menuKey] || null;
+}
+
+function getMenuGroupForMenu(menuKey = state.activeMenu) {
+  if (isSensorMenu(menuKey)) {
+    return "monitor";
+  }
+  if (isSystemMenu(menuKey)) {
+    return "system";
+  }
+  return "";
+}
+
 function currentSensorModule() {
   return sensorModules[state.activeMenu];
 }
@@ -3328,7 +4054,7 @@ function currentPageTitle() {
       : module.label;
   }
 
-  return analysisPages[state.activeMenu].title;
+  return getDashboardPageConfig(state.activeMenu)?.title || "";
 }
 
 function syncShellState() {
@@ -3352,6 +4078,8 @@ function renderSidebar() {
 
   const monitorActive = ["physical", "biological"].includes(state.activeMenu);
   const monitorOpen = state.openNavGroup === "monitor";
+  const systemActive = isSystemMenu(state.activeMenu);
+  const systemOpen = state.openNavGroup === "system";
 
   sidebarRoot.innerHTML = `
     <div class="sidebar-brand">
@@ -3407,6 +4135,107 @@ function renderSidebar() {
     </div>
 
     <div class="sidebar-footer">© 2025 工程细胞研究中心. 保留所有权利.</div>
+  `;
+}
+
+function renderSidebar() {
+  if (state.scene !== "dashboard") {
+    sidebarRoot.innerHTML = "";
+    return;
+  }
+
+  const monitorActive = ["physical", "biological"].includes(state.activeMenu);
+  const monitorOpen = state.openNavGroup === "monitor";
+  const systemActive = isSystemMenu(state.activeMenu);
+  const systemOpen = state.openNavGroup === "system";
+
+  sidebarRoot.innerHTML = `
+    <div class="sidebar-brand">
+      <span class="brand-icon">${icon("i-logo")}</span>
+      <p class="brand-text">工程细胞主题库</p>
+    </div>
+
+    <div class="sidebar-nav">
+      <section class="nav-section">
+        <p class="nav-title">数据管理</p>
+        <button class="nav-group-head ${monitorActive || monitorOpen ? "is-active" : ""}" type="button" data-menu-group="monitor">
+          <span class="group-label">
+            <span class="nav-icon">${icon("i-clock")}</span>
+            <span>发酵过程数据监测工具</span>
+          </span>
+          <span class="menu-arrow ${monitorOpen ? "is-open" : ""}">${icon("i-chevron")}</span>
+        </button>
+        <div class="nav-submenu ${monitorOpen ? "is-open" : ""}">
+          <button class="nav-sub-link ${state.activeMenu === "physical" ? "is-active" : ""}" type="button" data-menu="physical">
+            <span class="submenu-dot"></span>
+            <span>物理传感器</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "biological" ? "is-active" : ""}" type="button" data-menu="biological">
+            <span class="submenu-dot"></span>
+            <span>生物传感器</span>
+          </button>
+        </div>
+        <button class="nav-link ${state.activeMenu === "gene" ? "is-active" : ""}" type="button" data-menu="gene">
+          <span class="nav-icon">${icon("i-bars")}</span>
+          <span>基因型-表型分析</span>
+        </button>
+        <button class="nav-link ${state.activeMenu === "omics" ? "is-active" : ""}" type="button" data-menu="omics">
+          <span class="nav-icon">${icon("i-doc")}</span>
+          <span>组学数据分析</span>
+        </button>
+        <button class="nav-link ${state.activeMenu === "process" ? "is-active" : ""}" type="button" data-menu="process">
+          <span class="nav-icon">${icon("i-chart")}</span>
+          <span>发酵过程分析</span>
+        </button>
+        <button class="nav-link ${state.activeMenu === "full" ? "is-active" : ""}" type="button" data-menu="full">
+          <span class="nav-icon">${icon("i-table")}</span>
+          <span>全流程数据分析</span>
+        </button>
+      </section>
+
+      <section class="nav-section">
+        <p class="nav-title">服务管理</p>
+        <button class="nav-link ${state.activeMenu === "service" ? "is-active" : ""}" type="button" data-menu="service">
+          <span class="nav-icon">${icon("i-heart")}</span>
+          <span>工程细胞服务</span>
+        </button>
+      </section>
+
+      <section class="nav-section">
+        <p class="nav-title">系统管理</p>
+        <button class="nav-group-head ${systemActive || systemOpen ? "is-active" : ""}" type="button" data-menu-group="system">
+          <span class="group-label">
+            <span class="nav-icon">${icon("i-settings")}</span>
+            <span>系统管理</span>
+          </span>
+          <span class="menu-arrow ${systemOpen ? "is-open" : ""}">${icon("i-chevron")}</span>
+        </button>
+        <div class="nav-submenu ${systemOpen ? "is-open" : ""}">
+          <button class="nav-sub-link ${state.activeMenu === "system-users" ? "is-active" : ""}" type="button" data-menu="system-users">
+            <span class="submenu-dot"></span>
+            <span>用户管理</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "system-roles" ? "is-active" : ""}" type="button" data-menu="system-roles">
+            <span class="submenu-dot"></span>
+            <span>角色管理</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "system-menus" ? "is-active" : ""}" type="button" data-menu="system-menus">
+            <span class="submenu-dot"></span>
+            <span>菜单管理</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "system-logs" ? "is-active" : ""}" type="button" data-menu="system-logs">
+            <span class="submenu-dot"></span>
+            <span>操作日志</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "system-config" ? "is-active" : ""}" type="button" data-menu="system-config">
+            <span class="submenu-dot"></span>
+            <span>平台配置</span>
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <div class="sidebar-footer">© 2025 工程细胞研究中心. 保留所有权利</div>
   `;
 }
 
@@ -4085,7 +4914,7 @@ function renderAnalysisPage(page) {
     <div class="page-section analysis-page">
       <div class="page-title-row">
         <h1 class="page-title">${page.title}</h1>
-        <button class="toolbar-primary" type="button" data-primary-action="${page.key}">
+        <button class="toolbar-primary" type="button" data-primary-action="${isSystemMenu(page.key) ? page.primaryButton : page.key}">
           <span class="header-icon">${icon("i-plus")}</span>
           <span>${page.primaryButton}</span>
         </button>
@@ -8191,6 +9020,21 @@ function openAnalysisModal(action, moduleKey, itemId = "") {
   }
 }
 
+const __openAnalysisModalForSystem = openAnalysisModal;
+openAnalysisModal = function openAnalysisModalForSystemPatched(action, moduleKey, itemId = "") {
+  if (isSystemMenu(moduleKey) && action === "toggle") {
+    state.modal = { type: "system-toggle", moduleKey, itemId };
+    return;
+  }
+
+  if (isSystemMenu(moduleKey) && action === "export") {
+    state.modal = { type: "system-export", moduleKey };
+    return;
+  }
+
+  return __openAnalysisModalForSystem(action, moduleKey, itemId);
+};
+
 function getGeneFormValues() {
   return [...document.querySelectorAll("[data-gene-field]")].reduce((result, node) => {
     result[node.dataset.geneField] = node.value.trim();
@@ -8542,6 +9386,14 @@ submitAnalysisAction = async function submitAnalysisActionPatched(action, module
   }
 
   await loadAnalysisModules();
+};
+
+const __submitAnalysisActionForSystem = submitAnalysisAction;
+submitAnalysisAction = async function submitAnalysisActionForSystemPatched(action, moduleKey, itemId) {
+  if (isSystemMenu(moduleKey)) {
+    return submitSystemAction(action, moduleKey, itemId);
+  }
+  return __submitAnalysisActionForSystem(action, moduleKey, itemId);
 };
 
 function sensorStatusClass(moduleKey, metrics) {
@@ -8923,6 +9775,19 @@ function renderModal() {
   return "";
 }
 
+const __renderModalForSystem = renderModal;
+renderModal = function renderModalForSystemPatched() {
+  if (state.modal?.type === "system-toggle") {
+    return renderSystemToggleModal(state.modal.moduleKey, state.modal.itemId);
+  }
+
+  if (state.modal?.type === "system-export") {
+    return renderSystemExportModal(state.modal.moduleKey);
+  }
+
+  return __renderModalForSystem();
+};
+
 function renderDashboardView() {
   const page =
     isSensorMenu() && state.sensorView[state.activeMenu] === "form"
@@ -9153,7 +10018,7 @@ document.addEventListener("click", async (event) => {
   const menuButton = event.target.closest("[data-menu]");
   if (menuButton) {
     state.activeMenu = menuButton.dataset.menu;
-    state.openNavGroup = isSensorMenu(state.activeMenu) ? "monitor" : "";
+    state.openNavGroup = getMenuGroupForMenu(state.activeMenu);
     if (isSensorMenu(state.activeMenu)) {
       state.sensorView[state.activeMenu] = "list";
     }
@@ -9383,6 +10248,25 @@ document.addEventListener("click", async (event) => {
     return;
   }
 
+  const systemSubmitButton = event.target.closest("[data-system-submit]");
+  if (systemSubmitButton) {
+    const [action, moduleKey, itemId] = systemSubmitButton.dataset.systemSubmit.split("|");
+    const row = itemId ? getSystemRow(moduleKey, itemId) : null;
+    const messageMap = {
+      toggle: row ? `${getSystemRowDisplayName(moduleKey, row)} 已${getSystemToggleTargetStatus(moduleKey, row.status.text)}` : "状态已更新",
+      export: "操作日志导出任务已创建"
+    };
+    try {
+      await submitSystemAction(action, moduleKey, itemId);
+      state.modal = null;
+      renderApp();
+      showToast(messageMap[action] || "操作已完成");
+    } catch (error) {
+      showToast(error.message || "操作失败");
+    }
+    return;
+  }
+
   const headerTool = event.target.closest("[data-header-tool]");
   if (headerTool) {
     const labelMap = {
@@ -9396,6 +10280,12 @@ document.addEventListener("click", async (event) => {
 
   const primaryAction = event.target.closest("[data-primary-action]");
   if (primaryAction) {
+    const systemModuleKey = getSystemPageKeyFromPrimaryAction(primaryAction.dataset.primaryAction);
+    if (systemModuleKey) {
+      openAnalysisModal(systemModuleKey === "system-logs" ? "export" : "create", systemModuleKey);
+      renderApp();
+      return;
+    }
     if (primaryAction.dataset.primaryAction === "gene") {
       openGeneModal("create");
       renderApp();
@@ -9420,6 +10310,11 @@ document.addEventListener("click", async (event) => {
   const tableAction = event.target.closest("[data-table-action]");
   if (tableAction) {
     const [pageKey, actionKey, targetId] = tableAction.dataset.tableAction.split("|");
+    if (isSystemMenu(pageKey)) {
+      openAnalysisModal(actionKey, pageKey, targetId);
+      renderApp();
+      return;
+    }
     if (pageKey === "gene") {
       openGeneModal(actionKey, targetId);
       renderApp();
@@ -9685,6 +10580,7 @@ sidebarBackdrop.addEventListener("click", () => {
 });
 
 applyPersistedSensorThresholds();
+applyPersistedSystemPages();
 renderApp();
 Promise.all([loadGeneProjects(), loadAnalysisModules(), loadSensorRecords()])
   .then(() => {
