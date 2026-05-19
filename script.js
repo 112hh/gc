@@ -2758,6 +2758,37 @@ const state = {
   }
 };
 
+function getCurrentUserProfile() {
+  const fallback = {
+    username: "admin",
+    name: "张明",
+    mobile: "13800138001",
+    gender: "男",
+    email: "zhangming@gkexin.cn",
+    organization: "国科信平台平台主管部",
+    status: { text: "启用", className: "is-valid" },
+    createdAt: "2026-05-12 09:32"
+  };
+  const row = systemPages["system-users"]?.rows?.[0];
+  if (!row) {
+    return fallback;
+  }
+  const statusText = row.status?.text || fallback.status.text;
+  return {
+    username: row.username || row.account || fallback.username,
+    name: row.name || fallback.name,
+    mobile: row.mobile || fallback.mobile,
+    gender: row.gender || fallback.gender,
+    email: row.email || fallback.email,
+    organization: row.organization || row.department || fallback.organization,
+    status: {
+      text: statusText,
+      className: row.status?.className || getSystemStatusClass("system-users", statusText)
+    },
+    createdAt: row.createdAt || fallback.createdAt
+  };
+}
+
 async function apiRequest(url, options = {}) {
   const response = await fetch(url, {
     headers: {
@@ -4466,6 +4497,9 @@ function renderBreadcrumb(items) {
 }
 
 function renderHeader(page) {
+  const currentUser = getCurrentUserProfile();
+  const userName = currentUser.name || currentUser.username;
+  const userOrg = currentUser.organization || "国科信平台";
   return `
     <header class="app-header">
       ${renderBreadcrumb(page.breadcrumb)}
@@ -4473,6 +4507,10 @@ function renderHeader(page) {
         ${
           page.headerTools
             ? `
+              <div class="header-search-box" title="支持按页面关键词搜索">
+                <span class="header-search-icon">${icon("i-search")}</span>
+                <span class="header-search-text">站内搜索</span>
+              </div>
               <div class="header-actions">
                 <button class="header-tool" type="button" data-header-tool="search">${icon("i-search")}</button>
                 <button class="header-tool" type="button" data-header-tool="filter">${icon("i-filter")}</button>
@@ -4481,10 +4519,33 @@ function renderHeader(page) {
             `
             : ""
         }
-        <button class="header-logout-button" type="button" data-logout="header">
-          <span class="header-icon">${icon("i-arrow-left")}</span>
-          <span>退出系统</span>
-        </button>
+        <div class="header-user-dropdown">
+          <button class="header-user-card" type="button" data-user-menu-trigger aria-haspopup="true">
+            <span class="header-user-avatar">${icon("i-user")}</span>
+            <span class="header-user-meta">
+              <strong title="${escapeHtml(userName)}">${escapeHtml(userName)}</strong>
+              <span title="${escapeHtml(userOrg)}">${escapeHtml(userOrg)}</span>
+            </span>
+            <span class="header-user-caret">${icon("i-chevron")}</span>
+          </button>
+          <div class="header-user-menu">
+            <div class="header-user-menu-head">
+              <span class="header-user-avatar is-large">${icon("i-user")}</span>
+              <div class="header-user-menu-meta">
+                <strong title="${escapeHtml(userName)}">${escapeHtml(userName)}</strong>
+                <span title="${escapeHtml(currentUser.username)}">${escapeHtml(currentUser.username)}</span>
+              </div>
+            </div>
+            <button class="header-user-menu-item" type="button" data-user-menu-action="profile">
+              <span class="header-icon">${icon("i-user")}</span>
+              <span>个人信息</span>
+            </button>
+            <button class="header-user-menu-item is-danger" type="button" data-user-menu-action="logout">
+              <span class="header-icon">${icon("i-arrow-left")}</span>
+              <span>退出登录</span>
+            </button>
+          </div>
+        </div>
       </div>
     </header>
   `;
@@ -5305,6 +5366,56 @@ function renderGeneModalShell({ title, sizeClass = "", body, footer = "" }) {
       </section>
     </div>
   `;
+}
+
+function renderUserProfileModal() {
+  const currentUser = getCurrentUserProfile();
+  const infoItems = [
+    { label: "用户名", value: currentUser.username || "-" },
+    { label: "姓名", value: currentUser.name || "-" },
+    { label: "手机号", value: currentUser.mobile || "-" },
+    { label: "性别", value: currentUser.gender || "-" },
+    { label: "邮箱", value: currentUser.email || "-" },
+    { label: "所属机构", value: currentUser.organization || "-" },
+    {
+      label: "状态",
+      html: `<span class="status-chip ${escapeHtml(currentUser.status?.className || "is-valid")}">${escapeHtml(
+        currentUser.status?.text || "-"
+      )}</span>`
+    },
+    { label: "创建时间", value: currentUser.createdAt || "-" }
+  ];
+
+  return renderGeneModalShell({
+    title: "个人信息",
+    sizeClass: "is-user-profile-modal",
+    body: `
+      <section class="user-profile-card">
+        <div class="user-profile-banner">
+          <span class="header-user-avatar is-large">${icon("i-user")}</span>
+          <div class="user-profile-banner-meta">
+            <h4>${escapeHtml(currentUser.name || currentUser.username || "当前用户")}</h4>
+            <p>${escapeHtml(currentUser.organization || "国科信平台")}</p>
+          </div>
+        </div>
+        <div class="user-profile-grid">
+          ${infoItems
+            .map(
+              (item) => `
+                <div class="user-profile-item">
+                  <span>${escapeHtml(item.label)}</span>
+                  <strong title="${escapeHtml(item.value || item.label)}">${item.html || escapeHtml(item.value || "-")}</strong>
+                </div>
+              `
+            )
+            .join("")}
+        </div>
+      </section>
+    `,
+    footer: `
+      <button class="modal-secondary" type="button" data-close-modal="user-profile">关闭</button>
+    `
+  });
 }
 
 function resolveSelectFieldValue(field) {
@@ -9777,6 +9888,10 @@ function renderModal() {
 
 const __renderModalForSystem = renderModal;
 renderModal = function renderModalForSystemPatched() {
+  if (state.modal?.type === "user-profile") {
+    return renderUserProfileModal();
+  }
+
   if (state.modal?.type === "system-toggle") {
     return renderSystemToggleModal(state.modal.moduleKey, state.modal.itemId);
   }
@@ -9994,6 +10109,14 @@ function handleRecoverSubmit(form) {
 function handleLogout() {
   state.scene = "auth";
   state.authView = "login";
+  state.activeMenu = "physical";
+  state.openNavGroup = "monitor";
+  state.sensorView.physical = "list";
+  state.sensorView.biological = "list";
+  state.statusFilter.physical = "all";
+  state.statusFilter.biological = "all";
+  state.pagination.physical = 1;
+  state.pagination.biological = 1;
   state.modal = null;
   state.sidebarOpen = false;
   refreshCaptcha("login");
@@ -10007,6 +10130,20 @@ document.addEventListener("click", async (event) => {
     state.authView = authViewButton.dataset.authView;
     renderApp();
     return;
+  }
+
+  const userMenuActionButton = event.target.closest("[data-user-menu-action]");
+  if (userMenuActionButton) {
+    const action = userMenuActionButton.dataset.userMenuAction;
+    if (action === "profile") {
+      state.modal = { type: "user-profile" };
+      renderApp();
+      return;
+    }
+    if (action === "logout") {
+      handleLogout();
+      return;
+    }
   }
 
   const logoutButton = event.target.closest("[data-logout]");
