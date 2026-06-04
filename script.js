@@ -2719,6 +2719,45 @@ function buildServicePayload(values, current = null) {
   };
 }
 
+function normalizeAnalysisAction(action) {
+  if (!action) {
+    return null;
+  }
+
+  const label = String(action.label || "").trim();
+  const explicitId = String(action.id || "").trim();
+  const normalizedId =
+    explicitId ||
+    {
+      编辑: "edit",
+      编辑模型: "edit",
+      详情: "detail",
+      查看详情: "detail",
+      删除: "delete"
+    }[label] ||
+    "";
+
+  return {
+    ...action,
+    id: normalizedId || explicitId || label
+  };
+}
+
+function normalizeAnalysisActions(moduleKey, actions) {
+  const normalized = (actions || []).map(normalizeAnalysisAction).filter(Boolean);
+  const validIds = new Set(["edit", "detail", "delete"]);
+
+  if (normalized.length && normalized.every((action) => validIds.has(String(action.id || "").trim().toLowerCase()))) {
+    return normalized;
+  }
+
+  return [
+    { id: "edit", label: "编辑", tone: "blue" },
+    { id: "detail", label: moduleKey === "service" ? "详情" : "查看详情", tone: "blue" },
+    { id: "delete", label: "删除", tone: "danger" }
+  ];
+}
+
 function normalizeAnalysisRow(moduleKey, item) {
   const sourceItem =
     moduleKey === "omics"
@@ -2761,6 +2800,15 @@ function syncAnalysisModule(moduleKey, items) {
   analysisPages[moduleKey].rows = rows;
   analysisPages[moduleKey].footer = `共 ${rows.length} 条记录，每页 10 条`;
 }
+
+const __normalizeAnalysisRowWithActionIds = normalizeAnalysisRow;
+normalizeAnalysisRow = function normalizeAnalysisRowWithActionIds(moduleKey, item) {
+  const row = __normalizeAnalysisRowWithActionIds(moduleKey, item);
+  return {
+    ...row,
+    actions: normalizeAnalysisActions(moduleKey, row.actions)
+  };
+};
 
 async function loadAnalysisModules() {
   const results = await Promise.all(
@@ -4129,7 +4177,9 @@ function renderTableCell(row, column, pageKey) {
       <div class="table-actions">
         ${row.actions
           .map(
-            (action) => `
+            (rawAction) => {
+              const action = normalizeAnalysisAction(rawAction) || rawAction;
+              return `
               <button
                 class="table-link ${action.tone === "danger" ? "is-danger" : ""}"
                 type="button"
@@ -4137,7 +4187,8 @@ function renderTableCell(row, column, pageKey) {
               >
                 ${action.label}
               </button>
-            `
+            `;
+            }
           )
           .join("")}
       </div>
