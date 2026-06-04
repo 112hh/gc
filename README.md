@@ -1,63 +1,110 @@
-# Engineering Cell Admin Template - Static Frontend
+# Engineering Cell Admin Template
 
-This project is a frontend-only version of the original engineering cell admin system.
+Node.js deployment-ready version of the engineering cell admin system.
 
-## What Changed
+## Requirements
 
-- Kept the original UI, layout, copy, and interactions
-- Removed the Node.js backend dependency for normal usage
-- Replaced backend APIs with browser-side `localStorage`
-- Kept service import available in the browser via local `xlsx` vendor script
+- Node.js `22.13.0` or newer
+- npm
 
-## Run
+Reason: this project uses `node:sqlite`, so older Node runtimes are not sufficient.
 
-Recommended startup:
+## Project Structure
 
-```powershell
-cd frontend-static-project
+```text
+.
+|-- index.html
+|-- styles.css
+|-- script.js
+|-- server.js
+|-- package.json
+|-- render.yaml
+|-- railway.json
+|-- seeds/
+|   `-- themes.seed.json
+`-- data/
+    `-- .gitkeep
+```
+
+## Local Run
+
+```bash
+npm install
 npm start
 ```
 
-One-click startup on Windows:
+Open `http://localhost:3000`.
 
-```text
-Double-click start.bat
-```
+## Health Check
 
-Important:
+After startup, the service exposes:
 
-```text
-Keep the command window open after startup.
-Closing that window will stop the local server.
-```
-
-One-click stop on Windows:
-
-```text
-Double-click stop-3001.bat
-```
-
-Default URL:
-
-```text
-http://127.0.0.1:3001
-```
-
-Health check:
-
-```text
-http://127.0.0.1:3001/health
-```
-
-You can still open `index.html` directly, but using the included static server is more stable.
+- `GET /health`
+- `GET /api/health`
 
 ## Data Storage
 
-All interactive data is stored in the browser:
+Runtime data is stored in the `data/` directory by default:
 
-- gene projects
-- analysis items
-- sensor records
-- sensor threshold config
+- `data/app.db`
+- `data/themes.json`
 
-The storage key is managed automatically by the page. Clearing browser storage will reset the app back to its built-in default data.
+You can override the storage directory with:
+
+```bash
+DATA_DIR=/your/persistent/path
+```
+
+On first startup, if `themes.json` is missing, the app will initialize it from `seeds/themes.seed.json`.
+
+## Deploy To Railway
+
+1. Push this project to GitHub.
+2. Create a new Railway project from the GitHub repo.
+3. Railway will detect the Node app automatically.
+4. Add a Volume and mount it to `/app/data`.
+5. Add environment variable:
+
+```bash
+DATA_DIR=/app/data
+```
+
+6. Deploy.
+
+## Deploy To Render
+
+This repo already includes `render.yaml`.
+
+If you deploy manually on Render, use:
+
+- Build Command: `npm install`
+- Start Command: `npm start`
+- Health Check Path: `/health`
+- Persistent Disk Mount Path: `/var/data`
+- Environment Variable: `DATA_DIR=/var/data`
+
+## GitHub Upload Checklist
+
+Before pushing to GitHub:
+
+1. Keep `node_modules/` out of the repository.
+2. Do not commit runtime files under `data/` such as `app.db` and `themes.json`.
+3. Do not commit extracted document assets such as `data/ui_spec_extract/`.
+4. Keep `package-lock.json` so others can install dependencies consistently.
+5. Push only source, config, seed data, and deployment files.
+
+## First Push Example
+
+```bash
+git init
+git add .
+git commit -m "Initial commit"
+git branch -M main
+git remote add origin <your-repo-url>
+git push -u origin main
+```
+
+## Notes
+
+- The server binds to `0.0.0.0`, which is required by most cloud platforms.
+- SQLite is suitable for single-instance deployment. Do not scale this app to multiple instances while sharing the same SQLite file.
