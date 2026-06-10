@@ -599,8 +599,7 @@ const analysisPages = {
         standardizedAt: "2026-05-12",
         status: { text: "已标准化", className: "is-valid" },
         actions: [
-          { id: "detail", label: "查看详情", tone: "blue" },
-          { id: "export", label: "导出", tone: "blue" }
+          { id: "detail", label: "查看详情", tone: "blue" }
         ]
       },
       {
@@ -616,8 +615,7 @@ const analysisPages = {
         standardizedAt: "2026-05-09",
         status: { text: "已标准化", className: "is-valid" },
         actions: [
-          { id: "detail", label: "查看详情", tone: "blue" },
-          { id: "export", label: "导出", tone: "blue" }
+          { id: "detail", label: "查看详情", tone: "blue" }
         ]
       },
       {
@@ -633,8 +631,7 @@ const analysisPages = {
         standardizedAt: "2026-05-18",
         status: { text: "已标准化", className: "is-valid" },
         actions: [
-          { id: "detail", label: "查看详情", tone: "blue" },
-          { id: "export", label: "导出", tone: "blue" }
+          { id: "detail", label: "查看详情", tone: "blue" }
         ]
       },
       {
@@ -650,8 +647,7 @@ const analysisPages = {
         standardizedAt: "2026-05-16",
         status: { text: "已标准化", className: "is-valid" },
         actions: [
-          { id: "detail", label: "查看详情", tone: "blue" },
-          { id: "export", label: "导出", tone: "blue" }
+          { id: "detail", label: "查看详情", tone: "blue" }
         ]
       },
       {
@@ -667,8 +663,7 @@ const analysisPages = {
         standardizedAt: "2026-05-21",
         status: { text: "已标准化", className: "is-valid" },
         actions: [
-          { id: "detail", label: "查看详情", tone: "blue" },
-          { id: "export", label: "导出", tone: "blue" }
+          { id: "detail", label: "查看详情", tone: "blue" }
         ]
       },
       {
@@ -684,8 +679,7 @@ const analysisPages = {
         standardizedAt: "2026-05-20",
         status: { text: "已标准化", className: "is-valid" },
         actions: [
-          { id: "detail", label: "查看详情", tone: "blue" },
-          { id: "export", label: "导出", tone: "blue" }
+          { id: "detail", label: "查看详情", tone: "blue" }
         ]
       },
       {
@@ -701,8 +695,7 @@ const analysisPages = {
         standardizedAt: "2026-05-19",
         status: { text: "已标准化", className: "is-valid" },
         actions: [
-          { id: "detail", label: "查看详情", tone: "blue" },
-          { id: "export", label: "导出", tone: "blue" }
+          { id: "detail", label: "查看详情", tone: "blue" }
         ]
       },
       {
@@ -718,8 +711,7 @@ const analysisPages = {
         standardizedAt: "2026-05-15",
         status: { text: "已标准化", className: "is-valid" },
         actions: [
-          { id: "detail", label: "查看详情", tone: "blue" },
-          { id: "export", label: "导出", tone: "blue" }
+          { id: "detail", label: "查看详情", tone: "blue" }
         ]
       }
     ],
@@ -3268,6 +3260,10 @@ function getCurrentUserProfile() {
 }
 
 async function apiRequest(url, options = {}) {
+  if (typeof window.staticApiRequest === "function") {
+    return window.staticApiRequest(url, options);
+  }
+
   const response = await fetch(url, {
     headers: {
       "Content-Type": "application/json"
@@ -4179,11 +4175,12 @@ function renderTableCell(row, column, pageKey) {
           .map(
             (rawAction) => {
               const action = normalizeAnalysisAction(rawAction) || rawAction;
+              const targetId = row.id || row.name || row.code;
               return `
               <button
                 class="table-link ${action.tone === "danger" ? "is-danger" : ""}"
                 type="button"
-                data-table-action="${pageKey}|${action.id || action.label}|${row.id || row.name || row.code}"
+                data-table-action="${pageKey}|${action.id || action.label}|${escapeHtml(targetId)}"
               >
                 ${action.label}
               </button>
@@ -4413,41 +4410,8 @@ function renderCatalogDetailModal(itemId) {
     `,
     footer: `
       <button class="modal-outline" type="button" data-close-modal="catalog-detail">关闭</button>
-      <button class="modal-primary" type="button" data-catalog-export="${escapeHtml(row.id)}">导出</button>
     `
   });
-}
-
-function downloadCatalogRow(itemId) {
-  const row = getCatalogRow(itemId);
-  const fieldRows = getCatalogFieldRows(row);
-  const summary = [
-    ["数据库名称", row.name],
-    ["资源类型", row.category],
-    ["数据范围", row.scope],
-    ["核心字段", row.fields],
-    ["数据量", row.records],
-    ["格式", row.format],
-    ["更新频率", row.updateCycle],
-    ["负责人", row.owner],
-    ["标准化日期", row.standardizedAt],
-    ["标准化状态", row.status.text],
-    [],
-    ["字段名", "字段类型", "必填", "字段说明"],
-    ...fieldRows.map((field) => [field.name, field.type, field.required, field.desc])
-  ];
-  const csv = summary
-    .map((line) => line.map((cell) => `"${String(cell ?? "").replaceAll('"', '""')}"`).join(","))
-    .join("\n");
-  const blob = new Blob([`\uFEFF${csv}`], { type: "text/csv;charset=utf-8" });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = `${row.name}_详情.csv`;
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-  URL.revokeObjectURL(url);
 }
 
 function renderAnalysisPage(page) {
@@ -4534,7 +4498,12 @@ function renderAnalysisPage(page) {
 }
 
 function getGeneProject(projectId) {
-  return geneProjectLibrary[projectId] || geneProjectLibrary["gene-lysine"];
+  const target = String(projectId || "");
+  return (
+    geneProjectLibrary[target] ||
+    Object.values(geneProjectLibrary).find((project) => [project.id, project.name, project.code].some((value) => String(value || "") === target)) ||
+    geneProjectLibrary["gene-lysine"]
+  );
 }
 
 function geneStatusClass(status) {
@@ -6492,11 +6461,11 @@ function renderGeneChartCard(title, content, description = "") {
 }
 
 function renderGeneSnpTable(rows, options = {}) {
-  const { showAction = false, projectId = "" } = options;
+  const { showAction = false, projectId = "", tableClass = "" } = options;
 
   return `
     <div class="table-scroll gene-inner-table">
-      <table class="data-table gene-snp-table">
+      <table class="data-table gene-snp-table ${tableClass}">
         <thead>
           <tr>
             <th>排名</th>
@@ -6523,7 +6492,7 @@ function renderGeneSnpTable(rows, options = {}) {
                   <td>${escapeHtml(row.gene)}</td>
                   ${
                     showAction
-                      ? `<td><button class="table-link" type="button" data-gene-open="detail|${projectId}">查看详情</button></td>`
+                      ? `<td><button class="table-link" type="button" data-gene-open="snp-detail|${projectId}|${encodeURIComponent(row.snpId || row.rank)}">查看详情</button></td>`
                       : ""
                   }
                 </tr>
@@ -6675,6 +6644,174 @@ function renderGeneDeleteModal(projectId) {
   });
 }
 
+function getGeneSnp(projectId, snpKey = "") {
+  const project = getGeneProject(projectId);
+  const target = String(snpKey || "");
+  return (
+    project.snps.find((snp) => [snp.snpId, snp.rank, snp.position, snp.gene].some((value) => String(value || "") === target)) ||
+    project.snps[0]
+  );
+}
+
+function renderGeneSnpListModal(projectId) {
+  const project = getGeneProject(projectId);
+
+  return renderGeneModalShell({
+    title: `显著位点列表 - ${project.name}`,
+    sizeClass: "is-gene-large gene-snp-modal",
+    body: `
+      ${renderDetailHero({
+        eyebrow: "显著 SNP 位点",
+        title: project.name,
+        description: "查看当前项目识别出的全部显著位点，并可继续进入单个位点详情。",
+        meta: [
+          { value: project.strain },
+          { value: project.phenotype },
+          { value: `${project.snps.length} 个显著位点` },
+          { html: `<span class="status-chip ${geneStatusClass(project.status)}">${project.status}</span>` }
+        ]
+      })}
+      <section class="gene-sites-table-card">
+        ${renderGeneSnpTable(project.snps, {
+          showAction: true,
+          projectId: project.id,
+          tableClass: "is-sites-table"
+        })}
+        <div class="gene-sites-table-footer">
+          <span>共 ${project.snps.length} 条显著位点记录</span>
+          <div class="gene-sites-pagination">
+            <button class="gene-sites-page-btn" type="button" disabled>上一页</button>
+            <button class="gene-sites-page-btn is-active" type="button">1</button>
+            <button class="gene-sites-page-btn" type="button" disabled>下一页</button>
+          </div>
+        </div>
+      </section>
+    `,
+    footer: `
+      <button class="modal-outline" type="button" data-gene-open="result|${project.id}">返回分析结果</button>
+      <button class="modal-primary" type="button" data-close-modal="gene">关闭</button>
+    `
+  });
+}
+
+function renderGeneSnpSequence(snp) {
+  const ref = "ATGCCGTA";
+  const alt = "GCTAGCTA";
+
+  return `
+    <span>${ref
+      .split("")
+      .map((base) => `<span class="gene-snp-base is-ref">${base}</span>`)
+      .join("")}</span>
+    <span class="gene-snp-base is-alt">${String(snp.snpId || "A").slice(-1)}</span>
+    <span>${alt
+      .split("")
+      .map((base) => `<span class="gene-snp-base is-ref">${base}</span>`)
+      .join("")}</span>
+  `;
+}
+
+function renderGeneSnpDetailModal(projectId, snpKey = "") {
+  const project = getGeneProject(projectId);
+  const snp = getGeneSnp(projectId, snpKey);
+  const numericP = Number.parseFloat(String(snp.pValue || "").replace(/e/i, "E"));
+  const pValueClass = Number.isFinite(numericP) && numericP < 1e-6 ? "is-danger" : "is-link";
+
+  return renderGeneModalShell({
+    title: `位点详情 - ${snp.snpId}`,
+    sizeClass: "is-gene-large gene-snp-modal",
+    body: `
+      <div class="gene-snp-detail-view">
+        <section class="gene-snp-section">
+          <div class="gene-snp-section-title">
+            <span class="gene-snp-section-icon is-target"></span>
+            <h4>位点基本信息</h4>
+          </div>
+          <div class="gene-snp-grid">
+            <div class="gene-snp-item">
+              <span>SNP ID</span>
+              <strong class="is-link">${escapeHtml(snp.snpId)}</strong>
+            </div>
+            <div class="gene-snp-item">
+              <span>排名</span>
+              <strong>#${escapeHtml(String(snp.rank))}</strong>
+            </div>
+            <div class="gene-snp-item">
+              <span>染色体</span>
+              <strong>${escapeHtml(snp.chromosome)}</strong>
+            </div>
+            <div class="gene-snp-item">
+              <span>位置</span>
+              <strong>${escapeHtml(snp.position)}</strong>
+            </div>
+            <div class="gene-snp-item">
+              <span>P 值</span>
+              <strong class="${pValueClass}">${escapeHtml(snp.pValue)}</strong>
+            </div>
+            <div class="gene-snp-item">
+              <span>效应值</span>
+              <strong>${escapeHtml(snp.effect)}</strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="gene-snp-section">
+          <div class="gene-snp-section-title">
+            <span class="gene-snp-section-icon is-gene"></span>
+            <h4>关联基因</h4>
+          </div>
+          <div class="gene-snp-grid">
+            <div class="gene-snp-item">
+              <span>基因名称</span>
+              <strong>${escapeHtml(snp.gene)}</strong>
+            </div>
+            <div class="gene-snp-item">
+              <span>项目表型</span>
+              <strong>${escapeHtml(project.phenotype)}</strong>
+            </div>
+            <div class="gene-snp-item">
+              <span>分析方法</span>
+              <strong>${escapeHtml(project.method)}</strong>
+            </div>
+            <div class="gene-snp-item is-wide">
+              <span>所属项目</span>
+              <strong>${escapeHtml(project.name)}</strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="gene-snp-section">
+          <div class="gene-snp-section-title">
+            <span class="gene-snp-section-icon is-note"></span>
+            <h4>结果说明</h4>
+          </div>
+          <div class="gene-snp-note-card">
+            <p><strong>${escapeHtml(snp.snpId)}</strong> 位于 ${escapeHtml(snp.chromosome)}:${escapeHtml(
+              snp.position
+            )}，与 ${escapeHtml(project.phenotype)} 表型存在显著关联，建议结合候选基因 ${escapeHtml(
+              snp.gene
+            )} 的功能注释进行后续验证。</p>
+          </div>
+        </section>
+
+        <section class="gene-snp-section">
+          <div class="gene-snp-section-title">
+            <span class="gene-snp-section-icon is-seq"></span>
+            <h4>位点序列预览</h4>
+          </div>
+          <div class="gene-snp-seq-card">
+            <p>${renderGeneSnpSequence(snp)}</p>
+          </div>
+        </section>
+      </div>
+    `,
+    footer: `
+      <button class="modal-outline" type="button" data-gene-open="snp-list|${project.id}">返回位点列表</button>
+      <button class="modal-primary" type="button" data-close-modal="gene">关闭</button>
+    `
+  });
+}
+
 function renderGeneResultModal(projectId) {
   const project = getGeneProject(projectId);
 
@@ -6715,9 +6852,9 @@ function renderGeneResultModal(projectId) {
       <section class="gene-section-card">
         <div class="gene-section-head">
           <div><h4>显著位点列表</h4><p class="section-caption">展示当前项目识别到的关键 SNP 位点</p></div>
-          <button class="table-link" type="button" data-gene-open="detail|${project.id}">查看全部</button>
+          <button class="table-link" type="button" data-gene-open="snp-list|${project.id}">查看全部</button>
         </div>
-        ${renderGeneSnpTable(project.snps, { showAction: true, projectId: project.id })}
+        ${renderGeneSnpTable(project.snps, { showAction: true, projectId: project.id, tableClass: "is-result-table" })}
       </section>
     `,
     footer: `<button class="modal-outline" type="button" data-close-modal="gene">关闭</button>`
@@ -6867,7 +7004,11 @@ function openGeneModal(actionKey, projectId = "", extra = {}) {
 }
 
 function getAnalysisRow(moduleKey, itemId) {
-  return analysisPages[moduleKey].rows.find((row) => row.id === itemId) || null;
+  const target = String(itemId || "");
+  return (
+    analysisPages[moduleKey].rows.find((row) => [row.id, row.name, row.code].some((value) => String(value || "") === target)) ||
+    null
+  );
 }
 
 function renderAnalysisFormModal(moduleKey, mode, itemId = "") {
@@ -7644,6 +7785,14 @@ function renderModal() {
     return renderGeneResultModal(state.modal.projectId);
   }
 
+  if (state.modal.type === "gene-snp-list") {
+    return renderGeneSnpListModal(state.modal.projectId);
+  }
+
+  if (state.modal.type === "gene-snp-detail") {
+    return renderGeneSnpDetailModal(state.modal.projectId, state.modal.snpKey);
+  }
+
   if (state.modal.type === "gene-detail") {
     return renderGeneDetailModal(state.modal.projectId, state.modal.tab || "project");
   }
@@ -8015,8 +8164,8 @@ document.addEventListener("click", async (event) => {
 
   const geneOpenButton = event.target.closest("[data-gene-open]");
   if (geneOpenButton) {
-    const [actionKey, projectId] = geneOpenButton.dataset.geneOpen.split("|");
-    openGeneModal(actionKey, projectId);
+    const [actionKey, projectId, snpKey = ""] = geneOpenButton.dataset.geneOpen.split("|");
+    openGeneModal(actionKey, projectId, { snpKey: decodeURIComponent(snpKey) });
     renderApp();
     return;
   }
@@ -8233,13 +8382,6 @@ document.addEventListener("click", async (event) => {
     return;
   }
 
-  const catalogExportButton = event.target.closest("[data-catalog-export]");
-  if (catalogExportButton) {
-    downloadCatalogRow(catalogExportButton.dataset.catalogExport);
-    showToast("数据资源详情已导出");
-    return;
-  }
-
   const tableAction = event.target.closest("[data-table-action]");
   if (tableAction) {
     const [pageKey, actionKey, targetId] = tableAction.dataset.tableAction.split("|");
@@ -8247,11 +8389,6 @@ document.addEventListener("click", async (event) => {
       if (actionKey === "detail") {
         state.modal = { type: "catalog-detail", itemId: targetId };
         renderApp();
-        return;
-      }
-      if (actionKey === "export") {
-        downloadCatalogRow(targetId);
-        showToast("数据资源详情已导出");
         return;
       }
     }
