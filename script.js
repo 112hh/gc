@@ -1569,6 +1569,185 @@ const systemFormConfigs = {
 
 Object.assign(analysisPages, systemPages);
 
+const commonFieldRules = {
+  username: "4-20位字母、数字或下划线，建议唯一",
+  name: "2-50字符，必填项建议同类唯一",
+  mobile: "11位中国大陆手机号，1开头",
+  email: "合法邮箱格式，最多64字符",
+  organization: "2-50字符，可填机构/高校/企业名称",
+  statusText: "仅可选择当前枚举状态",
+  code: "2-30字符，支持字母、数字、中横线、下划线，建议唯一",
+  description: "可选，最多500字符，特殊字符提交后需转义展示",
+  threshold: "0-1之间的小数，默认0.05，最多6位小数",
+  datasetName: "2-50字符，建议同项目下唯一",
+  datasetType: "仅支持 VCF、BED、FAM、PHE、CSV",
+  datasetSize: "正数，单位MB/GB，需与真实文件大小一致"
+};
+
+const labelFieldRules = {
+  "用户名": "4-20位字母、数字或下划线，建议唯一",
+  "姓名": "2-20字符，支持中文或英文",
+  "所属机构": "2-50字符，可填机构/高校/企业名称",
+  "密码": "8-20位，需包含字母、数字和特殊字符",
+  "新密码": "8-20位，需包含字母、数字和特殊字符",
+  "确认密码": "必须与上一次输入的密码一致",
+  "图片验证码": "4位验证码，刷新后旧验证码失效",
+  "验证码": "4位验证码，大小写不敏感",
+  "批次号": "必填，只能选择已有批次",
+  "录入时间": "必填，日期时间格式，不得晚于当前时间24小时以上",
+  "录入人员": "必填，2-20字符",
+  "开始发酵时间": "必填，不得晚于结束发酵时间",
+  "结束发酵时间": "必填，不得早于开始发酵时间",
+  "发酵物名称": "必填，2-50字符",
+  "项目名称": "必填，2-50字符，建议唯一",
+  "项目描述": "可选，最多500字符",
+  "项目分析描述": "可选，最多500字符",
+  "模型名称": "必填，2-50字符，建议唯一",
+  "模型描述": "可选，最多500字符",
+  "菌株类型": "必填，只能选择列表中的菌株类型",
+  "表型类型": "必填，只能选择产量、生长速率、底物利用率",
+  "分析方法": "必填，只能选择当前枚举方法",
+  "显著性阈值": "必填，0-1之间的小数，默认0.05",
+  "数据集名称": "必填，2-50字符",
+  "数据类型": "必填，需与上传文件后缀一致",
+  "数据大小": "必填，正数，示例：256.78 MB",
+  "模型来源": "必填，文件导入时建议同步上传模型文件",
+  "模型类型": "必填，只能选择当前枚举模型",
+  "优化目标": "必填，只能选择当前枚举目标",
+  "选择分析模块": "必选，至少选择1个分析模块",
+  "手机号": "必填，11位中国大陆手机号",
+  "邮箱": "必填，合法邮箱格式，最多64字符",
+  "性别": "必填，只能选择男、女、未知",
+  "角色名称": "必填，2-30字符，建议唯一",
+  "角色编码": "必填，2-30位小写字母、数字或下划线，建议唯一",
+  "角色类型": "必填，只能选择系统内置或自定义",
+  "菜单名称": "必填，2-30字符，同层级建议唯一",
+  "菜单类型": "必填，只能选择目录、菜单、按钮",
+  "路由地址": "目录/菜单以/开头，按钮可为-",
+  "权限标识": "必填，建议格式 module:resource:action",
+  "显示状态": "必填，只能选择显示或隐藏",
+  "排序": "必填，0-999整数",
+  "配置名称": "必填，2-50字符，建议唯一",
+  "配置编码": "必填，建议格式 group.name.key，建议唯一",
+  "配置分组": "必填，只能选择当前配置分组",
+  "当前值": "必填，1-500字符，按配置类型进一步限制",
+  "状态": "必填，只能选择当前枚举状态"
+};
+
+const serviceFieldRules = {
+  code: "必填，2-30字符，支持字母、数字、中横线、下划线，建议唯一",
+  name: "必填，2-50字符",
+  strain: "必填，只能选择当前菌株类型",
+  statusText: "必填，只能选择已验证、验证中、待验证",
+  gene: "可选，最多500字符",
+  description: "可选，最多500字符",
+  cultureCode: "必填，2-30字符，建议唯一",
+  cultureMode: "必填，只能选择当前培养方式",
+  temperature: "必填，0-100，最多1位小数，单位℃",
+  ph: "必填，0-14，最多2位小数",
+  rpm: "必填，0-2000整数，单位rpm",
+  cultureStatus: "必填，只能选择已完成、优化中、待验证",
+  mediumFormula: "可选，最多1000字符",
+  optimizationRecord: "可选，最多1000字符",
+  testCode: "必填，2-30字符，建议唯一",
+  testItem: "必填，只能选择当前检测项目",
+  testMethod: "必填，只能选择当前检测方法",
+  cellActivity: "必填，只能选择高、中、低",
+  cellPurity: "必填，只能选择高、中、低",
+  testResult: "必填，只能选择符合预期、需优化、待复核",
+  testDescription: "可选，最多500字符",
+  applicationCode: "必填，2-30字符，建议唯一",
+  scenarioType: "必填，只能选择当前应用场景类型",
+  applicationField: "必填，2-50字符",
+  applicationStatus: "必填，只能选择已验证、验证中、待验证",
+  applicationContent: "可选，最多1000字符"
+};
+
+const systemFieldRules = {
+  "system-users": {
+    username: "必填，4-20位字母、数字或下划线，建议唯一",
+    name: "必填，2-20字符，支持中文或英文",
+    mobile: "必填，11位中国大陆手机号",
+    gender: "必填，只能选择男、女、未知",
+    email: "必填，合法邮箱格式，最多64字符",
+    organization: "必填，2-50字符",
+    statusText: "必填，只能选择启用或停用"
+  },
+  "system-roles": {
+    name: "必填，2-30字符，建议唯一",
+    code: "必填，2-30位小写字母、数字或下划线，建议唯一",
+    type: "必填，只能选择系统内置或自定义",
+    statusText: "必填，只能选择启用或停用"
+  },
+  "system-menus": {
+    name: "必填，2-30字符，同层级建议唯一",
+    type: "必填，只能选择目录、菜单、按钮",
+    route: "目录/菜单以/开头，按钮可为-",
+    permission: "必填，建议格式 module:resource:action",
+    statusText: "必填，只能选择显示或隐藏",
+    sort: "必填，0-999整数"
+  },
+  "system-config": {
+    name: "必填，2-50字符，建议唯一",
+    code: "必填，建议格式 group.name.key，建议唯一",
+    group: "必填，只能选择当前配置分组",
+    value: "必填，1-500字符，按配置类型进一步限制",
+    statusText: "必填，只能选择启用或停用"
+  }
+};
+
+const sensorLabelRules = {
+  "温度(℃)": "必填，25.0-38.0，预警值37.0，最多1位小数",
+  "罐内压力(kPa)": "必填，0.8-1.5，预警值1.4，最多1位小数",
+  "搅拌速度(rpm)": "必填，100-500整数，预警值450",
+  "气体流量(L/min)": "必填，0.5-3.0，预警值2.8，最多1位小数",
+  "pH值": "必填，6.00-8.00，预警值7.50，最多2位小数",
+  "溶解氧浓度(mg/L)": "必填，2.0-8.0，预警值7.0，最多1位小数",
+  "溶解CO₂浓度(mg/L)": "必填，10.0-100.0，预警值90.0，最多1位小数",
+  "排气O₂分压(%)": "必填，15.0-21.0，预警值20.0，最多1位小数",
+  "排气CO₂分压(%)": "必填，0.03-0.10，预警值0.09，最多2位小数",
+  "谷氨酸(g/L)": "必填，0-50，最多2位小数",
+  "葡萄糖(g/L)": "必填，0-100，最多2位小数",
+  "丙酮酸(g/L)": "必填，0-10，最多2位小数",
+  "甘氨酸(g/L)": "必填，0-5，最多2位小数",
+  "谷氨酰胺(g/L)": "必填，0-8，最多2位小数",
+  "精氨酸(g/L)": "必填，0-5，最多2位小数",
+  "组氨酸(g/L)": "必填，0-3，最多2位小数",
+  "色氨酸(g/L)": "必填，0-4，最多2位小数",
+  "乳酸(g/L)": "必填，0-15，最多2位小数",
+  "铵根离子(mmol/L)": "必填，0-200，最多2位小数",
+  "柠檬酸(g/L)": "必填，0-10，最多2位小数",
+  "亮氨酸(g/L)": "必填，0-6，最多2位小数",
+  "异亮氨酸(g/L)": "必填，0-4，最多2位小数",
+  "甲硫氨酸(g/L)": "必填，0-3，最多2位小数",
+  "半胱氨酸(g/L)": "必填，0-2，最多2位小数",
+  "赖氨酸(g/L)": "必填，0-8，最多2位小数"
+};
+
+function renderRequirementHint(rule, tone = "") {
+  if (!rule) {
+    return "";
+  }
+  const items = Array.isArray(rule) ? rule : [rule];
+  return `
+    <p class="field-rule-hint ${tone ? `is-${tone}` : ""}">
+      <span class="header-icon">${icon("i-info")}</span>
+      <span>${items.map((item) => escapeHtml(item)).join("；")}</span>
+    </p>
+  `;
+}
+
+function getFieldRule(field = {}, source = "") {
+  if (field.rule) {
+    return field.rule;
+  }
+  const rawName = String(field.name || "").replace(/^analysis-/, "");
+  if (source && systemFieldRules[source]?.[rawName]) {
+    return systemFieldRules[source][rawName];
+  }
+  return commonFieldRules[rawName] || labelFieldRules[field.label] || sensorLabelRules[field.label] || "";
+}
+
 const geneProjectLibrary = {
   "gene-lysine": {
     id: "gene-lysine",
@@ -3600,6 +3779,7 @@ function renderAuthView(viewKey) {
           <span class="input-icon">${icon("i-user")}</span>
           <input class="input-control" id="loginAccount" name="account" type="text" placeholder="请输入用户名或邮箱" />
         </div>
+        ${renderRequirementHint("用户名4-20位字母/数字/下划线，或输入合法邮箱")}
       </div>
       <div class="field-block">
         <label for="loginPassword">密码</label>
@@ -3610,6 +3790,7 @@ function renderAuthView(viewKey) {
             <span class="header-icon">${icon("i-eye-off")}</span>
           </button>
         </div>
+        ${renderRequirementHint("8-20位，需包含字母、数字和特殊字符")}
       </div>
       <div class="field-block">
         <label for="loginCaptcha">验证码</label>
@@ -3622,6 +3803,7 @@ function renderAuthView(viewKey) {
             <span class="captcha-text" data-captcha-value="login">${escapeHtml(state.captchaCodes.login)}</span>
           </button>
         </div>
+        ${renderRequirementHint("4位验证码，刷新后旧验证码失效")}
       </div>
       <div class="checkbox-row">
         <label class="checkbox">
@@ -3649,6 +3831,7 @@ function renderAuthView(viewKey) {
           <input class="input-control" id="registerUser" name="username" type="text" placeholder="请设置您的用户名" />
         </div>
         <p class="field-hint">用户名长度为4-20个字符，支持字母、数字和下划线</p>
+        ${renderRequirementHint("必填，4-20位字母、数字或下划线，建议唯一")}
       </div>
       <div class="field-block">
         <label class="field-required" for="registerOrg">所属机构</label>
@@ -3656,6 +3839,7 @@ function renderAuthView(viewKey) {
           <span class="input-icon">${icon("i-building")}</span>
           <input class="input-control" id="registerOrg" name="organization" type="text" placeholder="请输入您所属的科研机构/高校/企业" />
         </div>
+        ${renderRequirementHint("必填，2-50字符，可填机构/高校/企业名称")}
       </div>
       <div class="field-block">
         <label class="field-required" for="registerPassword">设置密码</label>
@@ -3672,6 +3856,7 @@ function renderAuthView(viewKey) {
           <span></span>
         </div>
         <p class="strength-text" id="strengthText">S: 密码需包含字母、数字和特殊字符</p>
+        ${renderRequirementHint("必填，8-20位，需包含字母、数字和特殊字符")}
       </div>
       <div class="field-block">
         <label class="field-required" for="registerConfirm">确认密码</label>
@@ -3679,6 +3864,7 @@ function renderAuthView(viewKey) {
           <span class="input-icon">${icon("i-lock")}</span>
           <input class="input-control" id="registerConfirm" name="confirmPassword" type="password" placeholder="请再次输入密码" />
         </div>
+        ${renderRequirementHint("必填，必须与设置密码一致")}
       </div>
       <div class="field-block">
         <label class="field-required" for="registerCaptcha">图片验证码</label>
@@ -3692,6 +3878,7 @@ function renderAuthView(viewKey) {
             <strong class="ghost-value" data-captcha-value="register">${escapeHtml(registerCode)}</strong>
           </button>
         </div>
+        ${renderRequirementHint("必填，4位图片验证码，刷新后旧验证码失效")}
       </div>
       <div class="agreement">
         <label class="checkbox">
@@ -3724,6 +3911,7 @@ function renderAuthView(viewKey) {
             <span class="input-icon">${icon("i-user")}</span>
             <input class="input-control" id="recoverAccount" name="account" type="text" placeholder="请输入您的用户名" />
           </div>
+          ${renderRequirementHint("必填，4-20位字母、数字或下划线")}
         </div>
         <div class="field-block">
           <label for="recoverCaptcha">图片验证码</label>
@@ -3736,6 +3924,7 @@ function renderAuthView(viewKey) {
               <span class="captcha-text" data-captcha-value="recover">${escapeHtml(state.captchaCodes.recover)}</span>
             </button>
           </div>
+          ${renderRequirementHint("必填，4位图片验证码，刷新后旧验证码失效")}
         </div>
         <div class="field-block">
           <label for="recoverPassword">新密码</label>
@@ -3743,6 +3932,7 @@ function renderAuthView(viewKey) {
             <span class="input-icon">${icon("i-lock")}</span>
             <input class="input-control" id="recoverPassword" name="password" type="password" placeholder="请输入8-20位新密码" />
           </div>
+          ${renderRequirementHint("必填，8-20位，需包含字母、数字和特殊字符")}
         </div>
         <div class="field-block">
           <label for="recoverConfirm">确认密码</label>
@@ -3750,6 +3940,7 @@ function renderAuthView(viewKey) {
             <span class="input-icon">${icon("i-lock")}</span>
             <input class="input-control" id="recoverConfirm" name="confirmPassword" type="password" placeholder="请再次输入新密码" />
           </div>
+          ${renderRequirementHint("必填，必须与新密码一致")}
         </div>
         <div class="form-submit">
           <button class="primary-button" type="submit">重置密码</button>
@@ -4030,6 +4221,7 @@ function renderSensorListPage(module) {
 
 function renderFormField(field) {
   const iconName = field.type === "select" ? "i-chevron" : field.type === "datetime" || field.type === "date" ? "i-calendar" : "";
+  const rule = getFieldRule(field, field.moduleKey || "");
   const sensorAttr =
     field.name && field.moduleKey
       ? `data-sensor-module="${field.moduleKey}" data-sensor-field="${field.name}"`
@@ -4055,6 +4247,7 @@ function renderFormField(field) {
     <div class="form-field">
       <label>${field.label}</label>
       ${control}
+      ${renderRequirementHint(rule)}
       ${field.hint ? `<div class="threshold-hint"><span class="header-icon">${icon("i-warning")}</span><span>${field.hint}</span></div>` : ""}
     </div>
   `;
@@ -4587,6 +4780,7 @@ function renderGeneField(field) {
   const fieldClass = `gene-field ${field.full ? "is-full" : ""}`;
   const label = `<label>${escapeHtml(field.label)}</label>`;
   const fieldName = escapeHtml(field.name || "");
+  const rule = getFieldRule(field, field.moduleKey || "");
 
   if (field.type === "select") {
     return `
@@ -4601,6 +4795,7 @@ function renderGeneField(field) {
             )
             .join("")}
         </select>
+        ${renderRequirementHint(rule)}
       </div>
     `;
   }
@@ -4610,6 +4805,7 @@ function renderGeneField(field) {
       <div class="${fieldClass}">
         ${label}
         <textarea class="gene-control gene-textarea" rows="4" data-gene-field="${fieldName}" placeholder="${escapeHtml(field.placeholder || "")}">${escapeHtml(field.value || "")}</textarea>
+        ${renderRequirementHint(rule)}
       </div>
     `;
   }
@@ -4618,6 +4814,7 @@ function renderGeneField(field) {
     <div class="${fieldClass}">
       ${label}
       <input class="gene-control" type="text" data-gene-field="${fieldName}" value="${escapeHtml(field.value || "")}" placeholder="${escapeHtml(field.placeholder || "")}" />
+      ${renderRequirementHint(rule)}
     </div>
   `;
 }
@@ -4628,8 +4825,10 @@ function renderAnalysisField(field) {
 
 function renderAnalysisControl(field) {
   const fieldName = escapeHtml(field.name || "");
+  const rule = getFieldRule(field, field.moduleKey || "");
   if (field.type === "select") {
     return `
+      <div class="rule-control-stack">
       <select class="gene-control" data-gene-field="${fieldName}">
         ${field.options
           .map(
@@ -4639,14 +4838,26 @@ function renderAnalysisControl(field) {
           )
           .join("")}
       </select>
+      ${renderRequirementHint(rule)}
+      </div>
     `;
   }
 
   if (field.type === "textarea") {
-    return `<textarea class="gene-control gene-textarea" rows="4" data-gene-field="${fieldName}" placeholder="${escapeHtml(field.placeholder || "")}">${escapeHtml(field.value || "")}</textarea>`;
+    return `
+      <div class="rule-control-stack">
+        <textarea class="gene-control gene-textarea" rows="4" data-gene-field="${fieldName}" placeholder="${escapeHtml(field.placeholder || "")}">${escapeHtml(field.value || "")}</textarea>
+        ${renderRequirementHint(rule)}
+      </div>
+    `;
   }
 
-  return `<input class="gene-control" type="text" data-gene-field="${fieldName}" value="${escapeHtml(field.value || "")}" placeholder="${escapeHtml(field.placeholder || "")}" />`;
+  return `
+    <div class="rule-control-stack">
+      <input class="gene-control" type="text" data-gene-field="${fieldName}" value="${escapeHtml(field.value || "")}" placeholder="${escapeHtml(field.placeholder || "")}" />
+      ${renderRequirementHint(rule)}
+    </div>
+  `;
 }
 
 function renderFullModuleOptions(selectedModules = []) {
@@ -4679,20 +4890,22 @@ function renderOmicsFormModal(mode, itemId = "") {
   const title = mode === "edit" ? "编辑代谢模型" : "新建组学数据分析项目";
   const footerLabel = mode === "edit" ? "保存修改" : "确认创建";
   const fields = [
-    { name: "analysis-name", label: "模型名称", value: current?.name || "", placeholder: "请输入代谢模型名称" },
+    { name: "analysis-name", label: "模型名称", value: current?.name || "", placeholder: "请输入代谢模型名称", rule: "必填，2-50字符，建议唯一" },
     {
       name: "analysis-strain",
       label: "菌株类型",
       type: "select",
       value: current?.strain || "大肠杆菌",
-      options: ["大肠杆菌", "酵母菌", "芽孢杆菌"]
+      options: ["大肠杆菌", "酵母菌", "芽孢杆菌"],
+      rule: "必填，只能选择当前菌株类型"
     },
     {
       name: "analysis-source",
       label: "模型来源",
       type: "select",
       value: current?.source || "文件导入",
-      options: ["文件导入", "数据库导入", "手动构建"]
+      options: ["文件导入", "数据库导入", "手动构建"],
+      rule: "必填，只能选择文件导入、数据库导入、手动构建"
     },
     {
       name: "analysis-description",
@@ -4700,7 +4913,8 @@ function renderOmicsFormModal(mode, itemId = "") {
       type: "textarea",
       full: true,
       value: current?.description || "",
-      placeholder: "请输入模型描述信息"
+      placeholder: "请输入模型描述信息",
+      rule: "可选，最多500字符"
     }
   ];
 
@@ -5225,27 +5439,30 @@ function renderProcessFormModal(mode, itemId = "") {
   const title = mode === "edit" ? "编辑发酵优化模型" : "新建发酵过程分析项目";
   const footerLabel = mode === "edit" ? "保存修改" : "确认创建";
   const fields = [
-    { name: "analysis-name", label: "模型名称", value: current?.name || "", placeholder: "请输入模型名称" },
+    { name: "analysis-name", label: "模型名称", value: current?.name || "", placeholder: "请输入模型名称", rule: "必填，2-50字符，建议唯一" },
     {
       name: "analysis-model",
       label: "模型类型",
       type: "select",
       value: current?.model || "代谢网络模型",
-      options: ["代谢网络模型", "神经网络模型"]
+      options: ["代谢网络模型", "神经网络模型"],
+      rule: "必填，只能选择当前枚举模型"
     },
     {
       name: "analysis-strain",
       label: "菌株类型",
       type: "select",
       value: current?.strain || "谷氨酸棒杆菌",
-      options: ["谷氨酸棒杆菌", "大肠杆菌", "酵母菌", "芽孢杆菌"]
+      options: ["谷氨酸棒杆菌", "大肠杆菌", "酵母菌", "芽孢杆菌"],
+      rule: "必填，只能选择当前菌株类型"
     },
     {
       name: "analysis-goal",
       label: "优化目标",
       type: "select",
       value: current?.goal || "产量最大化",
-      options: ["产量最大化", "生成速率最大化", "底物利用最大化"]
+      options: ["产量最大化", "生成速率最大化", "底物利用最大化"],
+      rule: "必填，只能选择当前枚举目标"
     },
     {
       name: "analysis-description",
@@ -5253,7 +5470,8 @@ function renderProcessFormModal(mode, itemId = "") {
       type: "textarea",
       full: true,
       value: current?.description || "",
-      placeholder: "请输入模型描述信息"
+      placeholder: "请输入模型描述信息",
+      rule: "可选，最多500字符"
     }
   ];
 
@@ -5459,7 +5677,7 @@ function renderFullFormModal(mode, itemId = "") {
       <div class="omics-form-grid">
         <div class="gene-field">
           <label><span class="omics-required">*</span>项目名称</label>
-          ${renderAnalysisControl({ name: "analysis-name", value: current?.name || "", placeholder: "请输入项目名称" })}
+          ${renderAnalysisControl({ name: "analysis-name", value: current?.name || "", placeholder: "请输入项目名称", rule: "必填，2-50字符，建议唯一" })}
         </div>
         <div class="gene-field">
           <label><span class="omics-required">*</span>菌株类型</label>
@@ -5467,7 +5685,8 @@ function renderFullFormModal(mode, itemId = "") {
             name: "analysis-strain",
             type: "select",
             value: current?.strain || "谷氨酸棒杆菌",
-            options: ["谷氨酸棒杆菌", "大肠杆菌", "酵母菌", "芽孢杆菌"]
+            options: ["谷氨酸棒杆菌", "大肠杆菌", "酵母菌", "芽孢杆菌"],
+            rule: "必填，只能选择当前菌株类型"
           })}
         </div>
         <div class="gene-field is-full">
@@ -5476,12 +5695,14 @@ function renderFullFormModal(mode, itemId = "") {
             name: "analysis-description",
             type: "textarea",
             value: current?.description || "",
-            placeholder: "请输入项目分析描述"
+            placeholder: "请输入项目分析描述",
+            rule: "可选，最多500字符"
           })}
         </div>
         <div class="gene-field is-full">
           <label>选择分析模块</label>
           ${renderFullModuleOptions(current?.modules || [])}
+          ${renderRequirementHint("必选，至少选择1个分析模块，可多选")}
         </div>
       </div>
     `,
@@ -5909,10 +6130,12 @@ function renderServiceControl(field) {
 }
 
 function renderServiceField(field) {
+  const rule = serviceFieldRules[field.name] || getFieldRule(field);
   return `
     <div class="gene-field ${field.full ? "is-full" : ""}">
       <label>${field.required ? '<span class="omics-required">*</span>' : ""}${escapeHtml(field.label)}</label>
       ${renderServiceControl(field)}
+      ${renderRequirementHint(rule)}
     </div>
   `;
 }
@@ -5988,6 +6211,11 @@ function renderServiceImportPanel(modalState = {}) {
           <li>可选字段：基因型、状态。</li>
           <li>上传后系统将自动校验并批量导入。</li>
         </ol>
+        <div class="requirement-list">
+          <span>格式：.xlsx / .xls / .csv</span>
+          <span>大小：不超过50MB</span>
+          <span>空文件、缺少必填列不允许导入</span>
+        </div>
       </div>
     </section>
   `;
@@ -6550,36 +6778,40 @@ function renderGeneFormModal(mode, projectId = "") {
   const title = isEdit ? "编辑分析项目" : "新增分析项目";
   const submitLabel = isEdit ? "保存修改" : "确认创建";
   const fields = [
-    { name: "name", label: "项目名称", value: project?.name || "", placeholder: "请输入项目名称" },
+    { name: "name", label: "项目名称", value: project?.name || "", placeholder: "请输入项目名称", rule: "必填，2-50字符，建议唯一" },
     {
       name: "strain",
       label: "菌株类型",
       type: "select",
       value: project?.strain || "大肠杆菌",
-      options: ["大肠杆菌", "酵母菌", "芽孢杆菌"]
+      options: ["大肠杆菌", "酵母菌", "芽孢杆菌"],
+      rule: "必填，只能选择当前菌株类型"
     },
     {
       name: "phenotype",
       label: "表型类型",
       type: "select",
       value: project?.phenotype || "产量",
-      options: ["产量", "生长速率", "底物利用率"]
+      options: ["产量", "生长速率", "底物利用率"],
+      rule: "必填，只能选择产量、生长速率、底物利用率"
     },
     {
       name: "method",
       label: "分析方法",
       type: "select",
       value: project?.method || "GWAS分析",
-      options: ["GWAS分析", "关联分析", "候选位点分析"]
+      options: ["GWAS分析", "关联分析", "候选位点分析"],
+      rule: "必填，只能选择当前分析方法"
     },
-    { name: "threshold", label: "显著性阈值", value: project?.threshold || "0.05", placeholder: "请输入显著性阈值" },
+    { name: "threshold", label: "显著性阈值", value: project?.threshold || "0.05", placeholder: "请输入显著性阈值", rule: "必填，0-1之间的小数，默认0.05，最多6位小数" },
     {
       name: "description",
       label: "项目描述",
       type: "textarea",
       full: true,
       value: project?.description || "",
-      placeholder: "请输入项目描述"
+      placeholder: "请输入项目描述",
+      rule: "可选，最多500字符"
     }
   ];
 
@@ -6602,10 +6834,10 @@ function renderGeneUploadModal(projectId) {
     sizeClass: "is-gene-form",
     body: `
       <div class="gene-form-grid">
-        ${renderGeneField({ name: "datasetName", label: "数据集名称", value: project.dataset.name, placeholder: "请输入数据集名称" })}
-        ${renderGeneField({ name: "datasetType", label: "数据类型", type: "select", value: project.dataset.type, options: ["VCF", "BED", "FAM", "PHE", "CSV"] })}
-        ${renderGeneField({ name: "strain", label: "菌株类型", type: "select", value: project.strain, options: ["大肠杆菌", "酵母菌", "芽孢杆菌"] })}
-        ${renderGeneField({ name: "datasetSize", label: "数据大小", value: project.dataset.size, placeholder: "例如 256.78 MB" })}
+        ${renderGeneField({ name: "datasetName", label: "数据集名称", value: project.dataset.name, placeholder: "请输入数据集名称", rule: "必填，2-50字符，建议同项目下唯一" })}
+        ${renderGeneField({ name: "datasetType", label: "数据类型", type: "select", value: project.dataset.type, options: ["VCF", "BED", "FAM", "PHE", "CSV"], rule: "必填，需与上传文件后缀一致" })}
+        ${renderGeneField({ name: "strain", label: "菌株类型", type: "select", value: project.strain, options: ["大肠杆菌", "酵母菌", "芽孢杆菌"], rule: "必填，只能选择当前菌株类型" })}
+        ${renderGeneField({ name: "datasetSize", label: "数据大小", value: project.dataset.size, placeholder: "例如 256.78 MB", rule: "必填，正数，单位MB/GB，需与真实文件大小一致" })}
         <div class="gene-field is-full">
           <label>上传文件</label>
           <div class="gene-upload-box">
@@ -6613,6 +6845,7 @@ function renderGeneUploadModal(projectId) {
             <p>拖拽文件到此处或点击上传</p>
             <span>支持格式: .vcf .bed .fam .phe .csv，单个文件最大 500MB</span>
           </div>
+          ${renderRequirementHint("文件后缀需与数据类型一致，空文件和超过500MB的文件不允许上传", "strong")}
         </div>
       </div>
     `,
@@ -7037,6 +7270,7 @@ function renderAnalysisFormModal(moduleKey, mode, itemId = "") {
           .map((field) =>
             renderAnalysisField({
               ...field,
+              moduleKey,
               value:
                 field.name === "statusText"
                   ? current?.status?.text || field.options?.[0] || ""
@@ -7647,6 +7881,11 @@ function renderImportModal(module) {
               <div class="upload-plus">+</div>
               <p class="upload-title">拖拽文件到此处或点击上传</p>
               <p class="upload-subtitle">支持格式: Excel(.xlsx), CSV(.csv) | 文件大小限制: 最大10MB</p>
+              <div class="requirement-list is-compact">
+                <span>文件大小不超过10MB</span>
+                <span>需使用模板列名</span>
+                <span>必填字段为空时不允许导入</span>
+              </div>
             </div>
           </div>
           ${footer}
