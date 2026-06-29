@@ -1,379 +1,1120 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>工程细胞主题库</title>
-    <meta
-      name="description"
-      content="工程细胞主题库后台页面，包含登录、注册、找回密码、发酵过程数据监测、分析模块和工程细胞服务。"
-    />
-    <link rel="stylesheet" href="./styles.css" />
-  </head>
-  <body>
-    <svg class="icon-sprite" aria-hidden="true">
-      <symbol id="i-logo" viewBox="0 0 24 24">
-        <path
-          d="M8 4h8m-8 16h8M9 7c2 2 4 2 6 5-2 3-4 3-6 5m6-10c-2 2-4 2-6 5 2 3 4 3 6 5"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.8"
-        />
-      </symbol>
-      <symbol id="i-user" viewBox="0 0 24 24">
-        <path
-          d="M12 13a4 4 0 1 0-4-4 4 4 0 0 0 4 4Zm-7 7a7 7 0 0 1 14 0"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.8"
-        />
-      </symbol>
-      <symbol id="i-lock" viewBox="0 0 24 24">
-        <path
-          d="M7 10V8a5 5 0 0 1 10 0v2m-9 0h8a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1Zm4 4v3"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.8"
-        />
-      </symbol>
-      <symbol id="i-eye" viewBox="0 0 24 24">
-        <path
-          d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Zm10 3a3 3 0 1 0-3-3 3 3 0 0 0 3 3Z"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.8"
-        />
-      </symbol>
-      <symbol id="i-eye-off" viewBox="0 0 24 24">
-        <path
-          d="m3 3 18 18m-8.7-8.7a3 3 0 0 0 4.2 4.2M9.9 9.9A3 3 0 0 1 14 14M6.7 6.7A13.1 13.1 0 0 0 2 12s3.5 6 10 6a10.6 10.6 0 0 0 4.4-.9M10 6.2a10.6 10.6 0 0 1 2-.2c6.5 0 10 6 10 6a14.4 14.4 0 0 1-3 3.7"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.8"
-        />
-      </symbol>
-      <symbol id="i-check" viewBox="0 0 24 24">
-        <path
-          d="m5 12 4.2 4.2L19 6.5"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.8"
-        />
-      </symbol>
-      <symbol id="i-arrow-left" viewBox="0 0 24 24">
-        <path
-          d="m14 6-6 6 6 6m-6-6h12"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.8"
-        />
-      </symbol>
-      <symbol id="i-building" viewBox="0 0 24 24">
-        <path
-          d="M4 20h16M7 20V7h6v13M13 20v-9h4v9M9.5 10h1m-1 3h1m-1 3h1"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.8"
-        />
-      </symbol>
-      <symbol id="i-image" viewBox="0 0 24 24">
-        <path
-          d="M5 6h14a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Zm1 9 3.5-3.5 3 3L15.5 11 19 15M9 10a1.25 1.25 0 1 0-1.25-1.25A1.25 1.25 0 0 0 9 10Z"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.8"
-        />
-      </symbol>
-      <symbol id="i-list" viewBox="0 0 24 24">
-        <path
-          d="M9 7h10M9 12h10M9 17h10M5 7h.01M5 12h.01M5 17h.01"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.8"
-        />
-      </symbol>
-      <symbol id="i-clock" viewBox="0 0 24 24">
-        <path
-          d="M12 7v5l3 2m6-2a9 9 0 1 1-9-9 9 9 0 0 1 9 9Z"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.8"
-        />
-      </symbol>
-      <symbol id="i-chip" viewBox="0 0 24 24">
-        <path
-          d="M9 9h6v6H9Zm3-6v3m0 12v3M3 12h3m12 0h3M6 6l2 2m8 8 2 2m0-12-2 2m-8 8-2 2"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.8"
-        />
-      </symbol>
-      <symbol id="i-bio" viewBox="0 0 24 24">
-        <path
-          d="M7 4h10M7 20h10M8.5 4.5v5.2a5.5 5.5 0 1 0 7 0V4.5"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.8"
-        />
-      </symbol>
-      <symbol id="i-bars" viewBox="0 0 24 24">
-        <path
-          d="M6 18V9m6 9V5m6 13v-7"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.8"
-        />
-      </symbol>
-      <symbol id="i-chart" viewBox="0 0 24 24">
-        <path
-          d="M4 19h16M7 16l4-4 3 2 4-6"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.8"
-        />
-      </symbol>
-      <symbol id="i-heart" viewBox="0 0 24 24">
-        <path
-          d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.8"
-        />
-      </symbol>
-      <symbol id="i-chevron" viewBox="0 0 24 24">
-        <path
-          d="m8 10 4 4 4-4"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.8"
-        />
-      </symbol>
-      <symbol id="i-plus" viewBox="0 0 24 24">
-        <path
-          d="M12 5v14M5 12h14"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.8"
-        />
-      </symbol>
-      <symbol id="i-home" viewBox="0 0 24 24">
-        <path
-          d="M4 10.5 12 4l8 6.5V20H4Z"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.8"
-        />
-      </symbol>
-      <symbol id="i-menu" viewBox="0 0 24 24">
-        <path
-          d="M4 7h16M4 12h16M4 17h16"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.8"
-        />
-      </symbol>
-      <symbol id="i-search" viewBox="0 0 24 24">
-        <path
-          d="m20 20-3.8-3.8M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.8"
-        />
-      </symbol>
-      <symbol id="i-filter" viewBox="0 0 24 24">
-        <path
-          d="M4 5h16l-6 7v6l-4 1v-7Z"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.8"
-        />
-      </symbol>
-      <symbol id="i-settings" viewBox="0 0 24 24">
-        <path
-          d="m9.5 4 .7 1.9a6.5 6.5 0 0 1 3.6 0L14.5 4m3 2.2 1.6 1.1-1 1.7a6.7 6.7 0 0 1 1.3 3.1l1.9.3v1.9l-1.9.3a6.7 6.7 0 0 1-1.3 3.1l1 1.7-1.6 1.1-1.4-1.3a6.5 6.5 0 0 1-3.2 1.3L14.5 20h-1.9l-.3-1.9a6.5 6.5 0 0 1-3.2-1.3l-1.4 1.3-1.6-1.1 1-1.7a6.7 6.7 0 0 1-1.3-3.1L4 14.4v-1.9l1.9-.3a6.7 6.7 0 0 1 1.3-3.1l-1-1.7 1.6-1.1 1.4 1.3a6.5 6.5 0 0 1 3.2-1.3L12.6 4Z"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.3"
-        />
-        <circle cx="12" cy="13.5" r="2.8" fill="none" stroke="currentColor" stroke-width="1.8" />
-      </symbol>
-      <symbol id="i-close" viewBox="0 0 24 24">
-        <path
-          d="M6 6l12 12M18 6 6 18"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.8"
-        />
-      </symbol>
-      <symbol id="i-calendar" viewBox="0 0 24 24">
-        <path
-          d="M7 3v3m10-3v3M5 8h14M6 5h12a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.8"
-        />
-      </symbol>
-      <symbol id="i-download" viewBox="0 0 24 24">
-        <path
-          d="M12 4v10m0 0 4-4m-4 4-4-4M5 19h14"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.8"
-        />
-      </symbol>
-      <symbol id="i-upload" viewBox="0 0 24 24">
-        <path
-          d="M12 20V10m0 0 4 4m-4-4-4 4M5 5h14"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.8"
-        />
-      </symbol>
-      <symbol id="i-file" viewBox="0 0 24 24">
-        <path
-          d="M8 3h6l4 4v14H8a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Zm6 0v4h4M10 12h6M10 16h6"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.8"
-        />
-      </symbol>
-      <symbol id="i-warning" viewBox="0 0 24 24">
-        <path
-          d="M12 4 3.5 19h17Z"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.8"
-        />
-        <path
-          d="M12 10v4m0 3h.01"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.8"
-        />
-      </symbol>
-      <symbol id="i-folder" viewBox="0 0 24 24">
-        <path
-          d="M4 7h5l2 2h9v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Z"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.8"
-        />
-      </symbol>
-      <symbol id="i-table" viewBox="0 0 24 24">
-        <path
-          d="M4 5h16v14H4Zm0 5h16M9 5v14M15 5v14"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.8"
-        />
-      </symbol>
-      <symbol id="i-doc" viewBox="0 0 24 24">
-        <path
-          d="M7 4h10a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Zm3 4h4m-4 4h6m-6 4h6"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.8"
-        />
-      </symbol>
-      <symbol id="i-info" viewBox="0 0 24 24">
-        <path
-          d="M12 17v-5m0-4h.01M21 12a9 9 0 1 1-9-9 9 9 0 0 1 9 9Z"
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.8"
-        />
-      </symbol>
-    </svg>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>工程细胞主题库门户</title>
+<script src="https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<style>
+/* ===== CSS Variables ===== */
+:root {
+  --accent: #0066FF;
+  --accent-light: #0077FF;
+  --accent-dark: #0044CC;
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #111213;
+  --text-secondary: #696969;
+  --border: #E8EAEB;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.04);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-    <div class="app-shell">
-      <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
-      <header class="mobile-topbar">
-        <button class="mobile-menu-button" id="mobileMenuButton" type="button" aria-label="打开菜单">
-          <svg aria-hidden="true" focusable="false">
-            <use href="#i-menu"></use>
-          </svg>
-        </button>
-        <div class="mobile-topbar-copy">
-          <p class="mobile-brand-title">工程细胞主题库</p>
-          <p class="mobile-view-title" id="mobileViewTitle"></p>
-        </div>
-      </header>
-      <aside class="sidebar" id="sidebar"></aside>
-      <main class="workspace" id="viewRoot"></main>
+/* ===== Reset & Base ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+  background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden;
+}
+a { color: var(--accent); text-decoration: none; transition: var(--transition); }
+a:hover { color: var(--accent-dark); }
+img { max-width: 100%; display: block; }
+
+/* ===== Scroll Progress Bar ===== */
+.scroll-progress {
+  position: fixed; top: 0; left: 0; width: 100%; height: 3px; z-index: 1001; pointer-events: none;
+}
+.scroll-progress-bar {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-light));
+  transition: width 0.1s linear;
+}
+
+/* ===== Back to Top Button ===== */
+.back-to-top {
+  position: fixed; bottom: 32px; right: 32px; z-index: 999;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--accent); color: #fff; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; box-shadow: var(--shadow-lg);
+  opacity: 0; transform: translateY(20px); pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s;
+}
+.back-to-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.back-to-top:hover { background: var(--accent-dark); transform: translateY(-2px); }
+
+/* ===== Navigation ===== */
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px; height: 68px;
+  background: rgba(255,255,255,0.82); backdrop-filter: blur(16px) saturate(180%);
+  border-bottom: 1px solid transparent;
+  transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+.topbar.scrolled {
+  background: rgba(255,255,255,0.95); border-color: var(--border);
+  box-shadow: var(--shadow-sm);
+}
+.nav-brand { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 700; color: var(--text); }
+.nav-brand svg { width: 36px; height: 36px; }
+.nav-links { display: flex; gap: 32px; list-style: none; }
+.nav-links a {
+  color: var(--text-secondary); font-size: 14px; font-weight: 500;
+  padding: 4px 0; position: relative; transition: color 0.2s;
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px;
+  background: var(--accent); border-radius: 1px; transition: width 0.3s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--accent); }
+.nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+.nav-login-mobile { display: none; }
+.nav-actions { display: flex; align-items: center; gap: 12px; }
+.nav-btn {
+  padding: 8px 20px; border-radius: 20px; font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: var(--transition); border: none;
+}
+.nav-btn-outline { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
+.nav-btn-outline:hover { background: var(--accent); color: #fff; }
+.nav-btn-primary { background: var(--accent); color: #fff; }
+.nav-btn-primary:hover { background: var(--accent-dark); }
+.nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; padding: 4px; }
+.nav-hamburger span { display: block; width: 24px; height: 2px; background: var(--text); border-radius: 2px; transition: var(--transition); }
+.nav-hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+.nav-hamburger.active span:nth-child(2) { opacity: 0; }
+.nav-hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+/* ===== Hero Section ===== */
+.hero {
+  position: relative; min-height: 100vh; display: flex; align-items: center;
+  padding: 100px 48px 80px;
+  background: linear-gradient(135deg, #E6F2FF 0%, #CCDDFF 40%, #F0F7FF 70%, #E6F2FF 100%);
+  overflow: hidden;
+}
+.hero-container { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; width: 100%; }
+.hero-content { position: relative; z-index: 2; }
+.hero-badge {
+  display: inline-block; padding: 6px 16px; border-radius: 20px;
+  background: rgba(0,102,255,0.1); color: var(--accent);
+  font-size: 13px; font-weight: 600; margin-bottom: 20px;
+}
+.hero h1 { font-size: 48px; font-weight: 800; line-height: 1.15; margin-bottom: 16px; color: #111213; letter-spacing: -0.5px; }
+.hero h1 span { background: linear-gradient(135deg, var(--accent), #0088FF); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.hero p { font-size: 17px; color: var(--text-secondary); margin-bottom: 32px; max-width: 520px; line-height: 1.7; }
+.hero-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; }
+.hero-tags span {
+  padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 500;
+  background: rgba(0,102,255,0.08); color: var(--accent-dark);
+}
+.hero-stats { display: flex; gap: 40px; }
+.hero-stats .stat-item { text-align: center; }
+.hero-stats .stat-num { font-size: 32px; font-weight: 800; color: var(--accent); }
+.hero-stats .stat-label { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+.hero-visual { position: relative; z-index: 2; display: flex; align-items: center; justify-content: center; }
+.hero-visual canvas { width: 100%; max-width: 420px; height: auto; }
+.hero-deco { position: absolute; border-radius: 50%; opacity: 0.25; pointer-events: none; }
+.hero-deco.d1 { width: 320px; height: 320px; background: radial-gradient(circle, rgba(0,119,255,0.3), transparent); top: -80px; right: -60px; }
+.hero-deco.d2 { width: 200px; height: 200px; background: radial-gradient(circle, rgba(0,136,255,0.25), transparent); bottom: 40px; left: -40px; }
+.hero-deco.d3 { width: 160px; height: 160px; background: radial-gradient(circle, rgba(0,102,255,0.2), transparent); top: 50%; left: 50%; }
+
+/* ===== Section Common ===== */
+.section { padding: 80px 48px; }
+.section-header { text-align: center; margin-bottom: 56px; }
+.section-header h2 { font-size: 34px; font-weight: 800; color: var(--text); margin-bottom: 12px; }
+.section-header h2::after {
+  content: ''; display: block; width: 48px; height: 4px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-light));
+  margin: 14px auto 0; border-radius: 2px;
+}
+.section-header p { font-size: 15px; color: var(--text-secondary); max-width: 640px; margin: 0 auto; line-height: 1.7; }
+
+/* ===== Value Cards ===== */
+.value-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; max-width: 1280px; margin: 0 auto; }
+.value-card {
+  background: var(--surface); border-radius: var(--radius-lg); padding: 32px 28px;
+  box-shadow: var(--shadow-sm); border: 1px solid var(--border);
+  transition: all var(--transition); cursor: pointer; position: relative; overflow: hidden;
+}
+.value-card:hover {
+  transform: translateY(-4px); box-shadow: var(--shadow-lg);
+  border-color: var(--accent-light);
+}
+.value-card .vc-icon {
+  width: 52px; height: 52px; border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 18px; font-size: 26px;
+}
+.value-card .vc-icon.c1 { background: rgba(0,102,255,0.1); color: var(--accent); }
+.value-card .vc-icon.c2 { background: rgba(0,136,255,0.1); color: #0088FF; }
+.value-card .vc-icon.c3 { background: rgba(0,119,255,0.1); color: #0077FF; }
+.value-card .vc-icon.c4 { background: rgba(0,68,204,0.1); color: var(--accent-dark); }
+.value-card .vc-icon.c5 { background: rgba(153,179,255,0.12); color: #99B3FF; }
+.value-card .vc-icon.c6 { background: rgba(0,102,255,0.08); color: var(--accent); }
+.value-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+.value-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.65; }
+
+/* ===== Flow Timeline ===== */
+.flow-timeline {
+  display: flex; justify-content: center; align-items: flex-start; gap: 0;
+  max-width: 1100px; margin: 0 auto; position: relative; flex-wrap: wrap;
+}
+.flow-step {
+  flex: 1; min-width: 150px; max-width: 180px; text-align: center;
+  position: relative; padding: 0 8px; cursor: pointer;
+}
+.flow-step .fs-circle {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent-light));
+  color: #fff; display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 16px; font-size: 24px; font-weight: 700;
+  position: relative; z-index: 2; transition: transform 0.3s;
+}
+.flow-step:hover .fs-circle { transform: scale(1.12); }
+.flow-step::after {
+  content: ''; position: absolute; top: 28px; left: calc(50% + 16px); width: calc(100% - 32px); height: 2px;
+  background: linear-gradient(90deg, var(--accent), rgba(0,102,255,0.2));
+  z-index: 1;
+}
+.flow-step:last-child::after { display: none; }
+.flow-step h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; color: var(--text); }
+.flow-step p { font-size: 11px; color: var(--text-secondary); line-height: 1.5; }
+
+/* ===== Database Cards ===== */
+.db-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 24px; max-width: 1280px; margin: 0 auto; }
+.db-card {
+  background: var(--surface); border-radius: var(--radius-lg); overflow: hidden;
+  box-shadow: var(--shadow-sm); border: 1px solid var(--border);
+  transition: all var(--transition); cursor: pointer;
+}
+.db-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.db-card-img { height: 180px; overflow: hidden; }
+.db-card-img img { width: 100%; height: 100%; object-fit: cover; }
+.db-card-body { padding: 24px; }
+.db-num { font-size: 12px; font-weight: 600; color: var(--accent); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+.db-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+.db-card p { font-size: 13px; color: var(--text-secondary); margin-bottom: 14px; line-height: 1.6; }
+.db-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.db-tags span {
+  padding: 3px 10px; border-radius: 4px; font-size: 11px; font-weight: 500;
+  background: rgba(0,102,255,0.06); color: var(--accent-dark);
+}
+
+/* ===== Data Overview ===== */
+.data-summary {
+  max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;
+}
+.data-text h3 { font-size: 22px; font-weight: 700; margin-bottom: 12px; }
+.data-text p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 12px; }
+.data-chart { height: 380px; background: var(--surface); border-radius: var(--radius-lg); padding: 16px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); }
+
+/* ===== Scene Tabs ===== */
+.scene-tabs { display: flex; justify-content: center; gap: 8px; margin-bottom: 32px; flex-wrap: wrap; }
+.scene-tab {
+  padding: 10px 22px; border-radius: 24px; font-size: 13px; font-weight: 600;
+  cursor: pointer; border: 1.5px solid var(--border); background: var(--surface);
+  color: var(--text-secondary); transition: all var(--transition);
+}
+.scene-tab:hover { border-color: var(--accent-light); color: var(--accent); }
+.scene-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.scene-panels { max-width: 1100px; margin: 0 auto; }
+.scene-panel { display: none; animation: fadeIn 0.4s ease; }
+.scene-panel.active { display: block; }
+.scene-feature {
+  background: var(--surface); border-radius: var(--radius-lg); padding: 28px;
+  box-shadow: var(--shadow-sm); border: 1px solid var(--border);
+  margin-bottom: 20px; transition: all var(--transition);
+}
+.scene-feature:hover { transform: translateX(4px); border-color: var(--accent-light); }
+.scene-feature h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; color: var(--text); }
+.scene-feature p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+.scene-chart { height: 380px; background: var(--surface); border-radius: var(--radius-lg); padding: 16px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); margin-top: 24px; }
+
+/* ===== Tool Cards ===== */
+.tool-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; max-width: 1280px; margin: 0 auto; }
+.tool-card {
+  background: var(--surface); border-radius: var(--radius-lg); padding: 28px 24px;
+  box-shadow: var(--shadow-sm); border: 1px solid var(--border);
+  transition: all var(--transition); cursor: pointer;
+}
+.tool-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.tool-card .tc-icon { font-size: 32px; margin-bottom: 14px; }
+.tool-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 8px; color: var(--text); }
+.tool-card p { font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
+
+/* ===== Case Cards ===== */
+.case-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 24px; max-width: 1280px; margin: 0 auto; }
+.case-card {
+  background: var(--surface); border-radius: var(--radius-lg); padding: 28px;
+  box-shadow: var(--shadow-sm); border: 1px solid var(--border);
+  transition: all var(--transition); cursor: pointer;
+}
+.case-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--accent-light); }
+.case-card h4 { font-size: 17px; font-weight: 700; margin-bottom: 6px; color: var(--text); }
+.case-card .case-unit { font-size: 12px; color: var(--accent); font-weight: 600; margin-bottom: 4px; }
+.case-card .case-direction { font-size: 12px; color: var(--text-secondary); margin-bottom: 10px; }
+.case-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+/* ===== Footer ===== */
+.footer {
+  background: linear-gradient(180deg, #002299, #001166);
+  color: rgba(255,255,255,0.85); padding: 60px 48px 30px;
+}
+.footer-grid {
+  max-width: 1280px; margin: 0 auto; display: grid;
+  grid-template-columns: 1.5fr 1fr; gap: 48px;
+}
+.footer h5 { font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #fff; }
+.footer p { font-size: 13px; line-height: 1.7; opacity: 0.8; }
+.footer a { color: var(--accent-light); font-size: 13px; }
+.footer-bottom {
+  max-width: 1280px; margin: 40px auto 0; padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,0.12);
+  text-align: center; font-size: 12px; opacity: 0.6;
+}
+
+/* ===== Animations ===== */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideLeft { from { opacity: 0; transform: translateX(-24px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes zoomIn { from { opacity: 0; transform: scale(0.94); } to { opacity: 1; transform: scale(1); } }
+@keyframes cardBounce {
+  0% { transform: scale(1); }
+  30% { transform: scale(0.96); }
+  60% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+@keyframes cardGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,102,255,0); }
+  50% { box-shadow: 0 0 18px 2px rgba(0,102,255,0.18); }
+}
+@keyframes iconPop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+@keyframes rippleEffect {
+  0% { transform: scale(0); opacity: 0.5; }
+  100% { transform: scale(12); opacity: 0; }
+}
+@keyframes shimmer {
+  0% { background-position: -200px 0; }
+  100% { background-position: 200px 0; }
+}
+
+.card-ripple {
+  position: absolute; width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(0,102,255,0.25); pointer-events: none;
+  animation: rippleEffect 0.7s ease-out;
+}
+.value-card.clicked { animation: cardBounce 0.6s ease, cardGlow 0.6s ease; }
+.db-card.clicked { animation: cardBounce 0.6s ease, cardGlow 0.6s ease; }
+.tool-card.clicked { animation: cardBounce 0.6s ease; }
+.case-card.clicked { animation: cardBounce 0.6s ease; }
+.flow-step.clicked .fs-circle { animation: iconPop 0.5s ease; }
+
+.fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.fade-in { opacity: 0; transition: opacity 0.7s ease; }
+.zoom-in { opacity: 0; transform: scale(0.94); transition: opacity 0.6s ease, transform 0.6s ease; }
+.fade-up.visible, .fade-in.visible, .zoom-in.visible { opacity: 1; }
+.fade-up.visible { transform: translateY(0); }
+.zoom-in.visible { transform: scale(1); }
+
+/* ===== Responsive ===== */
+@media (max-width: 1024px) {
+  .hero-container { grid-template-columns: 1fr; text-align: center; }
+  .hero p { margin: 0 auto 32px; }
+  .hero-stats { justify-content: center; }
+  .hero-visual { order: -1; }
+  .hero-visual canvas { max-width: 320px; }
+  .data-summary { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  .topbar { padding: 0 24px; }
+  .nav-links { display: none; position: absolute; top: 68px; left: 0; right: 0; flex-direction: column; background: var(--surface); padding: 20px 24px; gap: 16px; border-bottom: 1px solid var(--border); box-shadow: var(--shadow-md); }
+  .nav-links.open { display: flex; }
+  .nav-login-mobile { display: block; }
+  .nav-login-mobile a { color: var(--accent); font-weight: 700; }
+  .nav-hamburger { display: flex; }
+  .nav-actions { display: none; }
+  .section { padding: 60px 24px; }
+  .hero { padding: 80px 24px 40px; }
+  .hero h1 { font-size: 32px; }
+  .flow-timeline { flex-direction: column; align-items: center; gap: 24px; }
+  .flow-step { max-width: 100%; }
+  .flow-step::after { display: none; }
+  .db-grid, .case-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .hero-stats { flex-direction: column; gap: 20px; }
+  .hero h1 { font-size: 26px; }
+  .section-header h2 { font-size: 26px; }
+  .tool-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- Scroll Progress -->
+<div class="scroll-progress"><div class="scroll-progress-bar"></div></div>
+<!-- Back to Top -->
+<button class="back-to-top" title="返回顶部">&#9650;</button>
+
+<!-- ===== Navigation ===== -->
+<nav class="topbar">
+  <div class="nav-brand">
+    <svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="16" fill="rgba(0,102,255,0.1)" stroke="var(--accent)" stroke-width="2"/><circle cx="18" cy="14" r="4" fill="var(--accent)"/><circle cx="12" cy="24" r="3" fill="var(--accent-light)"/><circle cx="24" cy="24" r="3" fill="var(--accent-light)"/><line x1="18" y1="18" x2="12" y2="21" stroke="var(--accent)" stroke-width="1.5"/><line x1="18" y1="18" x2="24" y2="21" stroke="var(--accent)" stroke-width="1.5"/></svg>
+    工程细胞主题库
+  </div>
+  <ul class="nav-links">
+    <li><a href="#value">平台价值</a></li>
+    <li><a href="#flow">整体流程</a></li>
+    <li><a href="#databases">核心数据库</a></li>
+    <li><a href="#dataviz">数据总览</a></li>
+    <li><a href="#scenes">场景应用</a></li>
+    <li><a href="#tools">工具算法</a></li>
+    <li><a href="#cases">合作案例</a></li>
+    <li class="nav-login-mobile"><a href="./app.html">登录</a></li>
+  </ul>
+  <div class="nav-actions">
+    <a class="nav-btn nav-btn-primary" href="./app.html">登录</a>
+  </div>
+  <div class="nav-hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ===== Hero ===== -->
+<section class="hero" id="hero">
+  <div class="hero-deco d1"></div>
+  <div class="hero-deco d2"></div>
+  <div class="hero-deco d3"></div>
+  <div class="hero-container">
+    <div class="hero-content">
+      <div class="hero-badge">合成生物学 · 数据驱动</div>
+      <h1>工程细胞<span>主题库</span>门户</h1>
+      <p>覆盖微生物细胞工厂构建全生命周期，构建基因型-表型关联、多组学、发酵过程、培养营养四大核心数据集标准化平台。</p>
+      <div class="hero-tags">
+        <span>全基因组关联分析</span><span>代谢网络模型</span><span>三级质控</span><span>专利风险预警</span>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item"><div class="stat-num" data-target="130">130万+</div><div class="stat-label">数据条目</div></div>
+        <div class="stat-item"><div class="stat-num" data-target="4">4</div><div class="stat-label">核心数据库</div></div>
+        <div class="stat-item"><div class="stat-num" data-target="3">3</div><div class="stat-label">级质控体系</div></div>
+      </div>
     </div>
+    <div class="hero-visual">
+      <canvas id="molCanvas" width="420" height="420"></canvas>
+    </div>
+  </div>
+</section>
 
-    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+<!-- ===== Value Positioning ===== -->
+<section class="section" id="value">
+  <div class="section-header"><h2>平台价值定位</h2><p>围绕微生物细胞工厂构建全生命周期，构建覆盖四大核心数据集的标准化平台，以全基因组关联挖掘与代谢网络模型为技术驱动。</p></div>
+  <div class="value-grid">
+    <div class="value-card fade-up">
+      <div class="vc-icon c1">&#127793;</div>
+      <h3>基因型-表型关联</h3>
+      <p>全基因组关联分析（GWAS）挖掘未知关联基因及其位点，打破理性设计知识壁垒，加速从测序数据到菌株改造的知识转化。</p>
+    </div>
+    <div class="value-card fade-up">
+      <div class="vc-icon c2">&#128300;</div>
+      <h3>多组学整合</h3>
+      <p>整合基因组、转录组、蛋白组、代谢组等多维度数据，构建代谢网络模型，实现多组学关联解读与功能基因筛选。</p>
+    </div>
+    <div class="value-card fade-up">
+      <div class="vc-icon c3">&#127865;</div>
+      <h3>发酵过程优化</h3>
+      <p>全维度发酵过程数据采集与分析，结合代谢网络优化与人工神经网络，提升发酵效率与产物得率。</p>
+    </div>
+    <div class="value-card fade-up">
+      <div class="vc-icon c4">&#127793;</div>
+      <h3>培养营养体系</h3>
+      <p>系统化培养营养数据集，覆盖多种工业底盘菌株培养条件，支持培养基配方优化与培养工艺放大。</p>
+    </div>
+    <div class="value-card fade-up">
+      <div class="vc-icon c5">&#128214;</div>
+      <h3>科研降本增效</h3>
+      <p>四级深度清洗确保数据可追溯可复用，降低科研重复试错，单次实验节省约3万元，提升学术资源利用效率。</p>
+    </div>
+    <div class="value-card fade-up">
+      <div class="vc-icon c6">&#9888;</div>
+      <h3>专利风险预警</h3>
+      <p>帮助企业规避知识产权冲突，通过专利风险预警能力降低菌株研发的法律风险与研发周期。</p>
+    </div>
+  </div>
+</section>
 
-    <script src="./vendor/xlsx.full.min.js"></script>
-    <script src="./static-api.js"></script>
-    <script src="./script.js"></script>
-  </body>
+<!-- ===== Overall Flow ===== -->
+<section class="section" id="flow" style="background: var(--surface);">
+  <div class="section-header"><h2>整体流程</h2><p>数据标准体系建立 → 多源数据入库 → 三级质量控制 → 四大数据库构建 → 数据应用平台服务</p></div>
+  <div class="flow-timeline">
+    <div class="flow-step fade-up">
+      <div class="fs-circle">1</div>
+      <h4>标准体系</h4>
+      <p>GPA采集标准化、工程细胞模型标准化、小中试条件数字化标准化、菌株保护加密标准化</p>
+    </div>
+    <div class="flow-step fade-up">
+      <div class="fs-circle">2</div>
+      <h4>数据入库</h4>
+      <p>5种模式工业底盘干实验数据 + 多组学数据 + 发酵全维度数据 + 外部公开数据整合</p>
+    </div>
+    <div class="flow-step fade-up">
+      <div class="fs-circle">3</div>
+      <h4>三级质控</h4>
+      <p>按GPA / 组学 / 发酵三类数据分别实施采集规范性→一致性→生物学合理性三级校验</p>
+    </div>
+    <div class="flow-step fade-up">
+      <div class="fs-circle">4</div>
+      <h4>数据库构建</h4>
+      <p>基因型-表型关联、多组学、发酵过程、培养营养四大核心数据库构建</p>
+    </div>
+    <div class="flow-step fade-up">
+      <div class="fs-circle">5</div>
+      <h4>应用平台</h4>
+      <p>知识网络图谱 + 参数预测模型 + 基因型组合优化预测</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Core Databases ===== -->
+<section class="section" id="databases">
+  <div class="section-header"><h2>核心数据库</h2><p>四大核心数据集，覆盖基因型-表型关联、多组学、发酵过程、培养营养全维度</p></div>
+  <div class="db-grid">
+    <div class="db-card fade-up">
+      <div class="db-card-img" style="background: linear-gradient(135deg, #0066FF, #0077FF); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 48px; font-weight: 800;">&#129516;</div>
+      <div class="db-card-body">
+        <div class="db-num">≥ 50万 条</div>
+        <h3>基因型-表型关联数据集</h3>
+        <p>自有数据40万+，公开数据10万。基于GWAS全基因组关联分析，挖掘工业底盘菌株的高产关联基因靶点。</p>
+        <div class="db-tags"><span>GWAS</span><span>SNP</span><span>QTL</span><span>基因靶点</span><span>表型数据</span><span>关联位点</span></div>
+      </div>
+    </div>
+    <div class="db-card fade-up">
+      <div class="db-card-img" style="background: linear-gradient(135deg, #0044CC, #0088FF); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 48px; font-weight: 800;">&#129504;</div>
+      <div class="db-card-body">
+        <div class="db-num">≥ 30万 条</div>
+        <h3>多组学数据集</h3>
+        <p>自有数据16万+，公开数据12万+，论文/其他2万。涵盖基因组、转录组、蛋白组、代谢组等多维度数据。</p>
+        <div class="db-tags"><span>基因组</span><span>转录组</span><span>蛋白组</span><span>代谢组</span><span>代谢网络</span><span>功能注释</span></div>
+      </div>
+    </div>
+    <div class="db-card fade-up">
+      <div class="db-card-img" style="background: linear-gradient(135deg, #0033AA, #99B3FF); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 48px; font-weight: 800;">&#127865;</div>
+      <div class="db-card-body">
+        <div class="db-num">≥ 20万 条</div>
+        <h3>发酵过程数据集</h3>
+        <p>自有数据8万+，公开数据12万。覆盖温度、pH、溶氧、搅拌转速、生物量、代谢物浓度等全维度参数。</p>
+        <div class="db-tags"><span>发酵参数</span><span>代谢物</span><span>补料策略</span><span>放大工艺</span><span>ANN优化</span></div>
+      </div>
+    </div>
+    <div class="db-card fade-up">
+      <div class="db-card-img" style="background: linear-gradient(135deg, #002299, #CCDDFF); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 48px; font-weight: 800;">&#129716;</div>
+      <div class="db-card-body">
+        <div class="db-num">≥ 30万 条</div>
+        <h3>培养营养数据集</h3>
+        <p>自有数据14万+，公开数据16万+，论文/其他1,000条。系统化培养营养配方，支撑培养基优化与工艺放大。</p>
+        <div class="db-tags"><span>碳源</span><span>氮源</span><span>微量元素</span><span>培养基</span><span>生长曲线</span><span>营养配方</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Data Overview ===== -->
+<section class="section" id="dataviz" style="background: var(--surface);">
+  <div class="section-header"><h2>数据总览</h2><p>数据体量：TB级别；年增量：400-500条；三级质控体系保障数据质量</p></div>
+  <div class="data-summary">
+    <div class="data-text">
+      <h3>三级质量控制体系</h3>
+      <p>按 GPA / 组学 / 发酵 三类数据分别实施三级校验：</p>
+      <p><strong>第一级：采集规范性</strong> — 确保数据采集过程符合标准化流程</p>
+      <p><strong>第二级：一致性校验</strong> — 多元数据交叉验证，排除异常值</p>
+      <p><strong>第三级：生物学合理性</strong> — 领域专家审核，确保数据符合生物学规律</p>
+      <p style="margin-top:16px;">以标准化高质量数据集赋能合成生物学研究，四级深度清洗确保数据可追溯可复用。</p>
+    </div>
+    <div class="data-chart" id="dataOverview"></div>
+  </div>
+</section>
+
+<!-- ===== Scene Applications ===== -->
+<section class="section" id="scenes">
+  <div class="section-header"><h2>场景应用</h2><p>覆盖基因型-表型分析、组学数据分析、发酵过程分析、全流程数据分析四大应用场景</p></div>
+  <div class="scene-tabs">
+    <div class="scene-tab active" data-scene="0">基因型-表型分析</div>
+    <div class="scene-tab" data-scene="1">组学数据分析</div>
+    <div class="scene-tab" data-scene="2">发酵过程分析</div>
+    <div class="scene-tab" data-scene="3">全流程数据分析</div>
+  </div>
+  <div class="scene-panels">
+    <div class="scene-panel active" id="scene-0">
+      <div class="scene-feature"><h4>GPA数据分析 + GWAS 全基因组关联分析</h4><p>挖掘未知关联基因及其位点，加速从测序数据到菌株改造的知识转化。基于自有40万+基因型-表型关联数据，结合统计遗传学方法进行显著性关联挖掘。</p></div>
+      <div class="scene-chart" id="sceneChart0"></div>
+    </div>
+    <div class="scene-panel" id="scene-1">
+      <div class="scene-feature"><h4>基因组代谢网络模型构建</h4><p>整合GPA数据进行多组学关联解读，构建基因组规模代谢网络模型（GSMM），实现从基因型到代谢表型的系统预测与功能基因筛选。</p></div>
+      <div class="scene-chart" id="sceneChart1"></div>
+    </div>
+    <div class="scene-panel" id="scene-2">
+      <div class="scene-feature"><h4>代谢网络优化 + 人工神经网络优化</h4><p>基于发酵过程全维度数据，结合代谢网络模型与人工神经网络（ANN），预测最佳发酵条件组合，提升发酵效率与产物得率。</p></div>
+      <div class="scene-chart" id="sceneChart2"></div>
+    </div>
+    <div class="scene-panel" id="scene-3">
+      <div class="scene-feature"><h4>知识网络图谱构建 + 参数预测模型</h4><p>整合四大数据库，构建知识网络图谱，实现基因型组合优化预测，为工程菌株理性设计提供全流程数据支撑。</p></div>
+      <div class="scene-chart" id="sceneChart3"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Tools & Algorithms ===== -->
+<section class="section" id="tools" style="background: var(--surface);">
+  <div class="section-header"><h2>工具算法</h2><p>检测工具、分析算法、优化算法、平台工具四大类，全方位支撑工程细胞研究</p></div>
+  <div class="tool-grid">
+    <div class="tool-card fade-up">
+      <div class="tc-icon">&#127777;</div>
+      <h4>物理传感器</h4>
+      <p>温度 | pH | 溶氧 | 搅拌转速，实时监测发酵过程关键物理参数</p>
+    </div>
+    <div class="tool-card fade-up">
+      <div class="tc-icon">&#129504;</div>
+      <h4>生物传感器</h4>
+      <p>生物量 | 代谢物浓度 | 酶活检测，实时反馈细胞生理状态</p>
+    </div>
+    <div class="tool-card fade-up">
+      <div class="tc-icon">&#128202;</div>
+      <h4>GWAS 全基因组关联分析</h4>
+      <p>统计遗传学方法挖掘基因型-表型显著关联，定位关键功能基因与位点</p>
+    </div>
+    <div class="tool-card fade-up">
+      <div class="tc-icon">&#129518;</div>
+      <h4>基因组代谢网络模型</h4>
+      <p>GSMM构建与FBA分析，预测基因敲除/过表达对代谢通量的影响</p>
+    </div>
+    <div class="tool-card fade-up">
+      <div class="tc-icon">&#128200;</div>
+      <h4>代谢网络优化</h4>
+      <p>通量平衡分析与代谢工程靶点预测，优化碳流分配提升目标产物得率</p>
+    </div>
+    <div class="tool-card fade-up">
+      <div class="tc-icon">&#129504;</div>
+      <h4>人工神经网络 (ANN)</h4>
+      <p>基于深度学习的发酵参数预测与优化，自适应调整培养策略</p>
+    </div>
+    <div class="tool-card fade-up">
+      <div class="tc-icon">&#128279;</div>
+      <h4>知识网络图谱</h4>
+      <p>多源异构数据关联挖掘，构建基因-代谢-表型知识图谱</p>
+    </div>
+    <div class="tool-card fade-up">
+      <div class="tc-icon">&#128187;</div>
+      <h4>信息管理系统</h4>
+      <p>统一数据管理平台，支持数据检索、可视化分析与报告生成</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Cooperation Cases ===== -->
+<section class="section" id="cases">
+  <div class="section-header"><h2>合作案例</h2><p>与基因科技、生命科学、微生物组研发、农业微生物领域的头部机构深度合作</p></div>
+  <div class="case-grid">
+    <div class="case-card fade-up">
+      <h4>工业底盘菌株高产关联基因靶点挖掘</h4>
+      <div class="case-unit">华大基因（BGI）</div>
+      <div class="case-direction">基因科技头部企业</div>
+      <p>基于全基因组关联分析（GWAS），联合挖掘工业底盘菌株的高产关联基因靶点，共建基因型-表型关联数据集，加速从测序数据到菌株改造的知识转化。</p>
+    </div>
+    <div class="case-card fade-up">
+      <h4>微生物代谢通路优化与功能基因筛选</h4>
+      <div class="case-unit">零一生命（01 LIFE）</div>
+      <div class="case-direction">生命科学与健康领域</div>
+      <p>依托多组学数据集与代谢网络模型，合作开展微生物代谢通路优化，筛选关键功能基因组合，缩短工程菌株的理性设计周期。</p>
+    </div>
+    <div class="case-card fade-up">
+      <h4>培养条件参数预测与发酵工艺放大</h4>
+      <div class="case-unit">未知君（XBIOME）</div>
+      <div class="case-direction">微生物组研发</div>
+      <p>利用发酵过程数据集与人工神经网络优化算法，协作进行培养条件参数预测与发酵工艺放大，提升从实验室小试到中试的转化成功率。</p>
+    </div>
+    <div class="case-card fade-up">
+      <h4>饲用/农用工程菌株高效构建</h4>
+      <div class="case-unit">四川农业大学</div>
+      <div class="case-direction">农业微生物科研</div>
+      <p>基于培养营养数据集与基因组代谢网络模型，开展农业微生物菌株的基因型-表型关联研究，推动饲用/农用工程菌株的高效构建。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Footer ===== -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div>
+      <h5>工程细胞主题库 · 科学数据中心</h5>
+      <p>围绕微生物细胞工厂构建全生命周期，构建覆盖基因型-表型关联、多组学、发酵过程、培养营养四大核心数据集的标准化平台。以全基因组关联挖掘与代谢网络模型为技术驱动，打破理性设计知识壁垒。</p>
+      <p style="margin-top:12px">三级质控体系 · 四级深度清洗 · 数据可追溯可复用 · TB级别数据体量 · 年增量400-500条</p>
+    </div>
+    <div>
+      <h5>快速导航</h5>
+      <a href="#value">平台价值</a><br>
+      <a href="#flow">整体流程</a><br>
+      <a href="#databases">核心数据库</a><br>
+      <a href="#dataviz">数据总览</a><br>
+      <a href="#scenes">场景应用</a><br>
+      <a href="#tools">工具算法</a><br>
+      <a href="#cases">合作案例</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>工程细胞主题库 · 合成生物学数据驱动平台</p>
+  </div>
+</footer>
+
+<script>
+// ECharts light theme
+var ct={textStyle:{color:'#111213'},color:['#0066FF','#0077FF','#0088FF','#0044CC','#99B3FF','#f59e0b','#0077FF','#ef4444']};
+
+var scs=[];
+
+// Data Overview Chart
+(function(){
+  var d=document.getElementById('dataOverview');if(!d)return;
+  var ch=echarts.init(d);
+  ch.setOption({
+    title:{text:'四大数据库数据分布',left:'center',top:8,textStyle:{color:'#1f2937',fontSize:14,fontWeight:700}},
+    tooltip:{trigger:'item',formatter:'{b}: {c} 万条 ({d}%)'},
+    legend:{bottom:'2%',textStyle:{color:'#696969',fontSize:10},itemWidth:10,itemHeight:10},
+    series:[{
+      type:'pie',radius:['45%','70%'],center:['50%','46%'],
+      itemStyle:{borderColor:'#ffffff',borderWidth:3},
+      label:{color:'#111827',fontSize:11,formatter:'{b}\n{d}%'},
+      data:[
+        {value:50,name:'基因型-表型关联',itemStyle:{color:'#0066FF'}},
+        {value:30,name:'多组学数据集',itemStyle:{color:'#0077FF'}},
+        {value:20,name:'发酵过程数据集',itemStyle:{color:'#0088FF'}},
+        {value:30,name:'培养营养数据集',itemStyle:{color:'#99B3FF'}}
+      ]
+    }]
+  });
+  window.addEventListener('resize',function(){ch.resize();});
+})();
+
+// Scene charts config
+var scfgs=[
+  {
+    type:'bar',
+    title:'GPA数据分析 — 关键性状关联位点分布',
+    render:function(o){
+      o.tooltip={trigger:'axis',confine:true};
+      o.grid={left:'10%',right:'6%',bottom:'20%',top:'16%',containLabel:true};
+      o.xAxis={type:'category',data:['产量','耐受性','生长速率','转化率','底物利用','产物纯度'],
+        axisLine:{lineStyle:{color:'#e5e7eb'}},axisTick:{show:false},
+        axisLabel:{color:'#696969',fontSize:9,rotate:15,interval:0}
+      };
+      o.yAxis={type:'value',name:'关联位点数',axisLine:{show:false},axisTick:{show:false},
+        splitLine:{lineStyle:{color:'#F1F3F5',type:'dashed'}},axisLabel:{color:'#9ca3af',fontSize:9}
+      };
+      var g1=new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'#0066FF'},{offset:1,color:'#99B3FF'}]);
+      o.series=[{
+        type:'bar',barWidth:36,barGap:'20%',
+        data:[38,25,42,30,35,28],
+        itemStyle:{color:g1,borderRadius:[4,4,0,0]},
+        label:{show:true,position:'top',color:'#0066FF',fontSize:10,fontWeight:600}
+      }];
+    }
+  },
+  {
+    type:'radar',
+    title:'多组学数据覆盖度评估',
+    render:function(o){
+      o.tooltip={trigger:'item',confine:true};
+      var ind=[
+        {name:'基因组覆盖度',max:100},{name:'转录组完整性',max:100},
+        {name:'蛋白组鉴定率',max:100},{name:'代谢组广度',max:100},{name:'文献关联度',max:100}
+      ];
+      o.radar={
+        indicator:ind,shape:'polygon',splitNumber:4,radius:'60%',
+        axisName:{color:'#696969',fontSize:10,lineHeight:14},
+        splitLine:{lineStyle:{color:'#e5e7eb'}},
+        splitArea:{areaStyle:{color:['rgba(0,102,255,0.02)','rgba(0,102,255,0.05)']}},
+        axisLine:{lineStyle:{color:'#d1d5db'}}
+      };
+      o.legend={data:['自有数据','公开数据','论文/其他'],bottom:'3%',
+        textStyle:{fontSize:10,color:'#6b7280'},itemWidth:10,itemHeight:8};
+      o.series=[{
+        type:'radar',
+        data:[
+          {value:[92,88,85,80,90],name:'自有数据',lineStyle:{color:'#0066FF',width:2},areaStyle:{color:'rgba(0,102,255,0.15)'},itemStyle:{color:'#0066FF'},symbol:'circle',symbolSize:5},
+          {value:[78,72,75,68,70],name:'公开数据',lineStyle:{color:'#0088FF',width:2,type:'dashed'},areaStyle:{color:'rgba(0,136,255,0.12)'},itemStyle:{color:'#0088FF'},symbol:'diamond',symbolSize:5},
+          {value:[55,45,50,40,88],name:'论文/其他',lineStyle:{color:'#f59e0b',width:2,type:'dashed'},areaStyle:{color:'rgba(245,158,11,0.12)'},itemStyle:{color:'#f59e0b'},symbol:'triangle',symbolSize:5}
+        ]
+      }];
+    }
+  },
+  {
+    type:'scatter',
+    title:'发酵参数优化 — 人工神经网络预测 vs 实测',
+    render:function(o){
+      o.tooltip={trigger:'item',confine:true,formatter:function(p){return p.seriesName+': '+p.value[0].toFixed(1)+'h, 得率 '+p.value[1].toFixed(1)+'g/L'}};
+      o.grid={left:'14%',right:'6%',bottom:'12%',top:'14%',containLabel:true};
+      o.xAxis={type:'value',name:'发酵时间 (h)',nameLocation:'middle',nameGap:30,
+        axisLine:{lineStyle:{color:'#e5e7eb'}},axisTick:{show:false},
+        splitLine:{lineStyle:{color:'#F1F3F5',type:'dashed'}},axisLabel:{color:'#9ca3af',fontSize:9}};
+      o.yAxis={type:'value',name:'产物得率 (g/L)',nameLocation:'middle',nameGap:40,
+        axisLine:{lineStyle:{color:'#e5e7eb'}},axisTick:{show:false},
+        splitLine:{lineStyle:{color:'#F1F3F5',type:'dashed'}},axisLabel:{color:'#9ca3af',fontSize:9}};
+      o.legend={data:['实测值','ANN预测'],bottom:'3%',textStyle:{fontSize:9,color:'#6b7280'},itemWidth:10,itemHeight:8};
+      o.series=[
+        {name:'实测值',type:'scatter',symbolSize:12,
+         data:[[12,5.2],[24,12.8],[36,22.5],[48,30.1],[60,34.8],[72,36.2],[84,35.5],[96,33.8]],
+         itemStyle:{color:'#0066FF',borderColor:'#fff',borderWidth:1.5,shadowBlur:4,shadowColor:'rgba(0,102,255,0.3)'}},
+        {name:'ANN预测',type:'line',smooth:true,
+         data:[[0,0],[12,5.5],[24,13.1],[36,22.0],[48,30.5],[60,35.0],[72,36.5],[84,35.8],[96,34.0]],
+         lineStyle:{color:'#f59e0b',width:2.5},itemStyle:{color:'#f59e0b'},
+         symbolSize:6,symbol:'circle'}
+      ];
+    }
+  },
+  {
+    type:'graph',
+    title:'知识网络图谱 — 基因型-代谢-表型关联',
+    render:function(o){
+      o.tooltip={trigger:'item',confine:true};
+      o.legend={data:['基因型','代谢通路','表型'],bottom:'2%',textStyle:{fontSize:9,color:'#6b7280'},itemWidth:10,itemHeight:8};
+      o.series=[{
+        type:'graph',layout:'force',force:{repulsion:200,edgeLength:[80,200],layoutAnimation:true},
+        roam:true,draggable:true,
+        data:[
+          {name:'产量',value:20,category:2,itemStyle:{color:'#ef4444'}},
+          {name:'耐受性',value:18,category:2,itemStyle:{color:'#f97316'}},
+          {name:'生长速率',value:16,category:2,itemStyle:{color:'#eab308'}},
+          {name:'TCA循环',value:15,category:1,itemStyle:{color:'#0077FF'}},
+          {name:'糖酵解',value:15,category:1,itemStyle:{color:'#0088FF'}},
+          {name:'氨基酸合成',value:14,category:1,itemStyle:{color:'#99B3FF'}},
+          {name:'脂肪酸代谢',value:13,category:1,itemStyle:{color:'#CCDDFF'}},
+          {name:'Gene-A',value:12,category:0,itemStyle:{color:'#0066FF'}},
+          {name:'Gene-B',value:11,category:0,itemStyle:{color:'#0044CC'}},
+          {name:'Gene-C',value:10,category:0,itemStyle:{color:'#002299'}},
+          {name:'Gene-D',value:9,category:0,itemStyle:{color:'#001166'}}
+        ],
+        categories:[{name:'基因型',itemStyle:{color:'#0066FF'}},{name:'代谢通路',itemStyle:{color:'#0077FF'}},{name:'表型',itemStyle:{color:'#ef4444'}}],
+        edges:[
+          {source:'Gene-A',target:'糖酵解'},{source:'Gene-A',target:'产量'},
+          {source:'Gene-B',target:'TCA循环'},{source:'Gene-B',target:'生长速率'},
+          {source:'Gene-C',target:'氨基酸合成'},{source:'Gene-C',target:'耐受性'},
+          {source:'Gene-D',target:'脂肪酸代谢'},{source:'Gene-D',target:'产量'},
+          {source:'糖酵解',target:'TCA循环'},{source:'TCA循环',target:'氨基酸合成'},
+          {source:'氨基酸合成',target:'耐受性'},{source:'脂肪酸代谢',target:'产量'},
+          {source:'糖酵解',target:'生长速率'},{source:'Gene-A',target:'Gene-B'},
+          {source:'Gene-C',target:'Gene-D'}
+        ],
+        lineStyle:{color:'#aaa',curveness:0.2,opacity:0.5},
+        symbolSize:16,label:{show:true,fontSize:10,color:'#1f2937'}
+      }];
+    }
+  }
+];
+
+scfgs.forEach(function(c,i){
+  var d=document.getElementById('sceneChart'+i);if(!d)return;
+  var ch=echarts.init(d,null,{renderer:'canvas'});
+  scs.push(ch);
+  var o=JSON.parse(JSON.stringify(ct));
+  o.title={text:c.title,left:'center',top:2,textStyle:{color:'#1f2937',fontSize:14,fontWeight:700}};
+  if(c.render){c.render(o);}
+  ch.setOption(o);
+});
+
+// Tabs
+document.querySelectorAll('.scene-tab').forEach(function(t){
+  t.addEventListener('click',function(){
+    document.querySelectorAll('.scene-tab').forEach(function(x){x.classList.remove('active');});
+    document.querySelectorAll('.scene-panel').forEach(function(x){x.classList.remove('active');});
+    t.classList.add('active');
+    document.getElementById('scene-'+t.dataset.scene).classList.add('active');
+    setTimeout(function(){scs.forEach(function(c){if(c)c.resize();});},100);
+  });
+});
+
+window.addEventListener('resize',function(){scs.forEach(function(c){if(c)c.resize();});});
+
+// Mobile hamburger menu toggle
+(function(){
+  var hamburger=document.querySelector('.nav-hamburger');
+  var navLinks=document.querySelector('.nav-links');
+  if(!hamburger||!navLinks)return;
+  hamburger.addEventListener('click',function(){
+    var open=navLinks.classList.toggle('open');
+    hamburger.classList.toggle('active',open);
+  });
+  navLinks.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click',function(){
+      navLinks.classList.remove('open');
+      hamburger.classList.remove('active');
+    });
+  });
+  document.addEventListener('click',function(e){
+    if(!hamburger.contains(e.target)&&!navLinks.contains(e.target)){
+      navLinks.classList.remove('open');
+      hamburger.classList.remove('active');
+    }
+  });
+})();
+
+// Nav bar: transparent over hero, solid when scrolled
+(function(){
+  var hero=document.getElementById('hero');
+  var topbar=document.querySelector('.topbar');
+  if(!hero||!topbar)return;
+  function updateNav(){
+    topbar.classList.toggle('scrolled',window.scrollY>10);
+  }
+  window.addEventListener('scroll',updateNav,{passive:true});
+  updateNav();
+})();
+
+// Nav scroll highlight & smooth anchor scrolling
+var navLinks=document.querySelectorAll('.nav-links a');
+var sections=[];
+navLinks.forEach(function(a){
+  var id=a.getAttribute('href').replace('#','');
+  if(id){var el=document.getElementById(id);if(el)sections.push({el:el,link:a});}
+});
+window.addEventListener('scroll',function(){
+  var cur='';
+  sections.forEach(function(s){
+    var top=s.el.getBoundingClientRect().top;
+    if(top<=120)cur=s.link.getAttribute('href');
+  });
+  navLinks.forEach(function(a){a.classList.toggle('active',a.getAttribute('href')===cur);});
+},{passive:true});
+
+navLinks.forEach(function(a){
+  a.addEventListener('click',function(e){
+    var id=this.getAttribute('href').replace('#','');
+    if(!id)return;
+    var el=document.getElementById(id);
+    if(!el)return;
+    e.preventDefault();
+    var offset=80;
+    window.scrollTo({top:el.offsetTop-offset,behavior:'smooth'});
+    document.querySelector('.nav-links')?.classList.remove('open');
+    document.querySelector('.nav-hamburger')?.classList.remove('active');
+  });
+});
+
+// Count-up animation for Hero stats
+(function(){
+  var stats=document.querySelectorAll('.hero-stats .stat-num');
+  stats.forEach(function(el){
+    var t=el.textContent.trim();
+    el.setAttribute('data-original',t);
+  });
+  if(!stats.length)return;
+  var targets=[];
+  stats.forEach(function(el){
+    var t=el.hasAttribute('data-target')?el.getAttribute('data-target'):el.getAttribute('data-original')||el.textContent.trim();
+    var isPlus=t.endsWith('+');
+    var num=parseInt(t.replace(/[^0-9]/g,''));
+    if(!isNaN(num))targets.push({el:el,num:num,isPlus:isPlus,suffix:t.replace(/[0-9]/g,'').replace('+',''),display:el.getAttribute('data-original')});
+  });
+  var animated=false;
+  var observer=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting&&!animated){
+        animated=true;
+        targets.forEach(function(t,i){
+          var duration=1800;var start=performance.now();
+          var step=function(now){
+            var elapsed=now-start;var progress=Math.min(elapsed/duration,1);
+            var eased=1-Math.pow(1-progress,3);
+            var current=Math.floor(eased*t.num);
+            t.el.textContent=current.toLocaleString()+t.suffix+(t.isPlus?'+':'');
+            if(progress<1)requestAnimationFrame(step);
+            else t.el.textContent=t.display||t.num.toLocaleString()+t.suffix+(t.isPlus?'+':'');
+          };
+          setTimeout(function(){requestAnimationFrame(step);},i*200);
+        });
+      }
+    });
+  },{threshold:.5});
+  observer.observe(stats[0].closest('.hero-stats'));
+})();
+
+// Scroll reveal animation
+(function(){
+  var observer=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  },{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.fade-up,.fade-in,.zoom-in').forEach(function(el){observer.observe(el);});
+})();
+
+// Card click ripple effect
+(function(){
+  var cardSelectors=['.value-card','.db-card','.tool-card','.case-card','.flow-step','.scene-tab'];
+  var allCards=document.querySelectorAll(cardSelectors.join(','));
+  function handleClick(card,e){
+    if(card.classList.contains('clicked'))return;
+    var ripple=document.createElement('span');
+    ripple.className='card-ripple';
+    var rect=card.getBoundingClientRect();
+    var x,y;
+    if(e.touches&&e.touches.length){
+      x=e.touches[0].clientX-rect.left-20;
+      y=e.touches[0].clientY-rect.top-20;
+    }else if(e.clientX||e.clientY){
+      x=e.clientX-rect.left-20;
+      y=e.clientY-rect.top-20;
+    }else{
+      x=rect.width/2-20;
+      y=rect.height/2-20;
+    }
+    ripple.style.left=x+'px';
+    ripple.style.top=y+'px';
+    card.appendChild(ripple);
+    card.classList.add('clicked');
+    setTimeout(function(){
+      card.classList.remove('clicked');
+      if(ripple.parentNode)ripple.parentNode.removeChild(ripple);
+    },750);
+  }
+  allCards.forEach(function(card){
+    card.addEventListener('click',function(e){handleClick(card,e);});
+    card.addEventListener('touchstart',function(e){handleClick(card,e);},{passive:true});
+  });
+})();
+
+// Scroll progress bar + back to top
+(function(){
+  var progressBar=document.querySelector('.scroll-progress-bar');
+  var backBtn=document.querySelector('.back-to-top');
+  function onScroll(){
+    if(progressBar){
+      var h=document.documentElement.scrollHeight-window.innerHeight;
+      var pct=h>0?(window.scrollY/h*100):0;
+      progressBar.style.width=pct+'%';
+    }
+    if(backBtn){
+      backBtn.classList.toggle('visible',window.scrollY>window.innerHeight*0.6);
+    }
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});
+  onScroll();
+  if(backBtn){
+    backBtn.addEventListener('click',function(){
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
+  }
+})();
+
+// 3D Cell / DNA particle animation
+(function(){
+  var canvas=document.getElementById('molCanvas');
+  if(!canvas)return;
+  var container=canvas.parentElement;
+  var W=parseInt(canvas.getAttribute('width'))||420;
+  var H=parseInt(canvas.getAttribute('height'))||420;
+  var scene=new THREE.Scene();
+  var camera=new THREE.PerspectiveCamera(50,W/H,0.1,100);
+  camera.position.set(0,0.5,14);
+  camera.lookAt(0,0,0);
+  var renderer=new THREE.WebGLRenderer({canvas:canvas,alpha:true,antialias:true});
+  renderer.setSize(W,H);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  scene.add(new THREE.AmbientLight(0x304060,2.5));
+  var dl1=new THREE.DirectionalLight(0x4488cc,4);dl1.position.set(5,8,5);scene.add(dl1);
+  var dl2=new THREE.DirectionalLight(0x335577,2);dl2.position.set(-5,-2,-5);scene.add(dl2);
+  var pt=new THREE.PointLight(0x5588cc,8,30);pt.position.set(0,0,8);scene.add(pt);
+  var group=new THREE.Group();
+  var cellMat=new THREE.MeshStandardMaterial({color:0x4488cc,roughness:0.35,metalness:0.3,emissive:0x112244,emissiveIntensity:0.25});
+  var nucleusMat=new THREE.MeshStandardMaterial({color:0x2266bb,roughness:0.2,metalness:0.2,emissive:0x112244,emissiveIntensity:0.3});
+  var smallMat=new THREE.MeshStandardMaterial({color:0x6699dd,roughness:0.4,metalness:0.25,emissive:0x112244,emissiveIntensity:0.2});
+  var particleMat=new THREE.MeshStandardMaterial({color:0x88aadd,roughness:0.5,metalness:0.1,emissive:0x223344,emissiveIntensity:0.15});
+  var bondMat=new THREE.MeshStandardMaterial({color:0x5588cc,roughness:0.5,metalness:0.2,emissive:0x112244,emissiveIntensity:0.1});
+  var cellGeo=new THREE.SphereGeometry(1.8,48,48);
+  var nucleusGeo=new THREE.SphereGeometry(0.7,32,32);
+  var smallGeo=new THREE.SphereGeometry(0.22,24,24);
+  var particleGeo=new THREE.SphereGeometry(0.12,16,16);
+  var bondGeo=new THREE.CylinderGeometry(0.04,0.04,1,10);
+  var mainCell=new THREE.Mesh(cellGeo,cellMat);group.add(mainCell);
+  var nucleus=new THREE.Mesh(nucleusGeo,nucleusMat);
+  nucleus.position.set(0.15,0.1,0.2);group.add(nucleus);
+  var organellePositions=[
+    [0.8,0.6,0.7],[-0.7,0.8,-0.6],[0.9,-0.5,-0.5],[-0.8,-0.6,0.7],
+    [0.2,1.0,-0.9],[-0.5,0.4,1.1],[0.6,-0.9,0.4],[-0.3,-0.9,-0.7],
+    [1.1,-0.3,0.3],[-1.0,0.3,-0.3],[0.0,1.1,0.5],[-0.9,-0.3,0.6]
+  ];
+  organellePositions.forEach(function(p){
+    var m=new THREE.Mesh(smallGeo,smallMat);
+    m.position.set(p[0],p[1],p[2]);group.add(m);
+  });
+  var surfaceParticles=[];
+  for(var i=0;i<80;i++){
+    var phi=Math.acos(2*Math.random()-1);
+    var theta=Math.random()*Math.PI*2;
+    var r=1.85+Math.random()*0.2;
+    var x=r*Math.sin(phi)*Math.cos(theta);
+    var y=r*Math.sin(phi)*Math.sin(theta);
+    var z=r*Math.cos(phi);
+    var m=new THREE.Mesh(particleGeo,particleMat);
+    m.position.set(x,y,z);group.add(m);
+    surfaceParticles.push({mesh:m,phi:phi,theta:theta,baseR:r,speed:0.2+Math.random()*0.4});
+  }
+  for(var i=0;i<25;i++){
+    var a1=surfaceParticles[Math.floor(Math.random()*surfaceParticles.length)];
+    var a2=surfaceParticles[Math.floor(Math.random()*surfaceParticles.length)];
+    if(a1===a2)continue;
+    var dx=a2.mesh.position.x-a1.mesh.position.x;
+    var dy=a2.mesh.position.y-a1.mesh.position.y;
+    var dz=a2.mesh.position.z-a1.mesh.position.z;
+    var len=Math.sqrt(dx*dx+dy*dy+dz*dz);
+    if(len>1.5)continue;
+    var b=new THREE.Mesh(bondGeo,bondMat);
+    b.scale.set(1,len,1);
+    b.position.set((a1.mesh.position.x+a2.mesh.position.x)/2,(a1.mesh.position.y+a2.mesh.position.y)/2,(a1.mesh.position.z+a2.mesh.position.z)/2);
+    var dir=new THREE.Vector3(dx,dy,dz).normalize();
+    b.setRotationFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0,1,0),dir));
+    group.add(b);
+  }
+  scene.add(group);
+  function animate(t){
+    requestAnimationFrame(animate);
+    var sec=t*0.001;
+    group.rotation.y=sec*0.2;
+    group.rotation.x=Math.sin(sec*0.3)*0.1;
+    surfaceParticles.forEach(function(p){
+      p.theta+=p.speed*0.008;
+      var r=p.baseR+Math.sin(sec*2+p.phi)*0.08;
+      p.mesh.position.x=r*Math.sin(p.phi)*Math.cos(p.theta);
+      p.mesh.position.y=r*Math.sin(p.phi)*Math.sin(p.theta);
+      p.mesh.position.z=r*Math.cos(p.phi);
+    });
+    renderer.render(scene,camera);
+  }
+  requestAnimationFrame(animate);
+})();
+</script>
+
+</body>
 </html>

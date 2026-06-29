@@ -549,6 +549,12 @@ const sensorModules = {
 };
 
 const analysisPages = {
+  dashboard: {
+    key: "dashboard",
+    title: "数据看板",
+    breadcrumb: ["首页", "数据统计", "数据看板"],
+    headerTools: false
+  },
   catalog: {
     key: "catalog",
     title: "数据资源目录",
@@ -2557,34 +2563,33 @@ function createServiceDefaultSections() {
 }
 
 function createServiceEmptyDraft() {
-  const sections = createServiceDefaultSections();
   return {
-    code: sections.basicInfo.code,
-    name: sections.basicInfo.name,
-    strain: sections.basicInfo.strain,
-    gene: sections.basicInfo.gene,
-    statusText: sections.basicInfo.statusText,
-    description: sections.basicInfo.description,
-    cultureCode: sections.cultureInfo.cultureCode,
-    cultureMode: sections.cultureInfo.cultureMode,
-    mediumFormula: sections.cultureInfo.mediumFormula,
-    temperature: sections.cultureInfo.temperature,
-    ph: sections.cultureInfo.ph,
-    rpm: sections.cultureInfo.rpm,
-    cultureStatus: sections.cultureInfo.cultureStatus,
-    optimizationRecord: sections.cultureInfo.optimizationRecord,
-    testCode: sections.analysisInfo.testCode,
-    testItem: sections.analysisInfo.testItem,
-    testMethod: sections.analysisInfo.testMethod,
-    cellActivity: sections.analysisInfo.cellActivity,
-    cellPurity: sections.analysisInfo.cellPurity,
-    testResult: sections.analysisInfo.testResult,
-    testDescription: sections.analysisInfo.testDescription,
-    applicationCode: sections.applicationInfo.applicationCode,
-    scenarioType: sections.applicationInfo.scenarioType,
-    applicationField: sections.applicationInfo.applicationField,
-    applicationStatus: sections.applicationInfo.applicationStatus,
-    applicationContent: sections.applicationInfo.applicationContent
+    code: "",
+    name: "",
+    strain: "",
+    gene: "",
+    statusText: "",
+    description: "",
+    cultureCode: "",
+    cultureMode: "",
+    mediumFormula: "",
+    temperature: "",
+    ph: "",
+    rpm: "",
+    cultureStatus: "",
+    optimizationRecord: "",
+    testCode: "",
+    testItem: "",
+    testMethod: "",
+    cellActivity: "",
+    cellPurity: "",
+    testResult: "",
+    testDescription: "",
+    applicationCode: "",
+    scenarioType: "",
+    applicationField: "",
+    applicationStatus: "",
+    applicationContent: ""
   };
 }
 
@@ -2669,6 +2674,8 @@ function hydrateProcessItem(item) {
 function buildFallbackFullItem(item) {
   return {
     ...item,
+    id: item.id || "full-1",
+    name: item.name || "全流程项目",
     description: item.description || "整合多模块分析结果，输出全流程优化建议。",
     modules: item.modules || ["genotype", "omics", "process"],
     targetProduct: item.targetProduct || "L-谷氨酸",
@@ -2682,6 +2689,7 @@ function buildFallbackFullItem(item) {
 
 function hydrateFullItem(item) {
   const preset = fullProjectLibrary[item.id];
+  const defaults = fullProjectLibrary["full-1"];
   const hydrated = preset
     ? {
         ...preset,
@@ -2690,11 +2698,41 @@ function hydrateFullItem(item) {
     : buildFallbackFullItem(item);
 
   fullProjectLibrary[item.id] = {
-    gpaSummary: preset?.gpaSummary || fullProjectLibrary["full-1"].gpaSummary,
-    processSummary: preset?.processSummary || fullProjectLibrary["full-1"].processSummary,
-    gpaDetail: preset?.gpaDetail || fullProjectLibrary["full-1"].gpaDetail,
-    predictDetail: preset?.predictDetail || fullProjectLibrary["full-1"].predictDetail,
-    ...hydrated
+    ...defaults,
+    ...hydrated,
+    id: hydrated.id || item.id || "full-1",
+    name: hydrated.name || item.name || "全流程项目",
+    gpaSummary: {
+      ...defaults.gpaSummary,
+      ...(preset?.gpaSummary || {}),
+      ...(hydrated.gpaSummary || {})
+    },
+    processSummary: {
+      ...defaults.processSummary,
+      ...(preset?.processSummary || {}),
+      ...(hydrated.processSummary || {})
+    },
+    gpaDetail: {
+      ...defaults.gpaDetail,
+      ...(preset?.gpaDetail || {}),
+      ...(hydrated.gpaDetail || {}),
+      networkNodes: hydrated.gpaDetail?.networkNodes || preset?.gpaDetail?.networkNodes || defaults.gpaDetail.networkNodes,
+      pathwayTable: hydrated.gpaDetail?.pathwayTable || preset?.gpaDetail?.pathwayTable || defaults.gpaDetail.pathwayTable,
+      patents: hydrated.gpaDetail?.patents || preset?.gpaDetail?.patents || defaults.gpaDetail.patents
+    },
+    predictDetail: {
+      ...defaults.predictDetail,
+      ...(preset?.predictDetail || {}),
+      ...(hydrated.predictDetail || {}),
+      paramSuggestions:
+        hydrated.predictDetail?.paramSuggestions || preset?.predictDetail?.paramSuggestions || defaults.predictDetail.paramSuggestions,
+      materialStats: hydrated.predictDetail?.materialStats || preset?.predictDetail?.materialStats || defaults.predictDetail.materialStats,
+      chartPoints: {
+        ...defaults.predictDetail.chartPoints,
+        ...(preset?.predictDetail?.chartPoints || {}),
+        ...(hydrated.predictDetail?.chartPoints || {})
+      }
+    }
   };
 
   return fullProjectLibrary[item.id];
@@ -2904,6 +2942,8 @@ function normalizeAnalysisAction(action) {
       编辑模型: "edit",
       详情: "detail",
       查看详情: "detail",
+      上传数据集: "upload",
+      分析结果: "result",
       删除: "delete"
     }[label] ||
     "";
@@ -2916,7 +2956,7 @@ function normalizeAnalysisAction(action) {
 
 function normalizeAnalysisActions(moduleKey, actions) {
   const normalized = (actions || []).map(normalizeAnalysisAction).filter(Boolean);
-  const validIds = new Set(["edit", "detail", "delete"]);
+  const validIds = new Set(["edit", "detail", "delete", "upload", "result", "view"]);
 
   if (normalized.length && normalized.every((action) => validIds.has(String(action.id || "").trim().toLowerCase()))) {
     return normalized;
@@ -3341,6 +3381,97 @@ function mergeSensorRecord(moduleKey, record) {
   }
 }
 
+function sensorBatchConcentrationMeta(concentration = "中浓度") {
+  const mapping = {
+    高浓度: { badge: "高浓度", badgeClass: "badge-high" },
+    中浓度: { badge: "中浓度", badgeClass: "badge-mid" },
+    低浓度: { badge: "低浓度", badgeClass: "badge-low" }
+  };
+  return mapping[concentration] || mapping["中浓度"];
+}
+
+function normalizeBatchCellName(value = "") {
+  return String(value || "")
+    .trim()
+    .replace(/\s+/g, "")
+    .replace(/[^\u4e00-\u9fa5A-Za-z0-9_-]/g, "");
+}
+
+function generateSensorBatchId(cellName = "", date = new Date()) {
+  const normalizedName = normalizeBatchCellName(cellName) || "CELL";
+  const pad = (value) => String(value).padStart(2, "0");
+  const timestamp = `${date.getFullYear()}${pad(date.getMonth() + 1)}${pad(date.getDate())}${pad(date.getHours())}${pad(date.getMinutes())}`;
+  return `${normalizedName}-${timestamp}`;
+}
+
+function getSensorBatch(moduleKey, batchId) {
+  return sensorModules[moduleKey]?.batches.find((item) => item.id === batchId) || null;
+}
+
+function buildSensorBatchPayload(values = {}, current = null) {
+  const cellName = String(values.cellName || "").trim();
+  const id = String(values.batchId || "").trim() || generateSensorBatchId(cellName);
+  const concentration = String(values.concentration || current?.badge || "中浓度").trim();
+  const meta = sensorBatchConcentrationMeta(concentration);
+  return {
+    ...current,
+    id,
+    cellName,
+    badge: meta.badge,
+    badgeClass: meta.badgeClass,
+    statusText: current?.statusText || "运行中",
+    tone: current?.tone || "running",
+    period: current?.period || "新建批次，等待录入",
+    records: current?.records || []
+  };
+}
+
+function upsertSensorBatch(moduleKey, mode, originalBatchId, values) {
+  const module = sensorModules[moduleKey];
+  if (!module) {
+    throw new Error("未找到传感器模块");
+  }
+  const current = originalBatchId ? getSensorBatch(moduleKey, originalBatchId) : null;
+  const payload = buildSensorBatchPayload(values, current);
+  if (!payload.id) {
+    throw new Error("请输入批次号");
+  }
+  if (module.batches.some((item) => item.id === payload.id && item.id !== originalBatchId)) {
+    throw new Error("批次号已存在，请更换后再保存");
+  }
+  if (mode === "edit" && current) {
+    const index = module.batches.findIndex((item) => item.id === originalBatchId);
+    module.batches[index] = payload;
+    if (state.activeBatch[moduleKey] === originalBatchId) {
+      state.activeBatch[moduleKey] = payload.id;
+    }
+    return payload;
+  }
+  module.batches.unshift(payload);
+  state.activeBatch[moduleKey] = payload.id;
+  state.pagination[moduleKey] = 1;
+  return payload;
+}
+
+function deleteSensorBatch(moduleKey, batchId) {
+  const module = sensorModules[moduleKey];
+  if (!module) {
+    throw new Error("未找到传感器模块");
+  }
+  const index = module.batches.findIndex((item) => item.id === batchId);
+  if (index < 0) {
+    throw new Error("未找到批次");
+  }
+  if (module.batches.length <= 1) {
+    throw new Error("至少保留一个批次");
+  }
+  module.batches.splice(index, 1);
+  if (state.activeBatch[moduleKey] === batchId) {
+    state.activeBatch[moduleKey] = module.batches[0]?.id || "";
+    state.pagination[moduleKey] = 1;
+  }
+}
+
 function recalcSensorSummary(moduleKey) {
   const records = sensorModules[moduleKey].batches.flatMap((batch) => batch.records);
   sensorModules[moduleKey].summary = [
@@ -3368,7 +3499,8 @@ async function loadSensorRecords() {
 const state = {
   scene: "auth",
   authView: "login",
-  activeMenu: "physical",
+  activeMenu: "dashboard",
+  dashboardRange: "week",
   sensorView: {
     physical: "list",
     biological: "list"
@@ -3397,7 +3529,7 @@ const state = {
     format: "全部",
     status: "全部"
   },
-  openNavGroup: "monitor",
+  openNavGroup: "",
   modal: null,
   sidebarOpen: false,
   captchaCodes: {
@@ -3405,6 +3537,11 @@ const state = {
     register: "",
     recover: ""
   }
+};
+
+const defaultLoginCredentials = {
+  account: "zhangming",
+  password: "Admin@123456"
 };
 
 function getCurrentUserProfile() {
@@ -3602,6 +3739,10 @@ function renderSidebar() {
     <div class="sidebar-nav">
       <section class="nav-section">
         <p class="nav-title">数据统计</p>
+        <button class="nav-link ${state.activeMenu === "dashboard" ? "is-active" : ""}" type="button" data-menu="dashboard">
+          <span class="nav-icon">${icon("i-chart")}</span>
+          <span>数据看板</span>
+        </button>
         <button class="nav-link ${state.activeMenu === "catalog" ? "is-active" : ""}" type="button" data-menu="catalog">
           <span class="nav-icon">${icon("i-list")}</span>
           <span>数据资源目录</span>
@@ -3678,6 +3819,10 @@ function renderSidebar() {
     <div class="sidebar-nav">
       <section class="nav-section">
         <p class="nav-title">数据统计</p>
+        <button class="nav-link ${state.activeMenu === "dashboard" ? "is-active" : ""}" type="button" data-menu="dashboard">
+          <span class="nav-icon">${icon("i-chart")}</span>
+          <span>数据看板</span>
+        </button>
         <button class="nav-link ${state.activeMenu === "catalog" ? "is-active" : ""}" type="button" data-menu="catalog">
           <span class="nav-icon">${icon("i-list")}</span>
           <span>数据资源目录</span>
@@ -3777,7 +3922,7 @@ function renderAuthView(viewKey) {
         <label for="loginAccount">用户名/邮箱</label>
         <div class="input-wrap">
           <span class="input-icon">${icon("i-user")}</span>
-          <input class="input-control" id="loginAccount" name="account" type="text" placeholder="请输入用户名或邮箱" />
+          <input class="input-control" id="loginAccount" name="account" type="text" value="${escapeHtml(defaultLoginCredentials.account)}" placeholder="请输入用户名或邮箱" autocomplete="username" />
         </div>
         ${renderRequirementHint("用户名4-20位字母/数字/下划线，或输入合法邮箱")}
       </div>
@@ -3785,7 +3930,7 @@ function renderAuthView(viewKey) {
         <label for="loginPassword">密码</label>
         <div class="input-wrap">
           <span class="input-icon">${icon("i-lock")}</span>
-          <input class="input-control" id="loginPassword" name="password" type="password" placeholder="请输入密码" />
+          <input class="input-control" id="loginPassword" name="password" type="password" value="${escapeHtml(defaultLoginCredentials.password)}" placeholder="请输入密码" autocomplete="current-password" />
           <button class="password-toggle" type="button" data-toggle-password="loginPassword">
             <span class="header-icon">${icon("i-eye-off")}</span>
           </button>
@@ -3797,7 +3942,7 @@ function renderAuthView(viewKey) {
         <div class="field-row">
           <div class="input-wrap">
             <span class="input-icon">${icon("i-image")}</span>
-            <input class="input-control" id="loginCaptcha" name="captcha" type="text" placeholder="请输入验证码" />
+            <input class="input-control" id="loginCaptcha" name="captcha" type="text" value="${escapeHtml(state.captchaCodes.login)}" placeholder="请输入验证码" autocomplete="off" />
           </div>
           <button class="captcha-box" type="button" data-refresh-captcha="login">
             <span class="captcha-text" data-captcha-value="login">${escapeHtml(state.captchaCodes.login)}</span>
@@ -3807,7 +3952,7 @@ function renderAuthView(viewKey) {
       </div>
       <div class="checkbox-row">
         <label class="checkbox">
-          <input type="checkbox" name="remember" />
+          <input type="checkbox" name="remember" checked />
           <span class="checkbox-mark">${icon("i-check")}</span>
           <span>记住密码</span>
         </label>
@@ -4060,6 +4205,313 @@ function renderHeader(page) {
   `;
 }
 
+function parseWanRecordCount(value) {
+  const raw = String(value || "").replaceAll(",", "");
+  const number = Number(raw.replace(/[^0-9.]/g, "")) || 0;
+  return raw.includes("万") ? number : number / 10000;
+}
+
+function formatWan(value) {
+  return `${Math.round(value).toLocaleString("zh-CN")}万`;
+}
+
+function getDashboardMetrics() {
+  const catalog = analysisPages.catalog;
+  const service = analysisPages.service;
+  const catalogRows = catalog.rows || [];
+  const serviceRows = service.rows || [];
+  const categories = catalog.categories || [];
+  const totalRecords = categories.reduce((sum, item) => sum + parseWanRecordCount(item.records), 0);
+  const standardized = catalogRows.filter((row) => row.status?.text === "已标准化").length;
+  const auditQueue = serviceRows.filter((row) => row.status?.text !== "已验证").length + 2;
+  const sensorRecords = ["physical", "biological"].reduce(
+    (sum, key) =>
+      sum +
+      (sensorModules[key]?.batches || []).reduce((batchSum, batch) => batchSum + (batch.records || []).length, 0),
+    0
+  );
+  const projects =
+    (analysisPages.gene?.rows || []).length +
+    (analysisPages.omics?.rows || []).length +
+    (analysisPages.process?.rows || []).length +
+    (analysisPages.full?.rows || []).length;
+
+  return {
+    totalRecords,
+    standardized,
+    standardRate: catalogRows.length ? Math.round((standardized / catalogRows.length) * 1000) / 10 : 0,
+    auditQueue,
+    serviceTotal: serviceRows.length,
+    sensorRecords,
+    projects,
+    appCount: Object.keys(analysisPages).filter((key) => key !== "dashboard").length
+  };
+}
+
+function renderDashboardStatCards(metrics) {
+  const cards = [
+    {
+      icon: "i-table",
+      tone: "blue",
+      value: formatWan(metrics.totalRecords),
+      tag: "同步计算",
+      label: "资源数据总量"
+    },
+    {
+      icon: "i-check",
+      tone: "green",
+      value: `${metrics.standardRate}%`,
+      tag: "实时计算",
+      label: "标准化通过率"
+    },
+    {
+      icon: "i-upload",
+      tone: "purple",
+      value: metrics.auditQueue.toLocaleString("zh-CN"),
+      tag: "+ 18.6%",
+      label: "待审核入库"
+    },
+    {
+      icon: "i-chart",
+      tone: "orange",
+      value: `${metrics.projects}`,
+      tag: "+ 12.4%",
+      label: "分析项目数"
+    }
+  ];
+
+  return cards
+    .map(
+      (item) => `
+        <article class="dashboard-kpi-card is-${item.tone}">
+          <span class="dashboard-kpi-icon">${icon(item.icon)}</span>
+          <div class="dashboard-kpi-main">
+            <div class="dashboard-kpi-value">
+              <strong>${escapeHtml(item.value)}</strong>
+              <span>${escapeHtml(item.tag)}</span>
+            </div>
+            <p>${escapeHtml(item.label)}</p>
+          </div>
+        </article>
+      `
+    )
+    .join("");
+}
+
+function renderDashboardBars() {
+  const months = [
+    ["1月", 48, "blue"],
+    ["2月", 58, "blue"],
+    ["3月", 52, "blue"],
+    ["4月", 72, "blue"],
+    ["5月", 81, "blue"],
+    ["6月", 68, "green"],
+    ["7月", 88, "blue"],
+    ["8月", 76, "blue"],
+    ["9月", 91, "blue"],
+    ["10月", 83, "green"],
+    ["11月", 92, "blue"],
+    ["12月", 91, "blue"]
+  ];
+
+  return `
+    <div class="dashboard-bars" aria-label="月度数据入库趋势">
+      ${months
+        .map(
+          ([label, value, tone]) => `
+            <div class="dashboard-bar-item">
+              <div class="dashboard-bar-track">
+                <span class="dashboard-bar is-${tone}" style="height:${value}%"></span>
+              </div>
+              <span>${label}</span>
+            </div>
+          `
+        )
+        .join("")}
+    </div>
+  `;
+}
+
+function renderDashboardDonut(metrics) {
+  const categories = (analysisPages.catalog.categories || []).map((item, index) => ({
+    name: item.name.replace("数据集", ""),
+    value: parseWanRecordCount(item.records),
+    color: ["#2f8ff0", "#18a957", "#7b61ff", "#ff9f0a"][index] || "#14b8c8"
+  }));
+  const total = categories.reduce((sum, item) => sum + item.value, 0) || 1;
+  let offset = 25;
+  const slices = categories
+    .map((item) => {
+      const share = (item.value / total) * 100;
+      const circle = `<circle cx="70" cy="70" r="52" fill="none" stroke="${item.color}" stroke-width="18" stroke-linecap="round" stroke-dasharray="${share} ${100 - share}" stroke-dashoffset="${offset}" pathLength="100" />`;
+      offset -= share;
+      return circle;
+    })
+    .join("");
+
+  return `
+    <div class="dashboard-donut-layout">
+      <div class="dashboard-donut-visual">
+        <svg viewBox="0 0 140 140" role="img" aria-label="资源类型分布">
+          <circle cx="70" cy="70" r="52" fill="none" stroke="#e8edf4" stroke-width="18" />
+          ${slices}
+        </svg>
+        <div class="dashboard-donut-center">
+          <strong>${formatWan(metrics.totalRecords)}</strong>
+          <span>数据总量</span>
+        </div>
+      </div>
+      <div class="dashboard-legend">
+        ${categories
+          .map(
+            (item) => `
+              <div class="dashboard-legend-row">
+                <span class="dashboard-legend-dot" style="background:${item.color}"></span>
+                <strong>${escapeHtml(item.name)}</strong>
+                <em>${((item.value / total) * 100).toFixed(1)}%</em>
+              </div>
+            `
+          )
+          .join("")}
+      </div>
+    </div>
+  `;
+}
+
+function renderDashboardLine() {
+  const points = [72, 69, 75, 71, 82, 78, 85, 80, 88, 84, 91, 87];
+  const width = 560;
+  const height = 190;
+  const coords = points.map((value, index) => {
+    const x = 36 + (index * (width - 72)) / (points.length - 1);
+    const y = 20 + ((100 - value) / 100) * (height - 40);
+    return [x, y, value];
+  });
+  const line = coords.map(([x, y]) => `${x},${y}`).join(" ");
+  const area = `36,${height - 18} ${line} ${width - 36},${height - 18}`;
+
+  return `
+    <div class="dashboard-line-wrap">
+      <svg class="dashboard-line-chart" viewBox="0 0 ${width} ${height}" role="img" aria-label="审核效率趋势">
+        <polygon points="${area}" fill="rgba(24,169,87,.12)"></polygon>
+        <polyline points="${line}" fill="none" stroke="#18a957" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></polyline>
+        ${coords
+          .map(([x, y]) => `<circle cx="${x}" cy="${y}" r="5" fill="#fff" stroke="#18a957" stroke-width="3"></circle>`)
+          .join("")}
+        ${[0, 25, 50, 75, 100]
+          .map((tick) => {
+            const y = 20 + ((100 - tick) / 100) * (height - 40);
+            return `<line x1="36" y1="${y}" x2="${width - 36}" y2="${y}" stroke="#e9eef5" stroke-dasharray="6 8"></line><text x="0" y="${y + 4}" fill="#8291a8" font-size="12">${tick}%</text>`;
+          })
+          .join("")}
+      </svg>
+      <div class="dashboard-line-axis">
+        ${["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
+          .map((item) => `<span>${item}</span>`)
+          .join("")}
+      </div>
+    </div>
+  `;
+}
+
+function renderDashboardRanking() {
+  const rows = [
+    ["01", "基因型-表型分析组", "GPA核心库", 1420, 93, "blue"],
+    ["02", "多组学分析组", "全景整合库", 1280, 89, "green"],
+    ["03", "发酵过程分析组", "过程参数库", 1095, 91, "purple"],
+    ["04", "培养营养组", "配方组分库", 950, 85, "orange"],
+    ["05", "工程细胞服务组", "细胞服务库", 840, 78, "cyan"],
+    ["06", "代谢网络组", "通路注释库", 710, 92, "blue"],
+    ["07", "过程控制组", "控制策略库", 620, 76, "green"]
+  ];
+
+  return `
+    <div class="dashboard-ranking">
+      ${rows
+        .map(
+          ([rank, name, label, count, rate, tone]) => `
+            <div class="dashboard-rank-row">
+              <span class="dashboard-rank-num">${rank}</span>
+              <strong>${escapeHtml(name)}</strong>
+              <div class="dashboard-rank-bar">
+                <span class="is-${tone}" style="width:${rate}%">${escapeHtml(label)}</span>
+              </div>
+              <em>${Number(count).toLocaleString("zh-CN")}</em>
+              <b>${rate}%</b>
+            </div>
+          `
+        )
+        .join("")}
+    </div>
+  `;
+}
+
+function renderDashboardPage() {
+  const metrics = getDashboardMetrics();
+  const tabs = [
+    ["today", "今日"],
+    ["week", "本周"],
+    ["month", "本月"],
+    ["30d", "近30天"]
+  ];
+
+  return `
+    <div class="dashboard-page">
+      <section class="dashboard-hero">
+        <div>
+          <div class="dashboard-eyebrow">
+            <span>数据统计</span><span>/</span><strong>工程细胞主题库数据应用</strong>
+          </div>
+          <div class="dashboard-title-row">
+            <h1>数据看板</h1>
+            <span class="dashboard-role-badge">管理员与审核员</span>
+          </div>
+          <p>工程细胞主题库运营数据总览，实时监控数据入库、标准化审核、服务应用与分析项目效率。</p>
+        </div>
+        <div class="dashboard-hero-actions">
+          <button class="dashboard-select" type="button" data-dashboard-range="30d">近30天 ${icon("i-chevron")}</button>
+          <button class="dashboard-export" type="button" data-dashboard-export>${icon("i-download")}导出报表</button>
+        </div>
+      </section>
+
+      <section class="dashboard-kpi-grid">
+        ${renderDashboardStatCards(metrics)}
+      </section>
+
+      <div class="dashboard-tabs" role="tablist" aria-label="数据时间范围">
+        ${tabs
+          .map(
+            ([key, label]) => `
+              <button class="${state.dashboardRange === key ? "is-active" : ""}" type="button" role="tab" aria-selected="${state.dashboardRange === key}" data-dashboard-range="${key}">
+                ${label}
+              </button>
+            `
+          )
+          .join("")}
+      </div>
+
+      <section class="dashboard-grid">
+        <article class="dashboard-panel">
+          <h2>月度数据入库趋势</h2>
+          ${renderDashboardBars()}
+        </article>
+        <article class="dashboard-panel">
+          <h2>资源类型分布</h2>
+          ${renderDashboardDonut(metrics)}
+        </article>
+        <article class="dashboard-panel">
+          <h2>审核效率趋势</h2>
+          ${renderDashboardLine()}
+        </article>
+        <article class="dashboard-panel">
+          <h2>团队贡献排行 TOP 10</h2>
+          ${renderDashboardRanking()}
+        </article>
+      </section>
+    </div>
+  `;
+}
+
 function renderSummaryCards(cards) {
   return cards
     .map(
@@ -4154,27 +4606,38 @@ function renderSensorListPage(module) {
       <div class="sensor-layout">
         <aside class="batch-panel">
           <div class="panel-head">
-            <span class="header-icon">${icon(module.batchIcon)}</span>
-            <span>${module.batchTitle}</span>
+            <span class="batch-panel-title">
+              <span class="header-icon">${icon(module.batchIcon)}</span>
+              <span>${module.batchTitle}</span>
+            </span>
+            <button class="batch-add-button" type="button" data-open-modal="batch|${module.key}" aria-label="新增批次">
+              <span class="header-icon">${icon("i-plus")}</span>
+            </button>
           </div>
           <div class="batch-list">
             ${module.batches
               .map(
                 (item) => `
-                  <button
-                    class="batch-card ${item.id === batch.id ? "is-active" : ""}"
-                    type="button"
-                    data-batch="${module.key}|${item.id}"
-                  >
-                    <div class="batch-top">
-                      <span class="batch-id">${item.id}</span>
-                      <span class="batch-badge ${item.badgeClass}">${item.badge}</span>
+                  <div class="batch-card ${item.id === batch.id ? "is-active" : ""}">
+                    <button class="batch-select-button" type="button" data-batch="${module.key}|${item.id}">
+                      <div class="batch-top">
+                        <span class="batch-id">${item.id}</span>
+                        <span class="batch-badge ${item.badgeClass}">${item.badge}</span>
+                      </div>
+                      <div class="batch-status tone-${item.tone}">
+                        <span class="status-dot"></span>
+                        <span>${item.statusText}</span>
+                      </div>
+                    </button>
+                    <div class="batch-card-actions">
+                      <button class="batch-edit-button" type="button" data-open-modal="batch-edit|${module.key}|${item.id}" aria-label="编辑批次 ${escapeHtml(item.id)}">
+                        编辑
+                      </button>
+                      <button class="batch-delete-button" type="button" data-open-modal="batch-delete|${module.key}|${item.id}" aria-label="删除批次 ${escapeHtml(item.id)}">
+                        删除
+                      </button>
                     </div>
-                    <div class="batch-status tone-${item.tone}">
-                      <span class="status-dot"></span>
-                      <span>${item.statusText}</span>
-                    </div>
-                  </button>
+                  </div>
                 `
               )
               .join("")}
@@ -4222,6 +4685,7 @@ function renderSensorListPage(module) {
 function renderFormField(field) {
   const iconName = field.type === "select" ? "i-chevron" : field.type === "datetime" || field.type === "date" ? "i-calendar" : "";
   const rule = getFieldRule(field, field.moduleKey || "");
+  const options = field.options || (field.type === "select" ? [field.value] : []);
   const sensorAttr =
     field.name && field.moduleKey
       ? `data-sensor-module="${field.moduleKey}" data-sensor-field="${field.name}"`
@@ -4231,7 +4695,7 @@ function renderFormField(field) {
       ? `
         <div class="input-wrap">
           <select class="select-control has-icon" ${sensorAttr}>
-            <option>${field.value}</option>
+            ${options.map((option) => `<option ${option === field.value ? "selected" : ""}>${escapeHtml(option)}</option>`).join("")}
           </select>
           <span class="trailing-icon">${icon("i-chevron")}</span>
         </div>
@@ -4256,6 +4720,8 @@ function renderFormField(field) {
 function renderSensorFormPage(module) {
   const basicFields = module.basicFields.map((field, index) => ({
     ...field,
+    value: index === 0 ? state.activeBatch[module.key] : field.value,
+    options: index === 0 ? module.batches.map((item) => item.id) : field.options,
     moduleKey: module.key,
     name: `${module.key}-basic-${index}`
   }));
@@ -4369,11 +4835,14 @@ function renderTableCell(row, column, pageKey) {
             (rawAction) => {
               const action = normalizeAnalysisAction(rawAction) || rawAction;
               const targetId = row.id || row.name || row.code;
+              const actionId = action.id || action.label;
               return `
               <button
                 class="table-link ${action.tone === "danger" ? "is-danger" : ""}"
                 type="button"
-                data-table-action="${pageKey}|${action.id || action.label}|${escapeHtml(targetId)}"
+                data-table-page="${escapeHtml(pageKey)}"
+                data-table-action="${escapeHtml(actionId)}"
+                data-table-target="${escapeHtml(targetId)}"
               >
                 ${action.label}
               </button>
@@ -4781,16 +5250,18 @@ function renderGeneField(field) {
   const label = `<label>${escapeHtml(field.label)}</label>`;
   const fieldName = escapeHtml(field.name || "");
   const rule = getFieldRule(field, field.moduleKey || "");
+  const selectValue = field.value ?? "";
 
   if (field.type === "select") {
     return `
       <div class="${fieldClass}">
         ${label}
         <select class="gene-control" data-gene-field="${fieldName}">
+          ${selectValue === "" ? '<option value="" selected disabled>请选择</option>' : ""}
           ${field.options
             .map(
               (option) => `
-                <option ${option === field.value ? "selected" : ""}>${escapeHtml(option)}</option>
+                <option ${option === selectValue ? "selected" : ""}>${escapeHtml(option)}</option>
               `
             )
             .join("")}
@@ -4826,14 +5297,16 @@ function renderAnalysisField(field) {
 function renderAnalysisControl(field) {
   const fieldName = escapeHtml(field.name || "");
   const rule = getFieldRule(field, field.moduleKey || "");
+  const selectValue = field.value ?? "";
   if (field.type === "select") {
     return `
       <div class="rule-control-stack">
       <select class="gene-control" data-gene-field="${fieldName}">
+        ${selectValue === "" ? '<option value="" selected disabled>请选择</option>' : ""}
         ${field.options
           .map(
             (option) => `
-              <option ${option === field.value ? "selected" : ""}>${escapeHtml(option)}</option>
+              <option ${option === selectValue ? "selected" : ""}>${escapeHtml(option)}</option>
             `
           )
           .join("")}
@@ -4887,6 +5360,7 @@ function renderFullModuleOptions(selectedModules = []) {
 
 function renderOmicsFormModal(mode, itemId = "") {
   const current = itemId ? hydrateOmicsItem(getAnalysisRow("omics", itemId) || {}) : null;
+  const isEdit = mode === "edit";
   const title = mode === "edit" ? "编辑代谢模型" : "新建组学数据分析项目";
   const footerLabel = mode === "edit" ? "保存修改" : "确认创建";
   const fields = [
@@ -4895,7 +5369,7 @@ function renderOmicsFormModal(mode, itemId = "") {
       name: "analysis-strain",
       label: "菌株类型",
       type: "select",
-      value: current?.strain || "大肠杆菌",
+      value: isEdit ? current?.strain || "" : "",
       options: ["大肠杆菌", "酵母菌", "芽孢杆菌"],
       rule: "必填，只能选择当前菌株类型"
     },
@@ -4903,7 +5377,7 @@ function renderOmicsFormModal(mode, itemId = "") {
       name: "analysis-source",
       label: "模型来源",
       type: "select",
-      value: current?.source || "文件导入",
+      value: isEdit ? current?.source || "" : "",
       options: ["文件导入", "数据库导入", "手动构建"],
       rule: "必填，只能选择文件导入、数据库导入、手动构建"
     },
@@ -5345,10 +5819,8 @@ function renderOmicsEnergyCard(item) {
 }
 
 function renderOmicsDetailModal(itemId) {
-  const item = hydrateOmicsItem(getAnalysisRow("omics", itemId) || {});
-  if (!item.id) {
-    return "";
-  }
+  const source = getAnalysisRow("omics", itemId) || {};
+  const item = hydrateOmicsItem({ id: source.id || itemId, ...source });
 
   return renderGeneModalShell({
     title: `代谢模型详情 - ${item.name}`,
@@ -5436,6 +5908,7 @@ function renderOmicsDeleteModal(itemId) {
 
 function renderProcessFormModal(mode, itemId = "") {
   const current = itemId ? hydrateProcessItem(getAnalysisRow("process", itemId) || {}) : null;
+  const isEdit = mode === "edit";
   const title = mode === "edit" ? "编辑发酵优化模型" : "新建发酵过程分析项目";
   const footerLabel = mode === "edit" ? "保存修改" : "确认创建";
   const fields = [
@@ -5444,7 +5917,7 @@ function renderProcessFormModal(mode, itemId = "") {
       name: "analysis-model",
       label: "模型类型",
       type: "select",
-      value: current?.model || "代谢网络模型",
+      value: isEdit ? current?.model || "" : "",
       options: ["代谢网络模型", "神经网络模型"],
       rule: "必填，只能选择当前枚举模型"
     },
@@ -5452,7 +5925,7 @@ function renderProcessFormModal(mode, itemId = "") {
       name: "analysis-strain",
       label: "菌株类型",
       type: "select",
-      value: current?.strain || "谷氨酸棒杆菌",
+      value: isEdit ? current?.strain || "" : "",
       options: ["谷氨酸棒杆菌", "大肠杆菌", "酵母菌", "芽孢杆菌"],
       rule: "必填，只能选择当前菌株类型"
     },
@@ -5460,7 +5933,7 @@ function renderProcessFormModal(mode, itemId = "") {
       name: "analysis-goal",
       label: "优化目标",
       type: "select",
-      value: current?.goal || "产量最大化",
+      value: isEdit ? current?.goal || "" : "",
       options: ["产量最大化", "生成速率最大化", "底物利用最大化"],
       rule: "必填，只能选择当前枚举目标"
     },
@@ -5575,10 +6048,8 @@ function renderProcessResultPanel(item) {
 }
 
 function renderProcessDetailModal(itemId) {
-  const item = hydrateProcessItem(getAnalysisRow("process", itemId) || {});
-  if (!item.id) {
-    return "";
-  }
+  const source = getAnalysisRow("process", itemId) || {};
+  const item = hydrateProcessItem({ id: source.id || itemId, ...source });
 
   const infoItems = [
     { label: "模型名称", html: `<span class="process-name-link">${escapeHtml(item.name)}</span>` },
@@ -5667,6 +6138,7 @@ function renderProcessDeleteModal(itemId) {
 
 function renderFullFormModal(mode, itemId = "") {
   const current = itemId ? hydrateFullItem(getAnalysisRow("full", itemId) || {}) : null;
+  const isEdit = mode === "edit";
   const title = mode === "edit" ? "编辑分析项目" : "新建分析项目";
   const footerLabel = mode === "edit" ? "保存修改" : "确认创建";
 
@@ -5684,7 +6156,7 @@ function renderFullFormModal(mode, itemId = "") {
           ${renderAnalysisControl({
             name: "analysis-strain",
             type: "select",
-            value: current?.strain || "谷氨酸棒杆菌",
+            value: isEdit ? current?.strain || "" : "",
             options: ["谷氨酸棒杆菌", "大肠杆菌", "酵母菌", "芽孢杆菌"],
             rule: "必填，只能选择当前菌株类型"
           })}
@@ -5701,7 +6173,7 @@ function renderFullFormModal(mode, itemId = "") {
         </div>
         <div class="gene-field is-full">
           <label>选择分析模块</label>
-          ${renderFullModuleOptions(current?.modules || [])}
+          ${renderFullModuleOptions(isEdit ? current?.modules || [] : [])}
           ${renderRequirementHint("必选，至少选择1个分析模块，可多选")}
         </div>
       </div>
@@ -5801,11 +6273,13 @@ function renderFullSummaryTable(type, item) {
   `;
 }
 
+function getSafeFullItem(itemId) {
+  const source = getAnalysisRow("full", itemId) || {};
+  return hydrateFullItem({ ...source, id: source.id || itemId || "full-1" });
+}
+
 function renderFullDetailModal(itemId) {
-  const item = hydrateFullItem(getAnalysisRow("full", itemId) || {});
-  if (!item.id) {
-    return "";
-  }
+  const item = getSafeFullItem(itemId);
 
   const collapsedSection = renderFullAccordion("综合参数预测模型", "is-bulb", "", false);
   const gpaSection = renderFullAccordion("GPA分析结果整合", "is-bars", renderFullSummaryTable("gpa", item), true);
@@ -5836,10 +6310,7 @@ function renderFullDetailModal(itemId) {
 }
 
 function renderFullDeleteModal(itemId) {
-  const item = hydrateFullItem(getAnalysisRow("full", itemId) || {});
-  if (!item.id) {
-    return "";
-  }
+  const item = getSafeFullItem(itemId);
 
   return renderGeneModalShell({
     title: "确认删除",
@@ -5860,11 +6331,8 @@ function renderFullDeleteModal(itemId) {
 }
 
 function renderFullGpaDetailModal(itemId) {
-  const item = hydrateFullItem(getAnalysisRow("full", itemId) || {});
+  const item = getSafeFullItem(itemId);
   const detail = item.gpaDetail;
-  if (!item.id) {
-    return "";
-  }
 
   const infoItems = [
     { label: "项目名称", value: detail ? item.gpaSummary.projectName : item.name },
@@ -5998,11 +6466,8 @@ function renderFullGpaDetailModal(itemId) {
 }
 
 function renderFullPredictDetailModal(itemId) {
-  const item = hydrateFullItem(getAnalysisRow("full", itemId) || {});
+  const item = getSafeFullItem(itemId);
   const detail = item.predictDetail;
-  if (!item.id) {
-    return "";
-  }
 
   const infoItems = [
     { label: "模型名称", value: item.processSummary.modelName },
@@ -6111,12 +6576,14 @@ function renderServiceStatusTag(text, className = statusTextToClass(text)) {
 
 function renderServiceControl(field) {
   const attr = escapeHtml(field.name || "");
+  const selectValue = field.value ?? "";
 
   if (field.type === "select") {
     return `
       <select class="gene-control" data-service-field="${attr}">
+        ${selectValue === "" ? '<option value="" selected disabled>请选择</option>' : ""}
         ${(field.options || [])
-          .map((option) => `<option ${option === field.value ? "selected" : ""}>${escapeHtml(option)}</option>`)
+          .map((option) => `<option ${option === selectValue ? "selected" : ""}>${escapeHtml(option)}</option>`)
           .join("")}
       </select>
     `;
@@ -6415,7 +6882,7 @@ function renderServiceFormModal(mode, itemId = "") {
   const step = state.modal?.serviceStep || 1;
   const draft = {
     ...createServiceEmptyDraft(),
-    ...(state.modal?.serviceDraft || buildServiceDraft(current))
+    ...(state.modal?.serviceDraft || (mode === "edit" ? buildServiceDraft(current) : {}))
   };
   const footer =
     method === "manual"
@@ -6457,10 +6924,8 @@ function renderServiceFormModal(mode, itemId = "") {
 }
 
 function renderServiceDetailModal(itemId) {
-  const item = hydrateServiceItem(getAnalysisRow("service", itemId) || {});
-  if (!item.id) {
-    return "";
-  }
+  const source = getAnalysisRow("service", itemId) || {};
+  const item = hydrateServiceItem({ id: source.id || itemId, ...source });
 
   return renderGeneModalShell({
     title: `工程细胞详情 - ${item.code} ${item.name}`,
@@ -6783,7 +7248,7 @@ function renderGeneFormModal(mode, projectId = "") {
       name: "strain",
       label: "菌株类型",
       type: "select",
-      value: project?.strain || "大肠杆菌",
+      value: isEdit ? project?.strain || "" : "",
       options: ["大肠杆菌", "酵母菌", "芽孢杆菌"],
       rule: "必填，只能选择当前菌株类型"
     },
@@ -6791,7 +7256,7 @@ function renderGeneFormModal(mode, projectId = "") {
       name: "phenotype",
       label: "表型类型",
       type: "select",
-      value: project?.phenotype || "产量",
+      value: isEdit ? project?.phenotype || "" : "",
       options: ["产量", "生长速率", "底物利用率"],
       rule: "必填，只能选择产量、生长速率、底物利用率"
     },
@@ -6799,11 +7264,11 @@ function renderGeneFormModal(mode, projectId = "") {
       name: "method",
       label: "分析方法",
       type: "select",
-      value: project?.method || "GWAS分析",
+      value: isEdit ? project?.method || "" : "",
       options: ["GWAS分析", "关联分析", "候选位点分析"],
       rule: "必填，只能选择当前分析方法"
     },
-    { name: "threshold", label: "显著性阈值", value: project?.threshold || "0.05", placeholder: "请输入显著性阈值", rule: "必填，0-1之间的小数，默认0.05，最多6位小数" },
+    { name: "threshold", label: "显著性阈值", value: isEdit ? project?.threshold || "" : "", placeholder: "请输入显著性阈值", rule: "必填，0-1之间的小数，最多6位小数" },
     {
       name: "description",
       label: "项目描述",
@@ -7238,8 +7703,9 @@ function openGeneModal(actionKey, projectId = "", extra = {}) {
 
 function getAnalysisRow(moduleKey, itemId) {
   const target = String(itemId || "");
+  const rows = analysisPages[moduleKey]?.rows || [];
   return (
-    analysisPages[moduleKey].rows.find((row) => [row.id, row.name, row.code].some((value) => String(value || "") === target)) ||
+    rows.find((row) => [row.id, row.name, row.code, row.itemId].some((value) => String(value || "") === target)) ||
     null
   );
 }
@@ -7260,6 +7726,7 @@ function renderAnalysisFormModal(moduleKey, mode, itemId = "") {
 
   const config = analysisFormConfigs[moduleKey];
   const current = itemId ? getAnalysisRow(moduleKey, itemId) : null;
+  const isEdit = mode === "edit";
 
   return renderGeneModalShell({
     title: `${mode === "edit" ? "编辑" : "新增"}${config.title}`,
@@ -7273,7 +7740,7 @@ function renderAnalysisFormModal(moduleKey, mode, itemId = "") {
               moduleKey,
               value:
                 field.name === "statusText"
-                  ? current?.status?.text || field.options?.[0] || ""
+                  ? isEdit ? current?.status?.text || "" : ""
                   : current?.[field.name] || "",
               name: `analysis-${field.name}`
             })
@@ -7304,15 +7771,18 @@ function renderAnalysisDetailModal(moduleKey, itemId) {
 
   const row = getAnalysisRow(moduleKey, itemId);
   const page = analysisPages[moduleKey];
-  if (!row) {
-    return "";
-  }
+  const safeRow = row || {
+    id: itemId,
+    name: itemId || "未命名记录",
+    code: itemId || "",
+    status: { text: "未找到", className: "is-pending" }
+  };
 
   const infoItems = page.columns
     .filter((column) => column.key !== "actions")
     .map((column) => ({
       label: column.label,
-      value: column.key === "status" ? row.status.text : row[column.key]
+      value: column.key === "status" ? safeRow.status.text : safeRow[column.key]
     }));
 
   return renderGeneModalShell({
@@ -7324,6 +7794,7 @@ function renderAnalysisDetailModal(moduleKey, itemId) {
           <h4>详细信息</h4>
         </div>
         ${renderGeneInfoGrid(infoItems)}
+        ${row ? "" : '<p class="section-caption" style="margin-top:12px;">未找到匹配记录，当前显示的是兜底详情。</p>'}
       </section>
     `,
     footer: `
@@ -7381,7 +7852,7 @@ function openAnalysisModal(action, moduleKey, itemId = "") {
         itemId,
         serviceMethod: action === "edit" ? "manual" : "file",
         serviceStep: 1,
-        serviceDraft: buildServiceDraft(current)
+        serviceDraft: action === "edit" ? buildServiceDraft(current) : createServiceEmptyDraft()
       };
       return;
     }
@@ -7895,6 +8366,85 @@ function renderImportModal(module) {
   `;
 }
 
+function renderSensorBatchModal(moduleKey, batchId = "") {
+  const module = sensorModules[moduleKey];
+  const current = batchId ? getSensorBatch(moduleKey, batchId) : null;
+  const mode = current ? "edit" : "create";
+  const fallbackName = current?.cellName || "";
+  const suggestedId = current?.id || "";
+  const concentration = current?.badge || "";
+
+  return renderGeneModalShell({
+    title: `${mode === "edit" ? "编辑" : "新增"}${module.label}批次`,
+    sizeClass: "is-gene-form sensor-batch-modal",
+    body: `
+      <div class="gene-form-grid">
+        ${renderGeneField({
+          name: "batchCellName",
+          label: "细胞名称",
+          value: fallbackName,
+          placeholder: "请输入细胞名称",
+          rule: "建议使用细胞名称生成批号，例如：细胞名称-时间"
+        })}
+        ${renderGeneField({
+          name: "batchId",
+          label: "批次号",
+          value: suggestedId,
+          placeholder: "请输入批次号",
+          rule: "必填，建议格式：细胞名称-YYYYMMDDHHmm，需在当前模块内唯一"
+        })}
+        ${renderGeneField({
+          name: "batchConcentration",
+          label: "浓度",
+          type: "select",
+          value: concentration,
+          options: ["高浓度", "中浓度", "低浓度"],
+          rule: "必填，用于批次列表标签展示"
+        })}
+        <div class="gene-field is-full">
+          <div class="batch-suggestion-box">
+            <span class="header-icon">${icon("i-info")}</span>
+            <div>
+              <strong>批号建议</strong>
+              <p>以“细胞名称 + 当前时间”生成，便于追溯发酵批次。例如：工程细胞-202606161430。</p>
+            </div>
+            <button class="modal-outline" type="button" data-batch-generate="${moduleKey}">生成建议批号</button>
+          </div>
+        </div>
+      </div>
+    `,
+    footer: `
+      <button class="modal-secondary" type="button" data-close-modal="batch">取消</button>
+      <button class="modal-primary" type="button" data-batch-submit="${mode}|${moduleKey}|${batchId}">保存批次</button>
+    `
+  });
+}
+
+function renderSensorBatchDeleteModal(moduleKey, batchId = "") {
+  const module = sensorModules[moduleKey];
+  const batch = getSensorBatch(moduleKey, batchId);
+  if (!module || !batch) {
+    return "";
+  }
+  const recordCount = batch.records?.length || 0;
+  return renderGeneModalShell({
+    title: "删除批次",
+    sizeClass: "is-gene-delete sensor-batch-delete-modal",
+    body: `
+      <div class="gene-delete-body">
+        <div class="gene-delete-icon">${icon("i-warning")}</div>
+        <h4>确认删除批次 ${escapeHtml(batch.id)} 吗？</h4>
+        <p>该批次属于${escapeHtml(module.label)}，浓度为${escapeHtml(batch.badge)}。</p>
+        <span>${recordCount ? `该批次下已有 ${recordCount} 条记录，删除后记录将不再展示。` : "该批次暂无录入记录，删除后可重新新增。"}</span>
+      </div>
+    `,
+    footer: `
+      <button class="modal-secondary" type="button" data-close-modal="batch-delete">取消</button>
+      <button class="modal-primary gene-danger-button" type="button" data-batch-delete="${moduleKey}|${batch.id}">确认删除</button>
+    `
+  });
+}
+
 function renderDetailModal(moduleKey, batchId, recordId) {
   const { module, batch, record } = findRecord(moduleKey, batchId, recordId);
   if (!module || !batch || !record) {
@@ -8044,6 +8594,14 @@ function renderModal() {
     return renderImportModal(sensorModules[state.modal.module]);
   }
 
+  if (state.modal.type === "batch") {
+    return renderSensorBatchModal(state.modal.module, state.modal.batchId || "");
+  }
+
+  if (state.modal.type === "batch-delete") {
+    return renderSensorBatchDeleteModal(state.modal.module, state.modal.batchId || "");
+  }
+
   if (state.modal.type === "detail") {
     return renderDetailModal(state.modal.module, state.modal.batchId, state.modal.recordId);
   }
@@ -8086,6 +8644,12 @@ function renderDashboardView() {
             headerTools: false,
             content: renderSensorListPage(sensorModules[state.activeMenu])
           }
+        : state.activeMenu === "dashboard"
+          ? {
+              breadcrumb: analysisPages.dashboard.breadcrumb,
+              headerTools: analysisPages.dashboard.headerTools,
+              content: renderDashboardPage()
+            }
         : state.activeMenu === "catalog"
           ? {
               breadcrumb: analysisPages.catalog.breadcrumb,
@@ -8171,6 +8735,12 @@ function refreshCaptcha(key) {
   document.querySelectorAll(`[data-captcha-value="${key}"]`).forEach((node) => {
     node.textContent = state.captchaCodes[key];
   });
+  if (key === "login") {
+    const loginCaptchaInput = document.querySelector("#loginCaptcha");
+    if (loginCaptchaInput) {
+      loginCaptchaInput.value = state.captchaCodes.login;
+    }
+  }
 }
 
 function resetSensorToList(menuKey) {
@@ -8198,8 +8768,8 @@ function handleLoginSubmit(form) {
   }
 
   state.scene = "dashboard";
-  state.activeMenu = "physical";
-  state.openNavGroup = "monitor";
+  state.activeMenu = "dashboard";
+  state.openNavGroup = "";
   state.sensorView.physical = "list";
   state.sensorView.biological = "list";
   state.statusFilter.physical = "all";
@@ -8208,7 +8778,7 @@ function handleLoginSubmit(form) {
   state.pagination.biological = 1;
   state.modal = null;
   renderApp();
-  showToast("登录成功，已进入物理传感器页面");
+  showToast("登录成功，已进入数据看板页面");
 }
 
 function handleRegisterSubmit(form) {
@@ -8284,8 +8854,8 @@ function handleRecoverSubmit(form) {
 function handleLogout() {
   state.scene = "auth";
   state.authView = "login";
-  state.activeMenu = "physical";
-  state.openNavGroup = "monitor";
+  state.activeMenu = "dashboard";
+  state.openNavGroup = "";
   state.sensorView.physical = "list";
   state.sensorView.biological = "list";
   state.statusFilter.physical = "all";
@@ -8340,6 +8910,37 @@ document.addEventListener("click", async (event) => {
     return;
   }
 
+  const dashboardRangeButton = event.target.closest("[data-dashboard-range]");
+  if (dashboardRangeButton) {
+    state.dashboardRange = dashboardRangeButton.dataset.dashboardRange;
+    renderApp();
+    return;
+  }
+
+  const dashboardExportButton = event.target.closest("[data-dashboard-export]");
+  if (dashboardExportButton) {
+    const metrics = getDashboardMetrics();
+    const rows = [
+      ["指标", "数值"],
+      ["资源数据总量", formatWan(metrics.totalRecords)],
+      ["标准化通过率", `${metrics.standardRate}%`],
+      ["待审核入库", metrics.auditQueue],
+      ["分析项目数", metrics.projects],
+      ["传感器记录数", metrics.sensorRecords],
+      ["工程细胞服务条目", metrics.serviceTotal]
+    ];
+    const csv = rows.map((row) => row.map((cell) => `"${String(cell).replaceAll('"', '""')}"`).join(",")).join("\n");
+    const blob = new Blob([`\uFEFF${csv}`], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "工程细胞主题库数据看板.csv";
+    link.click();
+    URL.revokeObjectURL(url);
+    showToast("数据看板报表已导出");
+    return;
+  }
+
   const menuGroupButton = event.target.closest("[data-menu-group]");
   if (menuGroupButton) {
     const groupKey = menuGroupButton.dataset.menuGroup;
@@ -8389,7 +8990,11 @@ document.addEventListener("click", async (event) => {
     state.modal =
       type === "detail"
         ? { type, module: moduleKey, batchId, recordId }
-        : { type, module: moduleKey };
+        : type === "batch-edit"
+          ? { type: "batch", module: moduleKey, batchId }
+          : type === "batch-delete"
+            ? { type: "batch-delete", module: moduleKey, batchId }
+          : { type, module: moduleKey };
     renderApp();
     return;
   }
@@ -8623,7 +9228,10 @@ document.addEventListener("click", async (event) => {
 
   const tableAction = event.target.closest("[data-table-action]");
   if (tableAction) {
-    const [pageKey, actionKey, targetId] = tableAction.dataset.tableAction.split("|");
+    const pageKey = tableAction.dataset.tablePage || "";
+    const rawActionKey = tableAction.dataset.tableAction || "";
+    const actionKey = normalizeAnalysisAction({ id: rawActionKey, label: rawActionKey })?.id || rawActionKey;
+    const targetId = tableAction.dataset.tableTarget || "";
     if (pageKey === "catalog") {
       if (actionKey === "detail") {
         state.modal = { type: "catalog-detail", itemId: targetId };
@@ -8642,7 +9250,7 @@ document.addEventListener("click", async (event) => {
       return;
     }
     if (persistedAnalysisModules.includes(pageKey)) {
-      openAnalysisModal(actionKey === "view" ? "detail" : actionKey, pageKey, targetId);
+      openAnalysisModal(["view", "result"].includes(actionKey) ? "detail" : actionKey, pageKey, targetId);
       renderApp();
       return;
     }
@@ -8665,6 +9273,50 @@ document.addEventListener("click", async (event) => {
     }
 
     showToast(actionText[action] || "操作已完成");
+    return;
+  }
+
+  const batchGenerateButton = event.target.closest("[data-batch-generate]");
+  if (batchGenerateButton && state.modal?.type === "batch") {
+    const nameInput = document.querySelector('[data-gene-field="batchCellName"]');
+    const batchInput = document.querySelector('[data-gene-field="batchId"]');
+    if (batchInput) {
+      batchInput.value = generateSensorBatchId(nameInput?.value || "");
+      showToast("已生成建议批号");
+    }
+    return;
+  }
+
+  const batchSubmitButton = event.target.closest("[data-batch-submit]");
+  if (batchSubmitButton) {
+    const [mode, moduleKey, originalBatchId = ""] = batchSubmitButton.dataset.batchSubmit.split("|");
+    const values = {
+      cellName: document.querySelector('[data-gene-field="batchCellName"]')?.value || "",
+      batchId: document.querySelector('[data-gene-field="batchId"]')?.value || "",
+      concentration: document.querySelector('[data-gene-field="batchConcentration"]')?.value || "中浓度"
+    };
+    try {
+      upsertSensorBatch(moduleKey, mode, originalBatchId, values);
+      state.modal = null;
+      renderApp();
+      showToast(mode === "edit" ? "批次已更新" : "批次已新增");
+    } catch (error) {
+      showToast(error.message || "批次保存失败");
+    }
+    return;
+  }
+
+  const batchDeleteButton = event.target.closest("[data-batch-delete]");
+  if (batchDeleteButton) {
+    const [moduleKey, batchId] = batchDeleteButton.dataset.batchDelete.split("|");
+    try {
+      deleteSensorBatch(moduleKey, batchId);
+      state.modal = null;
+      renderApp();
+      showToast("批次已删除");
+    } catch (error) {
+      showToast(error.message || "批次删除失败");
+    }
     return;
   }
 
