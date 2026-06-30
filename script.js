@@ -1290,7 +1290,7 @@ const systemPages = {
     ],
     filters: [
       { label: "操作人", type: "input", placeholder: "请输入操作人" },
-      { label: "操作模块", type: "select", options: ["全部", "用户管理", "角色管理", "菜单管理", "平台配置"] },
+      { label: "操作模块", type: "select", options: ["全部", "用户管理", "角色管理", "菜单管理", "平台配置", "接口管理", "算法管理", "数据管理"] },
       { label: "操作结果", type: "select", options: ["全部", "成功", "失败"] },
       { label: "IP地址", type: "input", placeholder: "请输入IP地址" }
     ],
@@ -1525,6 +1525,112 @@ Object.assign(systemPages, {
       { id: "config-4", name: "对象存储桶名称", code: "storage.bucket.name", group: "存储配置", value: "ai-test-prod", status: { text: "停用" }, updatedAt: "2026-05-16 10:45" }
     ],
     footer: "共 4 条记录，每页 10 条"
+  },
+  "system-apis": {
+    key: "system-apis",
+    title: "接口管理",
+    breadcrumb: ["首页", "系统管理", "接口管理"],
+    primaryButton: "新增接口",
+    headerTools: true,
+    stats: [
+      { icon: "i-doc", iconClass: "is-blue", value: "4", label: "接口总数" },
+      { icon: "i-check", iconClass: "is-green", value: "3", label: "启用接口" },
+      { icon: "i-clock", iconClass: "is-yellow", value: "3", label: "今日调用接口" },
+      { icon: "i-warning", iconClass: "is-cyan", value: "1", label: "停用接口" }
+    ],
+    filters: [
+      { label: "接口名称", type: "input", placeholder: "请输入接口名称" },
+      { label: "接口编码", type: "input", placeholder: "请输入接口编码" },
+      { label: "请求方式", type: "select", options: ["全部", "GET", "POST", "PUT", "DELETE"] },
+      { label: "状态", type: "select", options: ["全部", "启用", "停用"] }
+    ],
+    columns: [
+      { key: "name", label: "接口名称" },
+      { key: "code", label: "接口编码" },
+      { key: "method", label: "请求方式" },
+      { key: "path", label: "接口地址" },
+      { key: "status", label: "状态" },
+      { key: "updatedAt", label: "更新时间" },
+      { key: "actions", label: "操作" }
+    ],
+    rows: [
+      { id: "api-1", name: "菌株基础信息接口", code: "api_cell_base", method: "GET", path: "/api/cells/base", status: { text: "启用" }, updatedAt: "2026-05-18 09:20" },
+      { id: "api-2", name: "发酵批次写入接口", code: "api_batch_write", method: "POST", path: "/api/batches", status: { text: "启用" }, updatedAt: "2026-05-19 14:05" },
+      { id: "api-3", name: "分析结果同步接口", code: "api_result_sync", method: "PUT", path: "/api/analysis/result", status: { text: "停用" }, updatedAt: "2026-05-20 11:42" },
+      { id: "api-4", name: "对象存储回调接口", code: "api_storage_callback", method: "POST", path: "/api/storage/callback", status: { text: "启用" }, updatedAt: "2026-05-21 16:18" }
+    ],
+    footer: "共 4 条记录，每页 10 条"
+  },
+  "system-algorithms": {
+    key: "system-algorithms",
+    title: "算法管理",
+    breadcrumb: ["首页", "系统管理", "算法管理"],
+    primaryButton: "新增算法",
+    headerTools: true,
+    stats: [
+      { icon: "i-settings", iconClass: "is-blue", value: "4", label: "算法总数" },
+      { icon: "i-check", iconClass: "is-green", value: "3", label: "启用算法" },
+      { icon: "i-bars", iconClass: "is-yellow", value: "3", label: "算法类型数" },
+      { icon: "i-warning", iconClass: "is-cyan", value: "1", label: "停用算法" }
+    ],
+    filters: [
+      { label: "算法名称", type: "input", placeholder: "请输入算法名称" },
+      { label: "算法类型", type: "select", options: ["全部", "关联分析", "预测分析", "优化分析", "质控分析"] },
+      { label: "版本", type: "input", placeholder: "请输入算法版本" },
+      { label: "状态", type: "select", options: ["全部", "启用", "停用"] }
+    ],
+    columns: [
+      { key: "name", label: "算法名称" },
+      { key: "type", label: "算法类型" },
+      { key: "version", label: "版本" },
+      { key: "packageName", label: "算法代码包" },
+      { key: "runtime", label: "运行环境" },
+      { key: "status", label: "状态" },
+      { key: "updatedAt", label: "更新时间" },
+      { key: "actions", label: "操作" }
+    ],
+    rows: [
+      { id: "algo-1", name: "基因型关联分析算法", type: "关联分析", version: "v2.3.1", packageName: "gene_relation_v2.3.1.zip", packageSize: "18.6 MB", runtime: "Python", status: { text: "启用" }, updatedAt: "2026-05-17 10:08" },
+      { id: "algo-2", name: "产量区间预测算法", type: "预测分析", version: "v1.8.4", packageName: "yield_forecast_v1.8.4.zip", packageSize: "26.3 MB", runtime: "Python", status: { text: "启用" }, updatedAt: "2026-05-18 15:36" },
+      { id: "algo-3", name: "发酵参数寻优算法", type: "优化分析", version: "v3.0.0", packageName: "ferment_opt_v3.0.0.tar.gz", packageSize: "42.8 MB", runtime: "Java", status: { text: "停用" }, updatedAt: "2026-05-20 09:18" },
+      { id: "algo-4", name: "组学数据质控算法", type: "质控分析", version: "v1.2.6", packageName: "omics_qc_v1.2.6.zip", packageSize: "15.1 MB", runtime: "R", status: { text: "启用" }, updatedAt: "2026-05-21 13:52" }
+    ],
+    footer: "共 4 条记录，每页 10 条"
+  },
+  "system-datasets": {
+    key: "system-datasets",
+    title: "数据管理",
+    breadcrumb: ["首页", "系统管理", "数据管理"],
+    primaryButton: "新增数据",
+    headerTools: true,
+    stats: [
+      { icon: "i-table", iconClass: "is-blue", value: "4", label: "数据总数" },
+      { icon: "i-check", iconClass: "is-green", value: "3", label: "启用数据" },
+      { icon: "i-doc", iconClass: "is-yellow", value: "4", label: "数据分类数" },
+      { icon: "i-warning", iconClass: "is-cyan", value: "1", label: "停用数据" }
+    ],
+    filters: [
+      { label: "数据名称", type: "input", placeholder: "请输入数据名称" },
+      { label: "数据分类", type: "select", options: ["全部", "过程数据", "组学数据", "模型数据", "基础数据"] },
+      { label: "数据源", type: "input", placeholder: "请输入数据源" },
+      { label: "状态", type: "select", options: ["全部", "启用", "停用"] }
+    ],
+    columns: [
+      { key: "name", label: "数据名称" },
+      { key: "category", label: "数据分类" },
+      { key: "source", label: "数据源" },
+      { key: "format", label: "存储格式" },
+      { key: "status", label: "状态" },
+      { key: "updatedAt", label: "更新时间" },
+      { key: "actions", label: "操作" }
+    ],
+    rows: [
+      { id: "data-1", name: "发酵过程批次数据", category: "过程数据", source: "实验平台", format: "Parquet", status: { text: "启用" }, updatedAt: "2026-05-16 09:26" },
+      { id: "data-2", name: "菌株多组学整合数据", category: "组学数据", source: "组学中心", format: "CSV", status: { text: "启用" }, updatedAt: "2026-05-18 11:40" },
+      { id: "data-3", name: "算法训练样本库", category: "模型数据", source: "算法中心", format: "JSON", status: { text: "停用" }, updatedAt: "2026-05-19 17:12" },
+      { id: "data-4", name: "主题库编码字典", category: "基础数据", source: "系统维护", format: "XLSX", status: { text: "启用" }, updatedAt: "2026-05-21 08:55" }
+    ],
+    footer: "共 4 条记录，每页 10 条"
   }
 });
 
@@ -1534,6 +1640,8 @@ const systemFormConfigs = {
     fields: [
       { name: "username", label: "用户名", placeholder: "请输入用户名" },
       { name: "name", label: "姓名", placeholder: "请输入姓名" },
+      { name: "role", label: "所属角色", type: "select", options: ["系统管理员", "研发主管", "实验员", "访客"] },
+      { name: "department", label: "所属部门", placeholder: "请输入所属部门" },
       { name: "mobile", label: "手机号", placeholder: "请输入手机号" },
       { name: "gender", label: "性别", type: "select", options: ["男", "女", "未知"] },
       { name: "email", label: "邮箱", placeholder: "请输入邮箱" },
@@ -1568,6 +1676,37 @@ const systemFormConfigs = {
       { name: "code", label: "配置编码", placeholder: "请输入配置编码" },
       { name: "group", label: "配置分组", type: "select", options: ["基础配置", "安全配置", "通知配置", "存储配置"] },
       { name: "value", label: "当前值", placeholder: "请输入当前值" },
+      { name: "statusText", label: "状态", type: "select", options: ["启用", "停用"] }
+    ]
+  },
+  "system-apis": {
+    title: "接口",
+    fields: [
+      { name: "name", label: "接口名称", placeholder: "请输入接口名称" },
+      { name: "code", label: "接口编码", placeholder: "请输入接口编码" },
+      { name: "method", label: "请求方式", type: "select", options: ["GET", "POST", "PUT", "DELETE"] },
+      { name: "path", label: "接口地址", placeholder: "请输入接口地址" },
+      { name: "statusText", label: "状态", type: "select", options: ["启用", "停用"] }
+    ]
+  },
+  "system-algorithms": {
+    title: "算法",
+    fields: [
+      { name: "name", label: "算法名称", placeholder: "请输入算法名称" },
+      { name: "type", label: "算法类型", type: "select", options: ["关联分析", "预测分析", "优化分析", "质控分析"] },
+      { name: "version", label: "版本", placeholder: "请输入算法版本" },
+      { name: "packageName", label: "算法代码包", type: "file", accept: ".zip,.tar,.gz,.rar,.7z", placeholder: "支持 zip / tar.gz / rar / 7z，单文件不超过 200MB" },
+      { name: "runtime", label: "运行环境", type: "select", options: ["Python", "Java", "R", "MATLAB"] },
+      { name: "statusText", label: "状态", type: "select", options: ["启用", "停用"] }
+    ]
+  },
+  "system-datasets": {
+    title: "数据",
+    fields: [
+      { name: "name", label: "数据名称", placeholder: "请输入数据名称" },
+      { name: "category", label: "数据分类", type: "select", options: ["过程数据", "组学数据", "模型数据", "基础数据"] },
+      { name: "source", label: "数据源", placeholder: "请输入数据源" },
+      { name: "format", label: "存储格式", type: "select", options: ["CSV", "JSON", "Parquet", "XLSX"] },
       { name: "statusText", label: "状态", type: "select", options: ["启用", "停用"] }
     ]
   }
@@ -1698,6 +1837,27 @@ const systemFieldRules = {
     code: "必填，建议格式 group.name.key，建议唯一",
     group: "必填，只能选择当前配置分组",
     value: "必填，1-500字符，按配置类型进一步限制",
+    statusText: "必填，只能选择启用或停用"
+  },
+  "system-apis": {
+    name: "必填，2-50字符，建议与业务接口名称一致",
+    code: "必填，2-40字符，建议使用 api_ 前缀英文编码",
+    method: "必填，只能选择 GET、POST、PUT、DELETE 中的一项",
+    path: "必填，应以 /api/ 开头，建议与服务路由保持一致",
+    statusText: "必填，只能选择启用或停用"
+  },
+  "system-algorithms": {
+    name: "必填，2-50字符，建议与算法服务名称保持一致",
+    type: "必填，只能选择当前枚举中的算法类型",
+    version: "必填，建议采用 v主版本.次版本.修订号 格式",
+    runtime: "必填，只能选择当前支持的运行环境",
+    statusText: "必填，只能选择启用或停用"
+  },
+  "system-datasets": {
+    name: "必填，2-50字符，建议与数据资产名称保持一致",
+    category: "必填，只能选择当前枚举中的数据分类",
+    source: "必填，2-50字符，填写真实数据来源系统或部门",
+    format: "必填，只能选择当前支持的存储格式",
     statusText: "必填，只能选择启用或停用"
   }
 };
@@ -2410,6 +2570,13 @@ const fullProjectLibrary = {
       ]
     },
     predictDetail: {
+      comprehensivePrediction: {
+        yield: "9.3 g/L",
+        confidence: "92%",
+        cycle: "42 h",
+        cost: "下降15%",
+        recommendation: "采用glnA/gdh组合并将pH稳定在7.2，分段提升葡萄糖流加速率。"
+      },
       paramSuggestions: [
         { name: "发酵温度", current: "37℃", optimized: "35℃", gain: "+5.2%", level: 82 },
         { name: "pH值", current: "7.0", optimized: "7.2", gain: "+3.8%", level: 70 },
@@ -2724,6 +2891,11 @@ function hydrateFullItem(item) {
       ...defaults.predictDetail,
       ...(preset?.predictDetail || {}),
       ...(hydrated.predictDetail || {}),
+      comprehensivePrediction: {
+        ...defaults.predictDetail.comprehensivePrediction,
+        ...(preset?.predictDetail?.comprehensivePrediction || {}),
+        ...(hydrated.predictDetail?.comprehensivePrediction || {})
+      },
       paramSuggestions:
         hydrated.predictDetail?.paramSuggestions || preset?.predictDetail?.paramSuggestions || defaults.predictDetail.paramSuggestions,
       materialStats: hydrated.predictDetail?.materialStats || preset?.predictDetail?.materialStats || defaults.predictDetail.materialStats,
@@ -3032,7 +3204,15 @@ async function loadAnalysisModules() {
 }
 
 const SYSTEM_PAGE_STORE_KEY = "engineering-cell-admin-system-pages-v1";
-const systemInteractiveModules = ["system-users", "system-roles", "system-menus", "system-config"];
+const systemInteractiveModules = [
+  "system-users",
+  "system-roles",
+  "system-menus",
+  "system-config",
+  "system-apis",
+  "system-algorithms",
+  "system-datasets"
+];
 
 function systemDeepClone(value) {
   return JSON.parse(JSON.stringify(value));
@@ -3052,6 +3232,46 @@ function systemNowDateTimeString() {
   return `${now.getFullYear()}-${systemPadDatePart(now.getMonth() + 1)}-${systemPadDatePart(now.getDate())} ${systemPadDatePart(now.getHours())}:${systemPadDatePart(now.getMinutes())}`;
 }
 
+function moduleTitleForLog(moduleKey) {
+  return (
+    systemPages[moduleKey]?.title ||
+    analysisPages[moduleKey]?.title ||
+    sensorModules[moduleKey]?.label ||
+    {
+      auth: "登录认证",
+      gene: "基因型-表型分析"
+    }[moduleKey] ||
+    moduleKey ||
+    "系统"
+  );
+}
+
+function getCurrentOperatorName() {
+  return state.currentUser?.name || getCurrentUserProfile().name || "张明";
+}
+
+function appendOperationLog(moduleKey, content, statusText = "成功") {
+  const page = systemPages["system-logs"];
+  if (!page) {
+    return;
+  }
+  page.rows.unshift({
+    id: `log-${Date.now()}-${Math.random().toString(16).slice(2, 6)}`,
+    name: getCurrentOperatorName(),
+    module: moduleTitleForLog(moduleKey),
+    content,
+    ip: "127.0.0.1",
+    status: {
+      text: statusText,
+      className: statusText === "成功" ? "is-valid" : "is-fail"
+    },
+    createdAt: systemNowDateTimeString()
+  });
+  page.rows = page.rows.slice(0, 200);
+  refreshSystemPageMeta("system-logs");
+  writeSystemPageStore();
+}
+
 function generateSystemLocalId(prefix) {
   const randomPart =
     globalThis.crypto?.randomUUID?.().replaceAll("-", "").slice(0, 8) ||
@@ -3065,7 +3285,10 @@ function getSystemStatusClass(moduleKey, statusText = "") {
     "system-roles": { 启用: "is-valid", 停用: "is-pending" },
     "system-menus": { 显示: "is-valid", 隐藏: "is-pending" },
     "system-logs": { 成功: "is-valid", 失败: "is-fail" },
-    "system-config": { 启用: "is-valid", 停用: "is-pending" }
+    "system-config": { 启用: "is-valid", 停用: "is-pending" },
+    "system-apis": { 启用: "is-valid", 停用: "is-pending" },
+    "system-algorithms": { 启用: "is-valid", 停用: "is-pending" },
+    "system-datasets": { 启用: "is-valid", 停用: "is-pending" }
   };
   return mapping[moduleKey]?.[statusText] || "is-valid";
 }
@@ -3089,11 +3312,19 @@ function buildSystemActions(moduleKey, statusText = "") {
     return [];
   }
   const toggleLabel = getSystemToggleTargetStatus(moduleKey, statusText);
-  return [
+  const actions = [
+    { id: "detail", label: "查看详情", tone: "blue" },
     { id: "edit", label: "编辑", tone: "blue" },
     { id: "toggle", label: toggleLabel, tone: toggleLabel === "停用" || toggleLabel === "隐藏" ? "danger" : "blue" },
     { id: "delete", label: "删除", tone: "danger" }
   ];
+  if (moduleKey === "system-users") {
+    actions.splice(1, 0, { id: "assign-role", label: "分配角色", tone: "blue" });
+  }
+  if (moduleKey === "system-roles") {
+    actions.splice(1, 0, { id: "permission", label: "配置权限", tone: "blue" });
+  }
+  return actions;
 }
 
 function hydrateSystemRow(moduleKey, row = {}) {
@@ -3152,6 +3383,27 @@ function refreshSystemPageMeta(moduleKey) {
     page.stats[1].value = String(page.rows.filter((row) => row.status.text === "启用").length);
     page.stats[2].value = String(page.rows.filter((row) => row.status.text === "停用").length);
     page.stats[3].value = String(page.rows.filter((row) => row.group === "基础配置").length);
+  }
+
+  if (moduleKey === "system-apis") {
+    page.stats[0].value = String(page.rows.length);
+    page.stats[1].value = String(page.rows.filter((row) => row.status.text === "启用").length);
+    page.stats[2].value = String(page.rows.filter((row) => ["GET", "POST"].includes(row.method)).length);
+    page.stats[3].value = String(page.rows.filter((row) => row.status.text === "停用").length);
+  }
+
+  if (moduleKey === "system-algorithms") {
+    page.stats[0].value = String(page.rows.length);
+    page.stats[1].value = String(page.rows.filter((row) => row.status.text === "启用").length);
+    page.stats[2].value = String(new Set(page.rows.map((row) => row.type).filter(Boolean)).size);
+    page.stats[3].value = String(page.rows.filter((row) => row.status.text === "停用").length);
+  }
+
+  if (moduleKey === "system-datasets") {
+    page.stats[0].value = String(page.rows.length);
+    page.stats[1].value = String(page.rows.filter((row) => row.status.text === "启用").length);
+    page.stats[2].value = String(new Set(page.rows.map((row) => row.category).filter(Boolean)).size);
+    page.stats[3].value = String(page.rows.filter((row) => row.status.text === "停用").length);
   }
 }
 
@@ -3212,6 +3464,9 @@ function buildSystemPayload(moduleKey, values, current = null) {
       id: current?.id || generateSystemLocalId("user"),
       username: values.username || current?.username || "",
       name: values.name || current?.name || "",
+      account: values.username || current?.account || current?.username || "",
+      role: values.role || current?.role || "访客",
+      department: values.department || values.organization || current?.department || "",
       mobile: values.mobile || current?.mobile || "",
       gender: values.gender || current?.gender || "",
       email: values.email || current?.email || "",
@@ -3228,6 +3483,7 @@ function buildSystemPayload(moduleKey, values, current = null) {
       name: values.name || current?.name || "",
       code: values.code || current?.code || "",
       type: values.type || current?.type || "自定义",
+      permissions: values.permissions || current?.permissions || ["dashboard:view"],
       userCount: current?.userCount || "0",
       status: { text: statusText, className: getSystemStatusClass(moduleKey, statusText) },
       updatedAt: systemNowDateTimeString()
@@ -3260,7 +3516,154 @@ function buildSystemPayload(moduleKey, values, current = null) {
     };
   }
 
+  if (moduleKey === "system-apis") {
+    const statusText = values.statusText || current?.status?.text || "启用";
+    return {
+      id: current?.id || generateSystemLocalId("api"),
+      name: values.name || current?.name || "",
+      code: values.code || current?.code || "",
+      method: values.method || current?.method || "GET",
+      path: values.path || current?.path || "",
+      status: { text: statusText, className: getSystemStatusClass(moduleKey, statusText) },
+      updatedAt: systemNowDateTimeString()
+    };
+  }
+
+  if (moduleKey === "system-algorithms") {
+    const statusText = values.statusText || current?.status?.text || "启用";
+    return {
+      id: current?.id || generateSystemLocalId("algo"),
+      name: values.name || current?.name || "",
+      type: values.type || current?.type || "关联分析",
+      version: values.version || current?.version || "",
+      packageName: values.packageName || current?.packageName || "",
+      packageSize: values.packageSize || current?.packageSize || "",
+      runtime: values.runtime || current?.runtime || "Python",
+      status: { text: statusText, className: getSystemStatusClass(moduleKey, statusText) },
+      updatedAt: systemNowDateTimeString()
+    };
+  }
+
+  if (moduleKey === "system-datasets") {
+    const statusText = values.statusText || current?.status?.text || "启用";
+    return {
+      id: current?.id || generateSystemLocalId("data"),
+      name: values.name || current?.name || "",
+      category: values.category || current?.category || "过程数据",
+      source: values.source || current?.source || "",
+      format: values.format || current?.format || "CSV",
+      status: { text: statusText, className: getSystemStatusClass(moduleKey, statusText) },
+      updatedAt: systemNowDateTimeString()
+    };
+  }
+
   return current || {};
+}
+
+const rolePermissionNodes = [
+  { group: "数据看板", items: [{ code: "dashboard:view", label: "查看数据看板" }, { code: "dashboard:export", label: "导出看板报表" }] },
+  {
+    group: "发酵过程数据检测工具",
+    items: [
+      { code: "sensor:physical:manage", label: "物理传感器管理" },
+      { code: "sensor:biological:manage", label: "生物传感器管理" },
+      { code: "sensor:threshold:edit", label: "阈值配置" },
+      { code: "sensor:import", label: "批量导入" }
+    ]
+  },
+  {
+    group: "数据分析",
+    items: [
+      { code: "analysis:gpa:manage", label: "基因型-表型分析" },
+      { code: "analysis:omics:manage", label: "组学数据分析" },
+      { code: "analysis:process:manage", label: "发酵过程分析" },
+      { code: "analysis:full:manage", label: "全流程分析" }
+    ]
+  },
+  {
+    group: "系统管理",
+      items: [
+        { code: "system:user:manage", label: "用户管理" },
+        { code: "system:role:permission", label: "角色权限配置" },
+        { code: "system:menu:manage", label: "菜单权限配置" },
+        { code: "system:api:manage", label: "接口管理" },
+        { code: "system:algorithm:manage", label: "算法管理" },
+        { code: "system:data:manage", label: "数据管理" },
+        { code: "system:log:export", label: "操作日志导出" }
+      ]
+    }
+];
+
+function renderAssignRoleModal(itemId) {
+  const user = getSystemRow("system-users", itemId);
+  if (!user) {
+    return "";
+  }
+  const enabledRoles = (systemPages["system-roles"]?.rows || []).filter((role) => role.status?.text !== "停用");
+  return renderGeneModalShell({
+    title: "分配角色",
+    sizeClass: "is-gene-form",
+    body: `
+      <section class="gene-section-card">
+        <div class="gene-section-head">
+          <div><h4>${escapeHtml(user.name || user.account)}</h4><p class="section-caption">为当前用户选择一个系统角色，保存后同步更新用户列表并写入操作日志。</p></div>
+        </div>
+        <div class="gene-form-grid">
+          ${renderGeneField({
+            name: "assignRole",
+            label: "所属角色",
+            type: "select",
+            value: user.role || enabledRoles[0]?.name || "访客",
+            options: enabledRoles.map((role) => role.name),
+            rule: "必选，角色权限会影响菜单和按钮可见范围"
+          })}
+        </div>
+      </section>
+    `,
+    footer: `
+      <button class="modal-secondary" type="button" data-close-modal="analysis">取消</button>
+      <button class="modal-primary" type="button" data-system-submit="assign-role|system-users|${itemId}">保存角色</button>
+    `
+  });
+}
+
+function renderRolePermissionModal(itemId) {
+  const role = getSystemRow("system-roles", itemId);
+  if (!role) {
+    return "";
+  }
+  const selected = new Set(role.permissions || ["dashboard:view", "analysis:gpa:manage"]);
+  const body = rolePermissionNodes
+    .map(
+      (group) => `
+        <section class="gene-section-card">
+          <div class="gene-section-head"><h4>${escapeHtml(group.group)}</h4></div>
+          <div class="permission-node-grid">
+            ${group.items
+              .map(
+                (item) => `
+                  <label class="permission-node">
+                    <input type="checkbox" data-permission-node="${escapeHtml(item.code)}" ${selected.has(item.code) ? "checked" : ""} />
+                    <span>${escapeHtml(item.label)}</span>
+                    <em>${escapeHtml(item.code)}</em>
+                  </label>
+                `
+              )
+              .join("")}
+          </div>
+        </section>
+      `
+    )
+    .join("");
+  return renderGeneModalShell({
+    title: `配置权限 - ${role.name}`,
+    sizeClass: "is-gene-large",
+    body: `${body}${renderRequirementHint("权限保存后会更新角色权限节点，并进入操作日志。", "strong")}`,
+    footer: `
+      <button class="modal-secondary" type="button" data-close-modal="analysis">取消</button>
+      <button class="modal-primary" type="button" data-system-submit="permission|system-roles|${itemId}">保存权限</button>
+    `
+  });
 }
 
 async function submitSystemAction(action, moduleKey, itemId = "") {
@@ -3270,6 +3673,8 @@ async function submitSystemAction(action, moduleKey, itemId = "") {
   }
 
   if (action === "export") {
+    exportOperationLogs();
+    appendOperationLog("system-logs", "导出操作日志");
     return;
   }
 
@@ -3286,6 +3691,28 @@ async function submitSystemAction(action, moduleKey, itemId = "") {
     }
     refreshSystemPageMeta(moduleKey);
     writeSystemPageStore();
+    appendOperationLog(moduleKey, `${action === "create" ? "新增" : "编辑"}${moduleTitleForLog(moduleKey)}：${getSystemRowDisplayName(moduleKey, nextRow)}`);
+    return;
+  }
+
+  if (action === "assign-role" && current) {
+    const values = getGeneFormValues();
+    const roleName = values.assignRole || current.role || "访客";
+    page.rows.splice(rowIndex, 1, hydrateSystemRow(moduleKey, { ...current, role: roleName }));
+    refreshSystemPageMeta(moduleKey);
+    writeSystemPageStore();
+    appendOperationLog(moduleKey, `为用户“${getSystemRowDisplayName(moduleKey, current)}”分配角色“${roleName}”`);
+    return;
+  }
+
+  if (action === "permission" && current) {
+    const permissions = [...document.querySelectorAll("[data-permission-node]")]
+      .filter((node) => node.checked)
+      .map((node) => node.dataset.permissionNode);
+    page.rows.splice(rowIndex, 1, hydrateSystemRow(moduleKey, { ...current, permissions, updatedAt: systemNowDateTimeString() }));
+    refreshSystemPageMeta(moduleKey);
+    writeSystemPageStore();
+    appendOperationLog(moduleKey, `修改角色权限“${getSystemRowDisplayName(moduleKey, current)}”，权限节点${permissions.length}个`);
     return;
   }
 
@@ -3304,6 +3731,7 @@ async function submitSystemAction(action, moduleKey, itemId = "") {
     );
     refreshSystemPageMeta(moduleKey);
     writeSystemPageStore();
+    appendOperationLog(moduleKey, `${nextStatusText}${moduleTitleForLog(moduleKey)}：${getSystemRowDisplayName(moduleKey, current)}`);
     return;
   }
 
@@ -3311,6 +3739,7 @@ async function submitSystemAction(action, moduleKey, itemId = "") {
     page.rows.splice(rowIndex, 1);
     refreshSystemPageMeta(moduleKey);
     writeSystemPageStore();
+    appendOperationLog(moduleKey, `删除${moduleTitleForLog(moduleKey)}：${getSystemRowDisplayName(moduleKey, current)}`);
   }
 }
 
@@ -3358,6 +3787,43 @@ function renderSystemExportModal(moduleKey) {
       <button class="modal-primary" type="button" data-system-submit="export|${moduleKey}|">确认导出</button>
     `
   });
+}
+
+function exportOperationLogs() {
+  const rows = [
+    ["操作人", "操作模块", "操作内容", "IP地址", "操作结果", "操作时间"],
+    ...(systemPages["system-logs"]?.rows || []).map((row) => [
+      row.name,
+      row.module,
+      row.content,
+      row.ip,
+      row.status?.text || "",
+      row.createdAt
+    ])
+  ];
+  downloadCsvFile("工程细胞操作日志.csv", rows);
+}
+
+function exportGeneResult(projectId) {
+  const project = getGeneProject(projectId);
+  const rows = [
+    ["项目名称", project.name],
+    ["菌株类型", project.strain],
+    ["表型类型", project.phenotype],
+    ["分析方法", project.method],
+    ["显著性阈值", project.threshold],
+    ["推荐基因型组合", project.prediction?.combo || ""],
+    ["预测产量", project.prediction?.yield || ""],
+    ["置信区间", project.prediction?.interval || ""],
+    ["置信度", project.prediction?.confidence || ""],
+    [],
+    ["显著位点", "染色体", "位置", "P值", "效应值", "关联基因"]
+  ];
+  project.snps.forEach((snp) => {
+    rows.push([snp.snpId, snp.chromosome, snp.position, snp.pValue, snp.effect, snp.gene]);
+  });
+  downloadCsvFile(`${project.name}_GPA分析结果.csv`, rows);
+  appendOperationLog("gene", `导出GPA分析结果：${project.name}`);
 }
 
 function mergeSensorRecord(moduleKey, record) {
@@ -3529,13 +3995,217 @@ const state = {
     format: "全部",
     status: "全部"
   },
+  analysisFilters: {},
+  algorithmPlayground: {
+    activeId: "algo-1",
+    language: "python",
+    form: {
+      target_type: "industry",
+      time_range: "2020-2024",
+      comparison_targets: "research_institutes"
+    },
+    result: ""
+  },
+  algorithmUploadDraft: {
+    fileName: "",
+    fileSize: 0
+  },
   openNavGroup: "",
   modal: null,
   sidebarOpen: false,
+  currentUser: null,
   captchaCodes: {
     login: "",
     register: "",
     recover: ""
+  }
+};
+
+const algorithmCapabilityLibrary = {
+  "algo-1": {
+    title: "基础指标分析模型",
+    subtitle: "用于对专题对象进行基础指标统计、对比和量化分析，是科技专题分析的基础支撑能力。",
+    featureTags: ["基础指标统计分析", "多维度对比分析", "量化评估与趋势分析"],
+    sceneTags: ["产业规模统计", "发展水平对比", "趋势研判"],
+    endpoint: "/api/v1/basic-indicator-analysis",
+    requestExample: {
+      python: String.raw`# keyword="import requests"
+# keyword="import json"
+
+url = "https://api.example.com/api/v1/basic-indicator-analysis"
+headers = {
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_API_KEY"
+}
+
+data = {
+  "target_type": "industry",
+  "time_range": "2020-2024",
+  "comparison_targets": "research_institutes"
+}
+
+response = requests.post(url, headers=headers, json=data)
+print(response.json())`,
+      curl: String.raw`curl --request POST "https://api.example.com/api/v1/basic-indicator-analysis" \
+  --header "Content-Type: application/json" \
+  --header "Authorization: Bearer YOUR_API_KEY" \
+  --data '{
+    "target_type": "industry",
+    "time_range": "2020-2024",
+    "comparison_targets": "research_institutes"
+  }'`,
+      nodejs: String.raw`const response = await fetch("https://api.example.com/api/v1/basic-indicator-analysis", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: "Bearer YOUR_API_KEY"
+  },
+  body: JSON.stringify({
+    target_type: "industry",
+    time_range: "2020-2024",
+    comparison_targets: "research_institutes"
+  })
+});
+
+const result = await response.json();
+console.log(result);`
+    },
+    responseExample: String.raw`{
+  "code": 200,
+  "message": "success",
+  "data": {
+    "tool": "基础指标分析模型",
+    "result": {
+      "time_range": "2020-2024",
+      "target_type": "industry",
+      "analysis_results": [
+        { "indicator": "市场规模", "value": 1250.5, "unit": "亿元", "growth_rate": 15.3 },
+        { "indicator": "企业数量", "value": 8542, "unit": "家", "growth_rate": 12.8 }
+      ]
+    },
+    "meta": {
+      "processing_time": 0.123,
+      "timestamp": "2026-04-21T10:55:45.549Z"
+    }
+  }
+}`,
+    testOutput: String.raw`{
+  "tool": "基础指标分析模型",
+  "status": "success",
+  "summary": "已完成 2020-2024 年 industry 对象基础指标分析",
+  "highlights": [
+    "市场规模同比增长 15.3%",
+    "企业数量增长 12.8%",
+    "科研院所对比维度已纳入输出"
+  ]
+}`
+  },
+  "algo-2": {
+    title: "区间预测分析模型",
+    subtitle: "用于专题对象未来区间变化预测，支持趋势判断、风险预警和策略建议输出。",
+    featureTags: ["趋势区间预测", "关键指标波动评估", "风险预警输出"],
+    sceneTags: ["年度趋势预测", "技术路线评估", "能力波动预警"],
+    endpoint: "/api/v1/range-prediction-analysis",
+    requestExample: {
+      python: String.raw`import requests
+
+response = requests.post(
+  "https://api.example.com/api/v1/range-prediction-analysis",
+  headers={"Authorization": "Bearer YOUR_API_KEY"},
+  json={
+    "target_type": "enterprise",
+    "time_range": "2022-2026",
+    "comparison_targets": "universities"
+  }
+)
+
+print(response.json())`,
+      curl: String.raw`curl -X POST "https://api.example.com/api/v1/range-prediction-analysis" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"target_type":"enterprise","time_range":"2022-2026","comparison_targets":"universities"}'`,
+      nodejs: String.raw`const res = await fetch("https://api.example.com/api/v1/range-prediction-analysis", {
+  method: "POST",
+  headers: { "Content-Type": "application/json", Authorization: "Bearer YOUR_API_KEY" },
+  body: JSON.stringify({ target_type: "enterprise", time_range: "2022-2026", comparison_targets: "universities" })
+});
+console.log(await res.json());`
+    },
+    responseExample: String.raw`{
+  "code": 200,
+  "message": "success",
+  "data": {
+    "tool": "区间预测分析模型",
+    "forecast_window": "2022-2026",
+    "prediction": {
+      "innovation_index": "78.6-84.1",
+      "risk_level": "medium",
+      "key_driver": "研发投入持续提升"
+    }
+  }
+}`,
+    testOutput: String.raw`{
+  "tool": "区间预测分析模型",
+  "status": "success",
+  "summary": "企业对象预测已完成，输出 2022-2026 趋势区间",
+  "risk_level": "medium"
+}`
+  },
+  "algo-3": {
+    title: "参数寻优分析模型",
+    subtitle: "支持多目标约束下的关键参数组合寻优，适用于复杂业务场景的策略模拟与方案推荐。",
+    featureTags: ["多目标参数寻优", "约束条件求解", "推荐方案输出"],
+    sceneTags: ["资源配置优化", "专题方案组合", "参数敏感度分析"],
+    endpoint: "/api/v1/parameter-optimization-analysis",
+    requestExample: {
+      python: String.raw`payload = {
+  "target_type": "institution",
+  "time_range": "2021-2025",
+  "comparison_targets": "enterprise"
+}`,
+      curl: String.raw`curl -X POST "https://api.example.com/api/v1/parameter-optimization-analysis" -d '{"target_type":"institution"}'`,
+      nodejs: String.raw`console.log("parameter optimization request ready");`
+    },
+    responseExample: String.raw`{
+  "code": 200,
+  "message": "success",
+  "data": {
+    "tool": "参数寻优分析模型",
+    "best_plan": "方案 B",
+    "score": 92.4
+  }
+}`,
+    testOutput: String.raw`{
+  "tool": "参数寻优分析模型",
+  "status": "offline",
+  "summary": "当前模型已停用，暂不支持在线测试"
+}`
+  },
+  "algo-4": {
+    title: "组学质控分析模型",
+    subtitle: "用于识别数据异常、评估样本质量并输出清洗建议，支撑后续分析任务稳定运行。",
+    featureTags: ["样本质量评估", "异常检测", "清洗建议生成"],
+    sceneTags: ["数据入库前质控", "批次比对", "异常样本识别"],
+    endpoint: "/api/v1/omics-qc-analysis",
+    requestExample: {
+      python: String.raw`print("omics qc request demo")`,
+      curl: String.raw`curl https://api.example.com/api/v1/omics-qc-analysis`,
+      nodejs: String.raw`console.log("omics qc demo")`
+    },
+    responseExample: String.raw`{
+  "code": 200,
+  "message": "success",
+  "data": {
+    "tool": "组学质控分析模型",
+    "qc_score": 96.2,
+    "recommendation": "建议保留当前样本集"
+  }
+}`,
+    testOutput: String.raw`{
+  "tool": "组学质控分析模型",
+  "status": "success",
+  "summary": "样本集质量评估完成，整体质量良好"
+}`
   }
 };
 
@@ -3544,9 +4214,112 @@ const defaultLoginCredentials = {
   password: "Admin@123456"
 };
 
+const AUTH_SESSION_KEY = "engineering-cell-auth-session-v1";
+const PORTAL_RETURN_TIP_KEY = "engineering-cell-portal-return-tip-v1";
+
+function createSessionToken(account) {
+  const random = globalThis.crypto?.randomUUID?.() || Math.random().toString(36).slice(2);
+  return `ec-${String(account || "user")}-${Date.now()}-${random}`.replace(/[^A-Za-z0-9_-]/g, "");
+}
+
+function readAuthSession() {
+  try {
+    const raw = window.localStorage.getItem(AUTH_SESSION_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch (error) {
+    return null;
+  }
+}
+
+function writeAuthSession(session) {
+  try {
+    window.localStorage.setItem(AUTH_SESSION_KEY, JSON.stringify(session));
+  } catch (error) {
+    console.warn("auth session write failed", error);
+  }
+}
+
+function clearAuthSession() {
+  try {
+    window.localStorage.removeItem(AUTH_SESSION_KEY);
+  } catch (error) {
+    console.warn("auth session clear failed", error);
+  }
+}
+
+function writePortalReturnTip(message) {
+  try {
+    window.localStorage.setItem(PORTAL_RETURN_TIP_KEY, message);
+  } catch (error) {
+    console.warn("portal return tip write failed", error);
+  }
+}
+
+function getCurrentAccount() {
+  return state.currentUser?.account || readAuthSession()?.account || defaultLoginCredentials.account;
+}
+
+function downloadCsvFile(fileName, rows) {
+  const csv = rows.map((row) => row.map((cell) => `"${String(cell ?? "").replaceAll('"', '""')}"`).join(",")).join("\n");
+  const blob = new Blob([`\uFEFF${csv}`], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = fileName;
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+function parseCsvText(text) {
+  const lines = String(text || "").split(/\r?\n/).filter((line) => line.trim());
+  if (!lines.length) {
+    return [];
+  }
+  const parseLine = (line) => {
+    const cells = [];
+    let current = "";
+    let quoted = false;
+    for (let index = 0; index < line.length; index += 1) {
+      const char = line[index];
+      const next = line[index + 1];
+      if (char === '"' && quoted && next === '"') {
+        current += '"';
+        index += 1;
+      } else if (char === '"') {
+        quoted = !quoted;
+      } else if (char === "," && !quoted) {
+        cells.push(current.trim());
+        current = "";
+      } else {
+        current += char;
+      }
+    }
+    cells.push(current.trim());
+    return cells;
+  };
+  const headers = parseLine(lines.shift());
+  return lines.map((line) => {
+    const values = parseLine(line);
+    return headers.reduce((row, header, index) => {
+      row[header || `字段${index + 1}`] = values[index] || "";
+      return row;
+    }, {});
+  });
+}
+
+function readFileAsText(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result || ""));
+    reader.onerror = () => reject(new Error("文件读取失败"));
+    reader.readAsText(file, "utf-8");
+  });
+}
+
 function getCurrentUserProfile() {
   const fallback = {
-    username: "admin",
+    username: getCurrentAccount(),
+    account: getCurrentAccount(),
     name: "张明",
     mobile: "13800138001",
     gender: "男",
@@ -3555,13 +4328,17 @@ function getCurrentUserProfile() {
     status: { text: "启用", className: "is-valid" },
     createdAt: "2026-05-12 09:32"
   };
-  const row = systemPages["system-users"]?.rows?.[0];
+  const account = getCurrentAccount();
+  const row =
+    systemPages["system-users"]?.rows?.find((item) => [item.account, item.username, item.email].some((value) => String(value || "") === account)) ||
+    systemPages["system-users"]?.rows?.[0];
   if (!row) {
     return fallback;
   }
   const statusText = row.status?.text || fallback.status.text;
   return {
     username: row.username || row.account || fallback.username,
+    account: row.account || row.username || fallback.account,
     name: row.name || fallback.name,
     mobile: row.mobile || fallback.mobile,
     gender: row.gender || fallback.gender,
@@ -3679,9 +4456,16 @@ function isSystemMenu(menuKey = state.activeMenu) {
   return Object.prototype.hasOwnProperty.call(systemPages, menuKey);
 }
 
+function isCapabilityMenu(menuKey = state.activeMenu) {
+  return ["system-apis", "system-algorithms", "system-datasets"].includes(menuKey);
+}
+
 function getMenuGroupForMenu(menuKey = state.activeMenu) {
   if (isSensorMenu(menuKey)) {
     return "monitor";
+  }
+  if (isCapabilityMenu(menuKey)) {
+    return "";
   }
   if (isSystemMenu(menuKey)) {
     return "system";
@@ -3807,7 +4591,7 @@ function renderSidebar() {
 
   const monitorActive = ["physical", "biological"].includes(state.activeMenu);
   const monitorOpen = state.openNavGroup === "monitor";
-  const systemActive = isSystemMenu(state.activeMenu);
+  const systemActive = isSystemMenu(state.activeMenu) && !isCapabilityMenu(state.activeMenu);
   const systemOpen = state.openNavGroup === "system";
 
   sidebarRoot.innerHTML = `
@@ -3871,6 +4655,22 @@ function renderSidebar() {
         <button class="nav-link ${state.activeMenu === "service" ? "is-active" : ""}" type="button" data-menu="service">
           <span class="nav-icon">${icon("i-heart")}</span>
           <span>工程细胞服务</span>
+        </button>
+      </section>
+
+      <section class="nav-section">
+        <p class="nav-title">平台能力</p>
+        <button class="nav-link ${state.activeMenu === "system-apis" ? "is-active" : ""}" type="button" data-menu="system-apis">
+          <span class="nav-icon">${icon("i-doc")}</span>
+          <span>接口管理</span>
+        </button>
+        <button class="nav-link ${state.activeMenu === "system-algorithms" ? "is-active" : ""}" type="button" data-menu="system-algorithms">
+          <span class="nav-icon">${icon("i-settings")}</span>
+          <span>算法管理</span>
+        </button>
+        <button class="nav-link ${state.activeMenu === "system-datasets" ? "is-active" : ""}" type="button" data-menu="system-datasets">
+          <span class="nav-icon">${icon("i-table")}</span>
+          <span>数据管理</span>
         </button>
       </section>
 
@@ -3963,6 +4763,9 @@ function renderAuthView(viewKey) {
       </div>
       <div class="form-footnote">
         还没有账号? <button class="text-link" type="button" data-auth-view="register">立即注册</button>
+      </div>
+      <div class="form-footnote">
+        <a class="text-link" href="./index.html">返回门户</a>
       </div>
     </form>
   `;
@@ -4190,6 +4993,10 @@ function renderHeader(page) {
                 <span title="${escapeHtml(currentUser.username)}">${escapeHtml(currentUser.username)}</span>
               </div>
             </div>
+            <button class="header-user-menu-item" type="button" data-user-menu-action="portal">
+              <span class="header-icon">${icon("i-home")}</span>
+              <span>返回门户</span>
+            </button>
             <button class="header-user-menu-item" type="button" data-user-menu-action="profile">
               <span class="header-icon">${icon("i-user")}</span>
               <span>个人信息</span>
@@ -4255,28 +5062,32 @@ function renderDashboardStatCards(metrics) {
       tone: "blue",
       value: formatWan(metrics.totalRecords),
       tag: "同步计算",
-      label: "资源数据总量"
+      label: "资源数据总量",
+      note: "覆盖主题库核心资源与服务记录"
     },
     {
       icon: "i-check",
       tone: "green",
       value: `${metrics.standardRate}%`,
       tag: "实时计算",
-      label: "标准化通过率"
+      label: "标准化通过率",
+      note: "按当前入库与审核结果自动汇总"
     },
     {
       icon: "i-upload",
       tone: "purple",
       value: metrics.auditQueue.toLocaleString("zh-CN"),
       tag: "+ 18.6%",
-      label: "待审核入库"
+      label: "待审核入库",
+      note: "待处理批次与新增记录持续更新"
     },
     {
       icon: "i-chart",
       tone: "orange",
       value: `${metrics.projects}`,
       tag: "+ 12.4%",
-      label: "分析项目数"
+      label: "分析项目数",
+      note: "覆盖全流程分析与模型任务运行态"
     }
   ];
 
@@ -4286,11 +5097,14 @@ function renderDashboardStatCards(metrics) {
         <article class="dashboard-kpi-card is-${item.tone}">
           <span class="dashboard-kpi-icon">${icon(item.icon)}</span>
           <div class="dashboard-kpi-main">
+            <div class="dashboard-kpi-label-row">
+              <span class="dashboard-kpi-label">${escapeHtml(item.label)}</span>
+            </div>
             <div class="dashboard-kpi-value">
               <strong>${escapeHtml(item.value)}</strong>
               <span>${escapeHtml(item.tag)}</span>
             </div>
-            <p>${escapeHtml(item.label)}</p>
+            <p>${escapeHtml(item.note || item.label)}</p>
           </div>
         </article>
       `
@@ -4458,7 +5272,7 @@ function renderDashboardPage() {
   return `
     <div class="dashboard-page">
       <section class="dashboard-hero">
-        <div>
+        <div class="dashboard-hero-copy">
           <div class="dashboard-eyebrow">
             <span>数据统计</span><span>/</span><strong>工程细胞主题库数据应用</strong>
           </div>
@@ -4492,19 +5306,31 @@ function renderDashboardPage() {
 
       <section class="dashboard-grid">
         <article class="dashboard-panel">
-          <h2>月度数据入库趋势</h2>
+          <div class="dashboard-panel-head">
+            <h2>月度数据入库趋势</h2>
+            <p class="dashboard-panel-note">跟踪主题库月度入库规模与波动趋势</p>
+          </div>
           ${renderDashboardBars()}
         </article>
         <article class="dashboard-panel">
-          <h2>资源类型分布</h2>
+          <div class="dashboard-panel-head">
+            <h2>资源类型分布</h2>
+            <p class="dashboard-panel-note">展示当前主题库资源结构与占比</p>
+          </div>
           ${renderDashboardDonut(metrics)}
         </article>
         <article class="dashboard-panel">
-          <h2>审核效率趋势</h2>
+          <div class="dashboard-panel-head">
+            <h2>审核效率趋势</h2>
+            <p class="dashboard-panel-note">聚焦审核吞吐与阶段性处理效率变化</p>
+          </div>
           ${renderDashboardLine()}
         </article>
         <article class="dashboard-panel">
-          <h2>团队贡献排行 TOP 10</h2>
+          <div class="dashboard-panel-head">
+            <h2>团队贡献排行 TOP 10</h2>
+            <p class="dashboard-panel-note">按数据贡献与服务产出综合统计</p>
+          </div>
           ${renderDashboardRanking()}
         </article>
       </section>
@@ -4513,18 +5339,55 @@ function renderDashboardPage() {
 }
 
 function renderSummaryCards(cards) {
+  const toneMap = {
+    blue: { icon: "i-bars", note: "核心记录持续汇聚" },
+    green: { icon: "i-check", note: "当前状态稳定可用" },
+    orange: { icon: "i-warning", note: "需重点关注波动项" },
+    red: { icon: "i-file", note: "建议尽快复核处理" }
+  };
   return cards
     .map(
-      (item) => `
-        <article class="summary-card">
+      (item) => {
+        const tone = toneMap[item.tone] || toneMap.blue;
+        return `
+        <article class="summary-card is-${item.tone}">
+          <div class="summary-card-head">
+            <span class="summary-chip">
+              <span class="summary-chip-icon">${icon(tone.icon)}</span>
+              <span>${item.label}</span>
+            </span>
+            <span class="summary-watermark" aria-hidden="true">${icon(tone.icon)}</span>
+          </div>
           <div>
             <p class="summary-value tone-${item.tone}">${item.value}</p>
             <div class="summary-label">${item.label}</div>
+            <p class="summary-note">${tone.note}</p>
           </div>
         </article>
-      `
+      `;
+      }
     )
     .join("");
+}
+
+function normalizeToneToken(value) {
+  return String(value || "blue")
+    .replace(/^is-/, "")
+    .trim() || "blue";
+}
+
+function getListToneMeta(value) {
+  const toneKey = normalizeToneToken(value);
+  const toneMap = {
+    blue: { icon: "i-bars", note: "鏍稿績鎸囨爣鎸佺画姹囪仛" },
+    green: { icon: "i-check", note: "褰撳墠鐘舵€佷繚鎸佺ǔ瀹?" },
+    yellow: { icon: "i-warning", note: "闇€鎸佺画鍏虫敞鍙樺寲" },
+    orange: { icon: "i-warning", note: "闇€鎸佺画鍏虫敞鍙樺寲" },
+    cyan: { icon: "i-chart", note: "杩愯鏁堟灉鍙寔缁窡韪?" },
+    red: { icon: "i-file", note: "寤鸿灏藉揩澶嶆牳澶勭悊" },
+    purple: { icon: "i-table", note: "鍏抽敭璧勬簮宸叉寜涓婚褰掔被" }
+  };
+  return { toneKey, ...(toneMap[toneKey] || toneMap.blue) };
 }
 
 function renderEmptyState(title, description) {
@@ -4572,6 +5435,33 @@ function renderSensorRecord(moduleKey, batch, record) {
   `;
 }
 
+function renderSensorTableRows(moduleKey, batch, records) {
+  return records
+    .map(
+      (record) => `
+        <tr>
+          <td class="checkbox-cell"><div class="row-check"></div></td>
+          <td>${escapeHtml(record.user)}</td>
+          ${record.metrics.map((metric) => `<td>${escapeHtml(metric.value)}</td>`).join("")}
+          <td>${escapeHtml(record.time)}</td>
+          <td><span class="table-status ${record.statusClass}">${escapeHtml(record.statusText)}</span></td>
+          <td>
+            <div class="table-actions">
+              <button
+                class="table-link"
+                type="button"
+                data-open-modal="detail|${moduleKey}|${batch.id}|${record.id}"
+              >
+                查看详情
+              </button>
+            </div>
+          </td>
+        </tr>
+      `
+    )
+    .join("");
+}
+
 function renderPagination(key, pageCount) {
   const current = state.pagination[key];
   return `
@@ -4600,6 +5490,7 @@ function renderSensorListPage(module) {
   const current = Math.min(state.pagination[module.key], pageCount);
   state.pagination[module.key] = current;
   const pageRecords = filteredRecords.slice((current - 1) * pageSize, (current - 1) * pageSize + pageSize);
+  const metricLabels = batch.records[0]?.metrics?.map((metric) => metric.label) || [];
 
   return `
     <div class="page-section sensor-page">
@@ -4647,32 +5538,83 @@ function renderSensorListPage(module) {
         <section class="sensor-main">
           <div class="summary-strip">
             ${renderSummaryCards(module.summary)}
-            <div class="action-cluster">
-              <button class="outline-button" type="button" data-open-modal="import|${module.key}">批量导入</button>
-              <button class="outline-button" type="button" data-open-modal="threshold|${module.key}">阈值配置</button>
-              <button class="outline-button is-primary" type="button" data-open-form="${module.key}">新增录入</button>
-            </div>
           </div>
 
-          <section class="records-panel">
-            <div class="records-head">
-              <h3 class="records-title">${module.recordTitle}</h3>
-              <select class="record-filter" data-status-filter="${module.key}">
-                <option value="all" ${statusFilter === "all" ? "selected" : ""}>全部状态</option>
-                <option value="is-normal" ${statusFilter === "is-normal" ? "selected" : ""}>正常</option>
-                <option value="is-warning" ${statusFilter === "is-warning" ? "selected" : ""}>预警</option>
-                <option value="is-error" ${statusFilter === "is-error" ? "selected" : ""}>异常</option>
-              </select>
+          <section class="filter-card sensor-filter-card">
+            <div class="sensor-filter-top">
+              <div class="sensor-filter-fields">
+                <label class="inline-field">
+                  <span>当前批次</span>
+                  <span class="filter-control-wrap">
+                    <input type="text" value="${escapeHtml(batch.id)}" readonly />
+                  </span>
+                </label>
+                <label class="inline-field sensor-period-field">
+                  <span>批次周期</span>
+                  <span class="filter-control-wrap">
+                    <input type="text" value="${escapeHtml(batch.period)}" readonly />
+                  </span>
+                </label>
+                <label class="inline-field">
+                  <span>状态</span>
+                  <span class="filter-control-wrap">
+                    <select data-status-filter="${module.key}">
+                      <option value="all" ${statusFilter === "all" ? "selected" : ""}>全部状态</option>
+                      <option value="is-normal" ${statusFilter === "is-normal" ? "selected" : ""}>正常</option>
+                      <option value="is-warning" ${statusFilter === "is-warning" ? "selected" : ""}>预警</option>
+                      <option value="is-error" ${statusFilter === "is-error" ? "selected" : ""}>异常</option>
+                    </select>
+                    <span class="filter-field-icon is-right">${icon("i-chevron")}</span>
+                  </span>
+                </label>
+              </div>
+              <div class="sensor-filter-actions">
+                <button class="outline-button" type="button" data-open-modal="import|${module.key}">批量导入</button>
+                <button class="outline-button" type="button" data-open-modal="threshold|${module.key}">阈值配置</button>
+                <button class="toolbar-primary" type="button" data-open-form="${module.key}">
+                  <span class="header-icon">${icon("i-plus")}</span>
+                  <span>新增</span>
+                </button>
+              </div>
             </div>
-            <div class="records-list">
-              ${
-                pageRecords.length
-                  ? pageRecords.map((record) => renderSensorRecord(module.key, batch, record)).join("")
-                  : renderEmptyState("暂无记录", "当前筛选条件下没有可展示的监测记录")
-              }
+          </section>
+
+          <section class="table-wrap sensor-table-wrap">
+            <div class="card-section-head is-divider">
+              <div>
+                <h2 class="card-section-title">${module.recordTitle}</h2>
+                <p class="card-section-desc">当前批次记录按时间顺序分页展示</p>
+              </div>
             </div>
-            <div class="records-footer">
-              <span class="records-count">共 ${filteredRecords.length} 条记录</span>
+            <div class="table-scroll">
+              <table class="data-table sensor-data-table">
+                <thead>
+                  <tr>
+                    <th class="checkbox-cell"><div class="row-check is-checked"></div></th>
+                    <th>录入人</th>
+                    ${metricLabels.map((label) => `<th>${escapeHtml(label)}</th>`).join("")}
+                    <th>录入时间</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${
+                    pageRecords.length
+                      ? renderSensorTableRows(module.key, batch, pageRecords)
+                      : `
+                        <tr class="table-empty-row">
+                          <td colspan="${metricLabels.length + 5}">
+                            ${renderEmptyState("暂无记录", "当前筛选条件下没有可展示的监测记录")}
+                          </td>
+                        </tr>
+                      `
+                  }
+                </tbody>
+              </table>
+            </div>
+            <div class="table-footer">
+              <span>共 ${filteredRecords.length} 条记录</span>
               ${renderPagination(module.key, pageCount)}
             </div>
           </section>
@@ -4780,17 +5722,25 @@ function renderStatsGrid(stats) {
     <div class="stats-grid">
       ${stats
         .map(
-          (item) => `
-            <article class="stats-card">
-              <div class="metric-icon ${item.iconClass}">
-                ${icon(item.icon)}
+          (item) => {
+            const tone = getListToneMeta(item.iconClass);
+            return `
+            <article class="stats-card is-${tone.toneKey}">
+              <div class="stats-card-head">
+                <span class="summary-chip">
+                  <span class="summary-chip-icon">${icon(item.icon || tone.icon)}</span>
+                  <span>${item.label}</span>
+                </span>
+                <span class="summary-watermark" aria-hidden="true">${icon(item.icon || tone.icon)}</span>
               </div>
-              <div>
+              <div class="stats-card-main">
                 <p class="stats-number">${item.value}</p>
                 <div class="stats-label">${item.label}</div>
+                <p class="summary-note">${escapeHtml(item.note || "")}</p>
               </div>
             </article>
-          `
+          `;
+          }
         )
         .join("")}
     </div>
@@ -4798,6 +5748,9 @@ function renderStatsGrid(stats) {
 }
 
 function renderFilterField(field) {
+  const pageKey = state.activeMenu || "";
+  const pageFilters = state.analysisFilters[pageKey] || {};
+  const fieldValue = pageFilters[field.label] ?? (field.type === "select" ? field.options?.[0] || "" : "");
   return `
     <label class="inline-field ${field.type === "input" ? "is-search" : ""}">
       <span>${field.label}</span>
@@ -4806,13 +5759,13 @@ function renderFilterField(field) {
           ? `
             <span class="filter-control-wrap">
               <span class="filter-field-icon">${icon("i-search")}</span>
-              <input type="text" placeholder="${field.placeholder || ""}" />
+              <input type="text" data-analysis-filter="${escapeHtml(field.label)}" value="${escapeHtml(fieldValue)}" placeholder="${field.placeholder || ""}" />
             </span>
           `
           : `
             <span class="filter-control-wrap">
-              <select>
-                ${(field.options || []).map((option) => `<option>${option}</option>`).join("")}
+              <select data-analysis-filter="${escapeHtml(field.label)}">
+                ${(field.options || []).map((option) => `<option ${option === fieldValue ? "selected" : ""}>${option}</option>`).join("")}
               </select>
               <span class="filter-field-icon is-right">${icon("i-chevron")}</span>
             </span>
@@ -4820,6 +5773,174 @@ function renderFilterField(field) {
       }
     </label>
   `;
+}
+
+const analysisFilterFieldMap = {
+  gene: {
+    项目名称: ["name"],
+    菌株类型: ["strain"],
+    表型类型: ["phenotype"],
+    分析状态: ["status"]
+  },
+  omics: {
+    模型名称: ["name"],
+    菌株类型: ["strain"],
+    模型类型: ["type"],
+    状态: ["status"]
+  },
+  process: {
+    模型名称: ["name"],
+    菌株类型: ["strain"],
+    优化目标: ["goal"],
+    状态: ["status"]
+  },
+  full: {
+    项目名称: ["name"],
+    菌株类型: ["strain"],
+    分析状态: ["status"]
+  },
+  service: {
+    细胞编号: ["code"],
+    细胞名称: ["name"],
+    菌株类型: ["strain"],
+    状态: ["status"]
+  },
+  "system-users": {
+    用户名: ["username", "account"],
+    姓名: ["name"],
+    手机号: ["mobile"],
+    状态: ["status"]
+  },
+  "system-roles": {
+    角色名称: ["name"],
+    角色编码: ["code"],
+    角色类型: ["type"],
+    状态: ["status"]
+  },
+  "system-menus": {
+    菜单名称: ["name"],
+    菜单类型: ["type"],
+    显示状态: ["status"],
+    权限标识: ["permission"]
+  },
+  "system-logs": {
+    操作人: ["name"],
+    操作模块: ["module"],
+    操作结果: ["status"],
+    IP地址: ["ip"]
+  },
+  "system-config": {
+    配置名称: ["name"],
+    配置分组: ["group"],
+    状态: ["status"],
+    配置编码: ["code"]
+  },
+  "system-apis": {
+    接口名称: ["name"],
+    接口编码: ["code"],
+    请求方式: ["method"],
+    状态: ["status"]
+  },
+  "system-algorithms": {
+    算法名称: ["name"],
+    算法类型: ["type"],
+    版本: ["version"],
+    状态: ["status"]
+  },
+  "system-datasets": {
+    数据名称: ["name"],
+    数据分类: ["category"],
+    数据源: ["source"],
+    状态: ["status"]
+  }
+};
+
+function getAnalysisFilterKeys(pageKey, fieldLabel) {
+  const directKeys = analysisFilterFieldMap[pageKey]?.[fieldLabel];
+  if (directKeys?.length) {
+    return directKeys;
+  }
+
+  const fuzzyRules = [
+    { match: "名称", keys: ["name"] },
+    { match: "编号", keys: ["code"] },
+    { match: "编码", keys: ["code"] },
+    { match: "账号", keys: ["account", "username"] },
+    { match: "手机号", keys: ["mobile"] },
+    { match: "角色", keys: ["role", "type"] },
+    { match: "部门", keys: ["department"] },
+    { match: "菌株类型", keys: ["strain"] },
+    { match: "表型类型", keys: ["phenotype"] },
+    { match: "模型类型", keys: ["type", "model"] },
+    { match: "模型名称", keys: ["name"] },
+    { match: "项目名称", keys: ["name"] },
+    { match: "配置分组", keys: ["group"] },
+    { match: "数据分类", keys: ["category"] },
+    { match: "数据源", keys: ["source"] },
+    { match: "请求方式", keys: ["method"] },
+    { match: "接口地址", keys: ["path"] },
+    { match: "权限标识", keys: ["permission"] },
+    { match: "IP地址", keys: ["ip"] },
+    { match: "操作模块", keys: ["module"] },
+    { match: "优化目标", keys: ["goal"] },
+    { match: "状态", keys: ["status"] },
+    { match: "类型", keys: ["type"] },
+    { match: "版本", keys: ["version"] }
+  ];
+
+  return fuzzyRules.find((rule) => fieldLabel.includes(rule.match))?.keys || [];
+}
+
+function getAnalysisRowValuesByKeys(row, keys = []) {
+  return keys.map((key) => {
+    const value = row[key];
+    if (key === "status") {
+      return value?.text || "";
+    }
+    return value ?? "";
+  });
+}
+
+function getFilteredAnalysisRows(page) {
+  const activeFilters = state.analysisFilters[page.key] || {};
+  const fields = page.filters || [];
+
+  if (!fields.length || !Object.keys(activeFilters).length) {
+    return page.rows;
+  }
+
+  return page.rows.filter((row) =>
+    fields.every((field) => {
+      const rawValue = String(activeFilters[field.label] || "").trim();
+      if (!rawValue || rawValue === "全部") {
+        return true;
+      }
+
+      const matcher = rawValue.toLowerCase();
+      const mappedKeys = getAnalysisFilterKeys(page.key, field.label);
+      const candidateValues = mappedKeys.length
+        ? getAnalysisRowValuesByKeys(row, mappedKeys)
+        : Object.keys(row)
+            .filter((key) => key !== "actions")
+            .map((key) => (key === "status" ? row[key]?.text || "" : row[key] ?? ""));
+
+      return candidateValues.some((value) => {
+        const normalizedValue = String(value || "").trim().toLowerCase();
+        if (!normalizedValue) {
+          return false;
+        }
+        return field.type === "select" ? normalizedValue === matcher : normalizedValue.includes(matcher);
+      });
+    })
+  );
+}
+
+function hasActiveAnalysisFilters(pageKey) {
+  const filters = state.analysisFilters[pageKey] || {};
+  return Object.values(filters).some((value) => {
+    const text = String(value || "").trim();
+    return text && text !== "全部";
+  });
 }
 
 function renderTableCell(row, column, pageKey) {
@@ -4851,6 +5972,17 @@ function renderTableCell(row, column, pageKey) {
           )
           .join("")}
       </div>
+    `;
+  }
+
+  if (column.key === "packageName") {
+    const text = row.packageName || "--";
+    const subText = row.packageSize || "";
+    return `
+      <span class="table-cell-text is-stacked" title="${escapeHtml(text)}">
+        <strong>${escapeHtml(text)}</strong>
+        ${subText ? `<small>${escapeHtml(subText)}</small>` : ""}
+      </span>
     `;
   }
 
@@ -4906,20 +6038,28 @@ function renderCatalogPage(page) {
       <section class="catalog-category-grid">
         ${page.categories
           .map(
-            (item) => `
-              <article class="catalog-category-card ${item.tone}">
+            (item) => {
+              const tone = getListToneMeta(item.tone);
+              return `
+              <article class="catalog-category-card is-${tone.toneKey}">
                 <div class="catalog-category-top">
-                  <span class="catalog-category-icon">${icon("i-table")}</span>
+                  <span class="catalog-category-icon">${icon(tone.icon)}</span>
+                  <span class="summary-watermark" aria-hidden="true">${icon(tone.icon)}</span>
                 </div>
-                <h3>${escapeHtml(item.name)}</h3>
-                <p>${escapeHtml(item.desc)}</p>
+                <div class="catalog-category-main">
+                  <h3>${escapeHtml(item.name)}</h3>
+                  <p class="catalog-category-value">${escapeHtml(item.records || "--")}</p>
+                  <p class="catalog-category-meta">${escapeHtml(item.count || "")}</p>
+                  <p class="catalog-category-desc">${escapeHtml(item.desc)}</p>
+                </div>
               </article>
-            `
+            `;
+            }
           )
           .join("")}
       </section>
 
-      <section class="filter-card">
+      <section class="filter-card catalog-filter-card">
         <div class="card-section-head">
           <div>
             <h2 class="card-section-title">筛选条件</h2>
@@ -4944,7 +6084,7 @@ function renderCatalogPage(page) {
         </div>
       </section>
 
-      <section class="table-wrap catalog-table-wrap">
+      <section class="table-wrap catalog-table-wrap list-table-wrap">
         <div class="card-section-head is-divider">
           <div>
             <h2 class="card-section-title">数据库列表</h2>
@@ -5077,25 +6217,36 @@ function renderCatalogDetailModal(itemId) {
 }
 
 function renderAnalysisPage(page) {
+  const filteredRows = getFilteredAnalysisRows(page);
   const pageSize = 10;
-  const pageCount = Math.max(1, Math.ceil(page.rows.length / pageSize) || 1);
+  const pageCount = Math.max(1, Math.ceil(filteredRows.length / pageSize) || 1);
   const current = Math.min(state.pagination[page.key] || 1, pageCount);
   state.pagination[page.key] = current;
-  const pageRows = page.rows.slice((current - 1) * pageSize, current * pageSize);
+  const pageRows = filteredRows.slice((current - 1) * pageSize, current * pageSize);
+  const hasPrimaryButton = Boolean(page.primaryButton);
+  const emptyDescription = hasActiveAnalysisFilters(page.key)
+    ? `当前筛选条件下没有匹配的${page.title}记录，请调整筛选条件后重试`
+    : `当前没有${page.title}相关记录`;
 
   return `
     <div class="page-section analysis-page">
       <div class="page-title-row">
         <h1 class="page-title">${page.title}</h1>
+        ${
+          hasPrimaryButton
+            ? `
         <button class="toolbar-primary" type="button" data-primary-action="${isSystemMenu(page.key) ? page.primaryButton : page.key}">
           <span class="header-icon">${icon("i-plus")}</span>
           <span>${page.primaryButton}</span>
         </button>
+        `
+            : ""
+        }
       </div>
 
       ${page.stats ? renderStatsGrid(page.stats) : ""}
 
-      <section class="filter-card">
+      <section class="filter-card analysis-filter-card">
         <div class="card-section-head">
           <div>
             <h2 class="card-section-title">筛选条件</h2>
@@ -5111,7 +6262,7 @@ function renderAnalysisPage(page) {
         </div>
       </section>
 
-      <section class="table-wrap">
+      <section class="table-wrap analysis-table-wrap list-table-wrap">
         <div class="card-section-head is-divider">
           <div>
             <h2 class="card-section-title">数据列表</h2>
@@ -5142,7 +6293,7 @@ function renderAnalysisPage(page) {
                   : `
                     <tr class="table-empty-row">
                       <td colspan="${page.columns.length + 1}">
-                        ${renderEmptyState("暂无数据", `当前没有${page.title}相关记录`)}
+                        ${renderEmptyState("暂无数据", emptyDescription)}
                       </td>
                     </tr>
                   `
@@ -5151,7 +6302,7 @@ function renderAnalysisPage(page) {
           </table>
         </div>
         <div class="table-footer">
-          <span>${page.footer}</span>
+          <span>共 ${filteredRows.length} 条记录，每页 10 条</span>
           ${renderPagination(page.key, pageCount)}
         </div>
       </section>
@@ -5179,11 +6330,23 @@ function geneStatusClass(status) {
 }
 
 function renderGeneModalShell({ title, sizeClass = "", body, footer = "" }) {
+  const hasParentModal = Boolean(state.modal?.parentModal);
   return `
     <div class="modal-layer">
       <section class="modal gene-modal ${sizeClass}">
         <header class="gene-modal-header">
-          <h3 class="gene-modal-title">${escapeHtml(title)}</h3>
+          <div class="gene-modal-heading">
+            ${
+              hasParentModal
+                ? `
+                  <button class="gene-modal-back" type="button" data-modal-back="gene" aria-label="返回上一级">
+                    <span class="header-icon">${icon("i-arrow-left")}</span>
+                  </button>
+                `
+                : ""
+            }
+            <h3 class="gene-modal-title">${escapeHtml(title)}</h3>
+          </div>
           <button class="gene-modal-close" type="button" data-close-modal="gene">
             <span class="header-icon">${icon("i-close")}</span>
           </button>
@@ -5251,6 +6414,31 @@ function renderGeneField(field) {
   const fieldName = escapeHtml(field.name || "");
   const rule = getFieldRule(field, field.moduleKey || "");
   const selectValue = field.value ?? "";
+
+  if (field.type === "file") {
+    const fileName = String(field.value || "").trim();
+    const fileSize = String(field.fileSize || "").trim();
+    return `
+      <div class="${fieldClass} is-full">
+        ${label}
+        <div class="analysis-upload-field">
+          <input class="analysis-file-input" type="file" data-gene-field="${fieldName}" data-file-field="true" accept="${escapeHtml(field.accept || "")}" />
+          <div class="gene-upload-box">
+            <span class="gene-upload-icon">${icon("i-upload")}</span>
+            <p>上传算法代码包</p>
+            <span>${escapeHtml(field.placeholder || "请选择文件")}</span>
+            <div class="analysis-upload-actions">
+              <button class="modal-outline" type="button" data-file-trigger="${fieldName}">选择文件</button>
+            </div>
+          </div>
+          <div class="analysis-selected-file ${fileName ? "" : "is-empty"}">
+            ${fileName ? `<strong title="${escapeHtml(fileName)}">${escapeHtml(fileName)}</strong><span>${escapeHtml(fileSize || "已选择文件")}</span>` : `<span>未选择代码包，新增算法时请同步上传。</span>`}
+          </div>
+        </div>
+        ${renderRequirementHint(rule)}
+      </div>
+    `;
+  }
 
   if (field.type === "select") {
     return `
@@ -6273,6 +7461,41 @@ function renderFullSummaryTable(type, item) {
   `;
 }
 
+function renderFullPredictionPanel(item) {
+  const prediction = item.predictDetail?.comprehensivePrediction || {};
+  const cards = [
+    { label: "综合预测产量", value: prediction.yield || item.processSummary.improvement },
+    { label: "预测置信度", value: prediction.confidence || "90%" },
+    { label: "预计发酵周期", value: prediction.cycle || "42 h" },
+    { label: "预计成本变化", value: prediction.cost || "下降12%" }
+  ];
+  return `
+    <section class="gene-section-card">
+      <div class="gene-section-head">
+        <div><h4>综合参数预测模型</h4><p class="section-caption">融合GPA推荐组合与发酵模型参数，输出全流程预测结果。</p></div>
+      </div>
+      <div class="gene-metric-grid">
+        ${cards
+          .map(
+            (card) => `
+              <article class="gene-metric-card">
+                <span>${escapeHtml(card.label)}</span>
+                <strong>${escapeHtml(card.value)}</strong>
+              </article>
+            `
+          )
+          .join("")}
+      </div>
+      <div class="gene-predict-card" style="margin-top:16px;">
+        <div>
+          <span>综合建议</span>
+          <strong>${escapeHtml(prediction.recommendation || "结合关键基因型组合与关键发酵参数，优先执行综合优化方案。")}</strong>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
 function getSafeFullItem(itemId) {
   const source = getAnalysisRow("full", itemId) || {};
   return hydrateFullItem({ ...source, id: source.id || itemId || "full-1" });
@@ -6281,7 +7504,7 @@ function getSafeFullItem(itemId) {
 function renderFullDetailModal(itemId) {
   const item = getSafeFullItem(itemId);
 
-  const collapsedSection = renderFullAccordion("综合参数预测模型", "is-bulb", "", false);
+  const collapsedSection = renderFullAccordion("综合参数预测模型", "is-bulb", renderFullPredictionPanel(item), true);
   const gpaSection = renderFullAccordion("GPA分析结果整合", "is-bars", renderFullSummaryTable("gpa", item), true);
   const processSection = renderFullAccordion("发酵过程分析结果整合", "is-chart", renderFullSummaryTable("process", item), true);
 
@@ -6305,7 +7528,10 @@ function renderFullDetailModal(itemId) {
       ${gpaSection}
       ${processSection}
     `,
-    footer: `<button class="modal-outline" type="button" data-close-modal="analysis">关闭</button>`
+    footer: `
+      <button class="modal-outline" type="button" data-modal-back="analysis">返回上一级</button>
+      <button class="modal-primary" type="button" data-close-modal="analysis">关闭</button>
+    `
   });
 }
 
@@ -6461,7 +7687,10 @@ function renderFullGpaDetailModal(itemId) {
         </div>
       </section>
     `,
-    footer: `<button class="modal-outline" type="button" data-close-modal="analysis">关闭</button>`
+    footer: `
+      <button class="modal-outline" type="button" data-modal-back="analysis">返回上一级</button>
+      <button class="modal-primary" type="button" data-close-modal="analysis">关闭</button>
+    `
   });
 }
 
@@ -7555,7 +8784,10 @@ function renderGeneResultModal(projectId) {
         ${renderGeneSnpTable(project.snps, { showAction: true, projectId: project.id, tableClass: "is-result-table" })}
       </section>
     `,
-    footer: `<button class="modal-outline" type="button" data-close-modal="gene">关闭</button>`
+    footer: `
+      <button class="modal-outline" type="button" data-gene-export="${project.id}">导出结果</button>
+      <button class="modal-primary" type="button" data-close-modal="gene">关闭</button>
+    `
   });
 }
 
@@ -7688,17 +8920,18 @@ function renderGeneDetailModal(projectId, tab = "project") {
 }
 
 function openGeneModal(actionKey, projectId = "", extra = {}) {
+  const parentModal = extra.parentModal || (state.modal ? { ...state.modal } : null);
   if (actionKey === "create") {
     state.modal = { type: "gene-create" };
     return;
   }
 
   if (actionKey === "detail") {
-    state.modal = { type: "gene-detail", projectId, tab: extra.tab || "project" };
+    state.modal = { type: "gene-detail", projectId, tab: extra.tab || "project", parentModal };
     return;
   }
 
-  state.modal = { type: `gene-${actionKey}`, projectId, ...extra };
+  state.modal = { type: `gene-${actionKey}`, projectId, ...extra, parentModal };
 }
 
 function getAnalysisRow(moduleKey, itemId) {
@@ -7727,6 +8960,12 @@ function renderAnalysisFormModal(moduleKey, mode, itemId = "") {
   const config = analysisFormConfigs[moduleKey];
   const current = itemId ? getAnalysisRow(moduleKey, itemId) : null;
   const isEdit = mode === "edit";
+  const algorithmUploadDraft =
+    moduleKey === "system-algorithms"
+      ? state.algorithmUploadDraft.fileName
+        ? state.algorithmUploadDraft
+        : { fileName: current?.packageName || "", fileSize: current?.packageSize || "" }
+      : state.algorithmUploadDraft;
 
   return renderGeneModalShell({
     title: `${mode === "edit" ? "编辑" : "新增"}${config.title}`,
@@ -7739,9 +8978,12 @@ function renderAnalysisFormModal(moduleKey, mode, itemId = "") {
               ...field,
               moduleKey,
               value:
-                field.name === "statusText"
-                  ? isEdit ? current?.status?.text || "" : ""
-                  : current?.[field.name] || "",
+                field.type === "file"
+                  ? algorithmUploadDraft.fileName || current?.[field.name] || ""
+                  : field.name === "statusText"
+                    ? isEdit ? current?.status?.text || "" : ""
+                    : current?.[field.name] || "",
+              fileSize: field.type === "file" ? algorithmUploadDraft.fileSize || current?.packageSize || "" : "",
               name: `analysis-${field.name}`
             })
           )
@@ -7767,6 +9009,9 @@ function renderAnalysisDetailModal(moduleKey, itemId) {
   }
   if (moduleKey === "service") {
     return renderServiceDetailModal(itemId);
+  }
+  if (isSystemMenu(moduleKey)) {
+    return renderSystemDetailModal(moduleKey, itemId);
   }
 
   const row = getAnalysisRow(moduleKey, itemId);
@@ -7800,6 +9045,210 @@ function renderAnalysisDetailModal(moduleKey, itemId) {
     footer: `
       <button class="modal-outline" type="button" data-close-modal="analysis">关闭</button>
       <button class="modal-primary" type="button" data-analysis-open="edit|${moduleKey}|${itemId}">编辑</button>
+    `
+  });
+}
+
+function renderSystemDetailModal(moduleKey, itemId) {
+  if (moduleKey === "system-algorithms") {
+    return renderAlgorithmCapabilityModal(itemId);
+  }
+
+  const row = getSystemRow(moduleKey, itemId);
+  const page = systemPages[moduleKey];
+  if (!row || !page) {
+    return "";
+  }
+
+  const infoItems = page.columns
+    .filter((column) => column.key !== "actions")
+    .map((column) => ({
+      label: column.label,
+      value: column.key === "status" ? row.status?.text || "--" : row[column.key] ?? "--"
+    }));
+
+  return renderGeneModalShell({
+    title: `${page.title}详情`,
+    sizeClass: "is-gene-form",
+    body: `
+      <section class="gene-section-card">
+        <div class="gene-section-head">
+          <h4>详细信息</h4>
+          <p class="section-caption">${page.title}当前记录详情信息，可直接返回列表或进入编辑。</p>
+        </div>
+        ${renderGeneInfoGrid(infoItems)}
+      </section>
+    `,
+    footer: `
+      <button class="modal-outline" type="button" data-close-modal="analysis">关闭</button>
+      <button class="modal-primary" type="button" data-analysis-open="edit|${moduleKey}|${itemId}">编辑</button>
+    `
+  });
+}
+
+function getAlgorithmCapability(itemId) {
+  const row = getSystemRow("system-algorithms", itemId) || systemPages["system-algorithms"]?.rows?.[0];
+  const preset = algorithmCapabilityLibrary[itemId] || algorithmCapabilityLibrary[row?.id] || algorithmCapabilityLibrary["algo-1"];
+  return {
+    row,
+    ...preset
+  };
+}
+
+function renderAlgorithmCodeTabs(activeLanguage) {
+  const options = [
+    { key: "python", label: "Python" },
+    { key: "curl", label: "cURL" },
+    { key: "nodejs", label: "Node.js" }
+  ];
+  return `
+    <div class="algorithm-code-tabs" role="tablist" aria-label="算法示例语言">
+      ${options
+        .map(
+          (option) => `
+            <button
+              class="algorithm-code-tab ${activeLanguage === option.key ? "is-active" : ""}"
+              type="button"
+              role="tab"
+              aria-selected="${activeLanguage === option.key}"
+              data-algorithm-language="${option.key}"
+            >
+              ${option.label}
+            </button>
+          `
+        )
+        .join("")}
+    </div>
+  `;
+}
+
+function renderAlgorithmCapabilityModal(itemId) {
+  const capability = getAlgorithmCapability(itemId);
+  if (!capability?.row) {
+    return "";
+  }
+
+  const activeLanguage = state.algorithmPlayground.language || "python";
+  const formState = state.algorithmPlayground.form || {};
+  const responseText = state.algorithmPlayground.result || capability.testOutput;
+  const packageName = capability.row.packageName || "--";
+  const packageSize = capability.row.packageSize || "未上传";
+
+  return renderGeneModalShell({
+    title: `${capability.row.name}能力详情`,
+    sizeClass: "is-gene-large algorithm-detail-modal",
+    body: `
+      <section class="gene-section-card algorithm-hero-card">
+        <div class="algorithm-hero-top">
+          <div>
+            <p class="algorithm-hero-breadcrumb">科技专题服务算法库 / ${escapeHtml(capability.title)}</p>
+            <div class="gene-section-head">
+              <div>
+                <h4>${escapeHtml(capability.title)}</h4>
+                <p class="section-caption">${escapeHtml(capability.subtitle)}</p>
+              </div>
+              <div class="algorithm-hero-actions">
+                <button class="modal-outline" type="button" data-algorithm-copy="${itemId}">${icon("i-doc")}复制代码</button>
+                <button class="modal-primary" type="button" data-algorithm-run="${itemId}">${icon("i-chart")}在线测试</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="algorithm-chip-group">
+          <div class="algorithm-chip-block">
+            <span class="algorithm-chip-label">代码包信息</span>
+            <div class="algorithm-file-summary">
+              <div class="algorithm-file-card">
+                <strong title="${escapeHtml(packageName)}">${escapeHtml(packageName)}</strong>
+                <span>${escapeHtml(packageSize)}</span>
+              </div>
+              <div class="algorithm-file-meta">
+                <span>运行环境：${escapeHtml(capability.row.runtime || "--")}</span>
+                <span>更新时间：${escapeHtml(capability.row.updatedAt || "--")}</span>
+              </div>
+            </div>
+          </div>
+          <div class="algorithm-chip-block">
+            <span class="algorithm-chip-label">功能特点</span>
+            <div class="algorithm-chip-row">
+              ${capability.featureTags.map((tag) => `<span class="algorithm-chip">${escapeHtml(tag)}</span>`).join("")}
+            </div>
+          </div>
+          <div class="algorithm-chip-block">
+            <span class="algorithm-chip-label">适用场景</span>
+            <div class="algorithm-chip-row">
+              ${capability.sceneTags.map((tag) => `<span class="algorithm-chip">${escapeHtml(tag)}</span>`).join("")}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="gene-section-card">
+        <div class="gene-section-head">
+          <div>
+            <h4>API 调用示例</h4>
+            <p class="section-caption">接口地址：${escapeHtml(capability.endpoint)}</p>
+          </div>
+          ${renderAlgorithmCodeTabs(activeLanguage)}
+        </div>
+        <pre class="algorithm-code-block"><code>${escapeHtml(capability.requestExample[activeLanguage] || capability.requestExample.python)}</code></pre>
+      </section>
+
+      <section class="gene-section-card">
+        <div class="gene-section-head">
+          <div>
+            <h4>响应示例</h4>
+            <p class="section-caption">返回统一响应结构，包含结果主体与处理元信息。</p>
+          </div>
+        </div>
+        <pre class="algorithm-code-block is-response"><code>${escapeHtml(capability.responseExample)}</code></pre>
+      </section>
+
+      <section class="gene-section-card">
+        <div class="gene-section-head">
+          <div>
+            <h4>在线测试</h4>
+            <p class="section-caption">填写关键参数后即可模拟调用效果，右侧实时返回示例结果。</p>
+          </div>
+          <span class="algorithm-status-dot ${capability.row.status?.text === "启用" ? "is-online" : "is-offline"}">${escapeHtml(
+            capability.row.status?.text === "启用" ? "就绪" : "离线"
+          )}</span>
+        </div>
+        <div class="algorithm-playground">
+          <div class="algorithm-form-grid">
+            <label class="gene-field">
+              <span class="gene-label">请求参数</span>
+              <span class="gene-input-wrap">
+                <input class="input-control" type="text" value="${escapeHtml(formState.target_type || "")}" data-algorithm-field="target_type" />
+              </span>
+              <small class="gene-rule">分析对象类型：industry / enterprise / institution</small>
+            </label>
+            <label class="gene-field">
+              <span class="gene-label">时间范围</span>
+              <span class="gene-input-wrap">
+                <input class="input-control" type="text" value="${escapeHtml(formState.time_range || "")}" data-algorithm-field="time_range" />
+              </span>
+            </label>
+            <label class="gene-field is-full">
+              <span class="gene-label">对比目标来源</span>
+              <span class="gene-input-wrap">
+                <input class="input-control" type="text" value="${escapeHtml(formState.comparison_targets || "")}" data-algorithm-field="comparison_targets" />
+              </span>
+            </label>
+          </div>
+          <div class="algorithm-playground-result">
+            <div class="algorithm-playground-toolbar">
+              <span>响应结果</span>
+              <button class="reset-link" type="button" data-algorithm-clear="${itemId}">清除结果</button>
+            </div>
+            <pre class="algorithm-code-block is-live"><code>${escapeHtml(responseText)}</code></pre>
+          </div>
+        </div>
+      </section>
+    `,
+    footer: `
+      <button class="modal-outline" type="button" data-close-modal="analysis">关闭</button>
+      <button class="modal-primary" type="button" data-analysis-open="edit|system-algorithms|${itemId}">编辑</button>
     `
   });
 }
@@ -7842,6 +9291,14 @@ function renderAnalysisDeleteModal(moduleKey, itemId) {
 }
 
 function openAnalysisModal(action, moduleKey, itemId = "") {
+  const parentModal = state.modal ? { ...state.modal } : null;
+  if (moduleKey === "system-algorithms" && ["create", "edit"].includes(action)) {
+    const current = itemId ? getSystemRow(moduleKey, itemId) : null;
+    state.algorithmUploadDraft = {
+      fileName: current?.packageName || "",
+      fileSize: current?.packageSize || 0
+    };
+  }
   if (action === "create" || action === "edit") {
     if (moduleKey === "service") {
       const current = itemId ? hydrateServiceItem(getAnalysisRow("service", itemId) || {}) : null;
@@ -7852,39 +9309,51 @@ function openAnalysisModal(action, moduleKey, itemId = "") {
         itemId,
         serviceMethod: action === "edit" ? "manual" : "file",
         serviceStep: 1,
-        serviceDraft: action === "edit" ? buildServiceDraft(current) : createServiceEmptyDraft()
+        serviceDraft: action === "edit" ? buildServiceDraft(current) : createServiceEmptyDraft(),
+        parentModal
       };
       return;
     }
 
-    state.modal = { type: "analysis-form", mode: action, moduleKey, itemId };
+    state.modal = { type: "analysis-form", mode: action, moduleKey, itemId, parentModal };
     return;
   }
 
   if (action === "detail") {
-    state.modal = { type: "analysis-detail", moduleKey, itemId };
+    state.modal = { type: "analysis-detail", moduleKey, itemId, parentModal };
+    return;
+  }
+
+  if (action === "assign-role") {
+    state.modal = { type: "system-assign-role", moduleKey, itemId, parentModal };
+    return;
+  }
+
+  if (action === "permission") {
+    state.modal = { type: "system-permission", moduleKey, itemId, parentModal };
     return;
   }
 
   if (action === "gpa-detail" || action === "predict-detail") {
-    state.modal = { type: "full-linked-detail", moduleKey, itemId, detailType: action };
+    state.modal = { type: "full-linked-detail", moduleKey, itemId, detailType: action, parentModal };
     return;
   }
 
   if (action === "delete") {
-    state.modal = { type: "analysis-delete", moduleKey, itemId };
+    state.modal = { type: "analysis-delete", moduleKey, itemId, parentModal };
   }
 }
 
 const __openAnalysisModalForSystem = openAnalysisModal;
 openAnalysisModal = function openAnalysisModalForSystemPatched(action, moduleKey, itemId = "") {
+  const parentModal = state.modal ? { ...state.modal } : null;
   if (isSystemMenu(moduleKey) && action === "toggle") {
-    state.modal = { type: "system-toggle", moduleKey, itemId };
+    state.modal = { type: "system-toggle", moduleKey, itemId, parentModal };
     return;
   }
 
   if (isSystemMenu(moduleKey) && action === "export") {
-    state.modal = { type: "system-export", moduleKey };
+    state.modal = { type: "system-export", moduleKey, parentModal };
     return;
   }
 
@@ -7900,6 +9369,9 @@ function getGeneFormValues() {
 
 function getAnalysisFormValues() {
   const result = [...document.querySelectorAll("[data-gene-field^='analysis-']")].reduce((acc, node) => {
+    if (node.type === "file") {
+      return acc;
+    }
     acc[node.dataset.geneField.replace("analysis-", "")] = node.value.trim();
     return acc;
   }, {});
@@ -7907,6 +9379,11 @@ function getAnalysisFormValues() {
   const moduleChecks = [...document.querySelectorAll("[data-analysis-module]")];
   if (moduleChecks.length) {
     result.modules = moduleChecks.filter((node) => node.checked).map((node) => node.dataset.analysisModule);
+  }
+
+  if (state.modal?.moduleKey === "system-algorithms" && state.algorithmUploadDraft.fileName) {
+    result.packageName = state.algorithmUploadDraft.fileName;
+    result.packageSize = formatFileSize(state.algorithmUploadDraft.fileSize);
   }
 
   return result;
@@ -8192,24 +9669,157 @@ submitAnalysisAction = async function submitAnalysisActionForSystemPatched(actio
 };
 
 function sensorStatusClass(moduleKey, metrics) {
-  const numericValues = metrics
-    .map((item) => Number(String(item.value).replace(/[^\d.-]/g, "")))
-    .filter((value) => Number.isFinite(value));
-
-  if (!numericValues.length) {
-    return "is-normal";
-  }
-
-  const highRisk = moduleKey === "physical" ? numericValues.some((value) => value > 38 || value < 0.03) : numericValues.some((value) => value > 30);
-  const warning = moduleKey === "physical" ? numericValues.some((value) => value > 37) : numericValues.some((value) => value > 18);
-
-  if (highRisk) {
+  const result = evaluateSensorMetrics(moduleKey, metrics);
+  if (result.errors.length) {
     return "is-error";
   }
-  if (warning) {
+  if (result.warnings.length) {
     return "is-warning";
   }
   return "is-normal";
+}
+
+function normalizeSensorLabel(label = "") {
+  return String(label || "")
+    .replace(/\([^)]*\)/g, "")
+    .replace(/（[^）]*）/g, "")
+    .replace(/\s+/g, "")
+    .trim();
+}
+
+function getSensorThreshold(moduleKey, label) {
+  const normalized = normalizeSensorLabel(label);
+  return sensorModules[moduleKey]?.thresholdRows.find((row) => normalizeSensorLabel(row.label) === normalized) || null;
+}
+
+function numericSensorValue(value) {
+  const parsed = Number(String(value || "").replace(/[^\d.-]/g, ""));
+  return Number.isFinite(parsed) ? parsed : NaN;
+}
+
+function evaluateSensorMetrics(moduleKey, metrics = []) {
+  const errors = [];
+  const warnings = [];
+  metrics.forEach((item) => {
+    const threshold = getSensorThreshold(moduleKey, item.label);
+    const value = numericSensorValue(item.value);
+    if (!threshold) {
+      return;
+    }
+    const min = Number(threshold.min);
+    const max = Number(threshold.max);
+    const alert = Number(threshold.alert);
+    if (!Number.isFinite(value)) {
+      errors.push(`${item.label}不是有效数值`);
+      return;
+    }
+    if (Number.isFinite(min) && value < min) {
+      errors.push(`${item.label}${value}低于下限${min}`);
+    }
+    if (Number.isFinite(max) && value > max) {
+      errors.push(`${item.label}${value}高于上限${max}`);
+    }
+    if (!errors.some((msg) => msg.startsWith(item.label)) && Number.isFinite(alert) && value >= alert) {
+      warnings.push(`${item.label}${value}达到预警阈值${alert}`);
+    }
+  });
+  return { errors, warnings };
+}
+
+function getSensorMetricTone(moduleKey, metric) {
+  const result = evaluateSensorMetrics(moduleKey, [metric]);
+  if (result.errors.length) {
+    return "error";
+  }
+  if (result.warnings.length) {
+    return "warning";
+  }
+  return "normal";
+}
+
+function sensorFieldAliases(moduleKey) {
+  const module = sensorModules[moduleKey];
+  return {
+    batchId: ["批次号", "batchId", "批次"],
+    time: ["录入时间", "检测时间", "time"],
+    user: ["录入人员", "操作人", "user"],
+    metrics: module.paramFields.map((field) => ({
+      label: field.label,
+      aliases: [field.label, normalizeSensorLabel(field.label)]
+    }))
+  };
+}
+
+function pickSensorCell(row, aliases, fallback = "") {
+  const keys = Object.keys(row);
+  const target = aliases.find((alias) => keys.some((key) => normalizeSensorLabel(key) === normalizeSensorLabel(alias)));
+  if (!target) {
+    return fallback;
+  }
+  const key = keys.find((item) => normalizeSensorLabel(item) === normalizeSensorLabel(target));
+  return row[key] || fallback;
+}
+
+function buildSensorImportResult(moduleKey, rows) {
+  const aliases = sensorFieldAliases(moduleKey);
+  const module = sensorModules[moduleKey];
+  const errors = [];
+  const validRows = [];
+  let warningCount = 0;
+  rows.forEach((row, index) => {
+    const lineNo = index + 2;
+    const batchId = pickSensorCell(row, aliases.batchId, state.activeBatch[moduleKey]);
+    const time = pickSensorCell(row, aliases.time, new Date().toISOString().slice(0, 19).replace("T", " "));
+    const user = pickSensorCell(row, aliases.user, getCurrentOperatorName());
+    const metrics = aliases.metrics.map((item) => ({
+      label: item.label,
+      value: pickSensorCell(row, item.aliases)
+    }));
+    if (!batchId || !time || !user) {
+      errors.push(`第${lineNo}行缺少批次号、录入时间或录入人员`);
+      return;
+    }
+    if (metrics.some((item) => item.value === "")) {
+      errors.push(`第${lineNo}行存在空参数值`);
+      return;
+    }
+    const validation = evaluateSensorMetrics(moduleKey, metrics);
+    if (validation.errors.length) {
+      errors.push(`第${lineNo}行异常：${validation.errors.slice(0, 2).join("；")}`);
+      return;
+    }
+    if (validation.warnings.length) {
+      warningCount += 1;
+    }
+    const statusClass = validation.warnings.length ? "is-warning" : "is-normal";
+    const record = {
+      module: moduleKey,
+      batchId,
+      time,
+      user,
+      statusText: validation.warnings.length ? "预警" : "正常",
+      statusClass,
+      metrics: metrics.slice(0, 4).map((item) => ({ ...item, tone: getSensorMetricTone(moduleKey, item) })),
+      detail: moduleKey === "physical" ? metrics.map((item) => ({ ...item, tone: getSensorMetricTone(moduleKey, item) })) : [],
+      detailCards: moduleKey === "biological" ? metrics.map((item) => ({ ...item, tone: getSensorMetricTone(moduleKey, item) })) : [],
+      warnings: validation.warnings,
+      thresholdSnapshot: module.thresholdRows.map((item) => ({ ...item }))
+    };
+    validRows.push(record);
+  });
+  return { validRows, errors, warningCount };
+}
+
+async function importSensorRecords(moduleKey, records) {
+  for (const record of records) {
+    const payload = await apiRequest("/api/sensor-records", {
+      method: "POST",
+      body: JSON.stringify(record)
+    });
+    mergeSensorRecord(moduleKey, payload.item);
+  }
+  recalcSensorSummary(moduleKey);
+  appendOperationLog(moduleKey, `批量导入${sensorModules[moduleKey].label}记录${records.length}条`);
 }
 
 async function submitSensorAction(action, moduleKey) {
@@ -8224,6 +9834,21 @@ async function submitSensorAction(action, moduleKey) {
     }))
     .filter((item) => item.value);
 
+  if (!values[`${moduleKey}-basic-0`]) {
+    throw new Error("请选择批次号");
+  }
+  if (!user || user === "系统录入") {
+    throw new Error("请填写录入人员");
+  }
+  if (metricValues.length !== module.paramFields.length) {
+    throw new Error("请完整填写所有传感器参数");
+  }
+  const validation = evaluateSensorMetrics(moduleKey, metricValues);
+  if (validation.errors.length) {
+    appendOperationLog(moduleKey, `新增录入被阻断：${validation.errors.slice(0, 3).join("；")}`, "失败");
+    throw new Error(`异常数据不允许入库：${validation.errors.slice(0, 2).join("；")}`);
+  }
+
   const statusClass = sensorStatusClass(moduleKey, metricValues);
   const statusText = statusClass === "is-error" ? "异常" : statusClass === "is-warning" ? "预警" : "正常";
   const record = {
@@ -8236,10 +9861,12 @@ async function submitSensorAction(action, moduleKey) {
     metrics: metricValues.slice(0, 4).map((item) => ({
       label: item.label,
       value: item.value,
-      tone: statusClass === "is-normal" ? "normal" : statusClass === "is-warning" ? "warning" : "error"
+      tone: getSensorMetricTone(moduleKey, item)
     })),
-    detail: moduleKey === "physical" ? metricValues : [],
-    detailCards: moduleKey === "biological" ? metricValues : []
+    detail: moduleKey === "physical" ? metricValues.map((item) => ({ ...item, tone: getSensorMetricTone(moduleKey, item) })) : [],
+    detailCards: moduleKey === "biological" ? metricValues.map((item) => ({ ...item, tone: getSensorMetricTone(moduleKey, item) })) : [],
+    warnings: validation.warnings,
+    thresholdSnapshot: module.thresholdRows.map((row) => ({ ...row }))
   };
 
   const payload = await apiRequest("/api/sensor-records", {
@@ -8249,6 +9876,7 @@ async function submitSensorAction(action, moduleKey) {
 
   mergeSensorRecord(moduleKey, payload.item);
   recalcSensorSummary(moduleKey);
+  appendOperationLog(moduleKey, `${action === "save" ? "暂存" : "提交"}${module.label}记录：${record.batchId} ${record.time}`);
 }
 
 function findRecord(moduleKey, batchId, recordId) {
@@ -8259,14 +9887,26 @@ function findRecord(moduleKey, batchId, recordId) {
 }
 
 function renderThresholdModal(module) {
+  const hasParentModal = Boolean(state.modal?.parentModal);
   return `
     <div class="modal-layer">
       <section class="modal">
         <header class="modal-header">
-          <h3 class="modal-title">
-            <span class="modal-icon">${icon("i-settings")}</span>
-            <span>${module.thresholdTitle}</span>
-          </h3>
+          <div class="modal-heading">
+            ${
+              hasParentModal
+                ? `
+                  <button class="modal-back" type="button" data-modal-back="threshold" aria-label="返回上一级">
+                    <span class="header-icon">${icon("i-arrow-left")}</span>
+                  </button>
+                `
+                : ""
+            }
+            <h3 class="modal-title">
+              <span class="modal-icon">${icon("i-settings")}</span>
+              <span>${module.thresholdTitle}</span>
+            </h3>
+          </div>
           <button class="modal-close" type="button" data-close-modal="threshold">
             <span class="header-icon">${icon("i-close")}</span>
           </button>
@@ -8284,12 +9924,12 @@ function renderThresholdModal(module) {
             <tbody>
               ${module.thresholdRows
                 .map(
-                  (row) => `
+                  (row, index) => `
                     <tr>
                       <td>${row.label}</td>
-                      <td><input class="config-input" type="text" value="${row.min}" /></td>
-                      <td><input class="config-input" type="text" value="${row.max}" /></td>
-                      <td><input class="config-input" type="text" value="${row.alert}" /></td>
+                      <td><input class="config-input" type="text" value="${row.min}" data-threshold-field="${module.key}|${index}|min" /></td>
+                      <td><input class="config-input" type="text" value="${row.max}" data-threshold-field="${module.key}|${index}|max" /></td>
+                      <td><input class="config-input" type="text" value="${row.alert}" data-threshold-field="${module.key}|${index}|alert" /></td>
                     </tr>
                   `
                 )
@@ -8311,6 +9951,10 @@ function renderThresholdModal(module) {
 }
 
 function renderImportModal(module) {
+  const importState = state.modal?.module === module.key ? state.modal : {};
+  const hasParentModal = Boolean(state.modal?.parentModal);
+  const selectedFile = importState.fileName || "";
+  const result = importState.importResult || null;
   const footer =
     module.importVariant === "confirm"
       ? `
@@ -8322,7 +9966,7 @@ function renderImportModal(module) {
         </div>
         <div class="modal-footer">
           <button class="modal-secondary" type="button" data-close-modal="import">取消</button>
-          <button class="modal-primary" type="button" data-modal-action="confirm-import|${module.key}">确认导入</button>
+          <button class="modal-primary" type="button" data-modal-action="confirm-import|${module.key}" ${result?.validRows?.length ? "" : "disabled"}>确认导入</button>
         </div>
       `
       : `
@@ -8332,26 +9976,42 @@ function renderImportModal(module) {
             <span>下载导入模板</span>
           </button>
         </div>
+        <div class="modal-footer">
+          <button class="modal-secondary" type="button" data-close-modal="import">取消</button>
+          <button class="modal-primary" type="button" data-modal-action="confirm-import|${module.key}" ${result?.validRows?.length ? "" : "disabled"}>确认导入</button>
+        </div>
       `;
 
   return `
     <div class="modal-layer">
       <section class="modal">
         <header class="modal-header">
-          <h3 class="modal-title">
-            <span class="modal-icon">${icon("i-upload")}</span>
-            <span>${module.importTitle}</span>
-          </h3>
+          <div class="modal-heading">
+            ${
+              hasParentModal
+                ? `
+                  <button class="modal-back" type="button" data-modal-back="import" aria-label="返回上一级">
+                    <span class="header-icon">${icon("i-arrow-left")}</span>
+                  </button>
+                `
+                : ""
+            }
+            <h3 class="modal-title">
+              <span class="modal-icon">${icon("i-upload")}</span>
+              <span>${module.importTitle}</span>
+            </h3>
+          </div>
           <button class="modal-close" type="button" data-close-modal="import">
             <span class="header-icon">${icon("i-close")}</span>
           </button>
         </header>
         <div class="modal-body">
           <div class="upload-box">
+            <input class="service-file-input" type="file" accept=".csv" data-sensor-import-file="${module.key}" />
             <div>
               <div class="upload-plus">+</div>
-              <p class="upload-title">拖拽文件到此处或点击上传</p>
-              <p class="upload-subtitle">支持格式: Excel(.xlsx), CSV(.csv) | 文件大小限制: 最大10MB</p>
+              <p class="upload-title">${selectedFile ? escapeHtml(selectedFile) : "点击选择CSV文件或使用模板导入"}</p>
+              <p class="upload-subtitle">当前静态原型可直接解析 CSV；Excel(.xlsx/.xls)需接入解析库后启用。文件大小限制: 最大10MB</p>
               <div class="requirement-list is-compact">
                 <span>文件大小不超过10MB</span>
                 <span>需使用模板列名</span>
@@ -8359,11 +10019,107 @@ function renderImportModal(module) {
               </div>
             </div>
           </div>
+          ${
+            result
+              ? `
+                <section class="gene-section-card sensor-import-result">
+                  <div class="gene-section-head">
+                    <div><h4>导入校验结果</h4><p class="section-caption">通过 ${result.validRows.length} 条，失败 ${result.errors.length} 条，预警 ${result.warningCount} 条。</p></div>
+                  </div>
+                  ${
+                    result.errors.length
+                      ? `<div class="requirement-list is-compact">${result.errors.slice(0, 6).map((msg) => `<span>${escapeHtml(msg)}</span>`).join("")}</div>`
+                      : '<p class="section-caption">未发现阻断错误，可确认导入。</p>'
+                  }
+                </section>
+              `
+              : ""
+          }
           ${footer}
         </div>
       </section>
     </div>
   `;
+}
+
+function saveThresholdConfig(moduleKey) {
+  const module = sensorModules[moduleKey];
+  if (!module) {
+    throw new Error("未找到传感器模块");
+  }
+  const nextRows = module.thresholdRows.map((row, index) => {
+    const min = document.querySelector(`[data-threshold-field="${moduleKey}|${index}|min"]`)?.value?.trim() || row.min;
+    const max = document.querySelector(`[data-threshold-field="${moduleKey}|${index}|max"]`)?.value?.trim() || row.max;
+    const alert = document.querySelector(`[data-threshold-field="${moduleKey}|${index}|alert"]`)?.value?.trim() || row.alert;
+    const minNum = Number(min);
+    const maxNum = Number(max);
+    const alertNum = Number(alert);
+    if (![minNum, maxNum, alertNum].every(Number.isFinite)) {
+      throw new Error(`${row.label}的阈值必须为数字`);
+    }
+    if (minNum >= maxNum) {
+      throw new Error(`${row.label}下限阈值必须小于上限阈值`);
+    }
+    if (alertNum < minNum || alertNum > maxNum) {
+      throw new Error(`${row.label}预警阈值必须位于上下限之间`);
+    }
+    return { ...row, min, max, alert };
+  });
+  module.thresholdRows = nextRows;
+  appendOperationLog(moduleKey, `保存${module.label}阈值配置`);
+}
+
+function resetThresholdConfig(moduleKey) {
+  const defaults =
+    moduleKey === "physical"
+      ? [
+          { label: "温度(℃)", min: "25.0", max: "38.0", alert: "37.0" },
+          { label: "罐内压力(kPa)", min: "0.8", max: "1.5", alert: "1.4" },
+          { label: "搅拌速度(rpm)", min: "100", max: "500", alert: "450" },
+          { label: "气体流量(L/min)", min: "0.5", max: "3.0", alert: "2.8" },
+          { label: "pH值", min: "6.0", max: "8.0", alert: "7.5" },
+          { label: "溶解氧浓度(mg/L)", min: "2.0", max: "8.0", alert: "7.0" },
+          { label: "溶解CO₂浓度(mg/L)", min: "10.0", max: "100.0", alert: "90.0" },
+          { label: "排气O₂分压(%)", min: "15.0", max: "21.0", alert: "20.0" },
+          { label: "排气CO₂分压(%)", min: "0.03", max: "0.1", alert: "0.09" }
+        ]
+      : [
+          { label: "谷氨酸(g/L)", min: "0", max: "50", alert: "18" },
+          { label: "葡萄糖(g/L)", min: "0", max: "100", alert: "80" },
+          { label: "丙酮酸(g/L)", min: "0", max: "10", alert: "7" },
+          { label: "甘氨酸(g/L)", min: "0", max: "5", alert: "4" },
+          { label: "谷氨酰胺(g/L)", min: "0", max: "8", alert: "6" },
+          { label: "精氨酸(g/L)", min: "0", max: "5", alert: "4" },
+          { label: "组氨酸(g/L)", min: "0", max: "3", alert: "2.2" },
+          { label: "色氨酸(g/L)", min: "0", max: "4", alert: "3" },
+          { label: "乳酸(g/L)", min: "0", max: "15", alert: "12" },
+          { label: "铵根离子(mmol/L)", min: "0", max: "200", alert: "160" },
+          { label: "柠檬酸(g/L)", min: "0", max: "10", alert: "8" },
+          { label: "亮氨酸(g/L)", min: "0", max: "6", alert: "4.5" },
+          { label: "异亮氨酸(g/L)", min: "0", max: "4", alert: "3" },
+          { label: "甲硫氨酸(g/L)", min: "0", max: "3", alert: "2.2" },
+          { label: "半胱氨酸(g/L)", min: "0", max: "2", alert: "1.5" },
+          { label: "赖氨酸(g/L)", min: "0", max: "8", alert: "6" }
+        ];
+  sensorModules[moduleKey].thresholdRows = defaults;
+  appendOperationLog(moduleKey, `恢复${sensorModules[moduleKey].label}默认阈值`);
+}
+
+function downloadSensorTemplate(moduleKey) {
+  const module = sensorModules[moduleKey];
+  const headers = ["批次号", "录入时间", "录入人员", ...module.paramFields.map((field) => field.label)];
+  const sampleRow = [state.activeBatch[moduleKey], new Date().toISOString().slice(0, 19).replace("T", " "), getCurrentOperatorName()].concat(
+    module.paramFields.map((field, index) => {
+      const threshold = module.thresholdRows[index];
+      if (!threshold) {
+        return "";
+      }
+      const min = Number(threshold.min);
+      const max = Number(threshold.max);
+      return Number.isFinite(min) && Number.isFinite(max) ? String(((min + max) / 2).toFixed(2)) : "";
+    })
+  );
+  downloadCsvFile(`${module.label}导入模板.csv`, [headers, sampleRow]);
 }
 
 function renderSensorBatchModal(moduleKey, batchId = "") {
@@ -8450,6 +10206,7 @@ function renderDetailModal(moduleKey, batchId, recordId) {
   if (!module || !batch || !record) {
     return "";
   }
+  const hasParentModal = Boolean(state.modal?.parentModal);
 
   const paramBody =
     moduleKey === "physical"
@@ -8484,12 +10241,36 @@ function renderDetailModal(moduleKey, batchId, recordId) {
         </div>
       `;
 
+  const thresholdBody = (record.thresholdSnapshot || [])
+    .map(
+      (item) => `
+        <tr>
+          <td>${escapeHtml(item.label)}</td>
+          <td>${escapeHtml(item.min)}</td>
+          <td>${escapeHtml(item.alert)}</td>
+          <td>${escapeHtml(item.max)}</td>
+        </tr>
+      `
+    )
+    .join("");
+
   return `
     <div class="modal-layer">
       <section class="modal is-detail detail-modal">
         <div class="modal-body">
           <div class="detail-head">
-            <h3 class="detail-title">${module.detailTitle}</h3>
+            <div class="detail-heading">
+              ${
+                hasParentModal
+                  ? `
+                    <button class="detail-back" type="button" data-modal-back="detail" aria-label="返回上一级">
+                      <span class="header-icon">${icon("i-arrow-left")}</span>
+                    </button>
+                  `
+                  : ""
+              }
+              <h3 class="detail-title">${module.detailTitle}</h3>
+            </div>
             <button class="detail-close" type="button" data-close-modal="detail">
               <span class="header-icon">${icon("i-close")}</span>
             </button>
@@ -8520,6 +10301,29 @@ function renderDetailModal(moduleKey, batchId, recordId) {
           <div class="detail-block">
             <h4 class="detail-subtitle">${moduleKey === "physical" ? "物理参数" : "代谢物参数"}</h4>
             ${paramBody}
+          </div>
+
+          <div class="detail-block">
+            <h4 class="detail-subtitle">预警与阈值信息</h4>
+            ${
+              record.warnings?.length
+                ? `<div class="requirement-list is-compact">${record.warnings.map((item) => `<span>${escapeHtml(item)}</span>`).join("")}</div>`
+                : '<p class="section-caption">当前记录未触发预警，所有参数均在阈值范围内。</p>'
+            }
+            ${
+              thresholdBody
+                ? `
+                  <div class="table-scroll gene-inner-table" style="margin-top:12px;">
+                    <table class="data-table gene-snp-table">
+                      <thead>
+                        <tr><th>参数</th><th>下限</th><th>预警值</th><th>上限</th></tr>
+                      </thead>
+                      <tbody>${thresholdBody}</tbody>
+                    </table>
+                  </div>
+                `
+                : ""
+            }
           </div>
 
           <div class="detail-footer">
@@ -8625,6 +10429,14 @@ renderModal = function renderModalForSystemPatched() {
 
   if (state.modal?.type === "system-export") {
     return renderSystemExportModal(state.modal.moduleKey);
+  }
+
+  if (state.modal?.type === "system-assign-role") {
+    return renderAssignRoleModal(state.modal.itemId);
+  }
+
+  if (state.modal?.type === "system-permission") {
+    return renderRolePermissionModal(state.modal.itemId);
   }
 
   return __renderModalForSystem();
@@ -8766,7 +10578,32 @@ function handleLoginSubmit(form) {
     refreshCaptcha("login");
     return;
   }
+  const matchedUser =
+    systemPages["system-users"]?.rows?.find((row) => [row.account, row.username, row.email].some((value) => String(value || "") === account)) ||
+    null;
+  const isDefaultAccount = account === defaultLoginCredentials.account && password === defaultLoginCredentials.password;
+  if (!isDefaultAccount && (!matchedUser || !isStrongPassword(password))) {
+    appendOperationLog("auth", `登录失败：${account}`, "失败");
+    showToast("账号或密码不正确，请核对后重试");
+    refreshCaptcha("login");
+    return;
+  }
 
+  const user = {
+    account,
+    name: matchedUser?.name || "张明",
+    role: matchedUser?.role || "系统管理员",
+    department: matchedUser?.department || matchedUser?.organization || "平台运维部"
+  };
+  const session = {
+    token: createSessionToken(account),
+    account,
+    user,
+    loginAt: new Date().toISOString(),
+    expiresAt: Date.now() + 30 * 60 * 1000
+  };
+  state.currentUser = user;
+  writeAuthSession(session);
   state.scene = "dashboard";
   state.activeMenu = "dashboard";
   state.openNavGroup = "";
@@ -8778,6 +10615,7 @@ function handleLoginSubmit(form) {
   state.pagination.biological = 1;
   state.modal = null;
   renderApp();
+  appendOperationLog("auth", `用户 ${account} 登录系统，token已生成`);
   showToast("登录成功，已进入数据看板页面");
 }
 
@@ -8852,6 +10690,9 @@ function handleRecoverSubmit(form) {
 }
 
 function handleLogout() {
+  appendOperationLog("auth", `用户 ${getCurrentAccount()} 退出系统`);
+  clearAuthSession();
+  state.currentUser = null;
   state.scene = "auth";
   state.authView = "login";
   state.activeMenu = "dashboard";
@@ -8880,8 +10721,14 @@ document.addEventListener("click", async (event) => {
   const userMenuActionButton = event.target.closest("[data-user-menu-action]");
   if (userMenuActionButton) {
     const action = userMenuActionButton.dataset.userMenuAction;
+    if (action === "portal") {
+      writePortalReturnTip("您已从系统返回门户，可继续查看平台能力与核心数据。");
+      window.location.href = "./index.html";
+      return;
+    }
     if (action === "profile") {
-      state.modal = { type: "user-profile" };
+      const parentModal = state.modal ? { ...state.modal } : null;
+      state.modal = { type: "user-profile", parentModal };
       renderApp();
       return;
     }
@@ -8917,6 +10764,68 @@ document.addEventListener("click", async (event) => {
     return;
   }
 
+  const algorithmLanguageButton = event.target.closest("[data-algorithm-language]");
+  if (algorithmLanguageButton) {
+    state.algorithmPlayground.language = algorithmLanguageButton.dataset.algorithmLanguage;
+    renderApp();
+    return;
+  }
+
+  const algorithmCopyButton = event.target.closest("[data-algorithm-copy]");
+  if (algorithmCopyButton) {
+    const capability = getAlgorithmCapability(algorithmCopyButton.dataset.algorithmCopy);
+    const language = state.algorithmPlayground.language || "python";
+    const content = capability.requestExample?.[language] || "";
+    if (navigator.clipboard?.writeText) {
+      navigator.clipboard.writeText(content).catch(() => {});
+    }
+    showToast(`已复制${language.toUpperCase()}示例代码`);
+    return;
+  }
+
+  const algorithmRunButton = event.target.closest("[data-algorithm-run]");
+  if (algorithmRunButton) {
+    const capability = getAlgorithmCapability(algorithmRunButton.dataset.algorithmRun);
+    const values = [...document.querySelectorAll("[data-algorithm-field]")].reduce((acc, node) => {
+      acc[node.dataset.algorithmField] = node.value.trim();
+      return acc;
+    }, {});
+    state.algorithmPlayground.form = {
+      ...state.algorithmPlayground.form,
+      ...values
+    };
+    state.algorithmPlayground.result = JSON.stringify(
+      {
+        tool: capability.title,
+        status: capability.row.status?.text === "启用" ? "success" : "offline",
+        request: state.algorithmPlayground.form,
+        result:
+          capability.row.status?.text === "启用"
+            ? {
+                summary: `已完成 ${state.algorithmPlayground.form.time_range} 时间范围内的 ${state.algorithmPlayground.form.target_type} 基础分析`,
+                comparison_targets: state.algorithmPlayground.form.comparison_targets,
+                endpoint: capability.endpoint
+              }
+            : {
+                summary: "当前算法处于停用状态，无法发起在线测试"
+              }
+      },
+      null,
+      2
+    );
+    renderApp();
+    showToast(capability.row.status?.text === "启用" ? "在线测试已执行" : "当前算法未启用");
+    return;
+  }
+
+  const algorithmClearButton = event.target.closest("[data-algorithm-clear]");
+  if (algorithmClearButton) {
+    state.algorithmPlayground.result = "";
+    renderApp();
+    showToast("响应结果已清空");
+    return;
+  }
+
   const dashboardExportButton = event.target.closest("[data-dashboard-export]");
   if (dashboardExportButton) {
     const metrics = getDashboardMetrics();
@@ -8929,14 +10838,8 @@ document.addEventListener("click", async (event) => {
       ["传感器记录数", metrics.sensorRecords],
       ["工程细胞服务条目", metrics.serviceTotal]
     ];
-    const csv = rows.map((row) => row.map((cell) => `"${String(cell).replaceAll('"', '""')}"`).join(",")).join("\n");
-    const blob = new Blob([`\uFEFF${csv}`], { type: "text/csv;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "工程细胞主题库数据看板.csv";
-    link.click();
-    URL.revokeObjectURL(url);
+    downloadCsvFile("工程细胞主题库数据看板.csv", rows);
+    appendOperationLog("dashboard", "导出数据看板报表");
     showToast("数据看板报表已导出");
     return;
   }
@@ -8987,21 +10890,33 @@ document.addEventListener("click", async (event) => {
   const openModalButton = event.target.closest("[data-open-modal]");
   if (openModalButton) {
     const [type, moduleKey, batchId, recordId] = openModalButton.dataset.openModal.split("|");
+    const parentModal = state.modal ? { ...state.modal } : null;
     state.modal =
       type === "detail"
-        ? { type, module: moduleKey, batchId, recordId }
+        ? { type, module: moduleKey, batchId, recordId, parentModal }
         : type === "batch-edit"
-          ? { type: "batch", module: moduleKey, batchId }
+          ? { type: "batch", module: moduleKey, batchId, parentModal }
           : type === "batch-delete"
-            ? { type: "batch-delete", module: moduleKey, batchId }
-          : { type, module: moduleKey };
+            ? { type: "batch-delete", module: moduleKey, batchId, parentModal }
+          : { type, module: moduleKey, parentModal };
+    renderApp();
+    return;
+  }
+
+  const modalBackButton = event.target.closest("[data-modal-back]");
+  if (modalBackButton) {
+    if (state.modal?.parentModal) {
+      state.modal = state.modal.parentModal;
+    } else {
+      state.modal = null;
+    }
     renderApp();
     return;
   }
 
   const closeModalButton = event.target.closest("[data-close-modal]");
   if (closeModalButton) {
-    state.modal = null;
+    state.modal = state.modal?.parentModal || null;
     renderApp();
     return;
   }
@@ -9009,7 +10924,7 @@ document.addEventListener("click", async (event) => {
   const geneOpenButton = event.target.closest("[data-gene-open]");
   if (geneOpenButton) {
     const [actionKey, projectId, snpKey = ""] = geneOpenButton.dataset.geneOpen.split("|");
-    openGeneModal(actionKey, projectId, { snpKey: decodeURIComponent(snpKey) });
+    openGeneModal(actionKey, projectId, { snpKey: decodeURIComponent(snpKey), parentModal: state.modal ? { ...state.modal } : null });
     renderApp();
     return;
   }
@@ -9017,8 +10932,21 @@ document.addEventListener("click", async (event) => {
   const analysisOpenButton = event.target.closest("[data-analysis-open]");
   if (analysisOpenButton) {
     const [actionKey, moduleKey, itemId] = analysisOpenButton.dataset.analysisOpen.split("|");
+    if (moduleKey === "system-algorithms" && ["create", "edit"].includes(actionKey)) {
+      const current = itemId ? getSystemRow(moduleKey, itemId) : null;
+      state.algorithmUploadDraft = {
+        fileName: current?.packageName || "",
+        fileSize: current?.packageSize || 0
+      };
+    }
     openAnalysisModal(actionKey, moduleKey, itemId);
     renderApp();
+    return;
+  }
+
+  const fileTriggerButton = event.target.closest("[data-file-trigger]");
+  if (fileTriggerButton) {
+    document.querySelector(`[data-gene-field="${fileTriggerButton.dataset.fileTrigger}"]`)?.click();
     return;
   }
 
@@ -9102,6 +11030,13 @@ document.addEventListener("click", async (event) => {
   if (geneTabButton && state.modal?.type === "gene-detail") {
     state.modal = { ...state.modal, tab: geneTabButton.dataset.geneTab };
     renderApp();
+    return;
+  }
+
+  const geneExportButton = event.target.closest("[data-gene-export]");
+  if (geneExportButton) {
+    exportGeneResult(geneExportButton.dataset.geneExport);
+    showToast("GPA分析结果已导出");
     return;
   }
 
@@ -9222,6 +11157,21 @@ document.addEventListener("click", async (event) => {
       showToast(action === "search" ? "数据资源目录筛选已执行" : "筛选条件已重置");
       return;
     }
+    const page = analysisPages[pageKey];
+    if (page?.filters?.length) {
+      if (action === "reset") {
+        state.analysisFilters[pageKey] = {};
+      } else {
+        state.analysisFilters[pageKey] = [...document.querySelectorAll("[data-analysis-filter]")].reduce((acc, field) => {
+          acc[field.dataset.analysisFilter] = field.value.trim();
+          return acc;
+        }, {});
+      }
+      state.pagination[pageKey] = 1;
+      renderApp();
+      showToast(action === "search" ? `${analysisPages[pageKey].title}筛选已执行` : "筛选条件已重置");
+      return;
+    }
     showToast(action === "search" ? `${analysisPages[pageKey].title}筛选已执行` : "筛选条件已重置");
     return;
   }
@@ -9234,7 +11184,8 @@ document.addEventListener("click", async (event) => {
     const targetId = tableAction.dataset.tableTarget || "";
     if (pageKey === "catalog") {
       if (actionKey === "detail") {
-        state.modal = { type: "catalog-detail", itemId: targetId };
+        const parentModal = state.modal ? { ...state.modal } : null;
+        state.modal = { type: "catalog-detail", itemId: targetId, parentModal };
         renderApp();
         return;
       }
@@ -9267,12 +11218,30 @@ document.addEventListener("click", async (event) => {
       "confirm-import": moduleKey === "physical" ? "物理参数数据已导入" : "代谢物数据已导入"
     };
 
-    if (action !== "reset-threshold") {
-      state.modal = null;
-      renderApp();
+    try {
+      if (action === "save-threshold") {
+        saveThresholdConfig(moduleKey);
+        state.modal = null;
+        renderApp();
+      } else if (action === "reset-threshold") {
+        resetThresholdConfig(moduleKey);
+        renderApp();
+      } else if (action === "confirm-import") {
+        const importResult = state.modal?.importResult;
+        if (!importResult?.validRows?.length) {
+          throw new Error("请先选择并校验导入文件");
+        }
+        await importSensorRecords(moduleKey, importResult.validRows);
+        state.modal = null;
+        renderApp();
+      } else {
+        state.modal = null;
+        renderApp();
+      }
+      showToast(actionText[action] || "操作已完成");
+    } catch (error) {
+      showToast(error.message || "操作失败");
     }
-
-    showToast(actionText[action] || "操作已完成");
     return;
   }
 
@@ -9340,6 +11309,7 @@ document.addEventListener("click", async (event) => {
 
   const downloadButton = event.target.closest("[data-download-template]");
   if (downloadButton) {
+    downloadSensorTemplate(downloadButton.dataset.downloadTemplate);
     showToast(`已下载${sensorModules[downloadButton.dataset.downloadTemplate].label}导入模板`);
     return;
   }
@@ -9450,6 +11420,62 @@ document.addEventListener("change", async (event) => {
       showToast(error.message || "文件读取失败");
     }
   }
+
+  if (event.target.matches("[data-gene-field='analysis-packageName']") && state.modal?.type === "analysis-form" && state.modal.moduleKey === "system-algorithms") {
+    const [file] = [...(event.target.files || [])];
+    if (!file) {
+      return;
+    }
+    const fileName = String(file.name || "");
+    const lowerName = fileName.toLowerCase();
+    const extension = `.${fileName.split(".").pop() || ""}`.toLowerCase();
+    const supportedExtensions = [".zip", ".tar", ".gz", ".rar", ".7z"];
+    if (!supportedExtensions.includes(extension) && !lowerName.endsWith(".tar.gz")) {
+      showToast("仅支持 zip、tar.gz、rar、7z 算法代码包");
+      return;
+    }
+    if (file.size > 200 * 1024 * 1024) {
+      showToast("算法代码包大小不能超过 200MB");
+      return;
+    }
+    state.algorithmUploadDraft = {
+      fileName,
+      fileSize: file.size
+    };
+    renderApp();
+    showToast(`已选择算法代码包：${fileName}`);
+    return;
+  }
+
+  if (event.target.matches("[data-sensor-import-file]") && state.modal?.type === "import") {
+    const [file] = [...(event.target.files || [])];
+    if (!file) {
+      return;
+    }
+    const extension = `.${String(file.name).split(".").pop() || ""}`.toLowerCase();
+    if (extension !== ".csv") {
+      showToast("当前原型仅支持解析 CSV 模板文件");
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      showToast("文件大小不能超过 10MB");
+      return;
+    }
+    try {
+      const text = await readFileAsText(file);
+      const rows = parseCsvText(text);
+      const result = buildSensorImportResult(state.modal.module, rows);
+      state.modal = {
+        ...state.modal,
+        fileName: file.name,
+        importResult: result
+      };
+      renderApp();
+      showToast(`校验完成：通过 ${result.validRows.length} 条，失败 ${result.errors.length} 条`);
+    } catch (error) {
+      showToast(error.message || "导入文件读取失败");
+    }
+  }
 });
 
 window.addEventListener("resize", () => {
@@ -9472,6 +11498,11 @@ sidebarBackdrop.addEventListener("click", () => {
 });
 
 applyPersistedSystemPages();
+const existingSession = readAuthSession();
+if (existingSession?.token && Number(existingSession.expiresAt || 0) > Date.now()) {
+  state.currentUser = existingSession.user || null;
+  state.scene = "dashboard";
+}
 renderApp();
 Promise.all([loadGeneProjects(), loadAnalysisModules(), loadSensorRecords()])
   .then(() => {
