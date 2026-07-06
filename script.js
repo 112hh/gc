@@ -768,7 +768,7 @@ const analysisPages = {
           { label: "删除", tone: "danger" },
           { label: "上传数据集", tone: "danger" },
           { label: "分析结果", tone: "blue" },
-          { label: "详情", tone: "blue" }
+          { label: "查看详情", tone: "blue" }
         ]
       },
       {
@@ -784,7 +784,7 @@ const analysisPages = {
           { label: "删除", tone: "danger" },
           { label: "上传数据集", tone: "danger" },
           { label: "分析结果", tone: "blue" },
-          { label: "详情", tone: "blue" }
+          { label: "查看详情", tone: "blue" }
         ]
       },
       {
@@ -800,7 +800,7 @@ const analysisPages = {
           { label: "删除", tone: "danger" },
           { label: "上传数据集", tone: "danger" },
           { label: "分析结果", tone: "blue" },
-          { label: "详情", tone: "blue" }
+          { label: "查看详情", tone: "blue" }
         ]
       }
     ],
@@ -847,7 +847,7 @@ const analysisPages = {
         createdAt: "2024-01-15 10:30",
         actions: [
           { label: "编辑", tone: "blue" },
-          { label: "详情", tone: "blue" },
+          { label: "查看结果", tone: "blue" },
           { label: "删除", tone: "danger" }
         ]
       },
@@ -862,7 +862,7 @@ const analysisPages = {
         createdAt: "2024-01-18 14:20",
         actions: [
           { label: "编辑", tone: "blue" },
-          { label: "详情", tone: "blue" },
+          { label: "查看结果", tone: "blue" },
           { label: "删除", tone: "danger" }
         ]
       },
@@ -877,7 +877,7 @@ const analysisPages = {
         createdAt: "2024-01-20 09:15",
         actions: [
           { label: "编辑", tone: "blue" },
-          { label: "详情", tone: "blue" },
+          { label: "查看结果", tone: "blue" },
           { label: "删除", tone: "danger" }
         ]
       },
@@ -892,7 +892,7 @@ const analysisPages = {
         createdAt: "2024-01-22 16:45",
         actions: [
           { label: "编辑", tone: "blue" },
-          { label: "详情", tone: "blue" },
+          { label: "查看结果", tone: "blue" },
           { label: "删除", tone: "danger" }
         ]
       },
@@ -907,7 +907,7 @@ const analysisPages = {
         createdAt: "2024-01-25 11:00",
         actions: [
           { label: "编辑", tone: "blue" },
-          { label: "详情", tone: "blue" },
+          { label: "查看结果", tone: "blue" },
           { label: "删除", tone: "danger" }
         ]
       }
@@ -945,7 +945,7 @@ const analysisPages = {
         status: { text: "已验证", className: "is-valid" },
         actions: [
           { label: "编辑", tone: "blue" },
-          { label: "查看详情", tone: "blue" },
+          { label: "查看结果", tone: "blue" },
           { label: "删除", tone: "danger" }
         ]
       },
@@ -958,7 +958,7 @@ const analysisPages = {
         status: { text: "已验证", className: "is-valid" },
         actions: [
           { label: "编辑", tone: "blue" },
-          { label: "查看详情", tone: "blue" },
+          { label: "查看结果", tone: "blue" },
           { label: "删除", tone: "danger" }
         ]
       },
@@ -971,7 +971,7 @@ const analysisPages = {
         status: { text: "验证中", className: "is-progress" },
         actions: [
           { label: "编辑", tone: "blue" },
-          { label: "查看详情", tone: "blue" },
+          { label: "查看结果", tone: "blue" },
           { label: "删除", tone: "danger" }
         ]
       },
@@ -984,7 +984,7 @@ const analysisPages = {
         status: { text: "待验证", className: "is-pending" },
         actions: [
           { label: "编辑", tone: "blue" },
-          { label: "查看详情", tone: "blue" },
+          { label: "查看结果", tone: "blue" },
           { label: "删除", tone: "danger" }
         ]
       },
@@ -997,7 +997,7 @@ const analysisPages = {
         status: { text: "已验证", className: "is-valid" },
         actions: [
           { label: "编辑", tone: "blue" },
-          { label: "查看详情", tone: "blue" },
+          { label: "查看结果", tone: "blue" },
           { label: "删除", tone: "danger" }
         ]
       }
@@ -1030,7 +1030,7 @@ const analysisPages = {
         createdAt: "2024-01-15 10:30",
         actions: [
           { label: "编辑", tone: "blue" },
-          { label: "查看详情", tone: "blue" },
+          { label: "查看结果", tone: "blue" },
           { label: "删除", tone: "danger" }
         ]
       },
@@ -1041,7 +1041,7 @@ const analysisPages = {
         createdAt: "2024-01-18 14:20",
         actions: [
           { label: "编辑", tone: "blue" },
-          { label: "查看详情", tone: "blue" },
+          { label: "查看结果", tone: "blue" },
           { label: "删除", tone: "danger" }
         ]
       },
@@ -1052,7 +1052,7 @@ const analysisPages = {
         createdAt: "2024-01-20 09:15",
         actions: [
           { label: "编辑", tone: "blue" },
-          { label: "查看详情", tone: "blue" },
+          { label: "查看结果", tone: "blue" },
           { label: "删除", tone: "danger" }
         ]
       },
@@ -1063,7 +1063,7 @@ const analysisPages = {
         createdAt: "2024-01-22 16:45",
         actions: [
           { label: "编辑", tone: "blue" },
-          { label: "查看详情", tone: "blue" },
+          { label: "查看结果", tone: "blue" },
           { label: "删除", tone: "danger" }
         ]
       },
@@ -1074,7 +1074,7 @@ const analysisPages = {
         createdAt: "2024-01-25 11:00",
         actions: [
           { label: "编辑", tone: "blue" },
-          { label: "查看详情", tone: "blue" },
+          { label: "查看结果", tone: "blue" },
           { label: "删除", tone: "danger" }
         ]
       }
@@ -1452,8 +1452,10 @@ Object.assign(systemPages, {
       { id: "menu-1", name: "系统管理", type: "目录", route: "/system", permission: "system", status: { text: "显示" }, sort: "90" },
       { id: "menu-2", name: "用户管理", type: "菜单", route: "/system/users", permission: "system:user:view", status: { text: "显示" }, sort: "91" },
       { id: "menu-3", name: "角色管理", type: "菜单", route: "/system/roles", permission: "system:role:view", status: { text: "显示" }, sort: "92" },
-      { id: "menu-4", name: "平台配置", type: "菜单", route: "/system/config", permission: "system:config:view", status: { text: "隐藏" }, sort: "95" },
-      { id: "menu-5", name: "导出日志", type: "按钮", route: "-", permission: "system:log:export", status: { text: "显示" }, sort: "96" }
+      { id: "menu-4", name: "审核管理", type: "菜单", route: "/system/audit", permission: "system:audit:view", status: { text: "显示" }, sort: "94" },
+      { id: "menu-5", name: "平台配置", type: "菜单", route: "/system/config", permission: "system:config:view", status: { text: "隐藏" }, sort: "95" },
+      { id: "menu-6", name: "门户页配置", type: "菜单", route: "/system/portal-config", permission: "system:portal:view", status: { text: "显示" }, sort: "96" },
+      { id: "menu-7", name: "导出日志", type: "按钮", route: "-", permission: "system:log:export", status: { text: "显示" }, sort: "97" }
     ],
     footer: "共 5 条记录，每页 10 条"
   },
@@ -1471,7 +1473,7 @@ Object.assign(systemPages, {
     ],
     filters: [
       { label: "操作人", type: "input", placeholder: "请输入操作人" },
-      { label: "操作模块", type: "select", options: ["全部", "用户管理", "角色管理", "菜单管理", "平台配置"] },
+      { label: "操作模块", type: "select", options: ["全部", "用户管理", "角色管理", "菜单管理", "审核管理", "平台配置", "门户页配置"] },
       { label: "操作结果", type: "select", options: ["全部", "成功", "失败"] },
       { label: "IP地址", type: "input", placeholder: "请输入IP地址" }
     ],
@@ -1523,6 +1525,78 @@ Object.assign(systemPages, {
       { id: "config-2", name: "会话超时时间", code: "security.session.timeout", group: "安全配置", value: "30 分钟", status: { text: "启用" }, updatedAt: "2026-05-11 14:30" },
       { id: "config-3", name: "告警通知模板", code: "notify.alert.template", group: "通知配置", value: "模板A", status: { text: "启用" }, updatedAt: "2026-05-14 16:10" },
       { id: "config-4", name: "对象存储桶名称", code: "storage.bucket.name", group: "存储配置", value: "ai-test-prod", status: { text: "停用" }, updatedAt: "2026-05-16 10:45" }
+    ],
+    footer: "共 4 条记录，每页 10 条"
+  },
+  "system-audit": {
+    key: "system-audit",
+    title: "审核入库管理",
+    breadcrumb: ["主题应用", "工程细胞入库审核"],
+    primaryButton: "",
+    headerTools: true,
+    stats: [
+      { icon: "i-clock", iconClass: "is-yellow", value: "2", label: "待审核记录" },
+      { icon: "i-check", iconClass: "is-green", value: "1", label: "已入库记录" },
+      { icon: "i-warning", iconClass: "is-cyan", value: "1", label: "审核不通过" },
+      { icon: "i-doc", iconClass: "is-blue", value: "4", label: "总记录数" }
+    ],
+    filters: [
+      { label: "审核标题", type: "input", placeholder: "请输入审核标题" },
+      { label: "审核类型", type: "select", options: ["全部", "数据入库", "服务发布", "门户内容", "权限变更"] },
+      { label: "审核状态", type: "select", options: ["全部", "待审核", "审核中", "已通过", "已退回"] },
+      { label: "提交人", type: "input", placeholder: "请输入提交人" }
+    ],
+    columns: [
+      { key: "submittedAt", label: "提交时间" },
+      { key: "name", label: "数据名称" },
+      { key: "dataType", label: "数据类型" },
+      { key: "flowType", label: "流程类型" },
+      { key: "status", label: "审核状态" },
+      { key: "storageResult", label: "入库结果" },
+      { key: "actions", label: "操作" }
+    ],
+    rows: [
+      { id: "audit-1", materialType: "cell", name: "谷氨酸高产工程菌株", alias: "EC-GLU-001", dataType: "菌株基础数据", flowType: "工程细胞数据上传", type: "数据入库", submitter: "李倩", reviewer: "张明", status: { text: "审核中" }, storageResult: "待审核入库", submittedAt: "2026-04-15 14:32" },
+      { id: "audit-2", materialType: "cell", name: "赖氨酸高产工程菌株", alias: "EC-LYS-018", dataType: "可视化文件", flowType: "工程细胞数据上传", type: "数据入库", submitter: "王超", reviewer: "李倩", status: { text: "审核通过" }, storageResult: "已完成入库", submittedAt: "2026-04-12 16:45" },
+      { id: "audit-3", materialType: "genotype", name: "谷氨酸菌株GPA数据", alias: "GPA-20260415", dataType: "关联分析结果", flowType: "基因型-表型数据提交", type: "数据入库", submitter: "赵琳", reviewer: "张明", status: { text: "待审核" }, storageResult: "待审核入库", submittedAt: "2026-04-11 10:18" },
+      { id: "audit-4", materialType: "omics", name: "多组学代谢网络模型", alias: "GSMM-v2", dataType: "模型文件", flowType: "组学数据入库", type: "数据入库", submitter: "陈晨", reviewer: "张明", status: { text: "审核不通过" }, storageResult: "已驳回", submittedAt: "2026-04-09 09:20" },
+      { id: "audit-5", materialType: "process", name: "发酵过程批次数据", alias: "FB20260412", dataType: "过程时序数据", flowType: "发酵过程数据同步", type: "数据入库", submitter: "周宁", reviewer: "李倩", status: { text: "审核中" }, storageResult: "待审核入库", submittedAt: "2026-04-08 13:36" },
+      { id: "audit-6", materialType: "nutrition", name: "培养基营养组分方案", alias: "MED-OPT-007", dataType: "配方数据", flowType: "培养营养数据上传", type: "数据入库", submitter: "刘洋", reviewer: "张明", status: { text: "审核通过" }, storageResult: "已完成入库", submittedAt: "2026-04-06 15:04" }
+    ],
+    footer: "共 6 条记录，每页 10 条"
+  },
+  "system-portal-config": {
+    key: "system-portal-config",
+    title: "门户页配置",
+    breadcrumb: ["首页", "系统管理", "门户页配置"],
+    primaryButton: "新增门户配置",
+    headerTools: true,
+    stats: [
+      { icon: "i-settings", iconClass: "is-blue", value: "4", label: "配置项总数" },
+      { icon: "i-check", iconClass: "is-green", value: "3", label: "已启用" },
+      { icon: "i-warning", iconClass: "is-yellow", value: "1", label: "草稿项" },
+      { icon: "i-doc", iconClass: "is-cyan", value: "4", label: "门户区块" }
+    ],
+    filters: [
+      { label: "配置名称", type: "input", placeholder: "请输入配置名称" },
+      { label: "页面区块", type: "select", options: ["全部", "首页首屏", "平台价值", "核心数据库", "应用场景", "页脚信息"] },
+      { label: "发布状态", type: "select", options: ["全部", "启用", "草稿", "停用"] },
+      { label: "更新人", type: "input", placeholder: "请输入更新人" }
+    ],
+    columns: [
+      { key: "name", label: "配置名称" },
+      { key: "section", label: "页面区块" },
+      { key: "contentType", label: "内容类型" },
+      { key: "owner", label: "更新人" },
+      { key: "status", label: "发布状态" },
+      { key: "updatedAt", label: "更新时间" },
+      { key: "actions", label: "操作" }
+    ],
+    rows: [
+      { id: "portal-1", name: "门户标题与副标题", section: "首页首屏", contentType: "文本", owner: "张明", status: { text: "启用" }, updatedAt: "2026-05-18 10:12" },
+      { id: "portal-2", name: "平台价值定位卡片", section: "平台价值", contentType: "图文卡片", owner: "赵琳", status: { text: "启用" }, updatedAt: "2026-05-18 11:36" },
+      { id: "portal-3", name: "核心数据库展示顺序", section: "核心数据库", contentType: "排序配置", owner: "李倩", status: { text: "启用" }, updatedAt: "2026-05-17 17:28" },
+      { id: "portal-4", name: "应用场景案例素材", section: "应用场景", contentType: "图片资源", owner: "王超", status: { text: "草稿" }, updatedAt: "2026-05-16 15:04" }
     ],
     footer: "共 4 条记录，每页 10 条"
   },
@@ -1709,6 +1783,30 @@ const systemFormConfigs = {
       { name: "format", label: "存储格式", type: "select", options: ["CSV", "JSON", "Parquet", "XLSX"] },
       { name: "statusText", label: "状态", type: "select", options: ["启用", "停用"] }
     ]
+  },
+  "system-audit": {
+    title: "入库审核记录",
+    fields: [
+      { name: "name", label: "材料名称", placeholder: "请输入材料或数据名称" },
+      { name: "alias", label: "材料编号", placeholder: "请输入材料编号或数据编号" },
+      { name: "materialType", label: "主题类型", type: "select", options: ["cell", "genotype", "omics", "process", "nutrition"] },
+      { name: "dataType", label: "数据类型", placeholder: "请输入数据类型" },
+      { name: "flowType", label: "流程类型", placeholder: "请输入流程类型" },
+      { name: "submitter", label: "提交人", placeholder: "请输入提交人" },
+      { name: "reviewer", label: "审核人", placeholder: "请输入审核人" },
+      { name: "statusText", label: "审核状态", type: "select", options: ["待审核", "审核中", "审核通过", "审核不通过"] },
+      { name: "storageResult", label: "入库结果", type: "select", options: ["待审核入库", "已完成入库", "已驳回"] }
+    ]
+  },
+  "system-portal-config": {
+    title: "门户配置",
+    fields: [
+      { name: "name", label: "配置名称", placeholder: "请输入配置名称" },
+      { name: "section", label: "页面区块", type: "select", options: ["首页首屏", "平台价值", "核心数据库", "应用场景", "页脚信息"] },
+      { name: "contentType", label: "内容类型", type: "select", options: ["文本", "图文卡片", "排序配置", "图片资源", "链接配置"] },
+      { name: "owner", label: "更新人", placeholder: "请输入更新人" },
+      { name: "statusText", label: "发布状态", type: "select", options: ["启用", "草稿", "停用"] }
+    ]
   }
 };
 
@@ -1838,6 +1936,24 @@ const systemFieldRules = {
     group: "必填，只能选择当前配置分组",
     value: "必填，1-500字符，按配置类型进一步限制",
     statusText: "必填，只能选择启用或停用"
+  },
+  "system-audit": {
+    name: "必填，2-80字符，建议明确描述审核对象",
+    alias: "可选，建议填写材料编号或数据编号",
+    materialType: "必填，只能选择当前主题类型",
+    dataType: "必填，建议明确文件或数据类型",
+    flowType: "必填，建议与入库流程名称一致",
+    submitter: "必填，2-20字符",
+    reviewer: "必填，2-20字符",
+    statusText: "必填，只能选择待审核、审核中、审核通过或审核不通过",
+    storageResult: "必填，只能选择待审核入库、已完成入库或已驳回"
+  },
+  "system-portal-config": {
+    name: "必填，2-50字符，建议与门户区块名称一致",
+    section: "必填，只能选择当前门户页面区块",
+    contentType: "必填，只能选择当前内容类型",
+    owner: "必填，2-20字符",
+    statusText: "必填，只能选择启用、草稿或停用"
   },
   "system-apis": {
     name: "必填，2-50字符，建议与业务接口名称一致",
@@ -2162,7 +2278,7 @@ Object.assign(analysisPages.gene, {
         { id: "delete", label: "删除", tone: "danger" },
         { id: "upload", label: "上传数据集", tone: "blue" },
         { id: "result", label: "分析结果", tone: "blue" },
-        { id: "detail", label: "详情", tone: "blue" }
+        { id: "detail", label: "查看详情", tone: "blue" }
       ]
     },
     {
@@ -2179,7 +2295,7 @@ Object.assign(analysisPages.gene, {
         { id: "delete", label: "删除", tone: "danger" },
         { id: "upload", label: "上传数据集", tone: "blue" },
         { id: "result", label: "分析结果", tone: "blue" },
-        { id: "detail", label: "详情", tone: "blue" }
+        { id: "detail", label: "查看详情", tone: "blue" }
       ]
     },
     {
@@ -2196,7 +2312,7 @@ Object.assign(analysisPages.gene, {
         { id: "delete", label: "删除", tone: "danger" },
         { id: "upload", label: "上传数据集", tone: "blue" },
         { id: "result", label: "分析结果", tone: "blue" },
-        { id: "detail", label: "详情", tone: "blue" }
+        { id: "detail", label: "查看详情", tone: "blue" }
       ]
     }
   ],
@@ -2256,7 +2372,7 @@ function buildGeneRow(project) {
       { id: "delete", label: "删除", tone: "danger" },
       { id: "upload", label: "上传数据集", tone: "blue" },
       { id: "result", label: "分析结果", tone: "blue" },
-      { id: "detail", label: "详情", tone: "blue" }
+      { id: "detail", label: "查看详情", tone: "blue" }
     ]
   };
 }
@@ -3114,6 +3230,7 @@ function normalizeAnalysisAction(action) {
       编辑模型: "edit",
       详情: "detail",
       查看详情: "detail",
+      查看结果: "detail",
       上传数据集: "upload",
       分析结果: "result",
       删除: "delete"
@@ -3127,7 +3244,15 @@ function normalizeAnalysisAction(action) {
 }
 
 function normalizeAnalysisActions(moduleKey, actions) {
-  const normalized = (actions || []).map(normalizeAnalysisAction).filter(Boolean);
+  const resultLabelModules = new Set(["omics", "process", "full"]);
+  const normalized = (actions || [])
+    .map(normalizeAnalysisAction)
+    .filter(Boolean)
+    .map((action) =>
+      resultLabelModules.has(moduleKey) && action.id === "detail"
+        ? { ...action, label: "查看结果" }
+        : action
+    );
   const validIds = new Set(["edit", "detail", "delete", "upload", "result", "view"]);
 
   if (normalized.length && normalized.every((action) => validIds.has(String(action.id || "").trim().toLowerCase()))) {
@@ -3136,7 +3261,7 @@ function normalizeAnalysisActions(moduleKey, actions) {
 
   return [
     { id: "edit", label: "编辑", tone: "blue" },
-    { id: "detail", label: moduleKey === "service" ? "详情" : "查看详情", tone: "blue" },
+    { id: "detail", label: resultLabelModules.has(moduleKey) ? "查看结果" : moduleKey === "service" ? "详情" : "查看详情", tone: "blue" },
     { id: "delete", label: "删除", tone: "danger" }
   ];
 }
@@ -3172,7 +3297,7 @@ function normalizeAnalysisRow(moduleKey, item) {
           ]
         : [
             { id: "edit", label: "编辑", tone: "blue" },
-            { id: "detail", label: config.title === "组学数据分析" ? "详情" : "查看详情", tone: "blue" },
+            { id: "detail", label: ["omics", "process", "full"].includes(moduleKey) ? "查看结果" : "查看详情", tone: "blue" },
             { id: "delete", label: "删除", tone: "danger" }
           ])
   };
@@ -3204,11 +3329,33 @@ async function loadAnalysisModules() {
 }
 
 const SYSTEM_PAGE_STORE_KEY = "engineering-cell-admin-system-pages-v1";
+const PORTAL_PLATFORM_CONFIG_KEY = "engineering-cell-portal-platform-config-v1";
+const defaultPortalPlatformConfig = {
+  browserTitle: "工程细胞主题库门户",
+  siteTitle: "工程细胞主题库门户",
+  subtitle: "合成生物学 · 数据驱动",
+  description: "覆盖微生物细胞工厂构建全生命周期，围绕基因型-表型关联、多组学、发酵过程、培养营养四大核心数据库，构建面向实际研发门户的高质量展示与分析入口。",
+  logoImage: "",
+  copyright: "工程细胞主题库门户 · 面向实际研发场景的高保真数据门户原型",
+  links: [
+    { name: "平台价值", url: "#value" },
+    { name: "核心数据库", url: "#databases" },
+    { name: "数据总览", url: "#dataviz" },
+    { name: "工具算法", url: "#tools" }
+  ],
+  contactUnit: "工程细胞研究中心",
+  contactPhone: "0755-83949389",
+  contactAddress: "广东省深圳市工程细胞主题库示范应用中心",
+  qrTitle: "官方服务二维码",
+  qrImage: ""
+};
 const systemInteractiveModules = [
   "system-users",
   "system-roles",
   "system-menus",
   "system-config",
+  "system-audit",
+  "system-portal-config",
   "system-apis",
   "system-algorithms",
   "system-datasets"
@@ -3286,6 +3433,8 @@ function getSystemStatusClass(moduleKey, statusText = "") {
     "system-menus": { 显示: "is-valid", 隐藏: "is-pending" },
     "system-logs": { 成功: "is-valid", 失败: "is-fail" },
     "system-config": { 启用: "is-valid", 停用: "is-pending" },
+    "system-audit": { 待审核: "is-pending", 审核中: "is-warning", 审核通过: "is-valid", 审核不通过: "is-fail", 已通过: "is-valid", 已退回: "is-fail" },
+    "system-portal-config": { 启用: "is-valid", 草稿: "is-pending", 停用: "is-pending" },
     "system-apis": { 启用: "is-valid", 停用: "is-pending" },
     "system-algorithms": { 启用: "is-valid", 停用: "is-pending" },
     "system-datasets": { 启用: "is-valid", 停用: "is-pending" }
@@ -3296,6 +3445,12 @@ function getSystemStatusClass(moduleKey, statusText = "") {
 function getSystemToggleTargetStatus(moduleKey, currentStatus = "") {
   if (moduleKey === "system-menus") {
     return currentStatus === "显示" ? "隐藏" : "显示";
+  }
+  if (moduleKey === "system-audit") {
+    return ["待审核", "审核中"].includes(currentStatus) ? "审核通过" : "待审核";
+  }
+  if (moduleKey === "system-portal-config") {
+    return currentStatus === "启用" ? "停用" : "启用";
   }
   return currentStatus === "启用" ? "停用" : "启用";
 }
@@ -3315,7 +3470,7 @@ function buildSystemActions(moduleKey, statusText = "") {
   const actions = [
     { id: "detail", label: "查看详情", tone: "blue" },
     { id: "edit", label: "编辑", tone: "blue" },
-    { id: "toggle", label: toggleLabel, tone: toggleLabel === "停用" || toggleLabel === "隐藏" ? "danger" : "blue" },
+    { id: "toggle", label: toggleLabel, tone: toggleLabel === "停用" || toggleLabel === "隐藏" || toggleLabel === "待审核" ? "danger" : "blue" },
     { id: "delete", label: "删除", tone: "danger" }
   ];
   if (moduleKey === "system-users") {
@@ -3385,6 +3540,20 @@ function refreshSystemPageMeta(moduleKey) {
     page.stats[3].value = String(page.rows.filter((row) => row.group === "基础配置").length);
   }
 
+  if (moduleKey === "system-audit") {
+    page.stats[0].value = String(page.rows.filter((row) => ["待审核", "审核中"].includes(row.status.text)).length);
+    page.stats[1].value = String(page.rows.filter((row) => ["审核通过", "已通过"].includes(row.status.text)).length);
+    page.stats[2].value = String(page.rows.filter((row) => ["审核不通过", "已退回"].includes(row.status.text)).length);
+    page.stats[3].value = String(page.rows.length);
+  }
+
+  if (moduleKey === "system-portal-config") {
+    page.stats[0].value = String(page.rows.length);
+    page.stats[1].value = String(page.rows.filter((row) => row.status.text === "启用").length);
+    page.stats[2].value = String(page.rows.filter((row) => row.status.text === "草稿").length);
+    page.stats[3].value = String(new Set(page.rows.map((row) => row.section).filter(Boolean)).size);
+  }
+
   if (moduleKey === "system-apis") {
     page.stats[0].value = String(page.rows.length);
     page.stats[1].value = String(page.rows.filter((row) => row.status.text === "启用").length);
@@ -3433,6 +3602,103 @@ function writeSystemPageStore() {
   } catch (error) {
     console.warn("system page store write failed", error);
   }
+}
+
+function normalizePortalConfig(config = {}) {
+  const merged = {
+    ...defaultPortalPlatformConfig,
+    ...(config || {})
+  };
+  const links = Array.isArray(merged.links) ? merged.links : defaultPortalPlatformConfig.links;
+  return {
+    ...merged,
+    links: links
+      .map((link) => ({
+        name: String(link.name || "").trim(),
+        url: String(link.url || "").trim()
+      }))
+      .filter((link) => link.name || link.url)
+  };
+}
+
+function readPortalPlatformConfig() {
+  try {
+    const raw = window.localStorage.getItem(PORTAL_PLATFORM_CONFIG_KEY);
+    return normalizePortalConfig(raw ? JSON.parse(raw) : defaultPortalPlatformConfig);
+  } catch (error) {
+    return normalizePortalConfig(defaultPortalPlatformConfig);
+  }
+}
+
+function writePortalPlatformConfig(config) {
+  const nextConfig = normalizePortalConfig(config);
+  window.localStorage.setItem(PORTAL_PLATFORM_CONFIG_KEY, JSON.stringify(nextConfig));
+  return nextConfig;
+}
+
+function resetPortalPlatformConfig() {
+  window.localStorage.removeItem(PORTAL_PLATFORM_CONFIG_KEY);
+  return normalizePortalConfig(defaultPortalPlatformConfig);
+}
+
+function collectPortalConfigFormValues() {
+  const config = normalizePortalConfig();
+  document.querySelectorAll("[data-portal-field]").forEach((node) => {
+    config[node.dataset.portalField] = node.value.trim();
+  });
+  const linksByIndex = {};
+  document.querySelectorAll("[data-portal-link-field]").forEach((node) => {
+    const index = node.dataset.portalLinkIndex;
+    const field = node.dataset.portalLinkField;
+    linksByIndex[index] = {
+      ...(linksByIndex[index] || {}),
+      [field]: node.value.trim()
+    };
+  });
+  config.links = Object.keys(linksByIndex)
+    .sort((a, b) => Number(a) - Number(b))
+    .map((index) => linksByIndex[index])
+    .filter((link) => link.name || link.url);
+  return normalizePortalConfig(config);
+}
+
+function refreshPortalLinkList(config) {
+  const list = document.querySelector("[data-portal-link-list]");
+  if (list) {
+    list.innerHTML = renderPortalLinkRows(config.links);
+  }
+}
+
+function savePortalConfigFromForm() {
+  const config = collectPortalConfigFormValues();
+  if (!config.browserTitle || !config.siteTitle || !config.description) {
+    showToast("请完整填写平台标题、门户主标题和门户简介");
+    return null;
+  }
+  let saved = null;
+  try {
+    saved = writePortalPlatformConfig(config);
+  } catch (error) {
+    showToast("配置保存失败，图片或内容可能超过浏览器本地存储限制");
+    return null;
+  }
+  const page = systemPages["system-portal-config"];
+  if (page?.rows?.length) {
+    page.rows = page.rows.map((row) =>
+      row.id === "portal-1" || row.id === "portal-2"
+        ? hydrateSystemRow("system-portal-config", {
+            ...row,
+            owner: getCurrentOperatorName(),
+            status: { text: "启用", className: getSystemStatusClass("system-portal-config", "启用") },
+            updatedAt: systemNowDateTimeString()
+          })
+        : row
+    );
+    refreshSystemPageMeta("system-portal-config");
+    writeSystemPageStore();
+  }
+  appendOperationLog("system-portal-config", "保存门户页平台配置");
+  return saved;
 }
 
 function applyPersistedSystemPages() {
@@ -3511,6 +3777,41 @@ function buildSystemPayload(moduleKey, values, current = null) {
       code: values.code || current?.code || "",
       group: values.group || current?.group || "基础配置",
       value: values.value || current?.value || "",
+      status: { text: statusText, className: getSystemStatusClass(moduleKey, statusText) },
+      updatedAt: systemNowDateTimeString()
+    };
+  }
+
+  if (moduleKey === "system-audit") {
+    const statusText = values.statusText || current?.status?.text || "待审核";
+    const storageResult =
+      values.storageResult ||
+      current?.storageResult ||
+      (["审核通过", "已通过"].includes(statusText) ? "已完成入库" : ["审核不通过", "已退回"].includes(statusText) ? "已驳回" : "待审核入库");
+    return {
+      id: current?.id || generateSystemLocalId("audit"),
+      name: values.name || current?.name || "",
+      alias: values.alias || current?.alias || "",
+      materialType: values.materialType || current?.materialType || "cell",
+      dataType: values.dataType || current?.dataType || "菌株基础数据",
+      flowType: values.flowType || current?.flowType || "工程细胞数据上传",
+      type: values.type || current?.type || "数据入库",
+      submitter: values.submitter || current?.submitter || getCurrentOperatorName(),
+      reviewer: values.reviewer || current?.reviewer || "张明",
+      status: { text: statusText, className: getSystemStatusClass(moduleKey, statusText) },
+      storageResult,
+      submittedAt: current?.submittedAt || systemNowDateTimeString()
+    };
+  }
+
+  if (moduleKey === "system-portal-config") {
+    const statusText = values.statusText || current?.status?.text || "草稿";
+    return {
+      id: current?.id || generateSystemLocalId("portal"),
+      name: values.name || current?.name || "",
+      section: values.section || current?.section || "首页首屏",
+      contentType: values.contentType || current?.contentType || "文本",
+      owner: values.owner || current?.owner || getCurrentOperatorName(),
       status: { text: statusText, className: getSystemStatusClass(moduleKey, statusText) },
       updatedAt: systemNowDateTimeString()
     };
@@ -3996,6 +4297,8 @@ const state = {
     status: "全部"
   },
   analysisFilters: {},
+  auditMaterialType: "cell",
+  auditStatus: "all",
   algorithmPlayground: {
     activeId: "algo-1",
     language: "python",
@@ -4252,6 +4555,15 @@ function writePortalReturnTip(message) {
     window.localStorage.setItem(PORTAL_RETURN_TIP_KEY, message);
   } catch (error) {
     console.warn("portal return tip write failed", error);
+  }
+}
+
+function shouldForceLoginView() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("auth") === "login" || params.get("login") === "1";
+  } catch (error) {
+    return false;
   }
 }
 
@@ -4700,9 +5012,17 @@ function renderSidebar() {
             <span class="submenu-dot"></span>
             <span>操作日志</span>
           </button>
+          <button class="nav-sub-link ${state.activeMenu === "system-audit" ? "is-active" : ""}" type="button" data-menu="system-audit">
+            <span class="submenu-dot"></span>
+            <span>审核管理</span>
+          </button>
           <button class="nav-sub-link ${state.activeMenu === "system-config" ? "is-active" : ""}" type="button" data-menu="system-config">
             <span class="submenu-dot"></span>
             <span>平台配置</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "system-portal-config" ? "is-active" : ""}" type="button" data-menu="system-portal-config">
+            <span class="submenu-dot"></span>
+            <span>门户页配置</span>
           </button>
         </div>
       </section>
@@ -5835,6 +6155,18 @@ const analysisFilterFieldMap = {
     状态: ["status"],
     配置编码: ["code"]
   },
+  "system-audit": {
+    审核标题: ["name"],
+    审核类型: ["type"],
+    审核状态: ["status"],
+    提交人: ["submitter"]
+  },
+  "system-portal-config": {
+    配置名称: ["name"],
+    页面区块: ["section"],
+    发布状态: ["status"],
+    更新人: ["owner"]
+  },
   "system-apis": {
     接口名称: ["name"],
     接口编码: ["code"],
@@ -6216,7 +6548,448 @@ function renderCatalogDetailModal(itemId) {
   });
 }
 
+function renderPortalImageUpload({ field, label, value, hint, previewClass = "" }) {
+  const hasImage = Boolean(value);
+  return `
+    <div class="portal-config-upload">
+      <label class="portal-config-label"><span>*</span>${escapeHtml(label)}</label>
+      <input type="hidden" data-portal-field="${escapeHtml(field)}" value="${escapeHtml(value || "")}" />
+      <input class="portal-config-file-input" type="file" accept=".png,.jpg,.jpeg" data-portal-image-input="${escapeHtml(field)}" />
+      <div class="portal-config-upload-row">
+        <div class="portal-config-preview ${previewClass} ${hasImage ? "has-image" : ""}" data-portal-image-preview="${escapeHtml(field)}">
+          ${
+            hasImage
+              ? `<img src="${escapeHtml(value)}" alt="${escapeHtml(label)}预览">`
+              : `<span>${icon(field === "logoImage" ? "i-logo" : "i-table")}</span>`
+          }
+        </div>
+        <div class="portal-config-upload-meta">
+          <button class="modal-outline" type="button" data-portal-image-trigger="${escapeHtml(field)}">选择图片</button>
+          <p>${escapeHtml(hint)}</p>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderPortalConfigInput({ name, label, value = "", placeholder = "", type = "text", required = true, max = "" }) {
+  const counter = max ? `<em>${String(value || "").length}/${max}</em>` : "";
+  return `
+    <label class="portal-config-field ${type === "textarea" ? "is-textarea" : ""}">
+      <span class="portal-config-label">${required ? "<b>*</b>" : ""}${escapeHtml(label)}</span>
+      <span class="portal-config-control">
+        ${
+          type === "textarea"
+            ? `<textarea data-portal-field="${escapeHtml(name)}" rows="4" maxlength="${escapeHtml(max || "500")}" placeholder="${escapeHtml(placeholder)}">${escapeHtml(value || "")}</textarea>`
+            : `<input data-portal-field="${escapeHtml(name)}" maxlength="${escapeHtml(max || "120")}" value="${escapeHtml(value || "")}" placeholder="${escapeHtml(placeholder)}" />`
+        }
+        ${counter}
+      </span>
+    </label>
+  `;
+}
+
+function renderPortalLinkRows(links = []) {
+  const safeLinks = links.length ? links : [{ name: "", url: "" }];
+  return safeLinks
+    .map(
+      (link, index) => `
+        <div class="portal-link-row">
+          <div class="portal-link-fields">
+            <input data-portal-link-index="${index}" data-portal-link-field="name" maxlength="30" value="${escapeHtml(link.name || "")}" placeholder="请输入链接名称" />
+            <input data-portal-link-index="${index}" data-portal-link-field="url" value="${escapeHtml(link.url || "")}" placeholder="请输入链接地址" />
+          </div>
+          <button class="portal-link-delete" type="button" data-portal-link-remove="${index}" aria-label="删除友情链接">${icon("i-close")}</button>
+        </div>
+      `
+    )
+    .join("");
+}
+
+function renderPortalConfigPage() {
+  const config = readPortalPlatformConfig();
+  return `
+    <div class="page-section portal-config-page">
+      <div class="page-title-row">
+        <div>
+          <h1 class="page-title">门户页配置</h1>
+          <p class="portal-config-subtitle">配置项保存后会写入浏览器本地配置，门户首页打开时自动读取并应用。</p>
+        </div>
+        <div class="portal-config-top-actions">
+          <a class="modal-outline portal-return-link" href="./index.html" target="_blank" rel="noreferrer">${icon("i-home")}预览门户</a>
+          <button class="toolbar-primary" type="button" data-portal-config-action="save">${icon("i-check")}保存</button>
+        </div>
+      </div>
+
+      <section class="portal-config-shell">
+        <div class="portal-config-section-head">
+          <div>
+            <h2>平台配置</h2>
+            <p>参考门户首页当前内容，维护浏览器标签、Logo、首屏文案、版权与联系方式。</p>
+          </div>
+        </div>
+
+        <div class="portal-config-form">
+          ${renderPortalConfigInput({ name: "browserTitle", label: "平台标签页标题", value: config.browserTitle, placeholder: "请输入浏览器标签标题", max: "40" })}
+          ${renderPortalConfigInput({ name: "subtitle", label: "门户标识文案", value: config.subtitle, placeholder: "请输入首屏徽标文案", max: "40" })}
+          ${renderPortalImageUpload({
+            field: "logoImage",
+            label: "平台logo图片",
+            value: config.logoImage,
+            hint: "建议尺寸 286*32，支持 png、jpg，单个文件不超过 5M。",
+            previewClass: "is-logo"
+          })}
+          ${renderPortalConfigInput({ name: "siteTitle", label: "门户主标题", value: config.siteTitle, placeholder: "请输入门户主标题", max: "40" })}
+          ${renderPortalConfigInput({ name: "description", label: "门户简介", value: config.description, placeholder: "请输入门户简介", type: "textarea", max: "220" })}
+          ${renderPortalConfigInput({ name: "copyright", label: "版权信息", value: config.copyright, placeholder: "请输入版权信息", max: "80" })}
+
+          <div class="portal-config-field is-full">
+            <span class="portal-config-label"><b>*</b>友情链接</span>
+            <div class="portal-link-list" data-portal-link-list>
+              ${renderPortalLinkRows(config.links)}
+            </div>
+            <div class="portal-link-add">
+              <button class="modal-primary" type="button" data-portal-config-action="add-link">${icon("i-plus")}添加链接</button>
+            </div>
+          </div>
+
+          ${renderPortalConfigInput({ name: "contactUnit", label: "联系单位", value: config.contactUnit, placeholder: "请输入联系单位", max: "60" })}
+          ${renderPortalConfigInput({ name: "contactPhone", label: "联系电话", value: config.contactPhone, placeholder: "请输入联系电话", max: "30" })}
+          ${renderPortalConfigInput({ name: "contactAddress", label: "联系地址", value: config.contactAddress, placeholder: "请输入联系地址", max: "100" })}
+          ${renderPortalConfigInput({ name: "qrTitle", label: "联系方式二维码标题", value: config.qrTitle, placeholder: "请输入二维码标题", max: "40" })}
+          ${renderPortalImageUpload({
+            field: "qrImage",
+            label: "联系方式二维码图片",
+            value: config.qrImage,
+            hint: "建议尺寸 100*100，支持 png、jpg，单个文件不超过 5M。",
+            previewClass: "is-qr"
+          })}
+        </div>
+
+        <div class="portal-config-actions">
+          <button class="modal-outline" type="button" data-portal-config-action="reset">重置</button>
+          <button class="modal-primary" type="button" data-portal-config-action="save">保存</button>
+        </div>
+      </section>
+    </div>
+  `;
+}
+
+const auditMaterialTypes = [
+  { key: "cell", label: "工程细胞" },
+  { key: "genotype", label: "基因型-表型" },
+  { key: "omics", label: "组学数据" },
+  { key: "process", label: "发酵过程" },
+  { key: "nutrition", label: "培养营养" }
+];
+
+const auditStatusTabs = [
+  { key: "all", label: "全部记录" },
+  { key: "pending", label: "待审核" },
+  { key: "stored", label: "已入库" },
+  { key: "rejected", label: "审核不通过" }
+];
+
+function getAuditMaterialTypeLabel(typeKey = "") {
+  return auditMaterialTypes.find((item) => item.key === typeKey)?.label || "工程细胞";
+}
+
+function getAuditRowStatusText(row = {}) {
+  return row.status?.text || row.statusText || "待审核";
+}
+
+function getAuditStorageResult(row = {}) {
+  const statusText = getAuditRowStatusText(row);
+  if (row.storageResult) {
+    return row.storageResult;
+  }
+  if (["审核通过", "已通过"].includes(statusText)) {
+    return "已完成入库";
+  }
+  if (["审核不通过", "已退回"].includes(statusText)) {
+    return "已驳回";
+  }
+  return "待审核入库";
+}
+
+function isAuditPending(row = {}) {
+  return ["待审核", "审核中"].includes(getAuditRowStatusText(row)) || getAuditStorageResult(row) === "待审核入库";
+}
+
+function isAuditStored(row = {}) {
+  return ["审核通过", "已通过"].includes(getAuditRowStatusText(row)) || getAuditStorageResult(row) === "已完成入库";
+}
+
+function isAuditRejected(row = {}) {
+  return ["审核不通过", "已退回"].includes(getAuditRowStatusText(row)) || getAuditStorageResult(row) === "已驳回";
+}
+
+function normalizeAuditRow(row = {}, index = 0) {
+  const statusText = getAuditRowStatusText(row);
+  return {
+    ...row,
+    id: row.id || `audit-${index + 1}`,
+    materialType: row.materialType || "cell",
+    alias: row.alias || row.code || "",
+    dataType: row.dataType || row.type || "数据文件",
+    flowType: row.flowType || "工程细胞数据上传",
+    storageResult: getAuditStorageResult(row),
+    status: {
+      text: statusText,
+      className: row.status?.className || getSystemStatusClass("system-audit", statusText)
+    }
+  };
+}
+
+function getAuditRows() {
+  return (systemPages["system-audit"]?.rows || []).map(normalizeAuditRow);
+}
+
+function getAuditTypeRows() {
+  const activeType = state.auditMaterialType || auditMaterialTypes[0].key;
+  return getAuditRows().filter((row) => row.materialType === activeType);
+}
+
+function getVisibleAuditRows() {
+  const statusKey = state.auditStatus || "all";
+  return getAuditTypeRows().filter((row) => {
+    if (statusKey === "pending") {
+      return isAuditPending(row);
+    }
+    if (statusKey === "stored") {
+      return isAuditStored(row);
+    }
+    if (statusKey === "rejected") {
+      return isAuditRejected(row);
+    }
+    return true;
+  });
+}
+
+function renderAuditStatusBadge(text = "", className = "") {
+  const statusClass = className || getSystemStatusClass("system-audit", text);
+  return `<span class="audit-status-badge ${escapeHtml(statusClass)}">${escapeHtml(text || "-")}</span>`;
+}
+
+function renderAuditStorageBadge(text = "") {
+  const className = text === "已完成入库" ? "is-valid" : text === "已驳回" ? "is-fail" : "is-pending";
+  return `<span class="audit-storage-badge ${className}">${escapeHtml(text || "-")}</span>`;
+}
+
+function renderAuditRowActions(row = {}) {
+  const rowId = escapeHtml(row.id);
+  const pending = isAuditPending(row);
+  return `
+    <div class="audit-row-actions">
+      <button class="audit-action-link" type="button" data-audit-action="detail" data-audit-id="${rowId}">查看详情</button>
+      ${
+        pending
+          ? `
+            <button class="audit-action-primary" type="button" data-audit-action="approve" data-audit-id="${rowId}">审核通过并入库</button>
+            <button class="audit-action-danger" type="button" data-audit-action="reject" data-audit-id="${rowId}">驳回</button>
+          `
+          : `<button class="audit-action-link" type="button" data-audit-action="download" data-audit-id="${rowId}">下载</button>`
+      }
+    </div>
+  `;
+}
+
+function renderAuditReviewPage() {
+  const page = systemPages["system-audit"];
+  const activeType = state.auditMaterialType || auditMaterialTypes[0].key;
+  const activeStatus = state.auditStatus || "all";
+  const allRows = getAuditRows();
+  const typeRows = getAuditTypeRows();
+  const visibleRows = getVisibleAuditRows();
+  const latestRow = [...typeRows].sort((a, b) => String(b.submittedAt || "").localeCompare(String(a.submittedAt || "")))[0];
+  const pendingCount = typeRows.filter(isAuditPending).length;
+  const storedCount = typeRows.filter(isAuditStored).length;
+  const currentTypeLabel = getAuditMaterialTypeLabel(activeType);
+  const statusCounts = {
+    all: typeRows.length,
+    pending: pendingCount,
+    stored: storedCount,
+    rejected: typeRows.filter(isAuditRejected).length
+  };
+
+  return `
+    <div class="page-section audit-review-page">
+      <section class="audit-hero-card">
+        <div class="audit-hero-copy">
+          <div class="audit-breadcrumb">${page.breadcrumb.map((item) => `<span>${escapeHtml(item)}</span>`).join("<b>/</b>")}</div>
+          <div class="audit-title-row">
+            <div>
+              <span class="audit-eyebrow">审核员工作台</span>
+              <h1 class="audit-title">${escapeHtml(page.title)}</h1>
+              <p class="audit-desc">聚合工程细胞主题库待入库数据，支持按主题类型、审核状态快速筛选并完成入库处理。</p>
+            </div>
+            <div class="audit-toolbar">
+              <button class="audit-batch-button is-primary" type="button" data-audit-action="batch-approve">${icon("i-check")}批量通过</button>
+              <button class="audit-batch-button is-danger" type="button" data-audit-action="batch-reject">${icon("i-warning")}批量驳回</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="audit-panel">
+        <div class="audit-type-tabs" aria-label="审核数据类型">
+          ${auditMaterialTypes
+            .map((item) => {
+              const count = allRows.filter((row) => row.materialType === item.key).length;
+              return `
+                <button class="audit-type-tab ${activeType === item.key ? "is-active" : ""}" type="button" data-audit-type="${escapeHtml(item.key)}">
+                  <span>${escapeHtml(item.label)}</span>
+                  <em>${count}</em>
+                </button>
+              `;
+            })
+            .join("")}
+        </div>
+
+        <div class="audit-current-bar">
+          <span>当前：${escapeHtml(currentTypeLabel)}</span>
+          <b>|</b>
+          <span>共展示 ${visibleRows.length} / ${typeRows.length} 条记录</span>
+        </div>
+
+        <div class="audit-summary-grid">
+          <article class="audit-summary-card">
+            <span class="audit-summary-label">待审核记录</span>
+            <strong>${pendingCount}</strong>
+            <em>当前待处理</em>
+          </article>
+          <article class="audit-summary-card is-success">
+            <span class="audit-summary-label">已入库记录</span>
+            <strong>${storedCount}</strong>
+            <em>已完成入库</em>
+          </article>
+          <article class="audit-summary-card is-wide">
+            <span class="audit-summary-label">最近流程动作</span>
+            <strong>${latestRow ? `${escapeHtml(latestRow.name)} · ${escapeHtml(getAuditRowStatusText(latestRow))}` : "暂无流程记录"}</strong>
+            <em>最近处理记录</em>
+          </article>
+        </div>
+
+        <div class="audit-status-tabs" aria-label="审核状态筛选">
+          ${auditStatusTabs
+            .map(
+              (item) => `
+                <button class="audit-status-tab ${activeStatus === item.key ? "is-active" : ""}" type="button" data-audit-status="${escapeHtml(item.key)}">
+                  ${escapeHtml(item.label)}
+                  <span>${statusCounts[item.key]}</span>
+                </button>
+              `
+            )
+            .join("")}
+        </div>
+
+        <div class="audit-table-wrap">
+          <div class="table-scroll">
+            <table class="data-table audit-data-table">
+              <thead>
+                <tr>
+                  <th>提交时间</th>
+                  <th>材料名称</th>
+                  <th>数据类型</th>
+                  <th>流程类型</th>
+                  <th>审核状态</th>
+                  <th>入库结果</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${
+                  visibleRows.length
+                    ? visibleRows
+                        .map(
+                          (row) => `
+                            <tr>
+                              <td><span class="audit-time">${escapeHtml(row.submittedAt || "-")}</span></td>
+                              <td>
+                                <span class="audit-material-name" title="${escapeHtml(row.name || "-")}">
+                                  <strong>${escapeHtml(row.name || "-")}</strong>
+                                  ${row.alias ? `<small>${escapeHtml(row.alias)}</small>` : ""}
+                                </span>
+                              </td>
+                              <td>${escapeHtml(row.dataType || "-")}</td>
+                              <td>${escapeHtml(row.flowType || "-")}</td>
+                              <td>${renderAuditStatusBadge(getAuditRowStatusText(row), row.status?.className)}</td>
+                              <td>${renderAuditStorageBadge(getAuditStorageResult(row))}</td>
+                              <td>${renderAuditRowActions(row)}</td>
+                            </tr>
+                          `
+                        )
+                        .join("")
+                    : `
+                      <tr class="table-empty-row">
+                        <td colspan="7">${renderEmptyState("暂无审核记录", "当前类型和状态下没有待展示的入库审核记录")}</td>
+                      </tr>
+                    `
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+  `;
+}
+
+function updateAuditRows(rowIds = [], nextStatusText = "审核通过", nextStorageResult = "已完成入库") {
+  const page = systemPages["system-audit"];
+  const idSet = new Set(rowIds);
+  let updatedCount = 0;
+  page.rows = (page.rows || []).map((row, index) => {
+    const normalized = normalizeAuditRow(row, index);
+    if (!idSet.has(normalized.id)) {
+      return row;
+    }
+    updatedCount += 1;
+    return hydrateSystemRow("system-audit", {
+      ...normalized,
+      reviewer: getCurrentOperatorName(),
+      status: {
+        text: nextStatusText,
+        className: getSystemStatusClass("system-audit", nextStatusText)
+      },
+      storageResult: nextStorageResult,
+      reviewedAt: systemNowDateTimeString()
+    });
+  });
+  if (updatedCount) {
+    refreshSystemPageMeta("system-audit");
+    writeSystemPageStore();
+  }
+  return updatedCount;
+}
+
+function downloadAuditRow(row = {}) {
+  const normalized = normalizeAuditRow(row);
+  downloadCsvFile(`${normalized.name || "审核记录"}.csv`, [
+    ["提交时间", "材料名称", "别名", "数据类型", "流程类型", "审核状态", "入库结果", "提交人", "审核人"],
+    [
+      normalized.submittedAt || "",
+      normalized.name || "",
+      normalized.alias || "",
+      normalized.dataType || "",
+      normalized.flowType || "",
+      getAuditRowStatusText(normalized),
+      getAuditStorageResult(normalized),
+      normalized.submitter || "",
+      normalized.reviewer || ""
+    ]
+  ]);
+}
+
 function renderAnalysisPage(page) {
+  if (page.key === "system-audit") {
+    return renderAuditReviewPage();
+  }
+
+  if (page.key === "system-portal-config") {
+    return renderPortalConfigPage();
+  }
+
   const filteredRows = getFilteredAnalysisRows(page);
   const pageSize = 10;
   const pageCount = Math.max(1, Math.ceil(filteredRows.length / pageSize) || 1);
@@ -9054,7 +9827,8 @@ function renderSystemDetailModal(moduleKey, itemId) {
     return renderAlgorithmCapabilityModal(itemId);
   }
 
-  const row = getSystemRow(moduleKey, itemId);
+  const rawRow = getSystemRow(moduleKey, itemId);
+  const row = moduleKey === "system-audit" && rawRow ? normalizeAuditRow(rawRow) : rawRow;
   const page = systemPages[moduleKey];
   if (!row || !page) {
     return "";
@@ -10852,6 +11626,118 @@ document.addEventListener("click", async (event) => {
     return;
   }
 
+  const portalImageTrigger = event.target.closest("[data-portal-image-trigger]");
+  if (portalImageTrigger) {
+    document.querySelector(`[data-portal-image-input="${portalImageTrigger.dataset.portalImageTrigger}"]`)?.click();
+    return;
+  }
+
+  const portalLinkRemoveButton = event.target.closest("[data-portal-link-remove]");
+  if (portalLinkRemoveButton) {
+    const config = collectPortalConfigFormValues();
+    config.links.splice(Number(portalLinkRemoveButton.dataset.portalLinkRemove), 1);
+    refreshPortalLinkList(config);
+    showToast("友情链接已移除，请保存后生效");
+    return;
+  }
+
+  const portalConfigAction = event.target.closest("[data-portal-config-action]");
+  if (portalConfigAction) {
+    const action = portalConfigAction.dataset.portalConfigAction;
+    if (action === "add-link") {
+      const config = collectPortalConfigFormValues();
+      config.links.push({ name: "", url: "" });
+      refreshPortalLinkList(config);
+      return;
+    }
+    if (action === "reset") {
+      resetPortalPlatformConfig();
+      renderApp();
+      appendOperationLog("system-portal-config", "重置门户页平台配置");
+      showToast("门户配置已恢复默认");
+      return;
+    }
+    if (action === "save") {
+      const saved = savePortalConfigFromForm();
+      if (saved) {
+        renderApp();
+        showToast("门户配置已保存，刷新门户页后生效");
+      }
+      return;
+    }
+  }
+
+  const auditTypeButton = event.target.closest("[data-audit-type]");
+  if (auditTypeButton) {
+    state.auditMaterialType = auditTypeButton.dataset.auditType;
+    state.auditStatus = "all";
+    renderApp();
+    return;
+  }
+
+  const auditStatusButton = event.target.closest("[data-audit-status]");
+  if (auditStatusButton) {
+    state.auditStatus = auditStatusButton.dataset.auditStatus;
+    renderApp();
+    return;
+  }
+
+  const auditActionButton = event.target.closest("[data-audit-action]");
+  if (auditActionButton) {
+    const action = auditActionButton.dataset.auditAction;
+    const rowId = auditActionButton.dataset.auditId || "";
+    const currentRow = rowId ? getAuditRows().find((row) => row.id === rowId) : null;
+
+    if (action === "detail" && rowId) {
+      openAnalysisModal("detail", "system-audit", rowId);
+      renderApp();
+      return;
+    }
+
+    if (action === "download" && currentRow) {
+      downloadAuditRow(currentRow);
+      appendOperationLog("system-audit", `下载审核记录：${getSystemRowDisplayName("system-audit", currentRow)}`);
+      showToast("审核记录已下载");
+      return;
+    }
+
+    if (action === "approve" && rowId) {
+      const updatedCount = updateAuditRows([rowId], "审核通过", "已完成入库");
+      if (updatedCount) {
+        appendOperationLog("system-audit", `审核通过并入库：${getSystemRowDisplayName("system-audit", currentRow || { id: rowId })}`);
+      }
+      renderApp();
+      showToast(updatedCount ? "审核已通过并完成入库" : "未找到可处理记录");
+      return;
+    }
+
+    if (action === "reject" && rowId) {
+      const updatedCount = updateAuditRows([rowId], "审核不通过", "已驳回");
+      if (updatedCount) {
+        appendOperationLog("system-audit", `审核驳回：${getSystemRowDisplayName("system-audit", currentRow || { id: rowId })}`);
+      }
+      renderApp();
+      showToast(updatedCount ? "审核记录已驳回" : "未找到可处理记录");
+      return;
+    }
+
+    if (action === "batch-approve" || action === "batch-reject") {
+      const targetRows = getVisibleAuditRows().filter(isAuditPending);
+      const isApprove = action === "batch-approve";
+      const updatedCount = updateAuditRows(
+        targetRows.map((row) => row.id),
+        isApprove ? "审核通过" : "审核不通过",
+        isApprove ? "已完成入库" : "已驳回"
+      );
+      if (updatedCount) {
+        appendOperationLog("system-audit", `${isApprove ? "批量审核通过并入库" : "批量驳回审核记录"}：${updatedCount} 条`);
+      }
+      renderApp();
+      showToast(updatedCount ? `${isApprove ? "已批量通过" : "已批量驳回"} ${updatedCount} 条记录` : "当前筛选下没有待处理记录");
+      return;
+    }
+  }
+
   const openFormButton = event.target.closest("[data-open-form]");
   if (openFormButton) {
     const moduleKey = openFormButton.dataset.openForm;
@@ -11390,6 +12276,40 @@ document.addEventListener("change", async (event) => {
     return;
   }
 
+  if (event.target.matches("[data-portal-image-input]")) {
+    const [file] = [...(event.target.files || [])];
+    if (!file) {
+      return;
+    }
+    const field = event.target.dataset.portalImageInput;
+    const extension = `.${String(file.name).split(".").pop() || ""}`.toLowerCase();
+    if (![".png", ".jpg", ".jpeg"].includes(extension)) {
+      showToast("仅支持上传 png、jpg 图片");
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      showToast("图片大小不能超过 5M");
+      return;
+    }
+    try {
+      const base64 = await readFileAsBase64(file);
+      const dataUrl = `data:${file.type || "image/png"};base64,${base64}`;
+      const hidden = document.querySelector(`[data-portal-field="${field}"]`);
+      const preview = document.querySelector(`[data-portal-image-preview="${field}"]`);
+      if (hidden) {
+        hidden.value = dataUrl;
+      }
+      if (preview) {
+        preview.classList.add("has-image");
+        preview.innerHTML = `<img src="${escapeHtml(dataUrl)}" alt="配置图片预览">`;
+      }
+      showToast(`已选择图片：${file.name}`);
+    } catch (error) {
+      showToast(error.message || "图片读取失败");
+    }
+    return;
+  }
+
   if (event.target.matches("[data-service-file-input]") && state.modal?.type === "analysis-form" && state.modal.moduleKey === "service") {
     const [file] = [...(event.target.files || [])];
     if (!file) {
@@ -11498,7 +12418,14 @@ sidebarBackdrop.addEventListener("click", () => {
 });
 
 applyPersistedSystemPages();
-const existingSession = readAuthSession();
+const forceLoginView = shouldForceLoginView();
+if (forceLoginView) {
+  clearAuthSession();
+  state.currentUser = null;
+  state.scene = "auth";
+  state.authView = "login";
+}
+const existingSession = forceLoginView ? null : readAuthSession();
 if (existingSession?.token && Number(existingSession.expiresAt || 0) > Date.now()) {
   state.currentUser = existingSession.user || null;
   state.scene = "dashboard";

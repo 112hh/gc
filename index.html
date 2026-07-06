@@ -195,6 +195,12 @@ button {
   border: 1px solid rgba(34, 100, 216, 0.14);
 }
 
+.brand-mark img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
 .brand-copy {
   min-width: 0;
 }
@@ -209,7 +215,7 @@ button {
   display: block;
   font-size: 11px;
   color: var(--text-soft);
-  letter-spacing: 0.08em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -296,8 +302,8 @@ button {
 .hero {
   position: relative;
   overflow: hidden;
-  min-height: 88svh;
-  padding: 104px 20px 72px;
+  min-height: 86svh;
+  padding: 104px 20px 64px;
   background: #0d1b2a;
 }
 
@@ -306,7 +312,7 @@ button {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(9, 20, 35, 0.9) 0%, rgba(11, 24, 42, 0.8) 34%, rgba(11, 24, 42, 0.52) 62%, rgba(11, 24, 42, 0.72) 100%),
+    linear-gradient(90deg, rgba(9, 20, 35, 0.92) 0%, rgba(11, 24, 42, 0.84) 38%, rgba(11, 24, 42, 0.48) 68%, rgba(11, 24, 42, 0.72) 100%),
     url("./assets/portal/hero-lab.jpg") center/cover no-repeat;
 }
 
@@ -325,7 +331,7 @@ button {
   margin: 0 auto;
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
-  gap: 32px;
+  gap: 40px;
   align-items: stretch;
 }
 
@@ -352,7 +358,7 @@ button {
 
 .hero-title {
   margin: 18px 0 14px;
-  font-size: clamp(38px, 5vw, 60px);
+  font-size: clamp(40px, 5vw, 64px);
   line-height: 1.08;
   color: #fff;
 }
@@ -369,6 +375,7 @@ button {
   margin: 0 0 26px;
   color: rgba(226, 236, 252, 0.82);
   font-size: 16px;
+  line-height: 1.72;
 }
 
 .hero-audience {
@@ -503,15 +510,16 @@ button {
 
 .hero-stack {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 190px;
-  grid-template-rows: 1fr auto;
+  grid-template-columns: minmax(0, 1fr) 196px;
+  grid-template-rows: auto auto auto;
   gap: 14px;
 }
 
 .hero-main,
 .hero-side,
-.hero-summary {
-  border-radius: 20px;
+.hero-summary,
+.hero-dashboard {
+  border-radius: 8px;
   overflow: hidden;
   border: 1px solid rgba(196, 214, 247, 0.14);
   box-shadow: var(--shadow-lg);
@@ -521,7 +529,7 @@ button {
   position: relative;
   min-height: 520px;
   grid-column: 1 / 2;
-  grid-row: 1 / 3;
+  grid-row: 1 / 4;
   background: rgba(255, 255, 255, 0.08);
 }
 
@@ -562,8 +570,40 @@ button {
 }
 
 .hero-side {
-  min-height: 208px;
+  min-height: 164px;
   background: #dfe8f2;
+}
+
+.hero-dashboard {
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(14px);
+  color: #fff;
+}
+
+.hero-dashboard h3 {
+  margin: 0 0 14px;
+  font-size: 15px;
+}
+
+.hero-dashboard-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 0;
+  border-top: 1px solid rgba(223, 232, 247, 0.14);
+}
+
+.hero-dashboard-row span {
+  color: rgba(226, 236, 252, 0.72);
+  font-size: 12px;
+}
+
+.hero-dashboard-row strong {
+  color: #fff;
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
 }
 
 .hero-summary {
@@ -654,9 +694,67 @@ button {
 
 .card {
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: 8px;
   background: var(--surface);
   box-shadow: var(--shadow-sm);
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(34, 100, 216, 0.24);
+  box-shadow: 0 18px 42px rgba(19, 38, 68, 0.1);
+}
+
+[data-detail] {
+  cursor: pointer;
+}
+
+[data-detail]:focus-visible {
+  outline: 3px solid rgba(34, 100, 216, 0.26);
+  outline-offset: 4px;
+}
+
+.card[data-detail] {
+  position: relative;
+}
+
+.card[data-detail]::after {
+  content: "查看详情";
+  position: absolute;
+  right: 16px;
+  bottom: 14px;
+  min-height: 28px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: rgba(34, 100, 216, 0.08);
+  color: var(--primary-strong);
+  font-size: 12px;
+  font-weight: 800;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.card[data-detail]:hover::after,
+.card[data-detail]:focus-visible::after {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.value-card[data-detail],
+.tool-card[data-detail],
+.data-copy[data-detail],
+.chart-card[data-detail],
+.scene-copy[data-detail] {
+  padding-bottom: 58px;
+}
+
+.db-card[data-detail] .db-body,
+.case-card[data-detail] .case-body {
+  padding-bottom: 58px;
 }
 
 .value-card {
@@ -687,7 +785,16 @@ button {
   color: var(--primary-strong);
   font-size: 11px;
   font-weight: 800;
-  letter-spacing: 0.04em;
+  letter-spacing: 0;
+}
+
+.value-card.is-feature {
+  grid-column: span 2;
+  background: linear-gradient(135deg, #ffffff 0%, #f4f8ff 100%);
+}
+
+.value-card.is-feature p {
+  max-width: 720px;
 }
 
 .value-card h3,
@@ -892,20 +999,43 @@ button {
   display: block;
 }
 
+.scene-workspace {
+  display: grid;
+  grid-template-columns: minmax(210px, 0.34fr) minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.scene-nav {
+  position: sticky;
+  top: 96px;
+  display: grid;
+  gap: 12px;
+}
+
+.scene-nav-title {
+  margin: 0;
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 800;
+}
+
 .tabs {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 0;
 }
 
 .tab-btn {
-  min-height: 42px;
-  padding: 0 18px;
+  width: 100%;
+  min-height: 52px;
+  padding: 0 16px;
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: 8px;
   background: var(--surface);
   color: var(--text-soft);
+  text-align: left;
   font-weight: 700;
   cursor: pointer;
   transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease;
@@ -913,8 +1043,12 @@ button {
 
 .tab-btn.is-active {
   border-color: var(--primary);
-  background: var(--primary);
-  color: #fff;
+  background: rgba(34, 100, 216, 0.08);
+  color: var(--primary-strong);
+}
+
+.scene-main {
+  min-width: 0;
 }
 
 .scene-panel {
@@ -928,14 +1062,40 @@ button {
 
 .scene-top {
   display: grid;
-  grid-template-columns: minmax(0, 0.95fr) minmax(320px, 0.85fr);
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.74fr);
   gap: 18px;
 }
 
 .scene-media {
+  position: relative;
   aspect-ratio: 16 / 10;
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: 8px;
+}
+
+.scene-media::after {
+  content: "查看场景详情";
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  min-height: 30px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: rgba(13, 27, 42, 0.72);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.scene-media:hover::after,
+.scene-media:focus-visible::after {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .tool-card {
@@ -967,6 +1127,229 @@ button {
   color: var(--text-weak);
 }
 
+.portal-detail-page {
+  display: none;
+  min-height: 100vh;
+  padding: 104px 20px 84px;
+  background: linear-gradient(180deg, #f4f8fc 0%, #ffffff 42%, #f8fbfd 100%);
+}
+
+.portal-detail-page.is-visible {
+  display: block;
+}
+
+body.is-detail-open .footer {
+  display: none;
+}
+
+.portal-detail-shell {
+  width: min(100%, var(--maxw));
+  margin: 0 auto;
+  display: grid;
+  gap: 22px;
+}
+
+.detail-return {
+  width: fit-content;
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--primary-strong);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.detail-hero {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+}
+
+.detail-hero-media {
+  position: relative;
+  min-height: 320px;
+  display: grid;
+  align-items: end;
+  padding: 38px;
+  background: #0d1b2a;
+  overflow: hidden;
+}
+
+.detail-hero-media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.58;
+}
+
+.detail-hero-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(9, 20, 35, 0.9), rgba(9, 20, 35, 0.48));
+}
+
+.detail-hero-copy {
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
+  color: #fff;
+}
+
+.detail-kicker {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.detail-hero-copy h1 {
+  margin: 16px 0 12px;
+  font-size: clamp(30px, 4vw, 48px);
+  line-height: 1.14;
+}
+
+.detail-hero-copy p {
+  margin: 0;
+  color: rgba(238, 245, 255, 0.84);
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.detail-meta-grid,
+.detail-content-grid {
+  display: grid;
+  gap: 18px;
+}
+
+.detail-meta-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.detail-meta-card,
+.detail-section-card,
+.detail-related-card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+}
+
+.detail-meta-card {
+  padding: 18px;
+}
+
+.detail-meta-card span {
+  display: block;
+  color: var(--text-weak);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.detail-meta-card strong {
+  display: block;
+  margin-top: 8px;
+  color: var(--text);
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+.detail-content-grid {
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.36fr);
+  align-items: start;
+}
+
+.detail-section-card {
+  padding: 28px;
+}
+
+.detail-section-card h2,
+.detail-section-card h3,
+.detail-related-card h3 {
+  margin: 0;
+  color: var(--text);
+}
+
+.detail-section-card h2 {
+  font-size: 24px;
+  line-height: 1.25;
+}
+
+.detail-section-card h3 {
+  margin-top: 24px;
+  font-size: 18px;
+}
+
+.detail-section-card p {
+  margin: 12px 0 0;
+  color: var(--text-soft);
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.detail-tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.detail-tag-list span {
+  min-height: 30px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: rgba(15, 157, 145, 0.08);
+  color: #0a7f75;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.detail-related-card {
+  position: sticky;
+  top: 96px;
+  padding: 20px;
+}
+
+.detail-related-card h3 {
+  font-size: 16px;
+}
+
+.detail-related-card button {
+  width: 100%;
+  min-height: 44px;
+  margin-top: 10px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-soft);
+  color: var(--text-soft);
+  text-align: left;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.detail-related-card button:hover {
+  border-color: rgba(34, 100, 216, 0.3);
+  color: var(--primary-strong);
+  background: rgba(34, 100, 216, 0.06);
+}
+
 .footer {
   padding: 56px 20px 28px;
   background: linear-gradient(180deg, #0e1d30 0%, #091321 100%);
@@ -977,7 +1360,7 @@ button {
   width: min(100%, var(--maxw));
   margin: 0 auto;
   display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(220px, 0.8fr);
+  grid-template-columns: minmax(0, 1.25fr) minmax(180px, 0.7fr) minmax(240px, 0.8fr);
   gap: 34px;
 }
 
@@ -992,6 +1375,43 @@ button {
   margin-bottom: 10px;
   color: #bfd3ec;
   font-size: 14px;
+}
+
+.footer-contact {
+  display: grid;
+  gap: 10px;
+}
+
+.footer-contact p {
+  color: #bfd3ec;
+}
+
+.footer-contact strong {
+  display: block;
+  margin-bottom: 2px;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 13px;
+}
+
+.footer-qr {
+  width: 96px;
+  height: 96px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid rgba(199, 213, 230, 0.18);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(232, 238, 247, 0.74);
+  font-size: 12px;
+  text-align: center;
+}
+
+.footer-qr img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
 .footer-bottom {
@@ -1029,8 +1449,33 @@ button {
 @media (max-width: 1180px) {
   .hero-inner,
   .overview,
-  .scene-top {
+  .scene-top,
+  .detail-content-grid {
     grid-template-columns: 1fr;
+  }
+
+  .scene-workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .scene-nav {
+    position: static;
+  }
+
+  .tabs {
+    flex-direction: row;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .tab-btn {
+    width: auto;
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .detail-related-card {
+    position: static;
   }
 
   .grid-3,
@@ -1074,7 +1519,7 @@ button {
     gap: 14px;
     padding: 16px;
     border: 1px solid var(--line);
-    border-radius: 18px;
+    border-radius: 8px;
     background: rgba(255, 255, 255, 0.98);
     box-shadow: var(--shadow-lg);
   }
@@ -1098,18 +1543,9 @@ button {
   .grid-4,
   .flow-grid,
   .metric-row,
+  .detail-meta-grid,
   .footer-grid {
     grid-template-columns: 1fr;
-  }
-
-  .tabs {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    padding-bottom: 4px;
-  }
-
-  .tab-btn {
-    white-space: nowrap;
   }
 }
 
@@ -1124,6 +1560,7 @@ button {
 
   .hero,
   .section,
+  .portal-detail-page,
   .footer {
     padding-left: 12px;
     padding-right: 12px;
@@ -1162,6 +1599,15 @@ button {
 
   .section-head {
     margin-bottom: 34px;
+  }
+
+  .detail-hero-media,
+  .detail-section-card {
+    padding: 22px;
+  }
+
+  .detail-hero-media {
+    min-height: 300px;
   }
 }
 
@@ -1214,7 +1660,7 @@ button {
         <li><a href="#tools">工具算法</a></li>
         <li><a href="#cases">合作案例</a></li>
       </ul>
-      <a class="nav-cta" href="./app.html">登录系统</a>
+      <a class="nav-cta" href="./app.html?auth=login">登录系统</a>
     </nav>
   </div>
 </header>
@@ -1231,9 +1677,9 @@ button {
   <section class="hero" id="hero">
     <div class="hero-inner">
       <div class="hero-copy">
-        <div class="hero-badge">合成生物学 · 数据驱动</div>
-        <h1 class="hero-title">工程细胞<span>主题库</span>门户</h1>
-        <p class="hero-desc">覆盖微生物细胞工厂构建全生命周期，围绕基因型-表型关联、多组学、发酵过程、培养营养四大核心数据库，构建面向实际研发门户的高质量展示与分析入口。</p>
+        <div class="hero-badge" data-portal-text="subtitle">合成生物学 · 数据驱动</div>
+        <h1 class="hero-title" data-portal-text="siteTitle">工程细胞<span>主题库</span>门户</h1>
+        <p class="hero-desc" data-portal-text="description">覆盖微生物细胞工厂构建全生命周期，围绕基因型-表型关联、多组学、发酵过程、培养营养四大核心数据库，构建面向实际研发门户的高质量展示与分析入口。</p>
         <div class="hero-audience">
           <span class="hero-audience-label">面向对象</span>
           <div class="hero-audience-tags">
@@ -1246,10 +1692,9 @@ button {
           <span>全基因组关联分析</span>
           <span>代谢网络模型</span>
           <span>三级质控</span>
-          <span>专利风险预警</span>
         </div>
         <div class="hero-actions">
-          <a class="hero-btn hero-btn-primary" href="./app.html">进入系统</a>
+          <a class="hero-btn hero-btn-primary" href="./app.html?auth=login">进入系统</a>
           <a class="hero-btn hero-btn-secondary" href="#databases">查看核心数据</a>
         </div>
         <div class="hero-stats">
@@ -1279,6 +1724,21 @@ button {
         <article class="hero-side reveal">
           <img src="./assets/portal/genomics-lab.jpg" alt="基因测序与组学实验场景">
         </article>
+        <article class="hero-dashboard reveal" aria-label="平台数据概览">
+          <h3>平台运行概览</h3>
+          <div class="hero-dashboard-row">
+            <span>数据资源</span>
+            <strong>130万+</strong>
+          </div>
+          <div class="hero-dashboard-row">
+            <span>核心数据库</span>
+            <strong>4类</strong>
+          </div>
+          <div class="hero-dashboard-row">
+            <span>质控体系</span>
+            <strong>三级</strong>
+          </div>
+        </article>
         <article class="hero-summary reveal">
           <h3>门户聚焦</h3>
           <div class="hero-summary-list">
@@ -1307,35 +1767,30 @@ button {
         <p>围绕微生物细胞工厂构建全生命周期，建设覆盖四大核心数据集的标准化平台，以全基因组关联挖掘与代谢网络模型为技术驱动。</p>
       </div>
       <div class="grid-3">
-        <article class="card value-card reveal">
+        <article class="card value-card is-feature reveal" data-detail="value-gpa" tabindex="0" role="button" aria-label="查看基因型-表型关联详情">
           <span class="value-mark">VALUE 01</span>
           <h3>基因型-表型关联</h3>
           <p>通过全基因组关联分析（GWAS）挖掘未知关联基因及其位点，打通从测序数据到菌株改造的知识转化链路。</p>
         </article>
-        <article class="card value-card reveal">
+        <article class="card value-card reveal" data-detail="value-omics" tabindex="0" role="button" aria-label="查看多组学整合详情">
           <span class="value-mark">VALUE 02</span>
           <h3>多组学整合</h3>
           <p>整合基因组、转录组、蛋白组、代谢组等多维数据，构建代谢网络模型，支撑功能基因筛选与系统解读。</p>
         </article>
-        <article class="card value-card reveal">
+        <article class="card value-card reveal" data-detail="value-fermentation" tabindex="0" role="button" aria-label="查看发酵过程优化详情">
           <span class="value-mark">VALUE 03</span>
           <h3>发酵过程优化</h3>
           <p>基于全维度发酵过程数据采集与分析，结合代谢网络优化与人工神经网络模型，提升发酵效率与产物得率。</p>
         </article>
-        <article class="card value-card reveal">
+        <article class="card value-card reveal" data-detail="value-nutrition" tabindex="0" role="button" aria-label="查看培养营养体系详情">
           <span class="value-mark">VALUE 04</span>
           <h3>培养营养体系</h3>
           <p>系统化沉淀培养营养数据，覆盖多种工业底盘菌株培养条件，支撑培养基配方优化与工艺放大。</p>
         </article>
-        <article class="card value-card reveal">
+        <article class="card value-card reveal" data-detail="value-efficiency" tabindex="0" role="button" aria-label="查看科研降本增效详情">
           <span class="value-mark">VALUE 05</span>
           <h3>科研降本增效</h3>
           <p>通过高质量数据治理与深度清洗，保障数据可追溯、可复用，降低重复试错成本，提升科研资源利用效率。</p>
-        </article>
-        <article class="card value-card reveal">
-          <span class="value-mark">VALUE 06</span>
-          <h3>专利风险预警</h3>
-          <p>支撑企业规避知识产权冲突，通过专利风险预警能力降低菌株研发过程中的法律风险与研发周期。</p>
         </article>
       </div>
     </div>
@@ -1384,7 +1839,7 @@ button {
         <p>四大核心数据集，覆盖基因型-表型关联、多组学、发酵过程、培养营养全维度内容。</p>
       </div>
       <div class="grid-2">
-        <article class="card db-card reveal">
+        <article class="card db-card reveal" data-detail="db-gpa" tabindex="0" role="button" aria-label="查看基因型-表型关联数据集详情">
           <div class="db-media"><img src="./assets/portal/genomics-lab.jpg" alt="基因型表型关联实验室场景"></div>
           <div class="db-body">
             <span class="db-count">≥ 50万条</span>
@@ -1395,7 +1850,7 @@ button {
             </div>
           </div>
         </article>
-        <article class="card db-card reveal">
+        <article class="card db-card reveal" data-detail="db-omics" tabindex="0" role="button" aria-label="查看多组学数据集详情">
           <div class="db-media"><img src="./assets/portal/bioprocess-analytics.png" alt="多组学与生物过程数据分析界面"></div>
           <div class="db-body">
             <span class="db-count">≥ 30万条</span>
@@ -1406,7 +1861,7 @@ button {
             </div>
           </div>
         </article>
-        <article class="card db-card reveal">
+        <article class="card db-card reveal" data-detail="db-process" tabindex="0" role="button" aria-label="查看发酵过程数据集详情">
           <div class="db-media"><img src="./assets/portal/process-lab.jpg" alt="发酵过程与实验设备场景"></div>
           <div class="db-body">
             <span class="db-count">≥ 20万条</span>
@@ -1417,7 +1872,7 @@ button {
             </div>
           </div>
         </article>
-        <article class="card db-card reveal">
+        <article class="card db-card reveal" data-detail="db-nutrition" tabindex="0" role="button" aria-label="查看培养营养数据集详情">
           <div class="db-media"><img src="./assets/portal/petri-dish.jpg" alt="培养营养与微生物样本场景"></div>
           <div class="db-body">
             <span class="db-count">≥ 30万条</span>
@@ -1439,7 +1894,7 @@ button {
         <p>数据体量达到 TB 级别，年度新增 300-500 条记录，三级质控体系保障数据质量与可复用性。</p>
       </div>
       <div class="overview">
-        <article class="card data-copy reveal">
+        <article class="card data-copy reveal" data-detail="dataviz-quality" tabindex="0" role="button" aria-label="查看三级质量控制体系详情">
           <h3>三级质量控制体系</h3>
           <p>围绕 GPA、组学、发酵三类数据分别实施三级校验。</p>
           <p><strong>第一级：采集规范性</strong>，确保数据采集过程符合标准化流程。</p>
@@ -1462,7 +1917,7 @@ button {
           </div>
         </article>
 
-        <article class="card chart-card reveal" aria-labelledby="overview-chart-title">
+        <article class="card chart-card reveal" aria-labelledby="overview-chart-title" data-detail="dataviz-distribution" tabindex="0" role="button" aria-label="查看四大数据库数据分布详情">
           <h3 id="overview-chart-title">四大数据库数据分布</h3>
           <div class="chart-legend">
             <span><i class="legend-dot" style="background:#2264d8"></i>基因型-表型关联</span>
@@ -1521,22 +1976,27 @@ button {
         <p>覆盖基因型-表型分析、组学数据分析、发酵过程分析、全流程数据分析四大应用场景。</p>
       </div>
 
-      <div class="tabs" role="tablist" aria-label="场景应用切换">
-        <button class="tab-btn is-active" type="button" data-scene="scene-1" role="tab" aria-selected="true">基因型-表型分析</button>
-        <button class="tab-btn" type="button" data-scene="scene-2" role="tab" aria-selected="false">组学数据分析</button>
-        <button class="tab-btn" type="button" data-scene="scene-3" role="tab" aria-selected="false">发酵过程分析</button>
-        <button class="tab-btn" type="button" data-scene="scene-4" role="tab" aria-selected="false">全流程数据分析</button>
-      </div>
+      <div class="scene-workspace reveal">
+        <aside class="scene-nav" aria-label="场景应用导航">
+          <h3 class="scene-nav-title">应用场景</h3>
+          <div class="tabs" role="tablist" aria-label="场景应用切换">
+            <button class="tab-btn is-active" type="button" data-scene="scene-1" role="tab" aria-selected="true">基因型-表型分析</button>
+            <button class="tab-btn" type="button" data-scene="scene-2" role="tab" aria-selected="false">组学数据分析</button>
+            <button class="tab-btn" type="button" data-scene="scene-3" role="tab" aria-selected="false">发酵过程分析</button>
+            <button class="tab-btn" type="button" data-scene="scene-4" role="tab" aria-selected="false">全流程数据分析</button>
+          </div>
+        </aside>
 
+        <div class="scene-main">
       <div class="scene-panel is-active" id="scene-1" role="tabpanel">
         <div class="scene-top">
-          <article class="card scene-copy reveal">
+          <article class="card scene-copy reveal" data-detail="scene-gpa" tabindex="0" role="button" aria-label="查看基因型-表型分析场景详情">
             <h3>GPA 数据分析 + GWAS 全基因组关联分析</h3>
             <p>挖掘未知关联基因及其位点，加速从测序数据到菌株改造的知识转化。基于自有 40 万+ 基因型-表型关联数据，结合统计遗传学方法进行显著性关联挖掘。</p>
           </article>
-          <div class="scene-media reveal"><img src="./assets/portal/genomics-lab.jpg" alt="基因型表型分析场景图片"></div>
+          <div class="scene-media reveal" data-detail="scene-gpa" tabindex="0" role="button" aria-label="查看基因型表型分析场景详情"><img src="./assets/portal/genomics-lab.jpg" alt="基因型表型分析场景图片"></div>
         </div>
-        <article class="card chart-card reveal">
+        <article class="card chart-card reveal" data-detail="scene-gpa" tabindex="0" role="button" aria-label="查看关键性状关联位点分布详情">
           <h3>关键性状关联位点分布</h3>
           <svg class="scene-svg" viewBox="0 0 640 300" role="img" aria-label="关键性状关联位点分布图">
             <rect x="72" y="40" width="520" height="210" rx="18" fill="#f8fbfd" stroke="#d9e3ee"/>
@@ -1562,13 +2022,13 @@ button {
 
       <div class="scene-panel" id="scene-2" role="tabpanel">
         <div class="scene-top">
-          <article class="card scene-copy reveal">
+          <article class="card scene-copy reveal" data-detail="scene-omics" tabindex="0" role="button" aria-label="查看组学数据分析场景详情">
             <h3>基因组代谢网络模型构建</h3>
             <p>整合 GPA 数据进行多组学关联解读，构建基因组规模代谢网络模型（GSMM），实现从基因型到代谢表型的系统预测与功能基因筛选。</p>
           </article>
-          <div class="scene-media reveal"><img src="./assets/portal/bioprocess-analytics.png" alt="多组学与代谢分析界面图片"></div>
+          <div class="scene-media reveal" data-detail="scene-omics" tabindex="0" role="button" aria-label="查看多组学与代谢分析场景详情"><img src="./assets/portal/bioprocess-analytics.png" alt="多组学与代谢分析界面图片"></div>
         </div>
-        <article class="card chart-card reveal">
+        <article class="card chart-card reveal" data-detail="scene-omics" tabindex="0" role="button" aria-label="查看多组学覆盖度评估详情">
           <h3>多组学覆盖度评估</h3>
           <svg class="scene-svg" viewBox="0 0 640 300" role="img" aria-label="多组学覆盖度评估雷达图">
             <rect x="86" y="34" width="468" height="232" rx="18" fill="#f8fbfd" stroke="#d9e3ee"/>
@@ -1589,13 +2049,13 @@ button {
 
       <div class="scene-panel" id="scene-3" role="tabpanel">
         <div class="scene-top">
-          <article class="card scene-copy reveal">
+          <article class="card scene-copy reveal" data-detail="scene-process" tabindex="0" role="button" aria-label="查看发酵过程分析场景详情">
             <h3>代谢网络优化 + 人工神经网络优化</h3>
             <p>基于发酵过程全维度数据，结合代谢网络模型与人工神经网络（ANN），预测最佳发酵条件组合，提升发酵效率与产物得率。</p>
           </article>
-          <div class="scene-media reveal"><img src="./assets/portal/process-lab.jpg" alt="发酵过程优化场景图片"></div>
+          <div class="scene-media reveal" data-detail="scene-process" tabindex="0" role="button" aria-label="查看发酵过程优化场景详情"><img src="./assets/portal/process-lab.jpg" alt="发酵过程优化场景图片"></div>
         </div>
-        <article class="card chart-card reveal">
+        <article class="card chart-card reveal" data-detail="scene-process" tabindex="0" role="button" aria-label="查看参数预测与实测对比详情">
           <h3>参数预测与实测对比</h3>
           <svg class="scene-svg" viewBox="0 0 640 300" role="img" aria-label="参数预测与实测对比折线图">
             <rect x="70" y="40" width="520" height="210" rx="18" fill="#f8fbfd" stroke="#d9e3ee"/>
@@ -1621,13 +2081,13 @@ button {
 
       <div class="scene-panel" id="scene-4" role="tabpanel">
         <div class="scene-top">
-          <article class="card scene-copy reveal">
+          <article class="card scene-copy reveal" data-detail="scene-full" tabindex="0" role="button" aria-label="查看全流程数据分析场景详情">
             <h3>知识网络图谱构建 + 参数预测模型</h3>
             <p>整合四大数据库，构建知识网络图谱，实现基因型组合优化预测，为工程菌株理性设计提供全流程数据支撑。</p>
           </article>
-          <div class="scene-media reveal"><img src="./assets/portal/team-lab.jpg" alt="研发团队与协同分析场景图片"></div>
+          <div class="scene-media reveal" data-detail="scene-full" tabindex="0" role="button" aria-label="查看全流程协同分析场景详情"><img src="./assets/portal/team-lab.jpg" alt="研发团队与协同分析场景图片"></div>
         </div>
-        <article class="card chart-card reveal">
+        <article class="card chart-card reveal" data-detail="scene-full" tabindex="0" role="button" aria-label="查看知识网络图谱示意详情">
           <h3>知识网络图谱示意</h3>
           <svg class="scene-svg" viewBox="0 0 640 300" role="img" aria-label="知识网络图谱示意图">
             <rect x="74" y="38" width="500" height="214" rx="18" fill="#f8fbfd" stroke="#d9e3ee"/>
@@ -1650,6 +2110,8 @@ button {
           </svg>
         </article>
       </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1660,42 +2122,42 @@ button {
         <p>检测工具、分析算法、优化算法、平台工具四大类能力，全方位支撑工程细胞研究。</p>
       </div>
       <div class="grid-4">
-        <article class="card tool-card reveal">
+        <article class="card tool-card reveal" data-detail="tool-physical" tabindex="0" role="button" aria-label="查看物理传感器详情">
           <span class="tool-mark">SENSOR</span>
           <h3>物理传感器</h3>
           <p>温度、pH、溶氧、搅拌转速等实时监测发酵过程关键物理参数。</p>
         </article>
-        <article class="card tool-card reveal">
+        <article class="card tool-card reveal" data-detail="tool-bio" tabindex="0" role="button" aria-label="查看生物传感器详情">
           <span class="tool-mark">SENSOR</span>
           <h3>生物传感器</h3>
           <p>生物量、代谢物浓度、酶活检测等能力，实时反馈细胞生理状态。</p>
         </article>
-        <article class="card tool-card reveal">
+        <article class="card tool-card reveal" data-detail="tool-gwas" tabindex="0" role="button" aria-label="查看 GWAS 全基因组关联分析详情">
           <span class="tool-mark">ANALYSIS</span>
           <h3>GWAS 全基因组关联分析</h3>
           <p>基于统计遗传学方法挖掘基因型-表型显著关联，定位关键功能基因与位点。</p>
         </article>
-        <article class="card tool-card reveal">
+        <article class="card tool-card reveal" data-detail="tool-gsmm" tabindex="0" role="button" aria-label="查看基因组代谢网络模型详情">
           <span class="tool-mark">MODEL</span>
           <h3>基因组代谢网络模型</h3>
           <p>支撑 GSMM 构建与 FBA 分析，预测基因敲除或过表达对代谢通量的影响。</p>
         </article>
-        <article class="card tool-card reveal">
+        <article class="card tool-card reveal" data-detail="tool-metabolic" tabindex="0" role="button" aria-label="查看代谢网络优化详情">
           <span class="tool-mark">OPTIMIZE</span>
           <h3>代谢网络优化</h3>
           <p>围绕通量平衡分析与代谢工程靶点预测，优化碳流分配并提升目标产物得率。</p>
         </article>
-        <article class="card tool-card reveal">
+        <article class="card tool-card reveal" data-detail="tool-ann" tabindex="0" role="button" aria-label="查看人工神经网络详情">
           <span class="tool-mark">PREDICT</span>
           <h3>人工神经网络（ANN）</h3>
           <p>基于深度学习进行发酵参数预测与优化，自适应调整培养策略。</p>
         </article>
-        <article class="card tool-card reveal">
+        <article class="card tool-card reveal" data-detail="tool-knowledge" tabindex="0" role="button" aria-label="查看知识网络图谱详情">
           <span class="tool-mark">KNOWLEDGE</span>
           <h3>知识网络图谱</h3>
           <p>对多源异构数据进行关联挖掘，构建基因、代谢、表型之间的知识图谱。</p>
         </article>
-        <article class="card tool-card reveal">
+        <article class="card tool-card reveal" data-detail="tool-portal" tabindex="0" role="button" aria-label="查看信息管理系统详情">
           <span class="tool-mark">PORTAL</span>
           <h3>信息管理系统</h3>
           <p>提供统一的数据管理入口，支撑检索、可视化分析与报告生成。</p>
@@ -1711,7 +2173,7 @@ button {
         <p>面向基因科技、生命科学、微生物研发与农业微生物领域的头部机构合作场景。</p>
       </div>
       <div class="grid-2">
-        <article class="card case-card reveal">
+        <article class="card case-card reveal" data-detail="case-bgi" tabindex="0" role="button" aria-label="查看华大基因合作案例详情">
           <div class="case-media"><img src="./assets/portal/genomics-lab.jpg" alt="合作案例：基因关联分析场景"></div>
           <div class="case-body">
             <span class="case-unit">华大基因（BGI）</span>
@@ -1720,7 +2182,7 @@ button {
             <p>基于全基因组关联分析（GWAS），联合挖掘工业底盘菌株的高产关联基因靶点，共建基因型-表型关联数据集，加速知识转化。</p>
           </div>
         </article>
-        <article class="card case-card reveal">
+        <article class="card case-card reveal" data-detail="case-01life" tabindex="0" role="button" aria-label="查看零一生命合作案例详情">
           <div class="case-media"><img src="./assets/portal/bioprocess-analytics.png" alt="合作案例：代谢通路优化场景"></div>
           <div class="case-body">
             <span class="case-unit">零一生命（01 LIFE）</span>
@@ -1729,7 +2191,7 @@ button {
             <p>依托多组学数据集与代谢网络模型，合作开展微生物代谢通路优化，筛选关键功能基因组合，缩短工程菌株理性设计周期。</p>
           </div>
         </article>
-        <article class="card case-card reveal">
+        <article class="card case-card reveal" data-detail="case-xbiome" tabindex="0" role="button" aria-label="查看未知君合作案例详情">
           <div class="case-media"><img src="./assets/portal/process-lab.jpg" alt="合作案例：发酵工艺放大场景"></div>
           <div class="case-body">
             <span class="case-unit">未知君（XBIOME）</span>
@@ -1738,7 +2200,7 @@ button {
             <p>利用发酵过程数据集与人工神经网络优化算法，协同进行培养条件参数预测与发酵工艺放大，提升中试转化成功率。</p>
           </div>
         </article>
-        <article class="card case-card reveal">
+        <article class="card case-card reveal" data-detail="case-sicau" tabindex="0" role="button" aria-label="查看四川农业大学合作案例详情">
           <div class="case-media"><img src="./assets/portal/petri-dish.jpg" alt="合作案例：培养营养与农业微生物场景"></div>
           <div class="case-body">
             <span class="case-unit">四川农业大学</span>
@@ -1750,6 +2212,13 @@ button {
       </div>
     </div>
   </section>
+
+  <section class="portal-detail-page" id="portalDetailPage" aria-live="polite" aria-label="门户内容详情页">
+    <div class="portal-detail-shell">
+      <button class="detail-return" type="button" data-detail-back>返回门户内容</button>
+      <div id="portalDetailContent"></div>
+    </div>
+  </section>
 </main>
 
 <footer class="footer">
@@ -1759,7 +2228,7 @@ button {
       <p>围绕微生物细胞工厂构建全生命周期，形成覆盖基因型-表型关联、多组学、发酵过程、培养营养四大核心数据集的标准化平台，以全基因组关联挖掘与代谢网络模型为技术驱动。</p>
       <p style="margin-top:12px;">三级质控体系 · 深度清洗治理 · 数据可追溯可复用 · TB 级数据体量 · 年度持续新增</p>
     </div>
-    <div class="footer-links">
+    <div class="footer-links" data-portal-links>
       <h3>快速导航</h3>
       <a href="#value">平台价值</a>
       <a href="#flow">整体流程</a>
@@ -1769,12 +2238,21 @@ button {
       <a href="#tools">工具算法</a>
       <a href="#cases">合作案例</a>
     </div>
+    <div class="footer-contact">
+      <h3>联系方式</h3>
+      <p><strong>联系单位</strong><span data-portal-text="contactUnit">工程细胞研究中心</span></p>
+      <p><strong>联系电话</strong><span data-portal-text="contactPhone">0755-83949389</span></p>
+      <p><strong>联系地址</strong><span data-portal-text="contactAddress">广东省深圳市工程细胞主题库示范应用中心</span></p>
+      <p><strong data-portal-text="qrTitle">官方服务二维码</strong></p>
+      <div class="footer-qr" data-portal-qr>QR</div>
+    </div>
   </div>
-  <div class="footer-bottom">工程细胞主题库门户 · 面向实际研发场景的高保真数据门户原型</div>
+  <div class="footer-bottom" data-portal-text="copyright">工程细胞主题库门户 · 面向实际研发场景的高保真数据门户原型</div>
 </footer>
 
 <script>
 const PORTAL_RETURN_TIP_KEY = "engineering-cell-portal-return-tip-v1";
+const PORTAL_PLATFORM_CONFIG_KEY = "engineering-cell-portal-platform-config-v1";
 const topbar = document.getElementById("topbar");
 const navToggle = document.getElementById("navToggle");
 const navPanel = document.getElementById("navPanel");
@@ -1783,6 +2261,8 @@ const backTop = document.getElementById("backTop");
 const portalReturnTip = document.getElementById("portalReturnTip");
 const portalReturnTipText = document.getElementById("portalReturnTipText");
 const portalReturnTipClose = document.getElementById("portalReturnTipClose");
+const portalDetailPage = document.getElementById("portalDetailPage");
+const portalDetailContent = document.getElementById("portalDetailContent");
 const navAnchors = [...document.querySelectorAll(".nav-links a")];
 const sections = navAnchors
   .map((anchor) => {
@@ -1790,6 +2270,408 @@ const sections = navAnchors
     return target ? { anchor, target } : null;
   })
   .filter(Boolean);
+
+function portalEscape(value) {
+  return String(value || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+function renderPortalTitle(value) {
+  const text = String(value || "").trim();
+  if (!text) return "";
+  return portalEscape(text).replace("主题库", "<span>主题库</span>");
+}
+
+const portalDetails = {
+  "value-gpa": {
+    category: "平台价值",
+    title: "基因型-表型关联",
+    image: "./assets/portal/genomics-lab.jpg",
+    summary: "通过 GWAS 全基因组关联分析将测序数据、表型测量和菌株改造目标连接起来，帮助研发团队快速定位关键功能基因与关联位点。",
+    metrics: [["数据基础", "40万+ 自有记录"], ["分析对象", "SNP / QTL / Trait"], ["应用目标", "高产菌株构建"]],
+    tags: ["GWAS", "表型关联", "功能位点", "菌株改造"],
+    sections: [
+      ["能力说明", "平台围绕工业底盘菌株沉淀基因型、表型和环境条件数据，支持从候选位点筛选到靶点验证的连续分析。"],
+      ["适用场景", "适合高产、耐受性、底物利用效率、生长速率等复杂性状分析，帮助研究人员减少盲目试错。"]
+    ]
+  },
+  "value-omics": {
+    category: "平台价值",
+    title: "多组学整合",
+    image: "./assets/portal/bioprocess-analytics.png",
+    summary: "整合基因组、转录组、蛋白组和代谢组数据，构建可解释的代谢网络模型，支撑系统层面的功能基因筛选。",
+    metrics: [["覆盖组学", "4类"], ["模型能力", "GSMM / FBA"], ["输出结果", "功能注释"]],
+    tags: ["基因组", "转录组", "蛋白组", "代谢组"],
+    sections: [
+      ["数据融合", "通过统一标准字段和质控规则对多源异构数据进行整理，形成可复用的多组学数据资产。"],
+      ["模型联动", "将组学证据映射到代谢通路和网络节点，辅助解释表型变化背后的系统机制。"]
+    ]
+  },
+  "value-fermentation": {
+    category: "平台价值",
+    title: "发酵过程优化",
+    image: "./assets/portal/process-lab.jpg",
+    summary: "基于全维度发酵过程数据，结合代谢网络和 ANN 预测模型，形成参数预测、工艺优化和放大验证闭环。",
+    metrics: [["过程参数", "温度/pH/DO"], ["模型方法", "ANN"], ["优化目标", "得率提升"]],
+    tags: ["发酵参数", "过程预测", "补料策略", "工艺放大"],
+    sections: [
+      ["过程监测", "采集温度、pH、溶氧、搅拌、补料、代谢物浓度等关键变量，用于过程状态判读。"],
+      ["优化闭环", "通过历史批次训练预测模型，反推更优培养条件和控制策略，提高中试放大成功率。"]
+    ]
+  },
+  "value-nutrition": {
+    category: "平台价值",
+    title: "培养营养体系",
+    image: "./assets/portal/petri-dish.jpg",
+    summary: "沉淀培养基配方、营养组分、底盘菌生长曲线和产物响应数据，为培养条件设计提供经验基础。",
+    metrics: [["配方数据", "30万+ 条"], ["核心对象", "碳源/氮源"], ["支撑方向", "培养基优化"]],
+    tags: ["培养基", "营养配方", "生长曲线", "工艺适配"],
+    sections: [
+      ["数据内容", "覆盖碳源、氮源、微量元素、诱导条件和培养周期等字段，便于横向比较不同培养方案。"],
+      ["应用价值", "帮助研发团队在菌株构建早期快速筛选合适营养条件，降低培养条件探索成本。"]
+    ]
+  },
+  "value-efficiency": {
+    category: "平台价值",
+    title: "科研降本增效",
+    image: "./assets/portal/team-lab.jpg",
+    summary: "通过统一数据治理、质控和分析入口，减少重复实验、重复整理和跨团队沟通成本。",
+    metrics: [["质控层级", "三级"], ["数据属性", "可追溯"], ["协作目标", "复用共享"]],
+    tags: ["数据治理", "质控", "可追溯", "科研协同"],
+    sections: [
+      ["治理方式", "建立标准字段、审核流程和数据质量规则，使数据从入库开始就具备可用性和可解释性。"],
+      ["协作收益", "研究人员可以围绕同一批数据进行检索、分析和报告沉淀，形成团队级知识复用。"]
+    ]
+  },
+  "db-gpa": {
+    category: "核心数据库",
+    title: "基因型-表型关联数据集",
+    image: "./assets/portal/genomics-lab.jpg",
+    summary: "覆盖自有与公开基因型-表型关联数据，支撑高产、耐受性、生长速率等性状的关联位点挖掘。",
+    metrics: [["数据规模", "≥50万条"], ["自有数据", "40万条"], ["公开数据", "10万条"]],
+    tags: ["GWAS", "SNP", "QTL", "表型数据"],
+    sections: [["数据字段", "包含菌株信息、测序批次、性状类型、统计显著性、候选位点和实验来源等字段。"], ["分析价值", "用于筛选关键功能基因和候选突变位点，辅助工程菌株理性设计。"]]
+  },
+  "db-omics": {
+    category: "核心数据库",
+    title: "多组学数据集",
+    image: "./assets/portal/bioprocess-analytics.png",
+    summary: "整合基因组、转录组、蛋白组和代谢组数据，面向代谢网络建模和功能注释提供基础。",
+    metrics: [["数据规模", "≥30万条"], ["自有数据", "16万条"], ["公开数据", "12万条"]],
+    tags: ["多组学", "功能注释", "代谢网络", "GSMM"],
+    sections: [["数据字段", "记录样本来源、组学类型、检测平台、表达水平、代谢物丰度和注释结果。"], ["应用方式", "可与 GPA 结果和发酵表型联合分析，解释关键性状形成机制。"]]
+  },
+  "db-process": {
+    category: "核心数据库",
+    title: "发酵过程数据集",
+    image: "./assets/portal/process-lab.jpg",
+    summary: "记录发酵全过程参数和批次结果，为过程监控、参数预测和工艺放大提供训练样本。",
+    metrics: [["数据规模", "≥20万条"], ["自有数据", "8万条"], ["公开数据", "12万条"]],
+    tags: ["发酵参数", "补料策略", "代谢物", "ANN优化"],
+    sections: [["数据字段", "覆盖温度、pH、溶氧、搅拌转速、生物量、补料速率和产物浓度等字段。"], ["业务收益", "通过批次对比和模型预测识别关键控制区间，提高发酵稳定性。"]]
+  },
+  "db-nutrition": {
+    category: "核心数据库",
+    title: "培养营养数据集",
+    image: "./assets/portal/petri-dish.jpg",
+    summary: "围绕培养基配方、营养组分和菌株生长状态形成结构化数据资产。",
+    metrics: [["数据规模", "≥30万条"], ["自有数据", "14万条"], ["公开数据", "16万条"]],
+    tags: ["碳源", "氮源", "微量元素", "培养基"],
+    sections: [["数据字段", "包含培养基配方、营养组分浓度、培养条件、生长曲线和产物响应。"], ["应用方式", "支持配方筛选、培养条件优化和不同底盘菌培养策略迁移。"]]
+  },
+  "dataviz-quality": {
+    category: "数据总览",
+    title: "三级质量控制体系",
+    image: "./assets/portal/team-lab.jpg",
+    summary: "围绕采集规范性、一致性校验和生物学合理性三层规则保障数据质量。",
+    metrics: [["质控层级", "3级"], ["数据体量", "TB级"], ["年度新增", "300-500条"]],
+    tags: ["采集规范", "一致性校验", "专家审核", "数据治理"],
+    sections: [["第一级", "检查采集字段、单位、范围和批次来源，确保数据进入平台时格式规范。"], ["第二级", "通过跨字段、跨批次和跨数据源比对排除异常值。"], ["第三级", "结合领域专家审核判断数据是否符合生物学规律和实验逻辑。"]]
+  },
+  "dataviz-distribution": {
+    category: "数据总览",
+    title: "四大数据库数据分布",
+    image: "./assets/portal/bioprocess-analytics.png",
+    summary: "以四大数据库为主线展示平台数据资产规模，便于快速理解主题库覆盖面。",
+    metrics: [["总量级", "130万+"], ["数据库", "4类"], ["展示方式", "分布图"]],
+    tags: ["数据资产", "分布统计", "核心库", "可视化"],
+    sections: [["分布说明", "基因型-表型关联数据规模最高，多组学与培养营养数据共同支撑机制解释和培养优化。"], ["使用方式", "用户可从分布视角选择进入对应数据库，再按数据类型、来源和质量状态筛选。"]]
+  },
+  "scene-gpa": {
+    category: "场景应用",
+    title: "基因型-表型分析",
+    image: "./assets/portal/genomics-lab.jpg",
+    summary: "从 GPA 数据出发进行 GWAS 分析，定位关键性状关联位点并输出候选靶点。",
+    metrics: [["核心方法", "GWAS"], ["输入数据", "GPA"], ["输出结果", "候选位点"]],
+    tags: ["GPA", "GWAS", "关联位点", "性状分析"],
+    sections: [["分析流程", "导入基因型和表型数据后，进行质量控制、统计建模、显著性筛选和位点解释。"], ["交付结果", "输出显著位点列表、性状关联图谱和候选基因解释，为后续实验验证提供依据。"]]
+  },
+  "scene-omics": {
+    category: "场景应用",
+    title: "组学数据分析",
+    image: "./assets/portal/bioprocess-analytics.png",
+    summary: "整合多组学证据构建代谢网络模型，解释基因型到代谢表型的系统变化。",
+    metrics: [["核心模型", "GSMM"], ["分析维度", "多组学"], ["输出结果", "功能基因"]],
+    tags: ["GSMM", "代谢网络", "多组学", "功能筛选"],
+    sections: [["分析流程", "进行组学数据清洗、注释映射、通路构建和网络推理。"], ["交付结果", "输出关键通路、功能基因组合和模型解释报告。"]]
+  },
+  "scene-process": {
+    category: "场景应用",
+    title: "发酵过程分析",
+    image: "./assets/portal/process-lab.jpg",
+    summary: "基于发酵全过程数据训练参数预测模型，指导培养条件优化和中试放大。",
+    metrics: [["核心方法", "ANN"], ["输入数据", "过程参数"], ["输出结果", "优化策略"]],
+    tags: ["发酵过程", "ANN", "参数预测", "工艺放大"],
+    sections: [["分析流程", "汇聚批次数据、传感器数据和产物结果，训练参数预测与异常识别模型。"], ["交付结果", "输出最佳控制区间、补料建议和过程风险提示。"]]
+  },
+  "scene-full": {
+    category: "场景应用",
+    title: "全流程数据分析",
+    image: "./assets/portal/team-lab.jpg",
+    summary: "串联四大数据库与知识网络图谱，形成面向菌株设计的全流程分析工作台。",
+    metrics: [["覆盖链路", "全流程"], ["核心资产", "知识图谱"], ["输出结果", "组合预测"]],
+    tags: ["知识网络", "参数预测", "组合优化", "协同分析"],
+    sections: [["分析流程", "从数据检索、图谱构建、模型预测到报告输出形成闭环。"], ["交付结果", "输出基因型组合建议、参数预测结果和研发决策依据。"]]
+  },
+  "tool-physical": {
+    category: "工具算法",
+    title: "物理传感器",
+    image: "./assets/portal/process-lab.jpg",
+    summary: "实时监测发酵过程中的温度、pH、溶氧和搅拌转速等关键物理参数。",
+    metrics: [["参数类型", "物理参数"], ["采集方式", "实时监测"], ["应用对象", "发酵批次"]],
+    tags: ["温度", "pH", "溶氧", "搅拌转速"],
+    sections: [["能力说明", "为发酵过程分析提供连续时序数据，支持异常识别和参数预测。"], ["使用价值", "帮助研发团队及时发现过程波动，提高批次稳定性。"]]
+  },
+  "tool-bio": {
+    category: "工具算法",
+    title: "生物传感器",
+    image: "./assets/portal/petri-dish.jpg",
+    summary: "监测生物量、代谢物浓度和酶活等指标，反馈工程细胞生理状态。",
+    metrics: [["参数类型", "生物指标"], ["数据来源", "检测工具"], ["应用对象", "细胞状态"]],
+    tags: ["生物量", "代谢物", "酶活", "细胞状态"],
+    sections: [["能力说明", "将生物状态指标接入过程分析模型，辅助判断细胞活性和代谢趋势。"], ["使用价值", "在菌株筛选和培养优化中提供更直接的生理状态证据。"]]
+  },
+  "tool-gwas": {
+    category: "工具算法",
+    title: "GWAS 全基因组关联分析",
+    image: "./assets/portal/genomics-lab.jpg",
+    summary: "基于统计遗传学方法挖掘基因型与表型之间的显著关联。",
+    metrics: [["算法类型", "关联分析"], ["输入", "基因型/表型"], ["输出", "显著位点"]],
+    tags: ["GWAS", "统计遗传学", "SNP", "QTL"],
+    sections: [["能力说明", "支持显著性检验、位点筛选、候选基因定位和结果可视化。"], ["使用价值", "为工程菌株改造提供高优先级靶点线索。"]]
+  },
+  "tool-gsmm": {
+    category: "工具算法",
+    title: "基因组代谢网络模型",
+    image: "./assets/portal/bioprocess-analytics.png",
+    summary: "构建 GSMM 并开展通量分析，预测基因扰动对代谢路径的影响。",
+    metrics: [["模型类型", "GSMM"], ["方法", "FBA"], ["输出", "通量预测"]],
+    tags: ["GSMM", "FBA", "代谢通量", "模型预测"],
+    sections: [["能力说明", "将基因、反应、代谢物和表型联系起来，形成可计算模型。"], ["使用价值", "辅助判断敲除、过表达和路径重构策略。"]]
+  },
+  "tool-metabolic": {
+    category: "工具算法",
+    title: "代谢网络优化",
+    image: "./assets/portal/bioprocess-analytics.png",
+    summary: "围绕目标产物得率优化代谢通量分配，预测潜在工程改造策略。",
+    metrics: [["目标", "得率提升"], ["对象", "代谢通路"], ["输出", "靶点组合"]],
+    tags: ["通量优化", "代谢工程", "碳流分配", "靶点预测"],
+    sections: [["能力说明", "结合代谢网络约束和产物目标函数，筛选更优的工程改造组合。"], ["使用价值", "帮助研发团队聚焦更可能提升产量的路径节点。"]]
+  },
+  "tool-ann": {
+    category: "工具算法",
+    title: "人工神经网络（ANN）",
+    image: "./assets/portal/process-lab.jpg",
+    summary: "基于历史发酵批次训练预测模型，推断更优过程参数组合。",
+    metrics: [["模型", "ANN"], ["输入", "过程时序"], ["输出", "参数预测"]],
+    tags: ["深度学习", "过程预测", "参数优化", "批次学习"],
+    sections: [["能力说明", "学习批次数据中的非线性关系，预测产物变化和关键参数影响。"], ["使用价值", "用于提前评估培养策略并降低放大失败风险。"]]
+  },
+  "tool-knowledge": {
+    category: "工具算法",
+    title: "知识网络图谱",
+    image: "./assets/portal/team-lab.jpg",
+    summary: "对多源异构数据进行关联挖掘，构建基因、代谢、表型之间的知识图谱。",
+    metrics: [["对象", "多源数据"], ["结构", "知识图谱"], ["输出", "关联路径"]],
+    tags: ["知识图谱", "关联挖掘", "实体关系", "可解释分析"],
+    sections: [["能力说明", "以实体和关系组织数据，帮助用户从复杂数据中理解因果线索。"], ["使用价值", "用于全流程分析中的证据追溯和路径解释。"]]
+  },
+  "tool-portal": {
+    category: "工具算法",
+    title: "信息管理系统",
+    image: "./assets/portal/team-lab.jpg",
+    summary: "提供统一的数据管理、检索、可视化分析和报告生成入口。",
+    metrics: [["入口", "统一门户"], ["能力", "检索/分析"], ["输出", "报告沉淀"]],
+    tags: ["数据管理", "检索", "可视化", "报告"],
+    sections: [["能力说明", "面向数据入库、审核、管理和应用分析提供完整操作界面。"], ["使用价值", "让科研数据从分散文件转为可协作、可追溯的数据资产。"]]
+  },
+  "case-bgi": {
+    category: "合作案例",
+    title: "华大基因（BGI）合作案例",
+    image: "./assets/portal/genomics-lab.jpg",
+    summary: "联合开展工业底盘菌株高产关联基因靶点挖掘，共建基因型-表型关联数据集。",
+    metrics: [["合作方向", "基因科技"], ["核心方法", "GWAS"], ["目标", "靶点挖掘"]],
+    tags: ["华大基因", "工业底盘菌", "关联分析", "靶点挖掘"],
+    sections: [["合作内容", "围绕高产性状开展基因型-表型关联研究，沉淀可复用数据集。"], ["预期成果", "形成候选功能基因和关联位点列表，加速工程菌株构建。"]]
+  },
+  "case-01life": {
+    category: "合作案例",
+    title: "零一生命（01 LIFE）合作案例",
+    image: "./assets/portal/bioprocess-analytics.png",
+    summary: "依托多组学数据集与代谢网络模型开展微生物代谢通路优化和功能基因筛选。",
+    metrics: [["合作方向", "生命科学"], ["核心方法", "多组学"], ["目标", "通路优化"]],
+    tags: ["零一生命", "多组学", "代谢网络", "功能基因"],
+    sections: [["合作内容", "将多组学证据映射至代谢网络，筛选关键功能基因组合。"], ["预期成果", "缩短工程菌株理性设计周期，提高候选方案解释性。"]]
+  },
+  "case-xbiome": {
+    category: "合作案例",
+    title: "未知君（XBIOME）合作案例",
+    image: "./assets/portal/process-lab.jpg",
+    summary: "利用发酵过程数据和 ANN 优化算法进行培养条件参数预测与发酵工艺放大。",
+    metrics: [["合作方向", "微生物组"], ["核心方法", "ANN"], ["目标", "工艺放大"]],
+    tags: ["未知君", "发酵过程", "参数预测", "中试放大"],
+    sections: [["合作内容", "围绕培养条件、过程参数和产物结果训练预测模型。"], ["预期成果", "提升过程稳定性和中试转化成功率。"]]
+  },
+  "case-sicau": {
+    category: "合作案例",
+    title: "四川农业大学合作案例",
+    image: "./assets/portal/petri-dish.jpg",
+    summary: "基于培养营养数据集与代谢网络模型开展农业微生物菌株的高效构建研究。",
+    metrics: [["合作方向", "农业微生物"], ["核心数据", "培养营养"], ["目标", "菌株构建"]],
+    tags: ["四川农业大学", "培养营养", "农业微生物", "菌株构建"],
+    sections: [["合作内容", "结合培养配方、菌株生长曲线和代谢模型优化工程菌株构建策略。"], ["预期成果", "沉淀面向饲用/农用工程菌株的培养和改造经验。"]]
+  }
+};
+
+let portalHomeScrollY = 0;
+
+function renderPortalDetail(key) {
+  const detail = portalDetails[key];
+  if (!detail || !portalDetailContent) {
+    return "";
+  }
+  const related = Object.entries(portalDetails)
+    .filter(([itemKey, item]) => itemKey !== key && item.category === detail.category)
+    .slice(0, 5);
+
+  return `
+    <article class="detail-hero">
+      <div class="detail-hero-media">
+        <img src="${portalEscape(detail.image)}" alt="${portalEscape(detail.title)}详情图">
+        <div class="detail-hero-copy">
+          <span class="detail-kicker">${portalEscape(detail.category)}</span>
+          <h1>${portalEscape(detail.title)}</h1>
+          <p>${portalEscape(detail.summary)}</p>
+        </div>
+      </div>
+    </article>
+    <div class="detail-meta-grid">
+      ${detail.metrics.map(([label, value]) => `<div class="detail-meta-card"><span>${portalEscape(label)}</span><strong>${portalEscape(value)}</strong></div>`).join("")}
+    </div>
+    <div class="detail-content-grid">
+      <section class="detail-section-card">
+        <h2>内容详情</h2>
+        ${detail.sections.map(([title, text]) => `<h3>${portalEscape(title)}</h3><p>${portalEscape(text)}</p>`).join("")}
+        <div class="detail-tag-list">${detail.tags.map((tag) => `<span>${portalEscape(tag)}</span>`).join("")}</div>
+      </section>
+      <aside class="detail-related-card" aria-label="同类内容">
+        <h3>同类内容</h3>
+        ${related.map(([itemKey, item]) => `<button type="button" data-detail="${portalEscape(itemKey)}">${portalEscape(item.title)}</button>`).join("")}
+      </aside>
+    </div>
+  `;
+}
+
+function openPortalDetail(key) {
+  const detail = portalDetails[key];
+  if (!detail || !portalDetailPage || !portalDetailContent) {
+    return;
+  }
+  if (!portalDetailPage.classList.contains("is-visible")) {
+    portalHomeScrollY = window.scrollY;
+  }
+  portalDetailContent.innerHTML = renderPortalDetail(key);
+  document.querySelectorAll("main > section:not(#portalDetailPage)").forEach((section) => {
+    section.hidden = true;
+  });
+  portalDetailPage.classList.add("is-visible");
+  document.body.classList.add("is-detail-open");
+  navPanel.classList.remove("is-open");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function closePortalDetail() {
+  document.querySelectorAll("main > section:not(#portalDetailPage)").forEach((section) => {
+    section.hidden = false;
+  });
+  portalDetailPage?.classList.remove("is-visible");
+  document.body.classList.remove("is-detail-open");
+  portalDetailContent.innerHTML = "";
+  window.scrollTo({ top: portalHomeScrollY, behavior: "smooth" });
+}
+
+function applyPortalPlatformConfig() {
+  let config = null;
+  try {
+    const raw = window.localStorage.getItem(PORTAL_PLATFORM_CONFIG_KEY);
+    config = raw ? JSON.parse(raw) : null;
+  } catch (error) {
+    config = null;
+  }
+  if (!config) {
+    return;
+  }
+
+  if (config.browserTitle) {
+    document.title = config.browserTitle;
+  }
+
+  document.querySelectorAll("[data-portal-text]").forEach((node) => {
+    const key = node.dataset.portalText;
+    if (!Object.prototype.hasOwnProperty.call(config, key)) {
+      return;
+    }
+    if (key === "siteTitle") {
+      node.innerHTML = renderPortalTitle(config[key]);
+    } else {
+      node.textContent = config[key] || "";
+    }
+  });
+
+  const brandTitle = document.querySelector(".brand-copy strong");
+  if (brandTitle && config.siteTitle) {
+    brandTitle.textContent = config.siteTitle;
+  }
+
+  const brandMark = document.querySelector(".brand-mark");
+  if (brandMark && config.logoImage) {
+    brandMark.innerHTML = `<img src="${portalEscape(config.logoImage)}" alt="${portalEscape(config.siteTitle || "平台Logo")}">`;
+  }
+
+  const linksRoot = document.querySelector("[data-portal-links]");
+  if (linksRoot && Array.isArray(config.links)) {
+    linksRoot.innerHTML = "<h3>快速导航</h3>";
+    config.links
+      .filter((link) => link.name && link.url)
+      .forEach((link) => {
+        const anchor = document.createElement("a");
+        anchor.href = link.url;
+        anchor.textContent = link.name;
+        linksRoot.appendChild(anchor);
+      });
+  }
+
+  const qrRoot = document.querySelector("[data-portal-qr]");
+  if (qrRoot && config.qrImage) {
+    qrRoot.innerHTML = `<img src="${portalEscape(config.qrImage)}" alt="${portalEscape(config.qrTitle || "二维码")}">`;
+  }
+}
+
+applyPortalPlatformConfig();
 
 try {
   const portalTipMessage = window.localStorage.getItem(PORTAL_RETURN_TIP_KEY);
@@ -1810,17 +2692,64 @@ navToggle?.addEventListener("click", () => {
 
 navAnchors.forEach((anchor) => {
   anchor.addEventListener("click", () => {
+    if (portalDetailPage?.classList.contains("is-visible")) {
+      document.querySelectorAll("main > section:not(#portalDetailPage)").forEach((section) => {
+        section.hidden = false;
+      });
+      portalDetailPage.classList.remove("is-visible");
+      document.body.classList.remove("is-detail-open");
+      portalDetailContent.innerHTML = "";
+    }
     navPanel.classList.remove("is-open");
   });
 });
 
 document.addEventListener("click", (event) => {
+  const detailBack = event.target.closest("[data-detail-back]");
+  if (detailBack) {
+    closePortalDetail();
+    return;
+  }
+
+  const detailTrigger = event.target.closest("[data-detail]");
+  if (detailTrigger) {
+    const key = detailTrigger.dataset.detail;
+    if (portalDetails[key]) {
+      openPortalDetail(key);
+      return;
+    }
+  }
+
   if (!navPanel.contains(event.target) && !navToggle.contains(event.target)) {
     navPanel.classList.remove("is-open");
   }
 });
 
+document.addEventListener("keydown", (event) => {
+  const detailTrigger = event.target.closest?.("[data-detail]");
+  if (detailTrigger && (event.key === "Enter" || event.key === " ")) {
+    event.preventDefault();
+    const key = detailTrigger.dataset.detail;
+    if (portalDetails[key]) {
+      openPortalDetail(key);
+    }
+    return;
+  }
+
+  if (event.key === "Escape" && portalDetailPage?.classList.contains("is-visible")) {
+    closePortalDetail();
+  }
+});
+
 function updateChrome() {
+  if (portalDetailPage?.classList.contains("is-visible")) {
+    topbar.classList.toggle("is-scrolled", window.scrollY > 8);
+    progressBar.style.width = "0%";
+    backTop.classList.toggle("is-visible", window.scrollY > window.innerHeight * 0.6);
+    navAnchors.forEach((anchor) => anchor.classList.remove("is-active"));
+    return;
+  }
+
   const y = window.scrollY;
   topbar.classList.toggle("is-scrolled", y > 8);
   const height = document.documentElement.scrollHeight - window.innerHeight;
