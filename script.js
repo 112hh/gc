@@ -1572,14 +1572,14 @@ Object.assign(systemPages, {
     primaryButton: "新增门户配置",
     headerTools: true,
     stats: [
-      { icon: "i-settings", iconClass: "is-blue", value: "4", label: "配置项总数" },
-      { icon: "i-check", iconClass: "is-green", value: "3", label: "已启用" },
+      { icon: "i-settings", iconClass: "is-blue", value: "9", label: "配置项总数" },
+      { icon: "i-check", iconClass: "is-green", value: "8", label: "已启用" },
       { icon: "i-warning", iconClass: "is-yellow", value: "1", label: "草稿项" },
-      { icon: "i-doc", iconClass: "is-cyan", value: "4", label: "门户区块" }
+      { icon: "i-doc", iconClass: "is-cyan", value: "9", label: "门户区块" }
     ],
     filters: [
       { label: "配置名称", type: "input", placeholder: "请输入配置名称" },
-      { label: "页面区块", type: "select", options: ["全部", "首页首屏", "平台价值", "核心数据库", "应用场景", "页脚信息"] },
+      { label: "页面区块", type: "select", options: ["全部", "首页首屏", "平台价值", "整体流程", "核心数据库", "数据总览", "场景应用", "工具算法", "合作案例", "页脚与导航"] },
       { label: "发布状态", type: "select", options: ["全部", "启用", "草稿", "停用"] },
       { label: "更新人", type: "input", placeholder: "请输入更新人" }
     ],
@@ -1593,12 +1593,17 @@ Object.assign(systemPages, {
       { key: "actions", label: "操作" }
     ],
     rows: [
-      { id: "portal-1", name: "门户标题与副标题", section: "首页首屏", contentType: "文本", owner: "张明", status: { text: "启用" }, updatedAt: "2026-05-18 10:12" },
-      { id: "portal-2", name: "平台价值定位卡片", section: "平台价值", contentType: "图文卡片", owner: "赵琳", status: { text: "启用" }, updatedAt: "2026-05-18 11:36" },
-      { id: "portal-3", name: "核心数据库展示顺序", section: "核心数据库", contentType: "排序配置", owner: "李倩", status: { text: "启用" }, updatedAt: "2026-05-17 17:28" },
-      { id: "portal-4", name: "应用场景案例素材", section: "应用场景", contentType: "图片资源", owner: "王超", status: { text: "草稿" }, updatedAt: "2026-05-16 15:04" }
+      { id: "portal-1", name: "首页首屏与门户概览", section: "首页首屏", contentType: "文案配置", owner: "张明", status: { text: "启用" }, updatedAt: "2026-05-18 10:12" },
+      { id: "portal-2", name: "平台价值定位卡片", section: "平台价值", contentType: "卡片配置", owner: "赵琳", status: { text: "启用" }, updatedAt: "2026-05-18 11:36" },
+      { id: "portal-3", name: "整体流程步骤说明", section: "整体流程", contentType: "步骤配置", owner: "李倩", status: { text: "启用" }, updatedAt: "2026-05-17 17:28" },
+      { id: "portal-4", name: "核心数据库展示内容", section: "核心数据库", contentType: "卡片配置", owner: "王超", status: { text: "启用" }, updatedAt: "2026-05-16 15:04" },
+      { id: "portal-5", name: "数据总览说明与指标", section: "数据总览", contentType: "图文配置", owner: "张明", status: { text: "启用" }, updatedAt: "2026-05-15 14:20" },
+      { id: "portal-6", name: "场景应用内容编排", section: "场景应用", contentType: "场景配置", owner: "赵琳", status: { text: "草稿" }, updatedAt: "2026-05-15 10:08" },
+      { id: "portal-7", name: "工具算法能力卡片", section: "工具算法", contentType: "卡片配置", owner: "李倩", status: { text: "启用" }, updatedAt: "2026-05-14 18:05" },
+      { id: "portal-8", name: "合作案例展示信息", section: "合作案例", contentType: "案例配置", owner: "王超", status: { text: "启用" }, updatedAt: "2026-05-14 16:42" },
+      { id: "portal-9", name: "页脚导航与联系信息", section: "页脚与导航", contentType: "链接配置", owner: "张明", status: { text: "启用" }, updatedAt: "2026-05-14 09:30" }
     ],
-    footer: "共 4 条记录，每页 10 条"
+    footer: "共 9 条记录，每页 10 条"
   },
   "system-apis": {
     key: "system-apis",
@@ -1802,8 +1807,8 @@ const systemFormConfigs = {
     title: "门户配置",
     fields: [
       { name: "name", label: "配置名称", placeholder: "请输入配置名称" },
-      { name: "section", label: "页面区块", type: "select", options: ["首页首屏", "平台价值", "核心数据库", "应用场景", "页脚信息"] },
-      { name: "contentType", label: "内容类型", type: "select", options: ["文本", "图文卡片", "排序配置", "图片资源", "链接配置"] },
+      { name: "section", label: "页面区块", type: "select", options: ["首页首屏", "平台价值", "整体流程", "核心数据库", "数据总览", "场景应用", "工具算法", "合作案例", "页脚与导航"] },
+      { name: "contentType", label: "内容类型", type: "select", options: ["文案配置", "卡片配置", "步骤配置", "图文配置", "场景配置", "案例配置", "链接配置"] },
       { name: "owner", label: "更新人", placeholder: "请输入更新人" },
       { name: "statusText", label: "发布状态", type: "select", options: ["启用", "草稿", "停用"] }
     ]
@@ -3330,25 +3335,10 @@ async function loadAnalysisModules() {
 
 const SYSTEM_PAGE_STORE_KEY = "engineering-cell-admin-system-pages-v1";
 const PORTAL_PLATFORM_CONFIG_KEY = "engineering-cell-portal-platform-config-v1";
-const defaultPortalPlatformConfig = {
-  browserTitle: "工程细胞主题库门户",
-  siteTitle: "工程细胞主题库门户",
-  subtitle: "合成生物学 · 数据驱动",
-  description: "覆盖微生物细胞工厂构建全生命周期，围绕基因型-表型关联、多组学、发酵过程、培养营养四大核心数据库，构建面向实际研发门户的高质量展示与分析入口。",
-  logoImage: "",
-  copyright: "工程细胞主题库门户 · 面向实际研发场景的高保真数据门户原型",
-  links: [
-    { name: "平台价值", url: "#value" },
-    { name: "核心数据库", url: "#databases" },
-    { name: "数据总览", url: "#dataviz" },
-    { name: "工具算法", url: "#tools" }
-  ],
-  contactUnit: "工程细胞研究中心",
-  contactPhone: "0755-83949389",
-  contactAddress: "广东省深圳市工程细胞主题库示范应用中心",
-  qrTitle: "官方服务二维码",
-  qrImage: ""
-};
+const portalConfigUtils = window.PortalConfigShared || {};
+const defaultPortalPlatformConfig = portalConfigUtils.defaultPortalPlatformConfig
+  ? portalConfigUtils.portalClone(portalConfigUtils.defaultPortalPlatformConfig)
+  : {};
 const systemInteractiveModules = [
   "system-users",
   "system-roles",
@@ -3605,19 +3595,12 @@ function writeSystemPageStore() {
 }
 
 function normalizePortalConfig(config = {}) {
-  const merged = {
+  if (typeof portalConfigUtils.normalizePortalPlatformConfig === "function") {
+    return portalConfigUtils.normalizePortalPlatformConfig(config || {});
+  }
+  return {
     ...defaultPortalPlatformConfig,
     ...(config || {})
-  };
-  const links = Array.isArray(merged.links) ? merged.links : defaultPortalPlatformConfig.links;
-  return {
-    ...merged,
-    links: links
-      .map((link) => ({
-        name: String(link.name || "").trim(),
-        url: String(link.url || "").trim()
-      }))
-      .filter((link) => link.name || link.url)
   };
 }
 
@@ -3641,10 +3624,34 @@ function resetPortalPlatformConfig() {
   return normalizePortalConfig(defaultPortalPlatformConfig);
 }
 
+function collectPortalObjectGroup(group, fallback = []) {
+  const next = fallback.map((item) => systemDeepClone(item));
+  document.querySelectorAll(`[data-portal-object-group="${group}"]`).forEach((node) => {
+    const index = Number(node.dataset.portalObjectIndex);
+    const field = node.dataset.portalObjectField;
+    const format = node.dataset.portalObjectFormat || "text";
+    const pairMode = node.dataset.portalObjectPairMode || "value-label";
+    if (!next[index]) {
+      next[index] = {};
+    }
+    next[index][field] =
+      format === "lines" || format === "pairs"
+        ? parsePortalMultiline(node.value.trim(), format, pairMode)
+        : node.value.trim();
+  });
+  return next;
+}
+
 function collectPortalConfigFormValues() {
-  const config = normalizePortalConfig();
+  const config = normalizePortalConfig(readPortalPlatformConfig());
   document.querySelectorAll("[data-portal-field]").forEach((node) => {
     config[node.dataset.portalField] = node.value.trim();
+  });
+  document.querySelectorAll("[data-portal-list-field]").forEach((node) => {
+    const field = node.dataset.portalListField;
+    const format = node.dataset.portalListFormat || "lines";
+    const pairMode = node.dataset.portalListPairMode || "value-label";
+    config[field] = parsePortalMultiline(node.value.trim(), format, pairMode);
   });
   const linksByIndex = {};
   document.querySelectorAll("[data-portal-link-field]").forEach((node) => {
@@ -3659,6 +3666,12 @@ function collectPortalConfigFormValues() {
     .sort((a, b) => Number(a) - Number(b))
     .map((index) => linksByIndex[index])
     .filter((link) => link.name || link.url);
+  config.valueItems = collectPortalObjectGroup("valueItems", config.valueItems);
+  config.flowItems = collectPortalObjectGroup("flowItems", config.flowItems);
+  config.databaseItems = collectPortalObjectGroup("databaseItems", config.databaseItems);
+  config.sceneItems = collectPortalObjectGroup("sceneItems", config.sceneItems);
+  config.toolItems = collectPortalObjectGroup("toolItems", config.toolItems);
+  config.caseItems = collectPortalObjectGroup("caseItems", config.caseItems);
   return normalizePortalConfig(config);
 }
 
@@ -3685,14 +3698,12 @@ function savePortalConfigFromForm() {
   const page = systemPages["system-portal-config"];
   if (page?.rows?.length) {
     page.rows = page.rows.map((row) =>
-      row.id === "portal-1" || row.id === "portal-2"
-        ? hydrateSystemRow("system-portal-config", {
-            ...row,
-            owner: getCurrentOperatorName(),
-            status: { text: "启用", className: getSystemStatusClass("system-portal-config", "启用") },
-            updatedAt: systemNowDateTimeString()
-          })
-        : row
+      hydrateSystemRow("system-portal-config", {
+        ...row,
+        owner: getCurrentOperatorName(),
+        status: { text: "启用", className: getSystemStatusClass("system-portal-config", "启用") },
+        updatedAt: systemNowDateTimeString()
+      })
     );
     refreshSystemPageMeta("system-portal-config");
     writeSystemPageStore();
@@ -6606,8 +6617,276 @@ function renderPortalLinkRows(links = []) {
     .join("");
 }
 
+function serializePortalMultiline(value, format = "lines", pairMode = "value-label") {
+  if (format === "pairs") {
+    return (Array.isArray(value) ? value : [])
+      .map((item) => {
+        const first = pairMode === "label-value" ? item.label : item.value;
+        const second = pairMode === "label-value" ? item.value : item.label;
+        return `${String(first || "").trim()} | ${String(second || "").trim()}`.trim();
+      })
+      .filter(Boolean)
+      .join("\n");
+  }
+  return (Array.isArray(value) ? value : [])
+    .map((item) => String(item || "").trim())
+    .filter(Boolean)
+    .join("\n");
+}
+
+function parsePortalMultiline(value, format = "lines", pairMode = "value-label") {
+  const lines = String(value || "")
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+  if (format === "pairs") {
+    return lines.map((line) => {
+      const [first = "", ...rest] = line.split("|");
+      const second = rest.join("|").trim();
+      return pairMode === "label-value"
+        ? { label: first.trim(), value: second }
+        : { value: first.trim(), label: second };
+    });
+  }
+  return lines;
+}
+
+function renderPortalConfigTextareaList({
+  field,
+  label,
+  values = [],
+  placeholder = "每行一项",
+  rows = 4,
+  required = true,
+  format = "lines",
+  pairMode = "value-label"
+}) {
+  return `
+    <label class="portal-config-field is-textarea">
+      <span class="portal-config-label">${required ? "<b>*</b>" : ""}${escapeHtml(label)}</span>
+      <span class="portal-config-control">
+        <textarea data-portal-list-field="${escapeHtml(field)}" data-portal-list-format="${escapeHtml(format)}" data-portal-list-pair-mode="${escapeHtml(pairMode)}" rows="${rows}" placeholder="${escapeHtml(placeholder)}">${escapeHtml(serializePortalMultiline(values, format, pairMode))}</textarea>
+      </span>
+    </label>
+  `;
+}
+
+function renderPortalObjectField({
+  group,
+  index,
+  field,
+  label,
+  value = "",
+  placeholder = "",
+  type = "text",
+  rows = 4,
+  format = "text",
+  pairMode = "value-label"
+}) {
+  const serializedValue = format === "lines" || format === "pairs" ? serializePortalMultiline(value, format, pairMode) : String(value || "");
+  return `
+    <label class="portal-config-stack-field ${type === "textarea" ? "is-textarea" : ""}">
+      <span class="portal-config-stack-label">${escapeHtml(label)}</span>
+      <span class="portal-config-control">
+        ${
+          type === "textarea"
+            ? `<textarea data-portal-object-group="${escapeHtml(group)}" data-portal-object-index="${index}" data-portal-object-field="${escapeHtml(field)}" data-portal-object-format="${escapeHtml(format)}" data-portal-object-pair-mode="${escapeHtml(pairMode)}" rows="${rows}" placeholder="${escapeHtml(placeholder)}">${escapeHtml(serializedValue)}</textarea>`
+            : `<input data-portal-object-group="${escapeHtml(group)}" data-portal-object-index="${index}" data-portal-object-field="${escapeHtml(field)}" data-portal-object-format="${escapeHtml(format)}" data-portal-object-pair-mode="${escapeHtml(pairMode)}" value="${escapeHtml(serializedValue)}" placeholder="${escapeHtml(placeholder)}" />`
+        }
+      </span>
+    </label>
+  `;
+}
+
+function renderPortalConfigBlock({ title, description, content }) {
+  return `
+    <section class="portal-config-block">
+      <div class="portal-config-block-head">
+        <h3>${escapeHtml(title)}</h3>
+        <p>${escapeHtml(description)}</p>
+      </div>
+      ${content}
+    </section>
+  `;
+}
+
+function renderPortalEditorCard({ title, description = "", fields = [] }) {
+  return `
+    <article class="portal-config-card">
+      <div class="portal-config-card-head">
+        <h4>${escapeHtml(title)}</h4>
+        ${description ? `<p>${escapeHtml(description)}</p>` : ""}
+      </div>
+      <div class="portal-config-card-fields">
+        ${fields.join("")}
+      </div>
+    </article>
+  `;
+}
+
 function renderPortalConfigPage() {
   const config = readPortalPlatformConfig();
+  const heroCards = [
+    renderPortalEditorCard({
+      title: "首屏标签与对象",
+      description: "维护门户首屏的标签文案、面向对象和关键词标签。",
+      fields: [
+        renderPortalConfigInput({ name: "subtitle", label: "门户标识文案", value: config.subtitle, placeholder: "请输入首屏徽标文案", max: "40" }),
+        renderPortalConfigInput({ name: "heroAudienceLabel", label: "对象标题", value: config.heroAudienceLabel, placeholder: "请输入对象标题", max: "20" }),
+        renderPortalConfigTextareaList({
+          field: "heroAudienceTags",
+          label: "对象标签",
+          values: config.heroAudienceTags,
+          placeholder: "每行一个对象标签，例如：高校",
+          rows: 4
+        }),
+        renderPortalConfigTextareaList({
+          field: "heroTags",
+          label: "能力标签",
+          values: config.heroTags,
+          placeholder: "每行一个能力标签，例如：全基因组关联分析",
+          rows: 4
+        })
+      ]
+    }),
+    renderPortalEditorCard({
+      title: "首屏概览与统计",
+      description: "维护右侧概览卡和首页统计卡内容。",
+      fields: [
+        renderPortalConfigInput({ name: "heroFeatureTitle", label: "首屏说明标题", value: config.heroFeatureTitle, placeholder: "请输入说明标题", max: "40" }),
+        renderPortalConfigInput({ name: "heroFeatureDescription", label: "首屏说明内容", value: config.heroFeatureDescription, placeholder: "请输入说明内容", type: "textarea", max: "180" }),
+        renderPortalConfigInput({ name: "heroDashboardTitle", label: "运行概览标题", value: config.heroDashboardTitle, placeholder: "请输入概览标题", max: "24" }),
+        renderPortalConfigTextareaList({
+          field: "heroDashboardRows",
+          label: "运行概览数据",
+          values: config.heroDashboardRows,
+          placeholder: "每行格式：标题 | 数值，例如：数据资源 | 130万+",
+          rows: 4,
+          format: "pairs",
+          pairMode: "label-value"
+        }),
+        renderPortalConfigTextareaList({
+          field: "heroStats",
+          label: "首页统计卡",
+          values: config.heroStats,
+          placeholder: "每行格式：数值 | 标题，例如：130万+ | 数据条目",
+          rows: 4,
+          format: "pairs"
+        }),
+        renderPortalConfigInput({ name: "heroSummaryTitle", label: "门户聚焦标题", value: config.heroSummaryTitle, placeholder: "请输入聚焦标题", max: "24" }),
+        renderPortalConfigTextareaList({
+          field: "heroSummaryItems",
+          label: "聚焦内容",
+          values: config.heroSummaryItems,
+          placeholder: "每行格式：标题 | 内容，例如：资源组织 | 四大核心数据库统一浏览",
+          rows: 4,
+          format: "pairs",
+          pairMode: "label-value"
+        })
+      ]
+    })
+  ];
+  const valueCards = config.valueItems.map((item, index) =>
+    renderPortalEditorCard({
+      title: `价值卡片 ${index + 1}`,
+      description: item.detailKey,
+      fields: [
+        renderPortalObjectField({ group: "valueItems", index, field: "badge", label: "卡片标识", value: item.badge, placeholder: "例如：VALUE 01" }),
+        renderPortalObjectField({ group: "valueItems", index, field: "title", label: "卡片标题", value: item.title, placeholder: "请输入卡片标题" }),
+        renderPortalObjectField({ group: "valueItems", index, field: "summary", label: "卡片简介", value: item.summary, type: "textarea", rows: 5, placeholder: "请输入卡片简介" })
+      ]
+    })
+  );
+  const flowCards = config.flowItems.map((item, index) =>
+    renderPortalEditorCard({
+      title: `流程步骤 ${item.step || index + 1}`,
+      fields: [
+        renderPortalObjectField({ group: "flowItems", index, field: "step", label: "步骤编号", value: item.step, placeholder: "请输入步骤编号" }),
+        renderPortalObjectField({ group: "flowItems", index, field: "title", label: "步骤标题", value: item.title, placeholder: "请输入步骤标题" }),
+        renderPortalObjectField({ group: "flowItems", index, field: "summary", label: "步骤说明", value: item.summary, type: "textarea", rows: 5, placeholder: "请输入步骤说明" })
+      ]
+    })
+  );
+  const databaseCards = config.databaseItems.map((item, index) =>
+    renderPortalEditorCard({
+      title: `数据库卡片 ${index + 1}`,
+      description: item.detailKey,
+      fields: [
+        renderPortalObjectField({ group: "databaseItems", index, field: "count", label: "数量标签", value: item.count, placeholder: "例如：≥ 50万条" }),
+        renderPortalObjectField({ group: "databaseItems", index, field: "title", label: "卡片标题", value: item.title, placeholder: "请输入卡片标题" }),
+        renderPortalObjectField({ group: "databaseItems", index, field: "summary", label: "卡片简介", value: item.summary, type: "textarea", rows: 5, placeholder: "请输入卡片简介" }),
+        renderPortalObjectField({
+          group: "databaseItems",
+          index,
+          field: "tags",
+          label: "标签列表",
+          value: item.tags,
+          type: "textarea",
+          rows: 4,
+          format: "lines",
+          placeholder: "每行一个标签，例如：GWAS"
+        })
+      ]
+    })
+  );
+  const sceneCards = config.sceneItems.map((item, index) =>
+    renderPortalEditorCard({
+      title: `场景卡片 ${index + 1}`,
+      description: item.detailKey,
+      fields: [
+        renderPortalObjectField({ group: "sceneItems", index, field: "tab", label: "导航名称", value: item.tab, placeholder: "请输入导航名称" }),
+        renderPortalObjectField({ group: "sceneItems", index, field: "title", label: "场景标题", value: item.title, placeholder: "请输入场景标题" }),
+        renderPortalObjectField({ group: "sceneItems", index, field: "summary", label: "场景简介", value: item.summary, type: "textarea", rows: 5, placeholder: "请输入场景简介" }),
+        renderPortalObjectField({ group: "sceneItems", index, field: "focusTitle", label: "能力模块标题", value: item.focusTitle, placeholder: "请输入能力模块标题" }),
+        renderPortalObjectField({
+          group: "sceneItems",
+          index,
+          field: "bullets",
+          label: "能力条目",
+          value: item.bullets,
+          type: "textarea",
+          rows: 5,
+          format: "lines",
+          placeholder: "每行一条能力说明"
+        }),
+        renderPortalObjectField({
+          group: "sceneItems",
+          index,
+          field: "metrics",
+          label: "指标卡片",
+          value: item.metrics,
+          type: "textarea",
+          rows: 4,
+          format: "pairs",
+          placeholder: "每行格式：数值 | 标题，例如：GWAS | 核心方法"
+        }),
+        renderPortalObjectField({ group: "sceneItems", index, field: "chartTitle", label: "图表标题", value: item.chartTitle, placeholder: "请输入图表标题" })
+      ]
+    })
+  );
+  const toolCards = config.toolItems.map((item, index) =>
+    renderPortalEditorCard({
+      title: `工具卡片 ${index + 1}`,
+      description: item.detailKey,
+      fields: [
+        renderPortalObjectField({ group: "toolItems", index, field: "badge", label: "角标", value: item.badge, placeholder: "例如：SENSOR" }),
+        renderPortalObjectField({ group: "toolItems", index, field: "title", label: "工具标题", value: item.title, placeholder: "请输入工具标题" }),
+        renderPortalObjectField({ group: "toolItems", index, field: "summary", label: "工具简介", value: item.summary, type: "textarea", rows: 5, placeholder: "请输入工具简介" })
+      ]
+    })
+  );
+  const caseCards = config.caseItems.map((item, index) =>
+    renderPortalEditorCard({
+      title: `案例卡片 ${index + 1}`,
+      description: item.detailKey,
+      fields: [
+        renderPortalObjectField({ group: "caseItems", index, field: "unit", label: "合作单位", value: item.unit, placeholder: "请输入合作单位" }),
+        renderPortalObjectField({ group: "caseItems", index, field: "title", label: "案例标题", value: item.title, placeholder: "请输入案例标题" }),
+        renderPortalObjectField({ group: "caseItems", index, field: "direction", label: "案例方向", value: item.direction, placeholder: "请输入案例方向" }),
+        renderPortalObjectField({ group: "caseItems", index, field: "summary", label: "案例简介", value: item.summary, type: "textarea", rows: 5, placeholder: "请输入案例简介" })
+      ]
+    })
+  );
   return `
     <div class="page-section portal-config-page">
       <div class="page-title-row">
@@ -6625,44 +6904,184 @@ function renderPortalConfigPage() {
         <div class="portal-config-section-head">
           <div>
             <h2>平台配置</h2>
-            <p>参考门户首页当前内容，维护浏览器标签、Logo、首屏文案、版权与联系方式。</p>
+            <p>围绕门户首页全部区块维护可配置内容，保存后会同步更新门户首页的展示文案与编排。</p>
           </div>
         </div>
 
-        <div class="portal-config-form">
-          ${renderPortalConfigInput({ name: "browserTitle", label: "平台标签页标题", value: config.browserTitle, placeholder: "请输入浏览器标签标题", max: "40" })}
-          ${renderPortalConfigInput({ name: "subtitle", label: "门户标识文案", value: config.subtitle, placeholder: "请输入首屏徽标文案", max: "40" })}
-          ${renderPortalImageUpload({
-            field: "logoImage",
-            label: "平台logo图片",
-            value: config.logoImage,
-            hint: "建议尺寸 286*32，支持 png、jpg，单个文件不超过 5M。",
-            previewClass: "is-logo"
+        <div class="portal-config-block-list">
+          ${renderPortalConfigBlock({
+            title: "基础信息",
+            description: "维护门户页标题、Logo 与首页首屏主文案。",
+            content: `
+              <div class="portal-config-form">
+                ${renderPortalConfigInput({ name: "browserTitle", label: "平台标签页标题", value: config.browserTitle, placeholder: "请输入浏览器标签标题", max: "40" })}
+                ${renderPortalImageUpload({
+                  field: "logoImage",
+                  label: "平台 Logo 图片",
+                  value: config.logoImage,
+                  hint: "建议尺寸 286*32，支持 png、jpg，单个文件不超过 5M。",
+                  previewClass: "is-logo"
+                })}
+                ${renderPortalConfigInput({ name: "siteTitle", label: "门户主标题", value: config.siteTitle, placeholder: "请输入门户主标题", max: "40" })}
+                ${renderPortalConfigInput({ name: "description", label: "门户简介", value: config.description, placeholder: "请输入门户简介", type: "textarea", max: "220" })}
+              </div>
+              <div class="portal-config-card-grid">
+                ${heroCards.join("")}
+              </div>
+            `
           })}
-          ${renderPortalConfigInput({ name: "siteTitle", label: "门户主标题", value: config.siteTitle, placeholder: "请输入门户主标题", max: "40" })}
-          ${renderPortalConfigInput({ name: "description", label: "门户简介", value: config.description, placeholder: "请输入门户简介", type: "textarea", max: "220" })}
-          ${renderPortalConfigInput({ name: "copyright", label: "版权信息", value: config.copyright, placeholder: "请输入版权信息", max: "80" })}
 
-          <div class="portal-config-field is-full">
-            <span class="portal-config-label"><b>*</b>友情链接</span>
-            <div class="portal-link-list" data-portal-link-list>
-              ${renderPortalLinkRows(config.links)}
-            </div>
-            <div class="portal-link-add">
-              <button class="modal-primary" type="button" data-portal-config-action="add-link">${icon("i-plus")}添加链接</button>
-            </div>
-          </div>
+          ${renderPortalConfigBlock({
+            title: "平台价值",
+            description: "维护价值定位区块标题、说明以及 5 张价值卡片。",
+            content: `
+              <div class="portal-config-form">
+                ${renderPortalConfigInput({ name: "valueTitle", label: "区块标题", value: config.valueTitle, placeholder: "请输入区块标题", max: "24" })}
+                ${renderPortalConfigInput({ name: "valueDescription", label: "区块说明", value: config.valueDescription, placeholder: "请输入区块说明", type: "textarea", max: "200" })}
+              </div>
+              <div class="portal-config-card-grid">
+                ${valueCards.join("")}
+              </div>
+            `
+          })}
 
-          ${renderPortalConfigInput({ name: "contactUnit", label: "联系单位", value: config.contactUnit, placeholder: "请输入联系单位", max: "60" })}
-          ${renderPortalConfigInput({ name: "contactPhone", label: "联系电话", value: config.contactPhone, placeholder: "请输入联系电话", max: "30" })}
-          ${renderPortalConfigInput({ name: "contactAddress", label: "联系地址", value: config.contactAddress, placeholder: "请输入联系地址", max: "100" })}
-          ${renderPortalConfigInput({ name: "qrTitle", label: "联系方式二维码标题", value: config.qrTitle, placeholder: "请输入二维码标题", max: "40" })}
-          ${renderPortalImageUpload({
-            field: "qrImage",
-            label: "联系方式二维码图片",
-            value: config.qrImage,
-            hint: "建议尺寸 100*100，支持 png、jpg，单个文件不超过 5M。",
-            previewClass: "is-qr"
+          ${renderPortalConfigBlock({
+            title: "整体流程",
+            description: "维护流程区块标题、说明与 5 个流程步骤。",
+            content: `
+              <div class="portal-config-form">
+                ${renderPortalConfigInput({ name: "flowTitle", label: "区块标题", value: config.flowTitle, placeholder: "请输入区块标题", max: "24" })}
+                ${renderPortalConfigInput({ name: "flowDescription", label: "区块说明", value: config.flowDescription, placeholder: "请输入区块说明", type: "textarea", max: "200" })}
+              </div>
+              <div class="portal-config-card-grid">
+                ${flowCards.join("")}
+              </div>
+            `
+          })}
+
+          ${renderPortalConfigBlock({
+            title: "核心数据库",
+            description: "维护数据库区块标题、说明与 4 张数据库卡片。",
+            content: `
+              <div class="portal-config-form">
+                ${renderPortalConfigInput({ name: "databasesTitle", label: "区块标题", value: config.databasesTitle, placeholder: "请输入区块标题", max: "24" })}
+                ${renderPortalConfigInput({ name: "databasesDescription", label: "区块说明", value: config.databasesDescription, placeholder: "请输入区块说明", type: "textarea", max: "200" })}
+              </div>
+              <div class="portal-config-card-grid">
+                ${databaseCards.join("")}
+              </div>
+            `
+          })}
+
+          ${renderPortalConfigBlock({
+            title: "数据总览",
+            description: "维护数据总览区块说明、质控内容与图表图例。",
+            content: `
+              <div class="portal-config-form">
+                ${renderPortalConfigInput({ name: "datavizTitle", label: "区块标题", value: config.datavizTitle, placeholder: "请输入区块标题", max: "24" })}
+                ${renderPortalConfigInput({ name: "datavizDescription", label: "区块说明", value: config.datavizDescription, placeholder: "请输入区块说明", type: "textarea", max: "200" })}
+                ${renderPortalConfigInput({ name: "datavizQualityTitle", label: "质控模块标题", value: config.datavizQualityTitle, placeholder: "请输入质控模块标题", max: "24" })}
+                ${renderPortalConfigTextareaList({
+                  field: "datavizQualityParagraphs",
+                  label: "质控模块内容",
+                  values: config.datavizQualityParagraphs,
+                  placeholder: "每行一段说明文案",
+                  rows: 6
+                })}
+                ${renderPortalConfigTextareaList({
+                  field: "datavizMetrics",
+                  label: "质控指标卡片",
+                  values: config.datavizMetrics,
+                  placeholder: "每行格式：数值 | 标题，例如：TB | 数据体量级别",
+                  rows: 4,
+                  format: "pairs"
+                })}
+                ${renderPortalConfigInput({ name: "datavizChartTitle", label: "图表标题", value: config.datavizChartTitle, placeholder: "请输入图表标题", max: "24" })}
+                ${renderPortalConfigTextareaList({
+                  field: "datavizChartLegend",
+                  label: "图表图例",
+                  values: config.datavizChartLegend,
+                  placeholder: "每行一个图例名称",
+                  rows: 4
+                })}
+              </div>
+            `
+          })}
+
+          ${renderPortalConfigBlock({
+            title: "场景应用",
+            description: "维护场景应用导航、四个场景面板与对应的能力说明。",
+            content: `
+              <div class="portal-config-form">
+                ${renderPortalConfigInput({ name: "scenesTitle", label: "区块标题", value: config.scenesTitle, placeholder: "请输入区块标题", max: "24" })}
+                ${renderPortalConfigInput({ name: "scenesDescription", label: "区块说明", value: config.scenesDescription, placeholder: "请输入区块说明", type: "textarea", max: "200" })}
+                ${renderPortalConfigInput({ name: "scenesNavTitle", label: "导航标题", value: config.scenesNavTitle, placeholder: "请输入导航标题", max: "20" })}
+              </div>
+              <div class="portal-config-card-grid">
+                ${sceneCards.join("")}
+              </div>
+            `
+          })}
+
+          ${renderPortalConfigBlock({
+            title: "工具算法",
+            description: "维护工具算法区块标题、说明与 8 张能力卡片。",
+            content: `
+              <div class="portal-config-form">
+                ${renderPortalConfigInput({ name: "toolsTitle", label: "区块标题", value: config.toolsTitle, placeholder: "请输入区块标题", max: "24" })}
+                ${renderPortalConfigInput({ name: "toolsDescription", label: "区块说明", value: config.toolsDescription, placeholder: "请输入区块说明", type: "textarea", max: "200" })}
+              </div>
+              <div class="portal-config-card-grid">
+                ${toolCards.join("")}
+              </div>
+            `
+          })}
+
+          ${renderPortalConfigBlock({
+            title: "合作案例",
+            description: "维护合作案例区块标题、说明与 4 张案例卡片。",
+            content: `
+              <div class="portal-config-form">
+                ${renderPortalConfigInput({ name: "casesTitle", label: "区块标题", value: config.casesTitle, placeholder: "请输入区块标题", max: "24" })}
+                ${renderPortalConfigInput({ name: "casesDescription", label: "区块说明", value: config.casesDescription, placeholder: "请输入区块说明", type: "textarea", max: "200" })}
+              </div>
+              <div class="portal-config-card-grid">
+                ${caseCards.join("")}
+              </div>
+            `
+          })}
+
+          ${renderPortalConfigBlock({
+            title: "页脚与导航",
+            description: "维护页脚标题、联系信息、二维码以及门户快速导航链接。",
+            content: `
+              <div class="portal-config-form">
+                ${renderPortalConfigInput({ name: "footerTitle", label: "页脚标题", value: config.footerTitle, placeholder: "请输入页脚标题", max: "40" })}
+                ${renderPortalConfigInput({ name: "footerDescription", label: "页脚简介", value: config.footerDescription, placeholder: "请输入页脚简介", type: "textarea", max: "220" })}
+                ${renderPortalConfigInput({ name: "footerHighlight", label: "页脚补充文案", value: config.footerHighlight, placeholder: "请输入页脚补充文案", max: "120" })}
+                ${renderPortalConfigInput({ name: "copyright", label: "版权信息", value: config.copyright, placeholder: "请输入版权信息", max: "80" })}
+                <div class="portal-config-field is-full">
+                  <span class="portal-config-label"><b>*</b>快速导航链接</span>
+                  <div class="portal-link-list" data-portal-link-list>
+                    ${renderPortalLinkRows(config.links)}
+                  </div>
+                  <div class="portal-link-add">
+                    <button class="modal-primary" type="button" data-portal-config-action="add-link">${icon("i-plus")}添加链接</button>
+                  </div>
+                </div>
+                ${renderPortalConfigInput({ name: "contactUnit", label: "联系单位", value: config.contactUnit, placeholder: "请输入联系单位", max: "60" })}
+                ${renderPortalConfigInput({ name: "contactPhone", label: "联系电话", value: config.contactPhone, placeholder: "请输入联系电话", max: "30" })}
+                ${renderPortalConfigInput({ name: "contactAddress", label: "联系地址", value: config.contactAddress, placeholder: "请输入联系地址", max: "100" })}
+                ${renderPortalConfigInput({ name: "qrTitle", label: "二维码标题", value: config.qrTitle, placeholder: "请输入二维码标题", max: "40" })}
+                ${renderPortalImageUpload({
+                  field: "qrImage",
+                  label: "联系方式二维码图片",
+                  value: config.qrImage,
+                  hint: "建议尺寸 100*100，支持 png、jpg，单个文件不超过 5M。",
+                  previewClass: "is-qr"
+                })}
+              </div>
+            `
           })}
         </div>
 
