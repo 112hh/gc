@@ -330,8 +330,8 @@ button {
   width: min(100%, var(--maxw));
   margin: 0 auto;
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
-  gap: 40px;
+  grid-template-columns: minmax(320px, 0.82fr) minmax(0, 1.18fr);
+  gap: 48px;
   align-items: stretch;
 }
 
@@ -509,16 +509,11 @@ button {
 }
 
 .hero-stack {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 196px;
-  grid-template-rows: auto auto auto;
-  gap: 14px;
+  display: flex;
+  min-height: clamp(480px, 66svh, 720px);
 }
 
-.hero-main,
-.hero-side,
-.hero-summary,
-.hero-dashboard {
+.hero-main {
   border-radius: 8px;
   overflow: hidden;
   border: 1px solid rgba(196, 214, 247, 0.14);
@@ -527,119 +522,27 @@ button {
 
 .hero-main {
   position: relative;
-  min-height: 520px;
-  grid-column: 1 / 2;
-  grid-row: 1 / 4;
+  width: 100%;
+  min-height: 100%;
   background: rgba(255, 255, 255, 0.08);
 }
 
 .hero-main::after {
   content: "";
   position: absolute;
-  inset: auto 0 0 0;
-  height: 44%;
-  background: linear-gradient(180deg, rgba(10, 24, 45, 0), rgba(10, 24, 45, 0.86));
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(10, 24, 45, 0.04), rgba(10, 24, 45, 0.16));
 }
 
-.hero-main img,
-.hero-side img {
+.hero-main img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
 .hero-main-copy {
-  position: absolute;
-  left: 22px;
-  right: 22px;
-  bottom: 22px;
-  z-index: 1;
-  color: #fff;
-}
-
-.hero-main-copy strong {
-  display: block;
-  margin-bottom: 6px;
-  font-size: 18px;
-}
-
-.hero-main-copy p {
-  margin: 0;
-  color: rgba(232, 239, 251, 0.84);
-  font-size: 13px;
-}
-
-.hero-side {
-  min-height: 164px;
-  background: #dfe8f2;
-}
-
-.hero-dashboard {
-  padding: 16px;
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(14px);
-  color: #fff;
-}
-
-.hero-dashboard h3 {
-  margin: 0 0 14px;
-  font-size: 15px;
-}
-
-.hero-dashboard-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 12px;
-  align-items: center;
-  padding: 10px 0;
-  border-top: 1px solid rgba(223, 232, 247, 0.14);
-}
-
-.hero-dashboard-row span {
-  color: rgba(226, 236, 252, 0.72);
-  font-size: 12px;
-}
-
-.hero-dashboard-row strong {
-  color: #fff;
-  font-size: 15px;
-  font-variant-numeric: tabular-nums;
-}
-
-.hero-summary {
-  padding: 18px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(12px);
-  color: #fff;
-}
-
-.hero-summary h3 {
-  margin: 0 0 14px;
-  font-size: 15px;
-}
-
-.hero-summary-list {
-  display: grid;
-  gap: 10px;
-}
-
-.hero-summary-item {
-  padding: 10px 12px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.06);
-}
-
-.hero-summary-item span {
-  display: block;
-  font-size: 11px;
-  color: rgba(223, 232, 247, 0.76);
-}
-
-.hero-summary-item strong {
-  display: block;
-  margin-top: 2px;
-  font-size: 14px;
-  color: #fff;
+  display: none;
 }
 
 .section {
@@ -1180,39 +1083,83 @@ button {
 
 .portal-detail-page {
   display: none;
-  min-height: 100vh;
-  padding: 104px 20px 84px;
-  background: linear-gradient(180deg, #f4f8fc 0%, #ffffff 42%, #f8fbfd 100%);
+  position: fixed;
+  inset: 0;
+  z-index: 1300;
+  padding: 28px;
+  overflow: hidden;
 }
 
 .portal-detail-page.is-visible {
-  display: block;
+  display: grid;
+  place-items: center;
 }
 
-body.is-detail-open .footer {
-  display: none;
+body.is-detail-open {
+  overflow: hidden;
+}
+
+.portal-detail-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(7, 18, 32, 0.58);
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
+.portal-detail-page.is-visible .portal-detail-backdrop {
+  opacity: 1;
 }
 
 .portal-detail-shell {
-  width: min(100%, var(--maxw));
-  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  width: min(100%, 1080px);
+  max-height: min(86dvh, 860px);
+  overflow: auto;
   display: grid;
-  gap: 22px;
+  gap: 18px;
+  padding: 18px;
+  border: 1px solid rgba(217, 227, 238, 0.9);
+  border-radius: 8px;
+  background: linear-gradient(180deg, #f8fbfd 0%, #ffffff 100%);
+  box-shadow: 0 28px 90px rgba(5, 18, 34, 0.32);
+  transform: translateY(14px) scale(0.98);
+  opacity: 0;
+  transition: opacity 180ms ease, transform 180ms ease;
+  outline: none;
+}
+
+.portal-detail-page.is-visible .portal-detail-shell {
+  transform: translateY(0) scale(1);
+  opacity: 1;
 }
 
 .detail-return {
-  width: fit-content;
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  justify-self: end;
   min-height: 42px;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 0 14px;
+  padding: 0 16px;
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: 8px;
   background: #fff;
   color: var(--primary-strong);
   font-weight: 800;
   cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease;
+}
+
+.detail-return:hover,
+.detail-return:focus-visible {
+  border-color: rgba(34, 100, 216, 0.32);
+  background: rgba(34, 100, 216, 0.08);
 }
 
 .detail-hero {
@@ -1230,10 +1177,10 @@ body.is-detail-open .footer {
 
 .detail-hero-media {
   position: relative;
-  min-height: 320px;
+  min-height: 300px;
   display: grid;
   align-items: end;
-  padding: 38px;
+  padding: 32px;
   background: #0d1b2a;
   overflow: hidden;
 }
@@ -1244,14 +1191,14 @@ body.is-detail-open .footer {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.58;
+  opacity: 0.72;
 }
 
 .detail-hero-media::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, rgba(9, 20, 35, 0.9), rgba(9, 20, 35, 0.48));
+  background: linear-gradient(90deg, rgba(9, 20, 35, 0.88), rgba(9, 20, 35, 0.28));
 }
 
 .detail-hero-copy {
@@ -1275,7 +1222,7 @@ body.is-detail-open .footer {
 
 .detail-hero-copy h1 {
   margin: 16px 0 12px;
-  font-size: clamp(30px, 4vw, 48px);
+  font-size: clamp(28px, 3.4vw, 42px);
   line-height: 1.14;
 }
 
@@ -1555,14 +1502,11 @@ body.is-detail-open .footer {
   }
 
   .hero-stack {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto;
+    min-height: 420px;
   }
 
   .hero-main {
-    grid-column: 1 / -1;
-    grid-row: auto;
-    min-height: 380px;
+    min-height: 420px;
   }
 }
 
@@ -1605,6 +1549,15 @@ body.is-detail-open .footer {
     padding-top: 92px;
   }
 
+  .portal-detail-page {
+    padding: 18px;
+  }
+
+  .portal-detail-shell {
+    max-height: 90dvh;
+    padding: 14px;
+  }
+
   .grid-2,
   .grid-3,
   .grid-4,
@@ -1631,19 +1584,17 @@ body.is-detail-open .footer {
 
   .hero,
   .section,
-  .portal-detail-page,
   .footer {
     padding-left: 12px;
     padding-right: 12px;
   }
 
   .hero-stack {
-    grid-template-columns: 1fr;
+    min-height: 320px;
   }
 
-  .hero-main,
-  .hero-side {
-    min-height: 250px;
+  .hero-main {
+    min-height: 320px;
   }
 
   .hero-actions {
@@ -1678,7 +1629,11 @@ body.is-detail-open .footer {
   }
 
   .detail-hero-media {
-    min-height: 300px;
+    min-height: 260px;
+  }
+
+  .portal-detail-page {
+    padding: 12px;
   }
 }
 
@@ -1766,21 +1721,6 @@ body.is-detail-open .footer {
       <div class="hero-stack">
         <article class="hero-main reveal">
           <img src="./assets/portal/hero-lab.jpg" alt="工程细胞实验室与生物反应器场景">
-          <div class="hero-main-copy">
-            <strong data-portal-text="heroFeatureTitle">面向实际研发门户的高保真入口体验</strong>
-            <p data-portal-text="heroFeatureDescription">围绕工程细胞主题库的核心内容，统一呈现实验场景、数据能力和业务分析入口，兼顾展示质感与后续开发落地。</p>
-          </div>
-        </article>
-        <article class="hero-side reveal">
-          <img src="./assets/portal/genomics-lab.jpg" alt="基因测序与组学实验场景">
-        </article>
-        <article class="hero-dashboard reveal" aria-label="平台数据概览">
-          <h3 data-portal-text="heroDashboardTitle">平台运行概览</h3>
-          <div data-portal-hero-dashboard></div>
-        </article>
-        <article class="hero-summary reveal">
-          <h3 data-portal-text="heroSummaryTitle">门户聚焦</h3>
-          <div class="hero-summary-list" data-portal-hero-summary></div>
         </article>
       </div>
     </div>
@@ -1913,9 +1853,10 @@ body.is-detail-open .footer {
     </div>
   </section>
 
-  <section class="portal-detail-page" id="portalDetailPage" aria-live="polite" aria-label="门户内容详情页">
-    <div class="portal-detail-shell">
-      <button class="detail-return" type="button" data-detail-back>返回门户内容</button>
+  <section class="portal-detail-page" id="portalDetailPage" aria-hidden="true" aria-label="门户内容详情弹窗">
+    <div class="portal-detail-backdrop" data-detail-back></div>
+    <div class="portal-detail-shell" role="dialog" aria-modal="true" aria-labelledby="portalDetailTitle" tabindex="-1">
+      <button class="detail-return" type="button" data-detail-back aria-label="关闭详情弹窗">关闭</button>
       <div id="portalDetailContent"></div>
     </div>
   </section>
@@ -1979,11 +1920,15 @@ function renderPortalTitle(value) {
   return portalEscape(text).replace("主题库", "<span>主题库</span>");
 }
 
+function pexelsImage(photoId) {
+  return `https://images.pexels.com/photos/${photoId}/pexels-photo-${photoId}.jpeg?auto=compress&cs=tinysrgb&w=1600`;
+}
+
 const portalDetails = {
   "value-gpa": {
     category: "平台价值",
     title: "基因型-表型关联",
-    image: "./assets/portal/genomics-lab.jpg",
+    image: pexelsImage("3735707"),
     summary: "通过 GWAS 全基因组关联分析将测序数据、表型测量和菌株改造目标连接起来，帮助研发团队快速定位关键功能基因与关联位点。",
     metrics: [["数据基础", "40万+ 自有记录"], ["分析对象", "SNP / QTL / Trait"], ["应用目标", "高产菌株构建"]],
     tags: ["GWAS", "表型关联", "功能位点", "菌株改造"],
@@ -1995,7 +1940,7 @@ const portalDetails = {
   "value-omics": {
     category: "平台价值",
     title: "多组学整合",
-    image: "./assets/portal/bioprocess-analytics.png",
+    image: pexelsImage("8325916"),
     summary: "整合基因组、转录组、蛋白组和代谢组数据，构建可解释的代谢网络模型，支撑系统层面的功能基因筛选。",
     metrics: [["覆盖组学", "4类"], ["模型能力", "GSMM / FBA"], ["输出结果", "功能注释"]],
     tags: ["基因组", "转录组", "蛋白组", "代谢组"],
@@ -2007,7 +1952,7 @@ const portalDetails = {
   "value-fermentation": {
     category: "平台价值",
     title: "发酵过程优化",
-    image: "./assets/portal/process-lab.jpg",
+    image: pexelsImage("8325817"),
     summary: "基于全维度发酵过程数据，结合代谢网络和 ANN 预测模型，形成参数预测、工艺优化和放大验证闭环。",
     metrics: [["过程参数", "温度/pH/DO"], ["模型方法", "ANN"], ["优化目标", "得率提升"]],
     tags: ["发酵参数", "过程预测", "补料策略", "工艺放大"],
@@ -2019,7 +1964,7 @@ const portalDetails = {
   "value-nutrition": {
     category: "平台价值",
     title: "培养营养体系",
-    image: "./assets/portal/petri-dish.jpg",
+    image: pexelsImage("8325821"),
     summary: "沉淀培养基配方、营养组分、底盘菌生长曲线和产物响应数据，为培养条件设计提供经验基础。",
     metrics: [["配方数据", "30万+ 条"], ["核心对象", "碳源/氮源"], ["支撑方向", "培养基优化"]],
     tags: ["培养基", "营养配方", "生长曲线", "工艺适配"],
@@ -2031,7 +1976,7 @@ const portalDetails = {
   "value-efficiency": {
     category: "平台价值",
     title: "科研降本增效",
-    image: "./assets/portal/team-lab.jpg",
+    image: pexelsImage("8325984"),
     summary: "通过统一数据治理、质控和分析入口，减少重复实验、重复整理和跨团队沟通成本。",
     metrics: [["质控层级", "三级"], ["数据属性", "可追溯"], ["协作目标", "复用共享"]],
     tags: ["数据治理", "质控", "可追溯", "科研协同"],
@@ -2043,7 +1988,7 @@ const portalDetails = {
   "db-gpa": {
     category: "核心数据库",
     title: "基因型-表型关联数据集",
-    image: "./assets/portal/genomics-lab.jpg",
+    image: pexelsImage("3735720"),
     summary: "覆盖自有与公开基因型-表型关联数据，支撑高产、耐受性、生长速率等性状的关联位点挖掘。",
     metrics: [["数据规模", "≥50万条"], ["自有数据", "40万条"], ["公开数据", "10万条"]],
     tags: ["GWAS", "SNP", "QTL", "表型数据"],
@@ -2052,7 +1997,7 @@ const portalDetails = {
   "db-omics": {
     category: "核心数据库",
     title: "多组学数据集",
-    image: "./assets/portal/bioprocess-analytics.png",
+    image: pexelsImage("3825368"),
     summary: "整合基因组、转录组、蛋白组和代谢组数据，面向代谢网络建模和功能注释提供基础。",
     metrics: [["数据规模", "≥30万条"], ["自有数据", "16万条"], ["公开数据", "12万条"]],
     tags: ["多组学", "功能注释", "代谢网络", "GSMM"],
@@ -2061,7 +2006,7 @@ const portalDetails = {
   "db-process": {
     category: "核心数据库",
     title: "发酵过程数据集",
-    image: "./assets/portal/process-lab.jpg",
+    image: pexelsImage("9243559"),
     summary: "记录发酵全过程参数和批次结果，为过程监控、参数预测和工艺放大提供训练样本。",
     metrics: [["数据规模", "≥20万条"], ["自有数据", "8万条"], ["公开数据", "12万条"]],
     tags: ["发酵参数", "补料策略", "代谢物", "ANN优化"],
@@ -2070,7 +2015,7 @@ const portalDetails = {
   "db-nutrition": {
     category: "核心数据库",
     title: "培养营养数据集",
-    image: "./assets/portal/petri-dish.jpg",
+    image: pexelsImage("5940837"),
     summary: "围绕培养基配方、营养组分和菌株生长状态形成结构化数据资产。",
     metrics: [["数据规模", "≥30万条"], ["自有数据", "14万条"], ["公开数据", "16万条"]],
     tags: ["碳源", "氮源", "微量元素", "培养基"],
@@ -2079,7 +2024,7 @@ const portalDetails = {
   "dataviz-quality": {
     category: "数据总览",
     title: "三级质量控制体系",
-    image: "./assets/portal/team-lab.jpg",
+    image: pexelsImage("3825365"),
     summary: "围绕采集规范性、一致性校验和生物学合理性三层规则保障数据质量。",
     metrics: [["质控层级", "3级"], ["数据体量", "TB级"], ["年度新增", "300-500条"]],
     tags: ["采集规范", "一致性校验", "专家审核", "数据治理"],
@@ -2088,7 +2033,7 @@ const portalDetails = {
   "dataviz-distribution": {
     category: "数据总览",
     title: "四大数据库数据分布",
-    image: "./assets/portal/bioprocess-analytics.png",
+    image: pexelsImage("10514991"),
     summary: "以四大数据库为主线展示平台数据资产规模，便于快速理解主题库覆盖面。",
     metrics: [["总量级", "130万+"], ["数据库", "4类"], ["展示方式", "分布图"]],
     tags: ["数据资产", "分布统计", "核心库", "可视化"],
@@ -2097,7 +2042,7 @@ const portalDetails = {
   "scene-gpa": {
     category: "场景应用",
     title: "基因型-表型分析",
-    image: "",
+    image: pexelsImage("4031366"),
     summary: "从 GPA 数据出发进行 GWAS 分析，定位关键性状关联位点并输出候选靶点。",
     metrics: [["核心方法", "GWAS"], ["输入数据", "GPA"], ["输出结果", "候选位点"]],
     tags: ["GPA", "GWAS", "关联位点", "性状分析"],
@@ -2106,7 +2051,7 @@ const portalDetails = {
   "scene-omics": {
     category: "场景应用",
     title: "组学数据分析",
-    image: "",
+    image: pexelsImage("18689301"),
     summary: "整合多组学证据构建代谢网络模型，解释基因型到代谢表型的系统变化。",
     metrics: [["核心模型", "GSMM"], ["分析维度", "多组学"], ["输出结果", "功能基因"]],
     tags: ["GSMM", "代谢网络", "多组学", "功能筛选"],
@@ -2115,7 +2060,7 @@ const portalDetails = {
   "scene-process": {
     category: "场景应用",
     title: "发酵过程分析",
-    image: "",
+    image: pexelsImage("8443078"),
     summary: "基于发酵全过程数据训练参数预测模型，指导培养条件优化和中试放大。",
     metrics: [["核心方法", "ANN"], ["输入数据", "过程参数"], ["输出结果", "优化策略"]],
     tags: ["发酵过程", "ANN", "参数预测", "工艺放大"],
@@ -2124,7 +2069,7 @@ const portalDetails = {
   "scene-full": {
     category: "场景应用",
     title: "全流程数据分析",
-    image: "",
+    image: pexelsImage("8325845"),
     summary: "串联四大数据库与知识网络图谱，形成面向菌株设计的全流程分析工作台。",
     metrics: [["覆盖链路", "全流程"], ["核心资产", "知识图谱"], ["输出结果", "组合预测"]],
     tags: ["知识网络", "参数预测", "组合优化", "协同分析"],
@@ -2133,7 +2078,7 @@ const portalDetails = {
   "tool-physical": {
     category: "工具算法",
     title: "物理传感器",
-    image: "./assets/portal/process-lab.jpg",
+    image: pexelsImage("8539949"),
     summary: "实时监测发酵过程中的温度、pH、溶氧和搅拌转速等关键物理参数。",
     metrics: [["参数类型", "物理参数"], ["采集方式", "实时监测"], ["应用对象", "发酵批次"]],
     tags: ["温度", "pH", "溶氧", "搅拌转速"],
@@ -2142,7 +2087,7 @@ const portalDetails = {
   "tool-bio": {
     category: "工具算法",
     title: "生物传感器",
-    image: "./assets/portal/petri-dish.jpg",
+    image: pexelsImage("8325877"),
     summary: "监测生物量、代谢物浓度和酶活等指标，反馈工程细胞生理状态。",
     metrics: [["参数类型", "生物指标"], ["数据来源", "检测工具"], ["应用对象", "细胞状态"]],
     tags: ["生物量", "代谢物", "酶活", "细胞状态"],
@@ -2151,7 +2096,7 @@ const portalDetails = {
   "tool-gwas": {
     category: "工具算法",
     title: "GWAS 全基因组关联分析",
-    image: "./assets/portal/genomics-lab.jpg",
+    image: pexelsImage("8531343"),
     summary: "基于统计遗传学方法挖掘基因型与表型之间的显著关联。",
     metrics: [["算法类型", "关联分析"], ["输入", "基因型/表型"], ["输出", "显著位点"]],
     tags: ["GWAS", "统计遗传学", "SNP", "QTL"],
@@ -2160,7 +2105,7 @@ const portalDetails = {
   "tool-gsmm": {
     category: "工具算法",
     title: "基因组代谢网络模型",
-    image: "./assets/portal/bioprocess-analytics.png",
+    image: pexelsImage("8533087"),
     summary: "构建 GSMM 并开展通量分析，预测基因扰动对代谢路径的影响。",
     metrics: [["模型类型", "GSMM"], ["方法", "FBA"], ["输出", "通量预测"]],
     tags: ["GSMM", "FBA", "代谢通量", "模型预测"],
@@ -2169,7 +2114,7 @@ const portalDetails = {
   "tool-metabolic": {
     category: "工具算法",
     title: "代谢网络优化",
-    image: "./assets/portal/bioprocess-analytics.png",
+    image: pexelsImage("8942168"),
     summary: "围绕目标产物得率优化代谢通量分配，预测潜在工程改造策略。",
     metrics: [["目标", "得率提升"], ["对象", "代谢通路"], ["输出", "靶点组合"]],
     tags: ["通量优化", "代谢工程", "碳流分配", "靶点预测"],
@@ -2178,7 +2123,7 @@ const portalDetails = {
   "tool-ann": {
     category: "工具算法",
     title: "人工神经网络（ANN）",
-    image: "./assets/portal/process-lab.jpg",
+    image: pexelsImage("9629706"),
     summary: "基于历史发酵批次训练预测模型，推断更优过程参数组合。",
     metrics: [["模型", "ANN"], ["输入", "过程时序"], ["输出", "参数预测"]],
     tags: ["深度学习", "过程预测", "参数优化", "批次学习"],
@@ -2187,7 +2132,7 @@ const portalDetails = {
   "tool-knowledge": {
     category: "工具算法",
     title: "知识网络图谱",
-    image: "./assets/portal/team-lab.jpg",
+    image: pexelsImage("3735711"),
     summary: "对多源异构数据进行关联挖掘，构建基因、代谢、表型之间的知识图谱。",
     metrics: [["对象", "多源数据"], ["结构", "知识图谱"], ["输出", "关联路径"]],
     tags: ["知识图谱", "关联挖掘", "实体关系", "可解释分析"],
@@ -2196,7 +2141,7 @@ const portalDetails = {
   "tool-portal": {
     category: "工具算法",
     title: "信息管理系统",
-    image: "./assets/portal/team-lab.jpg",
+    image: pexelsImage("8325841"),
     summary: "提供统一的数据管理、检索、可视化分析和报告生成入口。",
     metrics: [["入口", "统一门户"], ["能力", "检索/分析"], ["输出", "报告沉淀"]],
     tags: ["数据管理", "检索", "可视化", "报告"],
@@ -2205,7 +2150,7 @@ const portalDetails = {
   "case-bgi": {
     category: "合作案例",
     title: "华大基因（BGI）合作案例",
-    image: "./assets/portal/genomics-lab.jpg",
+    image: pexelsImage("8325954"),
     summary: "联合开展工业底盘菌株高产关联基因靶点挖掘，共建基因型-表型关联数据集。",
     metrics: [["合作方向", "基因科技"], ["核心方法", "GWAS"], ["目标", "靶点挖掘"]],
     tags: ["华大基因", "工业底盘菌", "关联分析", "靶点挖掘"],
@@ -2214,7 +2159,7 @@ const portalDetails = {
   "case-01life": {
     category: "合作案例",
     title: "零一生命（01 LIFE）合作案例",
-    image: "./assets/portal/bioprocess-analytics.png",
+    image: pexelsImage("8851634"),
     summary: "依托多组学数据集与代谢网络模型开展微生物代谢通路优化和功能基因筛选。",
     metrics: [["合作方向", "生命科学"], ["核心方法", "多组学"], ["目标", "通路优化"]],
     tags: ["零一生命", "多组学", "代谢网络", "功能基因"],
@@ -2223,7 +2168,7 @@ const portalDetails = {
   "case-xbiome": {
     category: "合作案例",
     title: "未知君（XBIOME）合作案例",
-    image: "./assets/portal/process-lab.jpg",
+    image: pexelsImage("8325965"),
     summary: "利用发酵过程数据和 ANN 优化算法进行培养条件参数预测与发酵工艺放大。",
     metrics: [["合作方向", "微生物组"], ["核心方法", "ANN"], ["目标", "工艺放大"]],
     tags: ["未知君", "发酵过程", "参数预测", "中试放大"],
@@ -2232,7 +2177,7 @@ const portalDetails = {
   "case-sicau": {
     category: "合作案例",
     title: "四川农业大学合作案例",
-    image: "./assets/portal/petri-dish.jpg",
+    image: pexelsImage("3825379"),
     summary: "基于培养营养数据集与代谢网络模型开展农业微生物菌株的高效构建研究。",
     metrics: [["合作方向", "农业微生物"], ["核心数据", "培养营养"], ["目标", "菌株构建"]],
     tags: ["四川农业大学", "培养营养", "农业微生物", "菌株构建"],
@@ -2241,6 +2186,7 @@ const portalDetails = {
 };
 
 let portalHomeScrollY = 0;
+let portalLastFocus = null;
 
 function renderPortalDetail(key) {
   const detail = portalDetails[key];
@@ -2254,10 +2200,10 @@ function renderPortalDetail(key) {
   const heroMedia = detail.image
     ? `
       <div class="detail-hero-media">
-        <img src="${portalEscape(detail.image)}" alt="${portalEscape(detail.title)}详情图">
+        <img src="${portalEscape(detail.image)}" alt="${portalEscape(detail.title)}详情图" loading="lazy" decoding="async">
         <div class="detail-hero-copy">
           <span class="detail-kicker">${portalEscape(detail.category)}</span>
-          <h1>${portalEscape(detail.title)}</h1>
+          <h1 id="portalDetailTitle">${portalEscape(detail.title)}</h1>
           <p>${portalEscape(detail.summary)}</p>
         </div>
       </div>
@@ -2265,7 +2211,7 @@ function renderPortalDetail(key) {
     : `
       <div class="detail-hero-copy is-text-only">
         <span class="detail-kicker">${portalEscape(detail.category)}</span>
-        <h1>${portalEscape(detail.title)}</h1>
+        <h1 id="portalDetailTitle">${portalEscape(detail.title)}</h1>
         <p>${portalEscape(detail.summary)}</p>
       </div>
     `;
@@ -2298,25 +2244,37 @@ function openPortalDetail(key) {
   }
   if (!portalDetailPage.classList.contains("is-visible")) {
     portalHomeScrollY = window.scrollY;
+    portalLastFocus = document.activeElement;
   }
   portalDetailContent.innerHTML = renderPortalDetail(key);
-  document.querySelectorAll("main > section:not(#portalDetailPage)").forEach((section) => {
-    section.hidden = true;
-  });
   portalDetailPage.classList.add("is-visible");
+  portalDetailPage.setAttribute("aria-hidden", "false");
   document.body.classList.add("is-detail-open");
   navPanel.classList.remove("is-open");
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  const detailShell = portalDetailPage.querySelector(".portal-detail-shell");
+  if (detailShell) {
+    detailShell.scrollTop = 0;
+    detailShell.focus({ preventScroll: true });
+  }
 }
 
 function closePortalDetail() {
-  document.querySelectorAll("main > section:not(#portalDetailPage)").forEach((section) => {
-    section.hidden = false;
-  });
+  const shouldRestoreFocus = portalDetailPage?.classList.contains("is-visible");
   portalDetailPage?.classList.remove("is-visible");
+  portalDetailPage?.setAttribute("aria-hidden", "true");
   document.body.classList.remove("is-detail-open");
   portalDetailContent.innerHTML = "";
-  window.scrollTo({ top: portalHomeScrollY, behavior: "smooth" });
+  window.scrollTo({ top: portalHomeScrollY, behavior: "auto" });
+  if (shouldRestoreFocus && portalLastFocus && typeof portalLastFocus.focus === "function") {
+    portalLastFocus.focus({ preventScroll: true });
+  }
+}
+
+function getPortalDetailFocusable() {
+  if (!portalDetailPage?.classList.contains("is-visible")) return [];
+  return Array.from(
+    portalDetailPage.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')
+  ).filter((node) => !node.disabled && node.offsetParent !== null);
 }
 
 const portalConfigUtils = window.PortalConfigShared || {};
@@ -2447,7 +2405,7 @@ function renderPortalDatabaseGrid(root, items) {
   root.innerHTML = (items || [])
     .map((item) => {
       const detail = portalDetails[item.detailKey] || {};
-      const image = detail.image ? `<div class="db-media"><img src="${portalEscape(detail.image)}" alt="${portalEscape(item.title)}"></div>` : "";
+      const image = detail.image ? `<div class="db-media"><img src="${portalEscape(detail.image)}" alt="${portalEscape(item.title)}" loading="lazy" decoding="async"></div>` : "";
       return `
         <article class="card db-card reveal" data-detail="${portalEscape(item.detailKey)}" tabindex="0" role="button" aria-label="查看${portalEscape(item.title)}详情">
           ${image}
@@ -2667,7 +2625,7 @@ function renderPortalCaseGrid(root, items) {
   root.innerHTML = (items || [])
     .map((item) => {
       const detail = portalDetails[item.detailKey] || {};
-      const image = detail.image ? `<div class="case-media"><img src="${portalEscape(detail.image)}" alt="${portalEscape(item.title)}"></div>` : "";
+      const image = detail.image ? `<div class="case-media"><img src="${portalEscape(detail.image)}" alt="${portalEscape(item.title)}" loading="lazy" decoding="async"></div>` : "";
       return `
         <article class="card case-card reveal" data-detail="${portalEscape(item.detailKey)}" tabindex="0" role="button" aria-label="查看${portalEscape(item.title)}详情">
           ${image}
@@ -2771,12 +2729,7 @@ navToggle?.addEventListener("click", () => {
 navAnchors.forEach((anchor) => {
   anchor.addEventListener("click", () => {
     if (portalDetailPage?.classList.contains("is-visible")) {
-      document.querySelectorAll("main > section:not(#portalDetailPage)").forEach((section) => {
-        section.hidden = false;
-      });
-      portalDetailPage.classList.remove("is-visible");
-      document.body.classList.remove("is-detail-open");
-      portalDetailContent.innerHTML = "";
+      closePortalDetail();
     }
     navPanel.classList.remove("is-open");
   });
@@ -2804,6 +2757,21 @@ document.addEventListener("click", (event) => {
 });
 
 document.addEventListener("keydown", (event) => {
+  if (event.key === "Tab" && portalDetailPage?.classList.contains("is-visible")) {
+    const focusable = getPortalDetailFocusable();
+    if (focusable.length) {
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+  }
+
   const detailTrigger = event.target.closest?.("[data-detail]");
   if (detailTrigger && (event.key === "Enter" || event.key === " ")) {
     event.preventDefault();

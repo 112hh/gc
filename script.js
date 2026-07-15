@@ -4279,6 +4279,12 @@ const state = {
   authView: "login",
   activeMenu: "dashboard",
   dashboardRange: "week",
+  dashboardChartRanges: {
+    storage: "30d",
+    resource: "30d",
+    audit: "30d",
+    ranking: "30d"
+  },
   sensorView: {
     physical: "list",
     biological: "list"
@@ -5661,6 +5667,362 @@ function renderDashboardPage() {
           <div class="dashboard-panel-head">
             <h2>团队贡献排行 TOP 10</h2>
             <p class="dashboard-panel-note">按数据贡献与服务产出综合统计</p>
+          </div>
+          ${renderDashboardRanking()}
+        </article>
+      </section>
+    </div>
+  `;
+}
+
+const DASHBOARD_RANGE_OPTIONS = [
+  ["7d", "近7天"],
+  ["30d", "30天"],
+  ["90d", "90天"],
+  ["year", "年度"]
+];
+
+const dashboardTrendData = {
+  storage: {
+    "7d": [["D-6", 38, "blue"], ["D-5", 44, "blue"], ["D-4", 52, "green"], ["D-3", 49, "blue"], ["D-2", 61, "blue"], ["昨日", 67, "green"], ["今日", 72, "blue"]],
+    "30d": [["第1周", 46, "blue"], ["第2周", 58, "green"], ["第3周", 73, "blue"], ["第4周", 86, "blue"], ["本周", 79, "green"]],
+    "90d": [["W1", 42, "blue"], ["W2", 46, "blue"], ["W3", 50, "green"], ["W4", 54, "blue"], ["W5", 58, "blue"], ["W6", 64, "green"], ["W7", 61, "blue"], ["W8", 69, "blue"], ["W9", 74, "green"], ["W10", 78, "blue"], ["W11", 82, "blue"], ["W12", 86, "green"], ["W13", 91, "blue"]],
+    year: [["1月", 48, "blue"], ["2月", 58, "blue"], ["3月", 52, "blue"], ["4月", 72, "blue"], ["5月", 81, "blue"], ["6月", 68, "green"], ["7月", 88, "blue"], ["8月", 76, "blue"], ["9月", 91, "blue"], ["10月", 83, "green"], ["11月", 92, "blue"], ["12月", 91, "blue"]]
+  },
+  audit: {
+    "7d": [76, 80, 78, 83, 86, 88, 91],
+    "30d": [72, 75, 78, 76, 82, 84, 87, 89],
+    "90d": [68, 70, 73, 71, 76, 79, 81, 78, 84, 86, 88, 90, 92],
+    year: [72, 69, 75, 71, 82, 78, 85, 80, 88, 84, 91, 87]
+  },
+  auditLabels: {
+    "7d": ["D-6", "D-5", "D-4", "D-3", "D-2", "昨日", "今日"],
+    "30d": ["第1周", "第2周", "第3周", "第4周", "本周", "近5周", "近6周", "近7周"],
+    "90d": ["W1", "W2", "W3", "W4", "W5", "W6", "W7", "W8", "W9", "W10", "W11", "W12", "W13"],
+    year: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
+  },
+  resource: {
+    "7d": [42, 24, 18, 16],
+    "30d": [47, 23, 16, 14],
+    "90d": [44, 25, 17, 14],
+    year: [39, 27, 18, 16]
+  },
+  ranking: {
+    "7d": [
+      ["01", "李倩", "基因型-表型关联数据集", 286, 28, "blue"],
+      ["02", "王超", "发酵过程数据集", 242, 24, "green"],
+      ["03", "赵琳", "多组学数据集", 198, 19, "purple"],
+      ["04", "周宁", "培养营养数据集", 164, 16, "orange"],
+      ["05", "陈晨", "工程细胞服务数据集", 132, 13, "cyan"]
+    ],
+    "30d": [
+      ["01", "李倩", "基因型-表型关联数据集", 1420, 23, "blue"],
+      ["02", "赵琳", "多组学数据集", 1280, 21, "green"],
+      ["03", "王超", "发酵过程数据集", 1095, 18, "purple"],
+      ["04", "刘洋", "培养营养数据集", 950, 15, "orange"],
+      ["05", "张明", "工程细胞服务数据集", 840, 14, "cyan"],
+      ["06", "陈晨", "代谢网络模型数据集", 710, 11, "blue"],
+      ["07", "周宁", "过程控制策略数据集", 620, 10, "green"]
+    ],
+    "90d": [
+      ["01", "赵琳", "多组学数据集", 3920, 24, "green"],
+      ["02", "李倩", "基因型-表型关联数据集", 3680, 22, "blue"],
+      ["03", "王超", "发酵过程数据集", 3120, 19, "purple"],
+      ["04", "刘洋", "培养营养数据集", 2510, 15, "orange"],
+      ["05", "张明", "工程细胞服务数据集", 1980, 12, "cyan"],
+      ["06", "周宁", "过程控制策略数据集", 1820, 11, "green"],
+      ["07", "陈晨", "代谢网络模型数据集", 1640, 10, "blue"]
+    ],
+    year: [
+      ["01", "李倩", "基因型-表型关联数据集", 16820, 25, "blue"],
+      ["02", "赵琳", "多组学数据集", 14560, 22, "green"],
+      ["03", "王超", "发酵过程数据集", 12180, 18, "purple"],
+      ["04", "刘洋", "培养营养数据集", 10430, 16, "orange"],
+      ["05", "张明", "工程细胞服务数据集", 8640, 13, "cyan"],
+      ["06", "周宁", "过程控制策略数据集", 7120, 11, "green"],
+      ["07", "陈晨", "代谢网络模型数据集", 6210, 9, "blue"]
+    ]
+  }
+};
+
+function getDashboardChartRange(chartKey) {
+  return state.dashboardChartRanges?.[chartKey] || "30d";
+}
+
+function renderDashboardChartTabs(chartKey) {
+  const activeRange = getDashboardChartRange(chartKey);
+  return `
+    <div class="dashboard-chart-tabs" role="tablist" aria-label="图表时间范围">
+      ${DASHBOARD_RANGE_OPTIONS.map(
+        ([key, label]) => `
+          <button class="${activeRange === key ? "is-active" : ""}" type="button" role="tab" aria-selected="${activeRange === key}" data-dashboard-chart-range="${chartKey}|${key}">
+            ${label}
+          </button>
+        `
+      ).join("")}
+    </div>
+  `;
+}
+
+function renderDashboardStatCards(metrics) {
+  const storageCount = Math.round((metrics.totalRecords || 0) * 10000);
+  const cards = [
+    {
+      icon: "i-table",
+      tone: "blue",
+      value: formatWan(metrics.totalRecords),
+      label: "资源数据总量",
+      note: "覆盖主题库核心资源与服务记录"
+    },
+    {
+      icon: "i-check",
+      tone: "green",
+      value: `${metrics.standardRate}%`,
+      label: "数据审核通过率",
+      note: "按当前入库与审核结果自动汇总"
+    },
+    {
+      icon: "i-upload",
+      tone: "purple",
+      value: storageCount.toLocaleString("zh-CN"),
+      label: "入库数据数量",
+      note: "已完成入库的数据记录数量"
+    },
+    {
+      icon: "i-chart",
+      tone: "orange",
+      value: `${metrics.projects}`,
+      label: "分析项目数",
+      note: "覆盖全流程分析与模型任务运行总量"
+    }
+  ];
+
+  return cards
+    .map(
+      (item) => `
+        <article class="dashboard-kpi-card is-${item.tone}">
+          <span class="dashboard-kpi-icon">${icon(item.icon)}</span>
+          <div class="dashboard-kpi-main">
+            <div class="dashboard-kpi-label-row">
+              <span class="dashboard-kpi-label">${escapeHtml(item.label)}</span>
+            </div>
+            <div class="dashboard-kpi-value">
+              <strong>${escapeHtml(item.value)}</strong>
+            </div>
+            <p>${escapeHtml(item.note || item.label)}</p>
+          </div>
+        </article>
+      `
+    )
+    .join("");
+}
+
+function renderDashboardBars(range = getDashboardChartRange("storage")) {
+  const items = dashboardTrendData.storage[range] || dashboardTrendData.storage["30d"];
+  return `
+    <div class="dashboard-bars" aria-label="工程细胞数据入库趋势" style="grid-template-columns:repeat(${items.length}, minmax(24px, 1fr));">
+      ${items
+        .map(
+          ([label, value, tone]) => `
+            <div class="dashboard-bar-item">
+              <div class="dashboard-bar-track">
+                <span class="dashboard-bar is-${tone}" style="height:${value}%"></span>
+              </div>
+              <span>${escapeHtml(label)}</span>
+            </div>
+          `
+        )
+        .join("")}
+    </div>
+  `;
+}
+
+function renderDashboardDonut(metrics, range = getDashboardChartRange("resource")) {
+  const baseCategories = analysisPages.catalog.categories || [];
+  const shares = dashboardTrendData.resource[range] || dashboardTrendData.resource["30d"];
+  const colors = ["#2f8ff0", "#18a957", "#7b61ff", "#ff9f0a"];
+  const total = metrics.totalRecords || 1;
+  const categories = baseCategories.map((item, index) => ({
+    name: item.name.replace("数据集", ""),
+    value: Math.round(total * ((shares[index] || 0) / 100)),
+    color: colors[index] || "#14b8c8"
+  }));
+  const categoryTotal = categories.reduce((sum, item) => sum + item.value, 0) || 1;
+  let offset = 25;
+  const slices = categories
+    .map((item) => {
+      const share = (item.value / categoryTotal) * 100;
+      const circle = `<circle cx="70" cy="70" r="52" fill="none" stroke="${item.color}" stroke-width="18" stroke-linecap="round" stroke-dasharray="${share} ${100 - share}" stroke-dashoffset="${offset}" pathLength="100" />`;
+      offset -= share;
+      return circle;
+    })
+    .join("");
+
+  return `
+    <div class="dashboard-donut-layout">
+      <div class="dashboard-donut-visual">
+        <svg viewBox="0 0 140 140" role="img" aria-label="资源类型分布">
+          <circle cx="70" cy="70" r="52" fill="none" stroke="#e8edf4" stroke-width="18" />
+          ${slices}
+        </svg>
+        <div class="dashboard-donut-center">
+          <strong>${formatWan(metrics.totalRecords)}</strong>
+          <span>数据总量</span>
+        </div>
+      </div>
+      <div class="dashboard-legend">
+        ${categories
+          .map(
+            (item) => `
+              <div class="dashboard-legend-row">
+                <span class="dashboard-legend-dot" style="background:${item.color}"></span>
+                <strong>${escapeHtml(item.name)}</strong>
+                <em>${((item.value / categoryTotal) * 100).toFixed(1)}%</em>
+              </div>
+            `
+          )
+          .join("")}
+      </div>
+    </div>
+  `;
+}
+
+function renderDashboardLine(range = getDashboardChartRange("audit")) {
+  const points = dashboardTrendData.audit[range] || dashboardTrendData.audit["30d"];
+  const labels = dashboardTrendData.auditLabels[range] || dashboardTrendData.auditLabels["30d"];
+  const width = 560;
+  const height = 190;
+  const coords = points.map((value, index) => {
+    const x = 36 + (index * (width - 72)) / Math.max(points.length - 1, 1);
+    const y = 20 + ((100 - value) / 100) * (height - 40);
+    return [x, y, value];
+  });
+  const line = coords.map(([x, y]) => `${x},${y}`).join(" ");
+  const area = `36,${height - 18} ${line} ${width - 36},${height - 18}`;
+
+  return `
+    <div class="dashboard-line-wrap">
+      <svg class="dashboard-line-chart" viewBox="0 0 ${width} ${height}" role="img" aria-label="审核效率趋势">
+        <polygon points="${area}" fill="rgba(24,169,87,.12)"></polygon>
+        <polyline points="${line}" fill="none" stroke="#18a957" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></polyline>
+        ${coords
+          .map(([x, y]) => `<circle cx="${x}" cy="${y}" r="5" fill="#fff" stroke="#18a957" stroke-width="3"></circle>`)
+          .join("")}
+        ${[0, 25, 50, 75, 100]
+          .map((tick) => {
+            const y = 20 + ((100 - tick) / 100) * (height - 40);
+            return `<line x1="36" y1="${y}" x2="${width - 36}" y2="${y}" stroke="#e9eef5" stroke-dasharray="6 8"></line><text x="0" y="${y + 4}" fill="#8291a8" font-size="12">${tick}%</text>`;
+          })
+          .join("")}
+      </svg>
+      <div class="dashboard-line-axis" style="grid-template-columns:repeat(${labels.length}, minmax(0, 1fr));">
+        ${labels.map((item) => `<span>${escapeHtml(item)}</span>`).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function renderDashboardRanking(range = getDashboardChartRange("ranking")) {
+  const rows = dashboardTrendData.ranking[range] || dashboardTrendData.ranking["30d"];
+  return `
+    <div class="dashboard-ranking-table" role="table" aria-label="用户贡献排行TOP10">
+      <div class="dashboard-rank-head" role="row">
+        <span role="columnheader">序号</span>
+        <span role="columnheader">用户名称</span>
+        <span role="columnheader">数据库/数据集名称</span>
+        <span role="columnheader">贡献上传的数据数量</span>
+        <span role="columnheader">占比</span>
+      </div>
+      ${rows
+        .map(
+          ([rank, userName, datasetName, count, rate, tone]) => `
+            <div class="dashboard-rank-row" role="row">
+              <span class="dashboard-rank-num" role="cell">${rank}</span>
+              <strong role="cell">${escapeHtml(userName)}</strong>
+              <div class="dashboard-rank-bar" role="cell">
+                <span class="is-${tone}" style="width:${rate}%">${escapeHtml(datasetName)}</span>
+              </div>
+              <em role="cell">${Number(count).toLocaleString("zh-CN")}</em>
+              <b role="cell">${rate}%</b>
+            </div>
+          `
+        )
+        .join("")}
+    </div>
+  `;
+}
+
+function renderDashboardPage() {
+  const metrics = getDashboardMetrics();
+
+  return `
+    <div class="dashboard-page">
+      <section class="dashboard-hero">
+        <div class="dashboard-hero-copy">
+          <div class="dashboard-eyebrow">
+            <span>数据统计</span><span>/</span><strong>工程细胞主题库数据应用</strong>
+          </div>
+          <div class="dashboard-title-row">
+            <h1>数据看板</h1>
+            <span class="dashboard-role-badge">管理员与审核员</span>
+          </div>
+          <p>工程细胞主题库运营数据总览，实时监控数据入库、数据审核、服务应用与分析项目效率。</p>
+        </div>
+        <div class="dashboard-hero-actions">
+          <button class="dashboard-export" type="button" data-dashboard-export>${icon("i-download")}导出报表</button>
+        </div>
+      </section>
+
+      <section class="dashboard-kpi-grid">
+        ${renderDashboardStatCards(metrics)}
+      </section>
+
+      <section class="dashboard-grid">
+        <article class="dashboard-panel">
+          <div class="dashboard-panel-head">
+            <div class="dashboard-panel-title-row">
+              <div>
+                <h2>工程细胞数据入库趋势</h2>
+                <p class="dashboard-panel-note">跟踪主题库数据入库规模与波动趋势</p>
+              </div>
+              ${renderDashboardChartTabs("storage")}
+            </div>
+          </div>
+          ${renderDashboardBars()}
+        </article>
+        <article class="dashboard-panel">
+          <div class="dashboard-panel-head">
+            <div class="dashboard-panel-title-row">
+              <div>
+                <h2>资源类型分布</h2>
+                <p class="dashboard-panel-note">展示当前主题库资源结构与占比</p>
+              </div>
+              ${renderDashboardChartTabs("resource")}
+            </div>
+          </div>
+          ${renderDashboardDonut(metrics)}
+        </article>
+        <article class="dashboard-panel">
+          <div class="dashboard-panel-head">
+            <div class="dashboard-panel-title-row">
+              <div>
+                <h2>审核效率趋势</h2>
+                <p class="dashboard-panel-note">聚焦审核吞吐与阶段性处理效率变化</p>
+              </div>
+              ${renderDashboardChartTabs("audit")}
+            </div>
+          </div>
+          ${renderDashboardLine()}
+        </article>
+        <article class="dashboard-panel">
+          <div class="dashboard-panel-head">
+            <div class="dashboard-panel-title-row">
+              <div>
+                <h2>用户贡献排行 TOP 10</h2>
+                <p class="dashboard-panel-note">按用户上传贡献的数据数量统计</p>
+              </div>
+              ${renderDashboardChartTabs("ranking")}
+            </div>
           </div>
           ${renderDashboardRanking()}
         </article>
@@ -11947,6 +12309,36 @@ document.addEventListener("click", async (event) => {
     state.modal = null;
     state.sidebarOpen = false;
     renderApp();
+    return;
+  }
+
+  const dashboardChartRangeButton = event.target.closest("[data-dashboard-chart-range]");
+  if (dashboardChartRangeButton) {
+    const [chartKey, range] = dashboardChartRangeButton.dataset.dashboardChartRange.split("|");
+    state.dashboardChartRanges = {
+      ...(state.dashboardChartRanges || {}),
+      [chartKey]: range
+    };
+    renderApp();
+    return;
+  }
+
+  const dashboardExportNowButton = event.target.closest("[data-dashboard-export]");
+  if (dashboardExportNowButton) {
+    const metrics = getDashboardMetrics();
+    const storageCount = Math.round((metrics.totalRecords || 0) * 10000);
+    const rows = [
+      ["指标", "数值"],
+      ["资源数据总量", formatWan(metrics.totalRecords)],
+      ["数据审核通过率", `${metrics.standardRate}%`],
+      ["入库数据数量", storageCount],
+      ["分析项目数", metrics.projects],
+      ["传感器记录数", metrics.sensorRecords],
+      ["工程细胞服务条目", metrics.serviceTotal]
+    ];
+    downloadCsvFile("工程细胞主题库数据看板.csv", rows);
+    appendOperationLog("dashboard", "导出数据看板报表");
+    showToast("数据看板报表已导出");
     return;
   }
 
