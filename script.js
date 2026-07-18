@@ -58,7 +58,8 @@ const sensorModules = {
     importVariant: "simple",
     batches: [
       {
-        id: "FB2024010101001",
+        id: "CHO-K1-202401140800-高浓度",
+        cellName: "CHO-K1",
         badge: "高浓度",
         badgeClass: "badge-high",
         statusText: "运行中",
@@ -140,7 +141,8 @@ const sensorModules = {
         ]
       },
       {
-        id: "FB2024010201001",
+        id: "HEK293-202401160730-低浓度",
+        cellName: "HEK293",
         badge: "低浓度",
         badgeClass: "badge-low",
         statusText: "预警",
@@ -174,7 +176,8 @@ const sensorModules = {
         ]
       },
       {
-        id: "FB2024010301001",
+        id: "BHK21-202401170620-中浓度",
+        cellName: "BHK21",
         badge: "中浓度",
         badgeClass: "badge-mid",
         statusText: "运行中",
@@ -208,9 +211,10 @@ const sensorModules = {
         ]
       },
       {
-        id: "FB2024010401001",
-        badge: "其他",
-        badgeClass: "badge-other",
+        id: "CHO-S-202401180810-高浓度",
+        cellName: "CHO-S",
+        badge: "高浓度",
+        badgeClass: "badge-high",
         statusText: "异常",
         tone: "error",
         period: "2024-01-18 08:10 ~ 2024-01-18 22:10",
@@ -243,7 +247,7 @@ const sensorModules = {
       }
     ],
     basicFields: [
-      { label: "批次号", type: "select", value: "FB2024010101001(高浓度)" },
+      { label: "批次号", type: "select", value: "", placeholder: "请选择批次号" },
       { label: "录入时间", type: "datetime", value: "2026/04/10 14:46" },
       { label: "录入人员", type: "text", placeholder: "输入录入人员姓名" },
       { label: "开始发酵时间", type: "date", placeholder: "yyyy/mm/日 --:--" },
@@ -734,8 +738,8 @@ const analysisPages = {
   },
   gene: {
     key: "gene",
-    title: "基因型-表型分析",
-    breadcrumb: ["首页", "数据管理", "基因型-表型分析"],
+    title: "基因型-表型数据分析",
+    breadcrumb: ["首页", "数据分析", "基因型-表型数据分析"],
     primaryButton: "新增分析项目",
     headerTools: true,
     filters: [
@@ -916,8 +920,8 @@ const analysisPages = {
   },
   process: {
     key: "process",
-    title: "发酵过程分析",
-    breadcrumb: ["首页", "数据管理", "发酵过程分析"],
+    title: "发酵过程数据分析",
+    breadcrumb: ["首页", "数据分析", "发酵过程数据分析"],
     primaryButton: "新建发酵过程分析项目",
     headerTools: true,
     filters: [
@@ -2242,8 +2246,8 @@ const geneProjectLibrary = {
 };
 
 Object.assign(analysisPages.gene, {
-  title: "基因型-表型分析",
-  breadcrumb: ["首页", "数据管理", "基因型-表型分析"],
+  title: "基因型-表型数据分析",
+  breadcrumb: ["首页", "数据分析", "基因型-表型数据分析"],
   primaryButton: "新增分析项目",
   headerTools: true,
   stats: [
@@ -2323,6 +2327,218 @@ Object.assign(analysisPages.gene, {
   ],
   footer: "共 3 条记录，每页 10 条"
 });
+
+const gpaTabs = [
+  { key: "search", label: "GPA检索" },
+  { key: "path", label: "调控路径挖掘" },
+  { key: "dataset", label: "数据集生成" },
+  { key: "analysis", label: "统计/AI分析" },
+  { key: "model", label: "模型训练" },
+  { key: "design", label: "设计方案生成" },
+  { key: "dbtl", label: "DBTL验证" }
+];
+
+const gpaQuickTags = [
+  { label: "番茄红素-产率", compound: "番茄红素", phenotype: "产率", chassis: "酵母" },
+  { label: "苯砜-耐受", compound: "苯砜", phenotype: "耐受", chassis: "酵母" },
+  { label: "温度耐受", compound: "", phenotype: "温度耐受", chassis: "" },
+  { label: "盐浓度耐受", compound: "", phenotype: "盐浓度耐受", chassis: "" }
+];
+
+const gpaPhenotypeOptions = ["产率", "耐受", "温度耐受", "盐浓度耐受", "生长速率", "产物活性", "细胞稳定性", "特殊性状"];
+
+const gpaSearchRecords = [
+  {
+    id: "gpa-genea",
+    gene: "GeneA",
+    perturbation: "过表达",
+    strength: "0.92",
+    source: "公开数据+实验",
+    compound: "苯砜",
+    phenotype: "耐受",
+    chassis: "酵母",
+    desc: "在苯砜耐受条件下与目标表型强相关，适合进入调控网络验证。",
+    relations: ["GeneA 激活 GeneB", "GeneA 抑制 GeneC", "GeneD 激活 GeneA"]
+  },
+  {
+    id: "gpa-geneb",
+    gene: "GeneB",
+    perturbation: "敲除",
+    strength: "0.87",
+    source: "公开数据",
+    compound: "苯砜",
+    phenotype: "耐受",
+    chassis: "酵母",
+    desc: "敲除后目标表型提升，需结合隐藏关闭路径判断对生长的影响。",
+    relations: ["GeneB 抑制 GeneC", "GeneF 激活 GeneB"]
+  },
+  {
+    id: "gpa-genec",
+    gene: "GeneC",
+    perturbation: "点突变",
+    strength: "0.85",
+    source: "实验",
+    compound: "苯砜",
+    phenotype: "耐受",
+    chassis: "酵母",
+    desc: "突变位点对耐受表型贡献较高，建议作为模型特征保留。",
+    relations: ["GeneC 关闭 GeneE"]
+  },
+  {
+    id: "gpa-gened",
+    gene: "GeneD",
+    perturbation: "启动子替换",
+    strength: "0.81",
+    source: "公开数据",
+    compound: "苯砜",
+    phenotype: "耐受",
+    chassis: "酵母",
+    desc: "调控表达水平改变后可间接激活 GeneA。",
+    relations: ["GeneD 激活 GeneA"]
+  },
+  {
+    id: "gpa-crte",
+    gene: "CrtE",
+    perturbation: "过表达",
+    strength: "0.90",
+    source: "实验",
+    compound: "番茄红素",
+    phenotype: "产率",
+    chassis: "酵母",
+    desc: "番茄红素产率提升的主要候选基因，适合生成设计方案。",
+    relations: ["CrtE 激活 CrtB", "ERG9 抑制 CrtE"]
+  },
+  {
+    id: "gpa-genee",
+    gene: "GeneE",
+    perturbation: "过表达",
+    strength: "0.79",
+    source: "公开数据",
+    compound: "苯砜",
+    phenotype: "耐受",
+    chassis: "酵母",
+    desc: "与隐藏关闭路径相关的候选基因，可作为负向对照。",
+    relations: ["GeneC 关闭 GeneE"]
+  },
+  {
+    id: "gpa-genef",
+    gene: "GeneF",
+    perturbation: "启动子替换",
+    strength: "0.84",
+    source: "实验",
+    compound: "苯砜",
+    phenotype: "耐受",
+    chassis: "酵母",
+    desc: "GeneF 对 GeneA 的调控在目标条件下被激活，适合进入路径分析。",
+    relations: ["GeneF 激活 GeneA", "GeneF 激活 GeneB"]
+  },
+  {
+    id: "gpa-hsp30",
+    gene: "HSP30",
+    perturbation: "过表达",
+    strength: "0.88",
+    source: "公开数据",
+    compound: "",
+    phenotype: "温度耐受",
+    chassis: "酵母",
+    desc: "温度耐受快捷入口对应的典型热休克基因。",
+    relations: ["HSP30 维持温度稳态"]
+  },
+  {
+    id: "gpa-hog1",
+    gene: "HOG1",
+    perturbation: "敲除",
+    strength: "0.83",
+    source: "实验",
+    compound: "",
+    phenotype: "盐浓度耐受",
+    chassis: "酵母",
+    desc: "盐浓度耐受快捷入口对应的渗透压应答基因。",
+    relations: ["HOG1 响应高盐环境"]
+  }
+];
+
+const gpaInitialPaths = [
+  {
+    id: "path-native-ab",
+    type: "固有路径",
+    path: "GeneA → GeneB",
+    relation: "激活",
+    source: "公开数据库",
+    status: "待确认",
+    desc: "细胞正常生理状态下已存在的调控关系。",
+    evidence: "文献与公开GPA数据库均命中"
+  },
+  {
+    id: "path-native-bc",
+    type: "固有路径",
+    path: "GeneB → GeneC",
+    relation: "抑制",
+    source: "公开数据库",
+    status: "待确认",
+    desc: "原有抑制关系会影响目标组合的生长速率。",
+    evidence: "基线条件下关系稳定"
+  },
+  {
+    id: "path-hidden-fa",
+    type: "隐藏激活路径",
+    path: "GeneF → GeneA",
+    relation: "新激活",
+    source: "GPA差异分析",
+    status: "重点关注",
+    desc: "目标表型条件下，原本不活跃的 GeneF 到 GeneA 调控被激活。",
+    evidence: "目标条件对比基线显著增强"
+  },
+  {
+    id: "path-hidden-ce",
+    type: "隐藏关闭路径",
+    path: "GeneC → GeneE",
+    relation: "被关闭",
+    source: "GPA差异分析",
+    status: "待确认",
+    desc: "目标表型条件下，原有调控关系失活，可作为排除或弱化方向。",
+    evidence: "目标条件对比基线显著降低"
+  }
+];
+
+const gpaInitialDatasets = [
+  { id: "ds-benzenesulfone", name: "苯砜耐受GPA", source: "检索生成", records: 1240, features: 15, status: "就绪", time: "01-16", locked: true, note: "由 GPA 检索结果生成" },
+  { id: "ds-lycopene", name: "酵母番茄红素GPA", source: "实验导入", records: 3500, features: 22, status: "就绪", time: "01-15", locked: false, note: "实验累积数据" },
+  { id: "ds-temperature", name: "温度耐受公开数据", source: "公开数据", records: 8200, features: 18, status: "处理中", time: "01-14", locked: true, note: "公开数据同步任务" },
+  { id: "ds-salt", name: "盐浓度耐受", source: "检索生成", records: 560, features: 12, status: "异常", time: "01-13", locked: false, note: "需补齐缺失特征" }
+];
+
+const gpaInitialModels = [
+  { id: "model-benzenesulfone", name: "苯砜耐受预测模型", algorithm: "随机森林", datasetId: "ds-benzenesulfone", dataset: "苯砜耐受GPA", accuracy: "0.89", r2: "0.88", rmse: "0.28", status: "已完成", version: "v1.0", locked: true },
+  { id: "model-lycopene", name: "番茄红素产率模型", algorithm: "XGBoost", datasetId: "ds-lycopene", dataset: "酵母番茄红素GPA", accuracy: "0.92", r2: "0.91", rmse: "0.23", status: "已完成", version: "v1.0", locked: false },
+  { id: "model-temperature", name: "温度耐受模型", algorithm: "SVM", datasetId: "ds-temperature", dataset: "温度耐受公开数据", accuracy: "--", r2: "--", rmse: "--", status: "训练中", version: "v0.9", locked: true }
+];
+
+const gpaInitialDesigns = [
+  {
+    id: "design-001",
+    name: "苯砜耐受最优基因型组合-001",
+    target: "苯砜耐受",
+    modelId: "model-benzenesulfone",
+    datasetId: "ds-benzenesulfone",
+    modelName: "苯砜耐受预测模型",
+    round: 1,
+    status: "迭代中",
+    createdAt: "2024-01-16 15:00",
+    genes: [
+      { gene: "GeneA", perturbation: "过表达", lift: "+23.5%" },
+      { gene: "GeneB", perturbation: "敲除", lift: "+18.2%" },
+      { gene: "GeneC", perturbation: "点突变", lift: "+12.8%" },
+      { gene: "GeneD", perturbation: "启动子替换", lift: "+9.1%" }
+    ],
+    dbtl: [
+      { round: "第1轮", stage: "Design", status: "完成", result: "生成方案" },
+      { round: "第1轮", stage: "Build", status: "完成", result: "菌株构建" },
+      { round: "第1轮", stage: "Test", status: "待录入", result: "等待表型值" },
+      { round: "第1轮", stage: "Learn", status: "待执行", result: "等待模型更新" }
+    ]
+  }
+];
 
 const defaultGeneVisuals = {
   points: [
@@ -3886,10 +4102,10 @@ const rolePermissionNodes = [
   {
     group: "数据分析",
     items: [
-      { code: "analysis:gpa:manage", label: "基因型-表型分析" },
+      { code: "analysis:gpa:manage", label: "基因型-表型数据分析" },
       { code: "analysis:omics:manage", label: "组学数据分析" },
-      { code: "analysis:process:manage", label: "发酵过程分析" },
-      { code: "analysis:full:manage", label: "全流程分析" }
+      { code: "analysis:process:manage", label: "发酵过程数据分析" },
+      { code: "analysis:full:manage", label: "全流程数据分析" }
     ]
   },
   {
@@ -4175,11 +4391,11 @@ function normalizeBatchCellName(value = "") {
     .replace(/[^\u4e00-\u9fa5A-Za-z0-9_-]/g, "");
 }
 
-function generateSensorBatchId(cellName = "", date = new Date()) {
+function generateSensorBatchId(cellName = "", date = new Date(), concentration = "中浓度") {
   const normalizedName = normalizeBatchCellName(cellName) || "CELL";
   const pad = (value) => String(value).padStart(2, "0");
   const timestamp = `${date.getFullYear()}${pad(date.getMonth() + 1)}${pad(date.getDate())}${pad(date.getHours())}${pad(date.getMinutes())}`;
-  return `${normalizedName}-${timestamp}`;
+  return `${normalizedName}-${timestamp}-${concentration || "中浓度"}`;
 }
 
 function getSensorBatch(moduleKey, batchId) {
@@ -4188,8 +4404,8 @@ function getSensorBatch(moduleKey, batchId) {
 
 function buildSensorBatchPayload(values = {}, current = null) {
   const cellName = String(values.cellName || "").trim();
-  const id = String(values.batchId || "").trim() || generateSensorBatchId(cellName);
   const concentration = String(values.concentration || current?.badge || "中浓度").trim();
+  const id = String(values.batchId || "").trim() || generateSensorBatchId(cellName, new Date(), concentration);
   const meta = sensorBatchConcentrationMeta(concentration);
   return {
     ...current,
@@ -4330,6 +4546,33 @@ const state = {
     fileName: "",
     fileSize: 0
   },
+  gpa: {
+    tab: "search",
+    compound: "苯砜",
+    phenotype: "耐受",
+    chassis: "酵母",
+    pathType: "",
+    pathSource: "",
+    pathLayout: "力导向",
+    selectedGene: "gpa-genea",
+    selectedPath: "path-hidden-fa",
+    selectedDataset: "ds-benzenesulfone",
+    selectedModel: "model-benzenesulfone",
+    selectedDesign: "design-001",
+    pathContext: "苯砜 + 耐受",
+    statTab: "pca",
+    statRunning: false,
+    statDone: false,
+    aiStep: 1,
+    aiTraining: false,
+    aiTrained: false,
+    importFileName: "",
+    importFileSize: 0
+  },
+  gpaPaths: gpaInitialPaths.map((item) => ({ ...item })),
+  gpaDatasets: gpaInitialDatasets.map((item) => ({ ...item })),
+  gpaModels: gpaInitialModels.map((item) => ({ ...item })),
+  gpaDesigns: gpaInitialDesigns.map((item) => ({ ...item, genes: item.genes.map((gene) => ({ ...gene })), dbtl: item.dbtl.map((stage) => ({ ...stage })) })),
   openNavGroup: "",
   modal: null,
   sidebarOpen: false,
@@ -4741,6 +4984,9 @@ const mobileMenuButton = document.querySelector("#mobileMenuButton");
 const sidebarBackdrop = document.querySelector("#sidebarBackdrop");
 const mobileViewTitle = document.querySelector("#mobileViewTitle");
 let toastTimer = null;
+let gpaStatTimer = null;
+let gpaAiTimer = null;
+let gpaTrainTimer = null;
 
 function icon(name) {
   return `
@@ -4789,12 +5035,16 @@ function isCapabilityMenu(menuKey = state.activeMenu) {
   return ["system-apis", "system-algorithms", "system-datasets"].includes(menuKey);
 }
 
+function isAnalysisMenu(menuKey = state.activeMenu) {
+  return ["gene", "omics", "process", "full", "service"].includes(menuKey);
+}
+
 function getMenuGroupForMenu(menuKey = state.activeMenu) {
   if (isSensorMenu(menuKey)) {
     return "monitor";
   }
-  if (isCapabilityMenu(menuKey)) {
-    return "";
+  if (isAnalysisMenu(menuKey)) {
+    return "analysis";
   }
   if (isSystemMenu(menuKey)) {
     return "system";
@@ -4842,6 +5092,8 @@ function renderSidebar() {
 
   const monitorActive = ["physical", "biological"].includes(state.activeMenu);
   const monitorOpen = state.openNavGroup === "monitor";
+  const analysisActive = isAnalysisMenu();
+  const analysisOpen = state.openNavGroup === "analysis";
 
   sidebarRoot.innerHTML = `
     <div class="sidebar-brand">
@@ -4863,52 +5115,61 @@ function renderSidebar() {
       </section>
 
       <section class="nav-section">
-        <p class="nav-title">数据管理</p>
+        <p class="nav-title">发酵过程工具</p>
         <button class="nav-group-head ${monitorActive || monitorOpen ? "is-active" : ""}" type="button" data-menu-group="monitor">
           <span class="group-label">
             <span class="nav-icon">${icon("i-clock")}</span>
-            <span>发酵过程数据监测工具</span>
+            <span>发酵过程数据检测工具</span>
           </span>
           <span class="menu-arrow ${monitorOpen ? "is-open" : ""}">${icon("i-chevron")}</span>
         </button>
         <div class="nav-submenu ${monitorOpen ? "is-open" : ""}">
           <button class="nav-sub-link ${state.activeMenu === "physical" ? "is-active" : ""}" type="button" data-menu="physical">
             <span class="submenu-dot"></span>
-            <span>物理传感器</span>
+            <span>发酵过程数据检测物理传感器工具</span>
           </button>
           <button class="nav-sub-link ${state.activeMenu === "biological" ? "is-active" : ""}" type="button" data-menu="biological">
             <span class="submenu-dot"></span>
-            <span>生物传感器</span>
+            <span>发酵过程数据检测生物传感器工具</span>
           </button>
         </div>
-        <button class="nav-link ${state.activeMenu === "gene" ? "is-active" : ""}" type="button" data-menu="gene">
-          <span class="nav-icon">${icon("i-bars")}</span>
-          <span>基因型-表型分析</span>
-        </button>
-        <button class="nav-link ${state.activeMenu === "omics" ? "is-active" : ""}" type="button" data-menu="omics">
-          <span class="nav-icon">${icon("i-doc")}</span>
-          <span>组学数据分析</span>
-        </button>
-        <button class="nav-link ${state.activeMenu === "process" ? "is-active" : ""}" type="button" data-menu="process">
-          <span class="nav-icon">${icon("i-chart")}</span>
-          <span>发酵过程分析</span>
-        </button>
-        <button class="nav-link ${state.activeMenu === "full" ? "is-active" : ""}" type="button" data-menu="full">
-          <span class="nav-icon">${icon("i-table")}</span>
-          <span>全流程数据分析</span>
-        </button>
       </section>
 
       <section class="nav-section">
-        <p class="nav-title">服务管理</p>
-        <button class="nav-link ${state.activeMenu === "service" ? "is-active" : ""}" type="button" data-menu="service">
-          <span class="nav-icon">${icon("i-heart")}</span>
-          <span>工程细胞服务</span>
+        <p class="nav-title">数据分析</p>
+        <button class="nav-group-head ${analysisActive || analysisOpen ? "is-active" : ""}" type="button" data-menu-group="analysis">
+          <span class="group-label">
+            <span class="nav-icon">${icon("i-chip")}</span>
+            <span>工程细胞数据应用平台</span>
+          </span>
+          <span class="menu-arrow ${analysisOpen ? "is-open" : ""}">${icon("i-chevron")}</span>
         </button>
+        <div class="nav-submenu ${analysisOpen ? "is-open" : ""}">
+          <button class="nav-sub-link ${state.activeMenu === "gene" ? "is-active" : ""}" type="button" data-menu="gene">
+            <span class="submenu-dot"></span>
+            <span>基因型-表型数据分析</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "omics" ? "is-active" : ""}" type="button" data-menu="omics">
+            <span class="submenu-dot"></span>
+            <span>组学数据分析</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "process" ? "is-active" : ""}" type="button" data-menu="process">
+            <span class="submenu-dot"></span>
+            <span>发酵过程数据分析</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "full" ? "is-active" : ""}" type="button" data-menu="full">
+            <span class="submenu-dot"></span>
+            <span>全流程数据分析</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "service" ? "is-active" : ""}" type="button" data-menu="service">
+            <span class="submenu-dot"></span>
+            <span>工程细胞服务</span>
+          </button>
+        </div>
       </section>
     </div>
 
-    <div class="sidebar-footer">© 2025 工程细胞研究中心. 保留所有权利.</div>
+    <div class="sidebar-footer">© 2026 工程细胞研究中心. 保留所有权利.</div>
   `;
 }
 
@@ -4920,7 +5181,9 @@ function renderSidebar() {
 
   const monitorActive = ["physical", "biological"].includes(state.activeMenu);
   const monitorOpen = state.openNavGroup === "monitor";
-  const systemActive = isSystemMenu(state.activeMenu) && !isCapabilityMenu(state.activeMenu);
+  const analysisActive = isAnalysisMenu();
+  const analysisOpen = state.openNavGroup === "analysis";
+  const systemActive = isSystemMenu(state.activeMenu);
   const systemOpen = state.openNavGroup === "system";
 
   sidebarRoot.innerHTML = `
@@ -4943,64 +5206,57 @@ function renderSidebar() {
       </section>
 
       <section class="nav-section">
-        <p class="nav-title">数据管理</p>
+        <p class="nav-title">发酵过程工具</p>
         <button class="nav-group-head ${monitorActive || monitorOpen ? "is-active" : ""}" type="button" data-menu-group="monitor">
           <span class="group-label">
             <span class="nav-icon">${icon("i-clock")}</span>
-            <span>发酵过程数据监测工具</span>
+            <span>发酵过程数据检测工具</span>
           </span>
           <span class="menu-arrow ${monitorOpen ? "is-open" : ""}">${icon("i-chevron")}</span>
         </button>
         <div class="nav-submenu ${monitorOpen ? "is-open" : ""}">
           <button class="nav-sub-link ${state.activeMenu === "physical" ? "is-active" : ""}" type="button" data-menu="physical">
             <span class="submenu-dot"></span>
-            <span>物理传感器</span>
+            <span>发酵过程数据检测物理传感器工具</span>
           </button>
           <button class="nav-sub-link ${state.activeMenu === "biological" ? "is-active" : ""}" type="button" data-menu="biological">
             <span class="submenu-dot"></span>
-            <span>生物传感器</span>
+            <span>发酵过程数据检测生物传感器工具</span>
           </button>
         </div>
-        <button class="nav-link ${state.activeMenu === "gene" ? "is-active" : ""}" type="button" data-menu="gene">
-          <span class="nav-icon">${icon("i-bars")}</span>
-          <span>基因型-表型分析</span>
-        </button>
-        <button class="nav-link ${state.activeMenu === "omics" ? "is-active" : ""}" type="button" data-menu="omics">
-          <span class="nav-icon">${icon("i-doc")}</span>
-          <span>组学数据分析</span>
-        </button>
-        <button class="nav-link ${state.activeMenu === "process" ? "is-active" : ""}" type="button" data-menu="process">
-          <span class="nav-icon">${icon("i-chart")}</span>
-          <span>发酵过程分析</span>
-        </button>
-        <button class="nav-link ${state.activeMenu === "full" ? "is-active" : ""}" type="button" data-menu="full">
-          <span class="nav-icon">${icon("i-table")}</span>
-          <span>全流程数据分析</span>
-        </button>
       </section>
 
       <section class="nav-section">
-        <p class="nav-title">服务管理</p>
-        <button class="nav-link ${state.activeMenu === "service" ? "is-active" : ""}" type="button" data-menu="service">
-          <span class="nav-icon">${icon("i-heart")}</span>
-          <span>工程细胞服务</span>
+        <p class="nav-title">数据分析</p>
+        <button class="nav-group-head ${analysisActive || analysisOpen ? "is-active" : ""}" type="button" data-menu-group="analysis">
+          <span class="group-label">
+            <span class="nav-icon">${icon("i-chip")}</span>
+            <span>工程细胞数据应用平台</span>
+          </span>
+          <span class="menu-arrow ${analysisOpen ? "is-open" : ""}">${icon("i-chevron")}</span>
         </button>
-      </section>
-
-      <section class="nav-section">
-        <p class="nav-title">平台能力</p>
-        <button class="nav-link ${state.activeMenu === "system-apis" ? "is-active" : ""}" type="button" data-menu="system-apis">
-          <span class="nav-icon">${icon("i-doc")}</span>
-          <span>接口管理</span>
-        </button>
-        <button class="nav-link ${state.activeMenu === "system-algorithms" ? "is-active" : ""}" type="button" data-menu="system-algorithms">
-          <span class="nav-icon">${icon("i-settings")}</span>
-          <span>算法管理</span>
-        </button>
-        <button class="nav-link ${state.activeMenu === "system-datasets" ? "is-active" : ""}" type="button" data-menu="system-datasets">
-          <span class="nav-icon">${icon("i-table")}</span>
-          <span>数据管理</span>
-        </button>
+        <div class="nav-submenu ${analysisOpen ? "is-open" : ""}">
+          <button class="nav-sub-link ${state.activeMenu === "gene" ? "is-active" : ""}" type="button" data-menu="gene">
+            <span class="submenu-dot"></span>
+            <span>基因型-表型数据分析</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "omics" ? "is-active" : ""}" type="button" data-menu="omics">
+            <span class="submenu-dot"></span>
+            <span>组学数据分析</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "process" ? "is-active" : ""}" type="button" data-menu="process">
+            <span class="submenu-dot"></span>
+            <span>发酵过程数据分析</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "full" ? "is-active" : ""}" type="button" data-menu="full">
+            <span class="submenu-dot"></span>
+            <span>全流程数据分析</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "service" ? "is-active" : ""}" type="button" data-menu="service">
+            <span class="submenu-dot"></span>
+            <span>工程细胞服务</span>
+          </button>
+        </div>
       </section>
 
       <section class="nav-section">
@@ -5041,11 +5297,23 @@ function renderSidebar() {
             <span class="submenu-dot"></span>
             <span>门户页配置</span>
           </button>
+          <button class="nav-sub-link ${state.activeMenu === "system-apis" ? "is-active" : ""}" type="button" data-menu="system-apis">
+            <span class="submenu-dot"></span>
+            <span>接口管理</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "system-algorithms" ? "is-active" : ""}" type="button" data-menu="system-algorithms">
+            <span class="submenu-dot"></span>
+            <span>算法管理</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "system-datasets" ? "is-active" : ""}" type="button" data-menu="system-datasets">
+            <span class="submenu-dot"></span>
+            <span>数据管理</span>
+          </button>
         </div>
       </section>
     </div>
 
-    <div class="sidebar-footer">© 2025 工程细胞研究中心. 保留所有权利</div>
+    <div class="sidebar-footer">© 2026 工程细胞研究中心. 保留所有权利.</div>
   `;
 }
 
@@ -6133,7 +6401,6 @@ function renderSensorTableRows(moduleKey, batch, records) {
     .map(
       (record) => `
         <tr>
-          <td class="checkbox-cell"><div class="row-check"></div></td>
           <td>${escapeHtml(record.user)}</td>
           ${record.metrics.map((metric) => `<td>${escapeHtml(metric.value)}</td>`).join("")}
           <td>${escapeHtml(record.time)}</td>
@@ -6283,7 +6550,6 @@ function renderSensorListPage(module) {
               <table class="data-table sensor-data-table">
                 <thead>
                   <tr>
-                    <th class="checkbox-cell"><div class="row-check is-checked"></div></th>
                     <th>录入人</th>
                     ${metricLabels.map((label) => `<th>${escapeHtml(label)}</th>`).join("")}
                     <th>录入时间</th>
@@ -6297,7 +6563,7 @@ function renderSensorListPage(module) {
                       ? renderSensorTableRows(module.key, batch, pageRecords)
                       : `
                         <tr class="table-empty-row">
-                          <td colspan="${metricLabels.length + 5}">
+                          <td colspan="${metricLabels.length + 4}">
                             ${renderEmptyState("暂无记录", "当前筛选条件下没有可展示的监测记录")}
                           </td>
                         </tr>
@@ -6321,6 +6587,7 @@ function renderFormField(field) {
   const iconName = field.type === "select" ? "i-chevron" : field.type === "datetime" || field.type === "date" ? "i-calendar" : "";
   const rule = getFieldRule(field, field.moduleKey || "");
   const options = field.options || (field.type === "select" ? [field.value] : []);
+  const selectPlaceholder = field.placeholder || "请选择";
   const sensorAttr =
     field.name && field.moduleKey
       ? `data-sensor-module="${field.moduleKey}" data-sensor-field="${field.name}"`
@@ -6330,6 +6597,7 @@ function renderFormField(field) {
       ? `
         <div class="input-wrap">
           <select class="select-control has-icon" ${sensorAttr}>
+            ${field.value === "" ? `<option value="" selected disabled>${escapeHtml(selectPlaceholder)}</option>` : ""}
             ${options.map((option) => `<option ${option === field.value ? "selected" : ""}>${escapeHtml(option)}</option>`).join("")}
           </select>
           <span class="trailing-icon">${icon("i-chevron")}</span>
@@ -6355,8 +6623,9 @@ function renderFormField(field) {
 function renderSensorFormPage(module) {
   const basicFields = module.basicFields.map((field, index) => ({
     ...field,
-    value: index === 0 ? state.activeBatch[module.key] : field.value,
+    value: index === 0 ? "" : field.value,
     options: index === 0 ? module.batches.map((item) => item.id) : field.options,
+    placeholder: index === 0 ? "请选择批次号" : field.placeholder,
     moduleKey: module.key,
     name: `${module.key}-basic-${index}`
   }));
@@ -7763,6 +8032,10 @@ function downloadAuditRow(row = {}) {
 }
 
 function renderAnalysisPage(page) {
+  if (page.key === "gene") {
+    return renderGpaModulePage();
+  }
+
   if (page.key === "system-audit") {
     return renderAuditReviewPage();
   }
@@ -7862,6 +8135,1042 @@ function renderAnalysisPage(page) {
       </section>
     </div>
   `;
+}
+
+function gpaCurrentQueryLabel() {
+  const parts = [state.gpa.compound, state.gpa.phenotype].filter(Boolean);
+  return parts.length ? parts.join(" + ") : "全部GPA数据";
+}
+
+function gpaFilteredSearchRecords() {
+  const compound = String(state.gpa.compound || "").trim();
+  const phenotype = String(state.gpa.phenotype || "").trim();
+  const chassis = String(state.gpa.chassis || "").trim();
+  return gpaSearchRecords.filter((item) => {
+    const matchCompound = !compound || item.compound.includes(compound) || item.gene.includes(compound);
+    const matchPhenotype = !phenotype || item.phenotype === phenotype;
+    const matchChassis = !chassis || item.chassis.includes(chassis);
+    return matchCompound && matchPhenotype && matchChassis;
+  });
+}
+
+function gpaFilteredPaths() {
+  const type = String(state.gpa.pathType || "").trim();
+  const source = String(state.gpa.pathSource || "").trim();
+  return state.gpaPaths.filter((item) => {
+    const matchType = !type || item.type === type;
+    const matchSource = !source || item.source === source;
+    return matchType && matchSource;
+  });
+}
+
+function getGpaSearchRecord(id) {
+  return gpaSearchRecords.find((item) => item.id === id) || null;
+}
+
+function getGpaPath(id) {
+  return state.gpaPaths.find((item) => item.id === id) || state.gpaPaths[0];
+}
+
+function getGpaDataset(id) {
+  return state.gpaDatasets.find((item) => item.id === id) || state.gpaDatasets[0];
+}
+
+function getGpaModel(id) {
+  return state.gpaModels.find((item) => item.id === id) || state.gpaModels.find((item) => item.status === "已完成") || state.gpaModels[0];
+}
+
+function getGpaDesign(id) {
+  return state.gpaDesigns.find((item) => item.id === id) || state.gpaDesigns[0];
+}
+
+function gpaStatusClass(status = "") {
+  if (["已完成", "就绪", "重点关注", "完成", "已验证"].includes(status)) {
+    return "is-valid";
+  }
+  if (["训练中", "处理中", "迭代中", "待录入", "待执行", "待确认"].includes(status)) {
+    return "is-pending";
+  }
+  if (["异常", "失败", "已忽略"].includes(status)) {
+    return "is-error";
+  }
+  return "is-normal";
+}
+
+function gpaRenderStatus(status) {
+  return `<span class="status-chip ${gpaStatusClass(status)}">${escapeHtml(status || "-")}</span>`;
+}
+
+function gpaDatasetInUse(datasetId) {
+  return state.gpaModels.some((item) => item.datasetId === datasetId) || state.gpaDesigns.some((item) => item.datasetId === datasetId);
+}
+
+function gpaPredictionRows() {
+  return [
+    { combo: "A+ B- C+ E+", actual: "--", predicted: "3.45", deviation: "--" },
+    { combo: "A+ B+ C- D+", actual: "2.89", predicted: "3.01", deviation: "+4.2%" },
+    { combo: "A- B+ C+ D- E+", actual: "--", predicted: "2.67", deviation: "--" }
+  ];
+}
+
+function gpaNowDateTag() {
+  const now = new Date();
+  return `${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+}
+
+function gpaNextModelVersion(version = "v1.0") {
+  const number = Number(String(version).replace(/^v/i, "")) || 1;
+  return `v${(number + 0.1).toFixed(1)}`;
+}
+
+function renderGpaModulePage() {
+  const activeTab = state.gpa.tab || "search";
+  const counts = {
+    datasets: state.gpaDatasets.length,
+    models: state.gpaModels.length,
+    designs: state.gpaDesigns.length
+  };
+  const tabBody =
+    activeTab === "path"
+      ? renderGpaPathTab()
+      : activeTab === "dataset"
+        ? renderGpaDatasetTab()
+        : activeTab === "analysis"
+          ? renderGpaAnalysisTab()
+          : activeTab === "model"
+            ? renderGpaModelTab()
+            : activeTab === "design"
+              ? renderGpaDesignTab()
+              : activeTab === "dbtl"
+                ? renderGpaDbtlTab()
+                : renderGpaSearchTab();
+
+  return `
+    <div class="page-section analysis-page gpa-module-page">
+      <div class="page-title-row">
+        <div>
+          <h1 class="page-title">基因型-表型分析</h1>
+          <p class="section-caption">按照“数据→分析→模型→设计→验证→数据”的业务闭环组织 GPA 与 GWAS 分析能力。</p>
+        </div>
+        <button class="toolbar-primary" type="button" data-gpa-tab="search">
+          <span class="header-icon">${icon("i-bars")}</span>
+          <span>进入GPA检索</span>
+        </button>
+      </div>
+
+      <section class="gpa-flow-card">
+        <div class="gpa-flow-title">
+          <div>
+            <h2>完整业务闭环</h2>
+            <p>GPA检索 → 调控路径挖掘 → 数据集生成 → 统计/AI分析 → 模型训练 → 设计方案生成 → DBTL验证 → Learn回流 → 下一轮Design</p>
+          </div>
+          <div class="gpa-flow-steps">
+            <span>数据集 ${counts.datasets}</span>
+            <span>模型 ${counts.models}</span>
+            <span>方案 ${counts.designs}</span>
+          </div>
+        </div>
+        <div class="gpa-flow-steps">
+          ${["GPA检索", "调控路径", "数据集", "统计/AI", "模型", "设计", "DBTL", "Learn回流"].map((step, index) => `<span>${index + 1}. ${step}</span>${index < 7 ? "<i></i>" : ""}`).join("")}
+        </div>
+      </section>
+
+      <div class="gpa-tabbar">
+        ${gpaTabs
+          .map(
+            (tab) => `
+              <button class="gpa-tab ${activeTab === tab.key ? "is-active" : ""}" type="button" data-gpa-tab="${tab.key}">
+                ${escapeHtml(tab.label)}
+              </button>
+            `
+          )
+          .join("")}
+      </div>
+
+      ${tabBody}
+    </div>
+  `;
+}
+
+function renderGpaSearchTab() {
+  const records = gpaFilteredSearchRecords();
+  const selected = records.length ? getGpaSearchRecord(state.gpa.selectedGene) || records[0] : null;
+
+  return `
+    <div class="gpa-two-column">
+      <section class="gene-section-card">
+        <div class="gene-section-head">
+          <div><h4>GPA数据检索</h4><p class="section-caption">通过“化合物/目标产物 + 表型”检索基因及扰动方式。</p></div>
+        </div>
+        <div class="filter-row">
+          <label class="inline-field">
+            <span>化合物/目标产物</span>
+            <span class="filter-control-wrap"><input type="text" value="${escapeHtml(state.gpa.compound || "")}" placeholder="例如：苯砜" data-gpa-field="compound" /></span>
+          </label>
+          <label class="inline-field">
+            <span>表型类型</span>
+            <span class="filter-control-wrap">
+              <select data-gpa-field="phenotype">
+                <option value="">请选择表型类型</option>
+                ${gpaPhenotypeOptions.map((item) => `<option ${state.gpa.phenotype === item ? "selected" : ""}>${escapeHtml(item)}</option>`).join("")}
+              </select>
+            </span>
+          </label>
+          <label class="inline-field">
+            <span>底盘细胞类型</span>
+            <span class="filter-control-wrap"><input type="text" value="${escapeHtml(state.gpa.chassis || "")}" placeholder="例如：酵母" data-gpa-field="chassis" /></span>
+          </label>
+          <div class="filter-actions">
+            <button class="filter-button" type="button" data-gpa-search>检索</button>
+          </div>
+        </div>
+        <div class="requirement-list is-compact">
+          ${gpaQuickTags.map((tag, index) => `<button class="table-link" type="button" data-gpa-quick="${index}">${escapeHtml(tag.label)}</button>`).join("")}
+        </div>
+      </section>
+
+      <section class="gene-section-card">
+        <div class="gene-section-head">
+          <div><h4>检索结果</h4><p class="section-caption">当前命中 ${records.length} 条，默认按关联强度降序。</p></div>
+        </div>
+        <div class="gpa-result-list">
+          ${
+            records.length
+              ? records
+                  .map(
+                    (item) => `
+                      <button class="gpa-result-item ${selected?.id === item.id ? "is-active" : ""}" type="button" data-gpa-select-gene="${item.id}">
+                        <strong>${escapeHtml(item.gene)}</strong>
+                        <span>${escapeHtml(item.perturbation)}</span>
+                        <em>${escapeHtml(item.strength)}</em>
+                        <small>${escapeHtml(item.source)}</small>
+                      </button>
+                    `
+                  )
+                  .join("")
+              : `
+                ${renderEmptyState("未找到符合条件的基因-表型关联数据", "请调整检索条件，或查看全部公开GPA数据。")}
+                <div class="gpa-empty-actions">
+                  <button class="modal-outline" type="button" data-gpa-action="clear-search">调整检索条件</button>
+                  <button class="modal-primary" type="button" data-gpa-action="clear-search">查看全部公开GPA数据</button>
+                </div>
+                <div class="requirement-list is-compact">
+                  ${gpaQuickTags.map((tag, index) => `<button class="table-link" type="button" data-gpa-quick="${index}">${escapeHtml(tag.label)}</button>`).join("")}
+                </div>
+              `
+          }
+        </div>
+      </section>
+
+      <section class="gene-section-card is-full">
+        <div class="gene-section-head">
+          <div><h4>基因详情</h4><p class="section-caption">选中基因后展示完整信息与调控关系，并可进入后续流程。</p></div>
+        </div>
+        ${
+          selected
+            ? `
+              ${renderGeneInfoGrid([
+                { label: "基因名称", value: selected.gene },
+                { label: "扰动方式", value: selected.perturbation },
+                { label: "关联强度", value: selected.strength },
+                { label: "数据来源", value: selected.source },
+                { label: "底盘细胞", value: selected.chassis },
+                { label: "目标表型", value: selected.phenotype }
+              ])}
+              <div class="requirement-list is-compact">
+                ${selected.relations.map((item) => `<span>${escapeHtml(item)}</span>`).join("")}
+              </div>
+              <p class="section-caption">${escapeHtml(selected.desc)}</p>
+              <div class="analysis-selected-actions">
+                <button class="modal-outline" type="button" data-gpa-action="view-network">查看调控网络</button>
+                <button class="modal-primary" type="button" data-gpa-action="join-dataset">加入数据集</button>
+              </div>
+            `
+            : ""
+        }
+      </section>
+    </div>
+  `;
+}
+
+function renderGpaNetworkSvg(selectedPathId = "") {
+  const active = getGpaPath(selectedPathId);
+  const activePath = active?.path || "";
+  return `
+    <div class="gpa-network-canvas">
+      <svg class="gpa-network-svg" viewBox="0 0 720 340" role="img" aria-label="基因调控网络图">
+        <defs>
+          <marker id="gpaArrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L9,3 z" fill="#4a74f3"></path>
+          </marker>
+        </defs>
+        <path class="gpa-edge native" d="M150 110 C230 80 290 80 360 110" fill="none" stroke-width="${activePath === "GeneA → GeneB" ? 4 : 2}" marker-end="url(#gpaArrow)"></path>
+        <path class="gpa-edge native" d="M380 130 C430 180 470 200 540 208" fill="none" stroke-width="${activePath === "GeneB → GeneC" ? 4 : 2}" marker-end="url(#gpaArrow)"></path>
+        <path class="gpa-edge hidden-on" d="M120 250 C160 190 210 150 300 120" fill="none" stroke-width="${activePath === "GeneF → GeneA" ? 4 : 2}" marker-end="url(#gpaArrow)"></path>
+        <path class="gpa-edge hidden-off" d="M540 228 C500 270 430 286 340 250" fill="none" stroke-width="${activePath === "GeneC → GeneE" ? 4 : 2}" marker-end="url(#gpaArrow)"></path>
+        ${[
+          { id: "gpa-genea", label: "GeneA", x: 130, y: 110 },
+          { id: "gpa-geneb", label: "GeneB", x: 370, y: 120 },
+          { id: "gpa-genec", label: "GeneC", x: 560, y: 220 },
+          { id: "gpa-gened", label: "GeneD", x: 560, y: 78 },
+          { id: "gpa-genee", label: "GeneE", x: 320, y: 258 },
+          { id: "gpa-genef", label: "GeneF", x: 100, y: 260 }
+        ]
+          .map(
+            (node) => `
+              <g class="gpa-node ${state.gpa.selectedGene === node.id ? "is-active" : ""}" data-gpa-select-gene="${node.id}">
+                <circle cx="${node.x}" cy="${node.y}" r="27"></circle>
+                <text x="${node.x}" y="${node.y + 4}" text-anchor="middle">${node.label}</text>
+              </g>
+            `
+          )
+          .join("")}
+      </svg>
+    </div>
+  `;
+}
+
+function renderGpaPathTab() {
+  const selectedPath = getGpaPath(state.gpa.selectedPath);
+  const paths = gpaFilteredPaths();
+  return `
+    <div class="gpa-network-layout">
+      <section class="gene-section-card">
+        <div class="gene-section-head">
+          <div><h4>调控路径分析</h4><p class="section-caption">来源检索：${escapeHtml(state.gpa.pathContext || gpaCurrentQueryLabel())}</p></div>
+          <button class="modal-outline" type="button" data-gpa-tab="search">返回检索</button>
+        </div>
+        <div class="filter-row gpa-path-filter-row">
+          <label class="inline-field">
+            <span>路径类型</span>
+            <span class="filter-control-wrap">
+              <select data-gpa-field="pathType">
+                ${["", "固有路径", "隐藏激活路径", "隐藏关闭路径"].map((item) => `<option value="${escapeHtml(item)}" ${state.gpa.pathType === item ? "selected" : ""}>${escapeHtml(item || "全部")}</option>`).join("")}
+              </select>
+            </span>
+          </label>
+          <label class="inline-field">
+            <span>数据来源</span>
+            <span class="filter-control-wrap">
+              <select data-gpa-field="pathSource">
+                ${["", "公开数据库", "GPA差异分析"].map((item) => `<option value="${escapeHtml(item)}" ${state.gpa.pathSource === item ? "selected" : ""}>${escapeHtml(item || "全部")}</option>`).join("")}
+              </select>
+            </span>
+          </label>
+          <label class="inline-field">
+            <span>布局方式</span>
+            <span class="filter-control-wrap">
+              <select data-gpa-field="pathLayout">
+                ${["力导向", "环形", "层级"].map((item) => `<option ${state.gpa.pathLayout === item ? "selected" : ""}>${escapeHtml(item)}</option>`).join("")}
+              </select>
+            </span>
+          </label>
+        </div>
+        ${renderGpaNetworkSvg(selectedPath?.id)}
+        <div class="gpa-network-legend">
+          <span>固有路径</span>
+          <span>隐藏激活路径</span>
+          <span>隐藏关闭路径</span>
+        </div>
+      </section>
+
+      <section class="gene-section-card">
+        <div class="gene-section-head">
+          <div><h4>路径列表</h4><p class="section-caption">识别到 ${paths.length} 条调控路径。</p></div>
+        </div>
+        <div class="gpa-path-list">
+          ${
+            paths.length
+              ? paths
+                  .map(
+                    (path) => `
+                      <button class="gpa-path-row ${selectedPath?.id === path.id ? "is-active" : ""}" type="button" data-gpa-path="${path.id}">
+                        <strong>${escapeHtml(path.type)}</strong>
+                        <span>${escapeHtml(path.path)}</span>
+                        <em>${escapeHtml(path.relation)}</em>
+                        ${gpaRenderStatus(path.status)}
+                      </button>
+                    `
+                  )
+                  .join("")
+              : renderEmptyState("未检测到显著差异路径", "当前筛选条件下没有路径，调整路径类型或数据来源后重试。")
+          }
+        </div>
+        ${
+          selectedPath
+            ? `
+              <div class="omics-model-capability">
+                <strong>选中路径详情</strong>
+                <p>${escapeHtml(selectedPath.desc)}</p>
+                <p>证据来源：${escapeHtml(selectedPath.evidence)}</p>
+              </div>
+              <div class="analysis-selected-actions">
+                <button class="modal-outline" type="button" data-gpa-path-mark="${selectedPath.id}">标记</button>
+                <button class="modal-outline" type="button" data-gpa-path-ignore="${selectedPath.id}">忽略</button>
+                <button class="modal-primary" type="button" data-gpa-action="generate-dataset-from-path">生成数据集</button>
+              </div>
+            `
+            : ""
+        }
+      </section>
+    </div>
+  `;
+}
+
+function renderGpaDatasetTab() {
+  return `
+    <section class="gene-section-card">
+      <div class="gene-section-head">
+        <div><h4>数据集管理</h4><p class="section-caption">GPA数据分析与GWAS分析共享同一数据集池，正在被任务使用的数据集不可删除。</p></div>
+        <div class="analysis-selected-actions">
+          <button class="modal-outline" type="button" data-gpa-action="generate-dataset">生成数据集</button>
+          <button class="modal-primary" type="button" data-gpa-action="import-dataset">导入数据集</button>
+        </div>
+      </div>
+      <div class="table-scroll gene-inner-table">
+        <table class="data-table gene-snp-table">
+          <thead><tr><th>数据集名称</th><th>来源</th><th>记录数</th><th>特征数</th><th>状态</th><th>时间</th><th>操作</th></tr></thead>
+          <tbody>
+            ${state.gpaDatasets
+              .map((dataset) => {
+                const locked = dataset.locked || gpaDatasetInUse(dataset.id);
+                return `
+                  <tr>
+                    <td>${escapeHtml(dataset.name)}</td>
+                    <td>${escapeHtml(dataset.source)}</td>
+                    <td>${escapeHtml(String(dataset.records))}</td>
+                    <td>${escapeHtml(String(dataset.features))}</td>
+                    <td>${gpaRenderStatus(dataset.status)}</td>
+                    <td>${escapeHtml(dataset.time)}</td>
+                    <td>
+                      <div class="table-actions">
+                        <button class="table-link" type="button" data-gpa-dataset-action="ai|${dataset.id}">用于AI分析</button>
+                        <button class="table-link" type="button" data-gpa-dataset-action="train|${dataset.id}">训练模型</button>
+                        <button class="table-link is-danger" type="button" data-gpa-dataset-action="delete|${dataset.id}" ${locked ? "disabled" : ""}>删除</button>
+                      </div>
+                    </td>
+                  </tr>
+                `;
+              })
+              .join("")}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  `;
+}
+
+function renderGpaAiStepBody(step, dataset) {
+  if (step === 1) {
+    return `
+      <div class="gpa-ai-panels">
+        <section class="gpa-config-box">
+          <h5>① 数据准备</h5>
+          <p class="section-caption">选择数据集后进行字段校验、缺失值检查与基因名标准化。</p>
+          <div class="requirement-list is-compact">
+            <span>必须包含：基因型</span>
+            <span>必须包含：表型值</span>
+            <span>可选：扰动方式</span>
+            <span>可选：条件参数</span>
+          </div>
+        </section>
+        <section class="gpa-config-box">
+          <h5>数据集摘要</h5>
+          ${renderGeneInfoGrid([
+            { label: "数据集名称", value: dataset?.name || "-" },
+            { label: "来源", value: dataset?.source || "-" },
+            { label: "记录数", value: String(dataset?.records || "-") },
+            { label: "特征数", value: String(dataset?.features || "-") }
+          ])}
+        </section>
+      </div>
+    `;
+  }
+
+  if (step === 2) {
+    return `
+      <div class="gpa-ai-panels">
+        <section class="gpa-config-box">
+          <h5>② 传统统计分析</h5>
+          <div class="gpa-progress-list">
+            <div class="gpa-progress-row"><span>PCA</span><strong><i style="width:${state.gpa.statDone ? 88 : 42}%"></i></strong><em>${state.gpa.statDone ? "完成" : "待运行"}</em></div>
+            <div class="gpa-progress-row"><span>非参数检验</span><strong><i style="width:${state.gpa.statDone ? 74 : 35}%"></i></strong><em>${state.gpa.statDone ? "完成" : "待运行"}</em></div>
+            <div class="gpa-progress-row"><span>回归分析</span><strong><i style="width:${state.gpa.statDone ? 81 : 28}%"></i></strong><em>${state.gpa.statDone ? "完成" : "待运行"}</em></div>
+          </div>
+        </section>
+        <section class="gpa-config-box">
+          <h5>统计阈值</h5>
+          <div class="gene-form-grid">
+            ${renderGeneField({ name: "gpaPValue", label: "显著性阈值", value: "0.05", placeholder: "请输入阈值" })}
+            ${renderGeneField({ name: "gpaRegression", label: "回归任务", type: "select", value: "表型值预测", options: ["表型值预测", "耐受等级分类"] })}
+          </div>
+        </section>
+      </div>
+    `;
+  }
+
+  if (step === 3) {
+    return `
+      <div class="gpa-ai-panels">
+        <section class="gpa-config-box">
+          <h5>③ 降维与AI训练</h5>
+          <p class="section-caption">特征维度远大于样本量时，先通过稀疏矩阵/特征选择降低维度，再按算法顺序训练。</p>
+          <div class="gpa-progress-list">
+            <div class="gpa-progress-row"><span>随机森林</span><strong><i style="width:${state.gpa.aiTrained ? 100 : 68}%"></i></strong><em>${state.gpa.aiTrained ? "完成" : "待训练"}</em></div>
+            <div class="gpa-progress-row"><span>XGBoost</span><strong><i style="width:${state.gpa.aiTrained ? 100 : 52}%"></i></strong><em>${state.gpa.aiTrained ? "完成" : "待训练"}</em></div>
+            <div class="gpa-progress-row"><span>SVM</span><strong><i style="width:${state.gpa.aiTrained ? 100 : 34}%"></i></strong><em>${state.gpa.aiTrained ? "完成" : "待训练"}</em></div>
+          </div>
+        </section>
+        <section class="gpa-config-box">
+          <h5>算法参数</h5>
+          <div class="gene-form-grid">
+            ${renderGeneField({ name: "gpaTrainSplit", label: "训练/测试集比例", type: "select", value: "8:2", options: ["8:2", "7:3", "6:4"] })}
+            ${renderGeneField({ name: "gpaFeatureMethod", label: "降维方法", type: "select", value: "稀疏矩阵", options: ["稀疏矩阵", "PCA", "特征选择"] })}
+          </div>
+        </section>
+      </div>
+    `;
+  }
+
+  if (step === 4) {
+    return `
+      <div class="gpa-ai-panels">
+        <section class="gpa-config-box">
+          <h5>④ 验证与效果对比</h5>
+          <div class="table-scroll gene-inner-table">
+            <table class="data-table gene-snp-table">
+              <thead><tr><th>模型</th><th>准确率</th><th>R²</th><th>RMSE</th><th>训练耗时</th><th>排名</th></tr></thead>
+              <tbody>
+                <tr><td>XGBoost</td><td>0.94</td><td>0.91</td><td>0.23</td><td>3min</td><td>1</td></tr>
+                <tr><td>随机森林</td><td>0.92</td><td>0.88</td><td>0.28</td><td>2min</td><td>2</td></tr>
+                <tr><td>SVM</td><td>0.87</td><td>0.82</td><td>0.35</td><td>8min</td><td>3</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+        <section class="gpa-config-box">
+          <h5>推荐操作</h5>
+          <p class="section-caption">按回归任务规则优先比较 R²，R² 相同时按 RMSE 排序。</p>
+          <div class="analysis-selected-actions">
+            <button class="modal-primary" type="button" data-gpa-action="save-ai-model" ${state.gpa.aiTrained ? "" : "disabled"}>将最优模型保存至模型管理</button>
+          </div>
+        </section>
+      </div>
+    `;
+  }
+
+  return `
+    <div class="gpa-ai-panels">
+      <section class="gpa-config-box">
+        <h5>⑤ 新数据预测</h5>
+        <div class="table-scroll gene-inner-table">
+          <table class="data-table gene-snp-table">
+            <thead><tr><th>基因型组合</th><th>实际表型值</th><th>预测表型值</th><th>偏差</th></tr></thead>
+            <tbody>
+              ${gpaPredictionRows().map((row) => `<tr><td>${escapeHtml(row.combo)}</td><td>${escapeHtml(row.actual)}</td><td>${escapeHtml(row.predicted)}</td><td>${escapeHtml(row.deviation)}</td></tr>`).join("")}
+            </tbody>
+          </table>
+        </div>
+        <p class="section-caption">“--”表示该条记录无实际表型值；偏差仅在实际值存在时计算。</p>
+      </section>
+      <section class="gpa-config-box">
+        <h5>预测统计</h5>
+        ${renderGeneInfoGrid([
+          { label: "预测记录数", value: "120" },
+          { label: "有实际值可对比", value: "45" },
+          { label: "平均偏差", value: "3.8%" },
+          { label: "模型", value: "XGBoost (R²=0.91)" }
+        ])}
+        <div class="analysis-selected-actions">
+          <button class="modal-outline" type="button" data-gpa-action="download-prediction">导出预测结果</button>
+          <button class="modal-outline" type="button" data-gpa-action="add-ai-prediction">将预测数据加入数据集</button>
+          <button class="modal-primary" type="button" data-gpa-action="generate-design-from-ai">生成设计方案</button>
+        </div>
+      </section>
+    </div>
+  `;
+}
+
+function renderGpaAnalysisTab() {
+  const dataset = getGpaDataset(state.gpa.selectedDataset);
+  const step = state.gpa.aiStep || 1;
+  const steps = ["数据准备", "传统统计", "降维分析", "AI训练", "新数据预测"];
+  return `
+    <section class="gene-section-card">
+      <div class="gene-section-head">
+        <div><h4>统计/AI分析工作台</h4><p class="section-caption">传统统计方法与AI分析共用数据集池，AI训练结果可保存至模型管理。</p></div>
+      </div>
+      <div class="gpa-stepper">
+        ${steps.map((label, index) => `<button class="gpa-step ${step === index + 1 ? "is-active" : ""} ${step > index + 1 ? "is-done" : ""}" type="button" data-gpa-ai-step="${index + 1}"><span>${index + 1}</span>${escapeHtml(label)}</button>`).join("")}
+      </div>
+      <div class="gpa-stat-grid">
+        <div class="gpa-config-box">
+          <h5>数据准备</h5>
+          <div class="gene-field">
+            <label>选择数据集</label>
+            <select class="gene-control" data-gpa-field="selectedDataset">
+              ${state.gpaDatasets.map((item) => `<option value="${item.id}" ${dataset?.id === item.id ? "selected" : ""}>${escapeHtml(item.name)}（${escapeHtml(item.status)}）</option>`).join("")}
+            </select>
+          </div>
+          <div class="omics-model-capability">
+            <strong>${escapeHtml(dataset?.name || "-")}</strong>
+            <p>记录数：${escapeHtml(String(dataset?.records || "-"))}；特征数：${escapeHtml(String(dataset?.features || "-"))}；来源：${escapeHtml(dataset?.source || "-")}</p>
+          </div>
+          <div class="analysis-selected-actions">
+            <button class="modal-outline" type="button" data-gpa-action="run-stat">${state.gpa.statRunning ? "分析中" : "运行统计分析"}</button>
+            <button class="modal-primary" type="button" data-gpa-action="run-ai">${state.gpa.aiTraining ? "训练中" : "运行AI分析"}</button>
+          </div>
+        </div>
+        <div class="gpa-config-box">
+          <h5>分析输出</h5>
+          <div class="gpa-progress-list">
+            <div class="gpa-progress-row"><span>PCA</span><strong><i style="width:${state.gpa.statDone ? 88 : 42}%"></i></strong><em>${state.gpa.statDone ? "完成" : "待运行"}</em></div>
+            <div class="gpa-progress-row"><span>非参数检验</span><strong><i style="width:${state.gpa.statDone ? 74 : 35}%"></i></strong><em>${state.gpa.statDone ? "完成" : "待运行"}</em></div>
+            <div class="gpa-progress-row"><span>回归分析</span><strong><i style="width:${state.gpa.statDone ? 81 : 28}%"></i></strong><em>${state.gpa.statDone ? "完成" : "待运行"}</em></div>
+            <div class="gpa-progress-row"><span>AI网络</span><strong><i style="width:${state.gpa.aiTrained ? 92 : 48}%"></i></strong><em>${state.gpa.aiTrained ? "完成" : "待训练"}</em></div>
+          </div>
+          <div class="analysis-selected-actions">
+            <button class="modal-outline" type="button" data-gpa-ai-prev>上一步</button>
+            <button class="modal-outline" type="button" data-gpa-ai-next>下一步</button>
+            <button class="modal-primary" type="button" data-gpa-action="save-ai-model" ${state.gpa.aiTrained ? "" : "disabled"}>保存至模型管理</button>
+          </div>
+        </div>
+      </div>
+      ${renderGpaAiStepBody(step, dataset)}
+    </section>
+  `;
+}
+
+function renderGpaModelTab() {
+  return `
+    <section class="gene-section-card">
+      <div class="gene-section-head">
+        <div><h4>模型管理</h4><p class="section-caption">模型同样为共享资源池，GPA快捷训练与AI工作台训练的模型共存。</p></div>
+        <button class="modal-primary" type="button" data-gpa-action="train-model">训练新模型</button>
+      </div>
+      <div class="table-scroll gene-inner-table">
+        <table class="data-table gene-snp-table">
+          <thead><tr><th>模型名称</th><th>算法</th><th>训练数据集</th><th>准确率</th><th>R²</th><th>RMSE</th><th>状态</th><th>版本</th><th>操作</th></tr></thead>
+          <tbody>
+            ${state.gpaModels
+              .map(
+                (model) => `
+                  <tr>
+                    <td>${escapeHtml(model.name)}</td>
+                    <td>${escapeHtml(model.algorithm)}</td>
+                    <td>${escapeHtml(model.dataset)}</td>
+                    <td>${escapeHtml(model.accuracy)}</td>
+                    <td>${escapeHtml(model.r2)}</td>
+                    <td>${escapeHtml(model.rmse)}</td>
+                    <td>${gpaRenderStatus(model.status)}</td>
+                    <td>${escapeHtml(model.version)}</td>
+                    <td>
+                      <div class="table-actions">
+                        <button class="table-link" type="button" data-gpa-model-action="detail|${model.id}">详情</button>
+                        <button class="table-link" type="button" data-gpa-model-action="design|${model.id}" ${model.status === "已完成" ? "" : "disabled"}>用于设计方案生成</button>
+                      </div>
+                    </td>
+                  </tr>
+                `
+              )
+              .join("")}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  `;
+}
+
+function renderGpaDesignDetail(design) {
+  if (!design) {
+    return renderEmptyState("暂无设计方案", "请先从模型管理或AI预测结果生成设计方案。");
+  }
+  return `
+    ${renderGeneInfoGrid([
+      { label: "方案名称", value: design.name },
+      { label: "目标表型", value: design.target },
+      { label: "使用模型", value: design.modelName },
+      { label: "DBTL轮次", value: `第${design.round}轮` },
+      { label: "状态", html: gpaRenderStatus(design.status) },
+      { label: "生成时间", value: design.createdAt }
+    ])}
+    <div class="table-scroll gene-inner-table">
+      <table class="data-table gene-snp-table">
+        <thead><tr><th>基因</th><th>推荐扰动</th><th>预测提升</th></tr></thead>
+        <tbody>${design.genes.map((item) => `<tr><td>${escapeHtml(item.gene)}</td><td>${escapeHtml(item.perturbation)}</td><td>${escapeHtml(item.lift)}</td></tr>`).join("")}</tbody>
+      </table>
+    </div>
+  `;
+}
+
+function renderGpaDesignTab() {
+  const design = getGpaDesign(state.gpa.selectedDesign);
+  return `
+    <div class="gpa-two-column">
+      <section class="gene-section-card">
+        <div class="gene-section-head">
+          <div><h4>设计方案列表</h4><p class="section-caption">基于已训练模型生成基因型组合方案。</p></div>
+          <button class="modal-primary" type="button" data-gpa-action="generate-design">生成新方案</button>
+        </div>
+        <div class="gpa-result-list">
+          ${state.gpaDesigns
+            .map(
+              (item) => `
+                <button class="gpa-result-item ${design?.id === item.id ? "is-active" : ""}" type="button" data-gpa-design="${item.id}">
+                  <strong>${escapeHtml(item.id)}</strong>
+                  <span>${escapeHtml(item.name)}</span>
+                  <em>第${escapeHtml(String(item.round))}轮</em>
+                  ${gpaRenderStatus(item.status)}
+                </button>
+              `
+            )
+            .join("")}
+        </div>
+      </section>
+      <section class="gene-section-card">
+        <div class="gene-section-head">
+          <div><h4>方案详情</h4><p class="section-caption">Design 阶段输出，后续进入 Build、Test、Learn。</p></div>
+        </div>
+        ${renderGpaDesignDetail(design)}
+        <div class="analysis-selected-actions">
+          <button class="modal-outline" type="button" data-gpa-tab="dbtl">进入DBTL验证</button>
+          <button class="modal-primary" type="button" data-gpa-action="verify-design">录入验证结果</button>
+        </div>
+      </section>
+    </div>
+  `;
+}
+
+function renderGpaDbtlTab() {
+  const design = getGpaDesign(state.gpa.selectedDesign);
+  return `
+    <section class="gene-section-card">
+      <div class="gene-section-head">
+        <div><h4>设计方案与验证（DBTL）</h4><p class="section-caption">Learn阶段会将实验验证数据写回关联数据集，并触发模型版本更新与下一轮Design。</p></div>
+        <button class="modal-primary" type="button" data-gpa-action="verify-design">录入验证结果</button>
+      </div>
+      <div class="gpa-stepper">
+        ${["Design", "Build", "Test", "Learn", "下一轮Design"].map((item, index) => `<span class="gpa-step ${index < 2 ? "is-done" : index === 2 ? "is-active" : ""}"><span>${index + 1}</span>${item}</span>`).join("")}
+      </div>
+      ${renderGpaDesignDetail(design)}
+      <div class="table-scroll gene-inner-table">
+        <table class="data-table gene-snp-table">
+          <thead><tr><th>轮次</th><th>阶段</th><th>状态</th><th>结果</th></tr></thead>
+          <tbody>${(design?.dbtl || []).map((item) => `<tr><td>${escapeHtml(item.round)}</td><td>${escapeHtml(item.stage)}</td><td>${gpaRenderStatus(item.status)}</td><td>${escapeHtml(item.result)}</td></tr>`).join("")}</tbody>
+        </table>
+      </div>
+    </section>
+  `;
+}
+
+function renderGpaDatasetGenerateModal(source = "search") {
+  const selected = getGpaSearchRecord(state.gpa.selectedGene);
+  const selectedPath = getGpaPath(state.gpa.selectedPath);
+  const sourceLabel = source === "path" ? "调控路径分析结果" : "GPA检索结果";
+  const defaultName = source === "path" ? `${selectedPath?.type || "调控路径"}数据集` : `${selected?.compound || "GPA"}${selected?.phenotype || ""}数据集`;
+  return renderGeneModalShell({
+    title: "生成数据集",
+    sizeClass: "is-gene-form",
+    body: `
+      <div class="gene-form-grid">
+        ${renderGeneField({ name: "gpaDatasetName", label: "数据集名称", value: defaultName, placeholder: "请输入数据集名称" })}
+        ${renderGeneField({ name: "gpaDatasetSource", label: "来源", type: "select", value: sourceLabel, options: ["GPA检索结果", "调控路径分析结果", "AI预测", "实验验证"] })}
+        ${renderGeneField({ name: "gpaDatasetRecords", label: "记录数", value: source === "path" ? "860" : "1240", placeholder: "请输入记录数" })}
+        ${renderGeneField({ name: "gpaDatasetFeatures", label: "特征数", value: source === "path" ? "18" : "15", placeholder: "请输入特征数" })}
+        ${renderGeneField({ name: "gpaDatasetNote", label: "说明", type: "textarea", full: true, value: source === "path" ? selectedPath?.desc || "" : selected?.desc || "", placeholder: "请输入数据集说明" })}
+        <div class="gene-field is-full">
+          <label>包含内容</label>
+          <div class="gpa-check-list">
+            <span>已包含：关联基因信息</span>
+            <span>已包含：扰动方式</span>
+            <span>已包含：调控关系数据</span>
+            <span>${source === "path" ? "已包含：隐藏路径标记数据" : "可在调控路径分析后补充隐藏路径标记"}</span>
+          </div>
+        </div>
+      </div>
+    `,
+    footer: `
+      <button class="modal-secondary" type="button" data-close-modal="gpa">取消</button>
+      <button class="modal-primary" type="button" data-gpa-submit="generate-dataset|${escapeHtml(source)}">确定</button>
+    `
+  });
+}
+
+function renderGpaDatasetImportModal() {
+  return renderGeneModalShell({
+    title: "导入数据集",
+    sizeClass: "is-gene-form",
+    body: `
+      <div class="gpa-import-empty">
+        <label class="gpa-import-picker">
+          <input type="file" accept=".vcf,.bed,.fam,.phe,.csv" data-gpa-import-file />
+          <strong>${escapeHtml(state.gpa.importFileName || "请选择本地数据文件")}</strong>
+          <span>支持 VCF、BED、FAM、PHE、CSV；由用户自行选择数据集内容。</span>
+        </label>
+        <div class="gene-form-grid">
+          ${renderGeneField({ name: "gpaImportName", label: "数据集名称", value: "", placeholder: "请输入数据集名称" })}
+          ${renderGeneField({ name: "gpaImportSource", label: "来源", type: "select", value: "", placeholder: "请选择来源", options: ["实验导入", "公开数据", "AI预测", "实验验证"] })}
+          ${renderGeneField({ name: "gpaImportRecords", label: "记录数", value: "", placeholder: "请输入记录数" })}
+          ${renderGeneField({ name: "gpaImportFeatures", label: "特征数", value: "", placeholder: "请输入特征数" })}
+        </div>
+        <div class="gpa-import-summary">
+          <p>数据格式要求</p>
+          <span>必须包含列：基因型、表型值；可选列：扰动方式、条件参数。上传后进行编码、空值和字段一致性校验。</span>
+          <div class="analysis-selected-actions">
+            <button class="modal-outline" type="button" data-gpa-action="download-gpa-template">下载模板</button>
+          </div>
+        </div>
+      </div>
+    `,
+    footer: `
+      <button class="modal-secondary" type="button" data-close-modal="gpa">取消</button>
+      <button class="modal-primary" type="button" data-gpa-submit="import-dataset">确定</button>
+    `
+  });
+}
+
+function renderGpaDatasetDeleteModal(datasetId = "") {
+  const dataset = getGpaDataset(datasetId);
+  if (!dataset) {
+    return "";
+  }
+  return renderGeneModalShell({
+    title: "删除数据集",
+    sizeClass: "is-gene-delete",
+    body: `
+      <div class="gene-delete-body">
+        <div class="gene-delete-icon">${icon("i-warning")}</div>
+        <h4>确定删除数据集 ${escapeHtml(dataset.name)} 吗？</h4>
+        <p>来源：${escapeHtml(dataset.source)}；记录数：${escapeHtml(String(dataset.records))}；特征数：${escapeHtml(String(dataset.features))}</p>
+        <span>删除后将无法用于统计/AI分析、模型训练和设计方案生成。</span>
+      </div>
+    `,
+    footer: `
+      <button class="modal-secondary" type="button" data-close-modal="gpa">取消</button>
+      <button class="modal-primary gene-danger-button" type="button" data-gpa-submit="delete-dataset|${dataset.id}">确认删除</button>
+    `
+  });
+}
+
+function renderGpaTrainModelModal(datasetId = "") {
+  const dataset = getGpaDataset(datasetId || state.gpa.selectedDataset);
+  const readyDatasets = state.gpaDatasets.filter((item) => item.status === "就绪");
+  return renderGeneModalShell({
+    title: "训练新模型",
+    sizeClass: "is-gene-form",
+    body: `
+      <div class="gene-form-grid">
+        ${renderGeneField({ name: "gpaModelName", label: "模型名称", value: "", placeholder: "请输入模型名称" })}
+        <div class="gene-field">
+          <label>训练数据集</label>
+          <select class="gene-control" data-gpa-field="trainDataset">
+            ${readyDatasets.map((item) => `<option value="${item.id}" ${dataset?.id === item.id ? "selected" : ""}>${escapeHtml(item.name)}</option>`).join("")}
+          </select>
+          ${renderRequirementHint("仅显示状态为“就绪”的数据集")}
+        </div>
+        ${renderGeneField({ name: "gpaAlgorithm", label: "默认算法", type: "select", value: "随机森林", options: ["随机森林", "XGBoost", "SVM", "神经网络"] })}
+        ${renderGeneField({ name: "gpaSplitRatio", label: "训练/测试集比例", type: "select", value: "8:2", options: ["8:2", "7:3", "6:4"] })}
+      </div>
+    `,
+    footer: `
+      <button class="modal-secondary" type="button" data-close-modal="gpa">取消</button>
+      <button class="modal-primary" type="button" data-gpa-submit="train-model">开始训练</button>
+    `
+  });
+}
+
+function renderGpaModelDetailModal(modelId = "") {
+  const model = getGpaModel(modelId);
+  return renderGeneModalShell({
+    title: `模型详情 - ${model?.name || ""}`,
+    sizeClass: "gene-result-modal",
+    body: `
+      ${renderGeneInfoGrid([
+        { label: "模型名称", value: model?.name },
+        { label: "算法", value: model?.algorithm },
+        { label: "训练数据集", value: model?.dataset },
+        { label: "准确率", value: model?.accuracy },
+        { label: "R²", value: model?.r2 },
+        { label: "RMSE", value: model?.rmse },
+        { label: "状态", html: gpaRenderStatus(model?.status) },
+        { label: "版本", value: model?.version }
+      ])}
+      <section class="gene-section-card">
+        <div class="gene-section-head"><div><h4>特征重要性Top5</h4><p class="section-caption">用于后续设计方案生成时排序候选基因。</p></div></div>
+        <div class="gpa-progress-list">
+          ${[
+            ["GeneA(过表达)", 92, "0.23"],
+            ["GeneB(敲除)", 76, "0.19"],
+            ["GeneC(点突变)", 64, "0.16"],
+            ["GeneD(启动子替换)", 56, "0.14"],
+            ["GeneE(过表达)", 44, "0.11"]
+          ].map(([label, width, value]) => `<div class="gpa-progress-row"><span>${escapeHtml(label)}</span><strong><i style="width:${width}%"></i></strong><em>${escapeHtml(value)}</em></div>`).join("")}
+        </div>
+      </section>
+    `,
+    footer: `
+      <button class="modal-secondary" type="button" data-close-modal="gpa">关闭</button>
+      <button class="modal-primary" type="button" data-gpa-model-action="design|${model?.id || ""}">用于设计方案生成</button>
+    `
+  });
+}
+
+function renderGpaVerificationModal(designId = "") {
+  const design = getGpaDesign(designId || state.gpa.selectedDesign);
+  return renderGeneModalShell({
+    title: "录入DBTL验证结果",
+    sizeClass: "is-gene-form",
+    body: `
+      <div class="gene-form-grid">
+        ${renderGeneField({ name: "gpaVerifyValue", label: "实测表型值", value: "", placeholder: "例如 3.28 g/L" })}
+        ${renderGeneField({ name: "gpaVerifyConclusion", label: "验证结论", type: "select", value: "", placeholder: "请选择验证结论", options: ["达到预期", "低于预期", "需要复测"] })}
+        ${renderGeneField({ name: "gpaVerifyNote", label: "验证说明", type: "textarea", full: true, value: "", placeholder: "请输入Build/Test阶段说明" })}
+      </div>
+      <div class="omics-model-capability">
+        <strong>${escapeHtml(design?.name || "-")}</strong>
+        <p>提交后进入Learn阶段：实验验证数据写回数据集，关联模型版本递增，并自动生成下一轮Design。</p>
+      </div>
+    `,
+    footer: `
+      <button class="modal-secondary" type="button" data-close-modal="gpa">取消</button>
+      <button class="modal-primary" type="button" data-gpa-submit="verify|${design?.id || ""}">确定</button>
+    `
+  });
+}
+
+function gpaReadValue(fieldName) {
+  return (
+    document.querySelector(`[data-gene-field="${fieldName}"]`)?.value?.trim() ||
+    document.querySelector(`[data-gpa-field="${fieldName}"]`)?.value?.trim() ||
+    ""
+  );
+}
+
+function gpaStoreDataset(dataset) {
+  state.gpaDatasets = [dataset, ...state.gpaDatasets.filter((item) => item.id !== dataset.id)];
+  state.gpa.selectedDataset = dataset.id;
+  state.gpa.tab = "dataset";
+}
+
+function gpaStoreModel(model) {
+  state.gpaModels = [model, ...state.gpaModels.filter((item) => item.id !== model.id)];
+  state.gpa.selectedModel = model.id;
+  state.gpa.tab = "model";
+}
+
+function downloadGpaDatasetTemplate() {
+  downloadCsvFile("GPA数据集导入模板.csv", [["基因型", "表型值", "扰动方式", "条件参数"], ["GeneA+", "3.45", "过表达", "苯砜耐受"]]);
+}
+
+function downloadGpaPredictionResult() {
+  downloadCsvFile("GPA新数据预测结果.csv", [["基因型组合", "实际表型值", "预测表型值", "偏差"], ...gpaPredictionRows().map((row) => [row.combo, row.actual, row.predicted, row.deviation])]);
+}
+
+function gpaAppendPredictionDataset() {
+  const dataset = getGpaDataset(state.gpa.selectedDataset);
+  const nextDataset = {
+    id: generateSystemLocalId("gpa-data"),
+    name: `${dataset?.name || "GPA"}AI预测数据`,
+    source: "AI预测",
+    records: 120,
+    features: Number(dataset?.features || 0),
+    status: "就绪",
+    time: gpaNowDateTag(),
+    locked: false,
+    note: "由新数据预测结果追加生成，可用于模型迭代训练"
+  };
+  gpaStoreDataset(nextDataset);
+  return nextDataset;
+}
+
+function gpaBuildModelPayload({ modelName = "", datasetId = "", algorithm = "随机森林", source = "manual" } = {}) {
+  const dataset = getGpaDataset(datasetId);
+  return {
+    id: generateSystemLocalId(source === "ai" ? "gpa-ai-model" : "gpa-model"),
+    name: modelName || `${dataset?.name || "GPA"}训练模型`,
+    algorithm,
+    datasetId: dataset?.id || "",
+    dataset: dataset?.name || "--",
+    accuracy: algorithm === "XGBoost" ? "0.92" : "0.89",
+    r2: algorithm === "XGBoost" ? "0.91" : "0.88",
+    rmse: algorithm === "XGBoost" ? "0.23" : "0.28",
+    status: "已完成",
+    version: "v1.0",
+    locked: false
+  };
+}
+
+function gpaCreateDesignFromModel(modelId = "", { roundOffset = 1 } = {}) {
+  const model = getGpaModel(modelId || state.gpa.selectedModel);
+  const dataset = getGpaDataset(model?.datasetId);
+  const currentMaxRound = Math.max(0, ...state.gpaDesigns.map((item) => Number(item.round) || 0));
+  const round = currentMaxRound + roundOffset;
+  const design = {
+    id: generateSystemLocalId("design"),
+    name: `${model?.name || "GPA模型"}-第${round}轮设计`,
+    target: state.gpa.phenotype || "目标表型",
+    modelId: model?.id || "",
+    datasetId: dataset?.id || "",
+    modelName: model?.name || "",
+    round,
+    status: "已生成",
+    createdAt: new Date().toISOString().slice(0, 16).replace("T", " "),
+    genes: [
+      { gene: "GeneA", perturbation: "过表达", lift: "+23.5%" },
+      { gene: "GeneB", perturbation: "敲除", lift: "+18.2%" },
+      { gene: "GeneC", perturbation: "点突变", lift: "+12.8%" }
+    ],
+    dbtl: [
+      { round: `第${round}轮`, stage: "Design", status: "完成", result: "生成方案" },
+      { round: `第${round}轮`, stage: "Build", status: "待执行", result: "等待菌株构建" },
+      { round: `第${round}轮`, stage: "Test", status: "待录入", result: "等待表型值" },
+      { round: `第${round}轮`, stage: "Learn", status: "待执行", result: "等待模型更新" }
+    ]
+  };
+  state.gpaDesigns = [design, ...state.gpaDesigns];
+  state.gpa.selectedDesign = design.id;
+  state.gpa.tab = "design";
+  return design;
+}
+
+function gpaCompleteVerification(designId = "") {
+  const design = getGpaDesign(designId || state.gpa.selectedDesign);
+  if (!design) {
+    throw new Error("未找到设计方案");
+  }
+  const value = gpaReadValue("gpaVerifyValue");
+  const conclusion = gpaReadValue("gpaVerifyConclusion");
+  const note = gpaReadValue("gpaVerifyNote");
+  if (!value || !conclusion) {
+    throw new Error("请填写实测表型值并选择验证结论");
+  }
+
+  design.status = "已验证";
+  design.dbtl = [
+    { round: `第${design.round}轮`, stage: "Design", status: "完成", result: "生成方案" },
+    { round: `第${design.round}轮`, stage: "Build", status: "完成", result: "菌株构建完成" },
+    { round: `第${design.round}轮`, stage: "Test", status: "完成", result: value },
+    { round: `第${design.round}轮`, stage: "Learn", status: "完成", result: conclusion }
+  ];
+
+  const dataset = getGpaDataset(design.datasetId);
+  if (dataset) {
+    dataset.records = Number(dataset.records || 0) + 1;
+    dataset.status = "就绪";
+    dataset.time = gpaNowDateTag();
+    dataset.note = [dataset.note, `实验验证：${value}；${conclusion}${note ? `；${note}` : ""}`].filter(Boolean).join("；");
+  }
+
+  const model = getGpaModel(design.modelId);
+  if (model) {
+    model.version = gpaNextModelVersion(model.version);
+    model.status = "已完成";
+    model.locked = true;
+    state.gpa.selectedModel = model.id;
+    gpaCreateDesignFromModel(model.id, { roundOffset: 1 });
+  }
+  state.gpa.tab = "dbtl";
+  appendOperationLog("gene", `DBTL Learn回流：${design.name}`);
 }
 
 function getGeneProject(projectId) {
@@ -7999,7 +9308,7 @@ function renderGeneField(field) {
       <div class="${fieldClass}">
         ${label}
         <select class="gene-control" data-gene-field="${fieldName}">
-          ${selectValue === "" ? '<option value="" selected disabled>请选择</option>' : ""}
+          ${selectValue === "" ? `<option value="" selected disabled>${escapeHtml(field.placeholder || "请选择")}</option>` : ""}
           ${field.options
             .map(
               (option) => `
@@ -8044,7 +9353,7 @@ function renderAnalysisControl(field) {
     return `
       <div class="rule-control-stack">
       <select class="gene-control" data-gene-field="${fieldName}">
-        ${selectValue === "" ? '<option value="" selected disabled>请选择</option>' : ""}
+        ${selectValue === "" ? `<option value="" selected disabled>${escapeHtml(field.placeholder || "请选择")}</option>` : ""}
         ${field.options
           .map(
             (option) => `
@@ -8077,9 +9386,9 @@ function renderAnalysisControl(field) {
 
 function renderFullModuleOptions(selectedModules = []) {
   const options = [
-    { id: "genotype", label: "基因型-表型分析" },
+    { id: "genotype", label: "基因型-表型数据分析" },
     { id: "omics", label: "组学数据分析" },
-    { id: "process", label: "发酵过程分析" },
+    { id: "process", label: "发酵过程数据分析" },
     { id: "patent", label: "专利风险分析" }
   ];
 
@@ -10082,10 +11391,10 @@ function renderGeneUploadModal(projectId) {
     sizeClass: "is-gene-form",
     body: `
       <div class="gene-form-grid">
-        ${renderGeneField({ name: "datasetName", label: "数据集名称", value: project.dataset.name, placeholder: "请输入数据集名称", rule: "必填，2-50字符，建议同项目下唯一" })}
-        ${renderGeneField({ name: "datasetType", label: "数据类型", type: "select", value: project.dataset.type, options: ["VCF", "BED", "FAM", "PHE", "CSV"], rule: "必填，需与上传文件后缀一致" })}
-        ${renderGeneField({ name: "strain", label: "菌株类型", type: "select", value: project.strain, options: ["大肠杆菌", "酵母菌", "芽孢杆菌"], rule: "必填，只能选择当前菌株类型" })}
-        ${renderGeneField({ name: "datasetSize", label: "数据大小", value: project.dataset.size, placeholder: "例如 256.78 MB", rule: "必填，正数，单位MB/GB，需与真实文件大小一致" })}
+        ${renderGeneField({ name: "datasetName", label: "数据集名称", value: "", placeholder: "请输入数据集名称", rule: "必填，2-50字符，建议同项目下唯一" })}
+        ${renderGeneField({ name: "datasetType", label: "数据类型", type: "select", value: "", placeholder: "请选择数据类型", options: ["VCF", "BED", "FAM", "PHE", "CSV"], rule: "必填，需与上传文件后缀一致" })}
+        ${renderGeneField({ name: "strain", label: "菌株类型", type: "select", value: "", placeholder: "请选择菌株类型", options: ["大肠杆菌", "酵母菌", "芽孢杆菌"], rule: "必填，只能选择当前菌株类型" })}
+        ${renderGeneField({ name: "datasetSize", label: "数据大小", value: "", placeholder: "例如 256.78 MB", rule: "必填，正数，单位MB/GB，需与真实文件大小一致" })}
         <div class="gene-field is-full">
           <label>上传文件</label>
           <div class="gene-upload-box">
@@ -10099,7 +11408,7 @@ function renderGeneUploadModal(projectId) {
     `,
     footer: `
       <button class="modal-secondary" type="button" data-close-modal="gene">取消</button>
-      <button class="modal-primary" type="button" data-gene-submit="upload|${project.id}">开始上传</button>
+      <button class="modal-primary" type="button" data-gene-submit="upload|${project.id}">确定</button>
     `
   });
 }
@@ -10298,7 +11607,7 @@ function renderGeneResultModal(projectId) {
 
   return renderGeneModalShell({
     title: `分析结果 - ${project.name}`,
-    sizeClass: "is-gene-large",
+    sizeClass: "gene-result-modal",
     body: `
       ${renderDetailHero({
         eyebrow: "基因型-表型分析",
@@ -10339,7 +11648,6 @@ function renderGeneResultModal(projectId) {
       </section>
     `,
     footer: `
-      <button class="modal-outline" type="button" data-gene-export="${project.id}">导出结果</button>
       <button class="modal-primary" type="button" data-close-modal="gene">关闭</button>
     `
   });
@@ -10447,7 +11755,7 @@ function renderGeneDetailModal(projectId, tab = "project") {
 
   return renderGeneModalShell({
     title: "详情",
-    sizeClass: "is-gene-large",
+    sizeClass: "gene-project-detail-modal",
     body: `
       ${renderDetailHero({
         eyebrow: tab === "dataset" ? "数据信息" : "项目信息",
@@ -10467,8 +11775,7 @@ function renderGeneDetailModal(projectId, tab = "project") {
       ${tab === "dataset" ? datasetTabBody : projectTabBody}
     `,
     footer: `
-      <button class="modal-outline" type="button" data-close-modal="gene">关闭</button>
-      <button class="modal-primary" type="button" data-gene-open="edit|${project.id}">编辑项目</button>
+      <button class="modal-primary" type="button" data-close-modal="gene">关闭</button>
     `
   });
 }
@@ -11380,8 +12687,11 @@ async function importSensorRecords(moduleKey, records) {
 async function submitSensorAction(action, moduleKey) {
   const values = getSensorFormValues(moduleKey);
   const module = sensorModules[moduleKey];
-  const user = values[`${moduleKey}-basic-2`] || "系统录入";
-  const time = values[`${moduleKey}-basic-1`] || new Date().toISOString().slice(0, 19).replace("T", " ");
+  const batchId = values[`${moduleKey}-basic-0`];
+  const timeIndex = module.basicFields.findIndex((field) => field.label === "录入时间");
+  const userIndex = module.basicFields.findIndex((field) => field.label === "录入人员");
+  const user = values[`${moduleKey}-basic-${userIndex}`] || "系统录入";
+  const time = values[`${moduleKey}-basic-${timeIndex}`] || new Date().toISOString().slice(0, 19).replace("T", " ");
   const metricValues = module.paramFields
     .map((field, index) => ({
       label: field.label,
@@ -11389,7 +12699,7 @@ async function submitSensorAction(action, moduleKey) {
     }))
     .filter((item) => item.value);
 
-  if (!values[`${moduleKey}-basic-0`]) {
+  if (!batchId) {
     throw new Error("请选择批次号");
   }
   if (!user || user === "系统录入") {
@@ -11408,7 +12718,7 @@ async function submitSensorAction(action, moduleKey) {
   const statusText = statusClass === "is-error" ? "异常" : statusClass === "is-warning" ? "预警" : "正常";
   const record = {
     module: moduleKey,
-    batchId: state.activeBatch[moduleKey],
+    batchId,
     time,
     user,
     statusText,
@@ -11945,6 +13255,30 @@ function renderModal() {
     return renderGeneDetailModal(state.modal.projectId, state.modal.tab || "project");
   }
 
+  if (state.modal.type === "gpa-dataset-generate") {
+    return renderGpaDatasetGenerateModal(state.modal.source || "search");
+  }
+
+  if (state.modal.type === "gpa-dataset-import") {
+    return renderGpaDatasetImportModal();
+  }
+
+  if (state.modal.type === "gpa-dataset-delete") {
+    return renderGpaDatasetDeleteModal(state.modal.datasetId || "");
+  }
+
+  if (state.modal.type === "gpa-train-model") {
+    return renderGpaTrainModelModal(state.modal.datasetId || "");
+  }
+
+  if (state.modal.type === "gpa-model-detail") {
+    return renderGpaModelDetailModal(state.modal.modelId || "");
+  }
+
+  if (state.modal.type === "gpa-verification") {
+    return renderGpaVerificationModal(state.modal.designId || "");
+  }
+
   if (state.modal.type === "threshold") {
     return renderThresholdModal(sensorModules[state.modal.module]);
   }
@@ -12309,6 +13643,374 @@ document.addEventListener("click", async (event) => {
     state.modal = null;
     state.sidebarOpen = false;
     renderApp();
+    return;
+  }
+
+  const gpaTabButton = event.target.closest("[data-gpa-tab]");
+  if (gpaTabButton) {
+    state.gpa.tab = gpaTabButton.dataset.gpaTab;
+    renderApp();
+    return;
+  }
+
+  const gpaQuickButton = event.target.closest("[data-gpa-quick]");
+  if (gpaQuickButton) {
+    const tag = gpaQuickTags[Number(gpaQuickButton.dataset.gpaQuick)];
+    if (tag) {
+      state.gpa.compound = tag.compound;
+      state.gpa.phenotype = tag.phenotype;
+      state.gpa.chassis = tag.chassis;
+      state.gpa.pathContext = gpaCurrentQueryLabel();
+      const first = gpaFilteredSearchRecords()[0];
+      state.gpa.selectedGene = first?.id || state.gpa.selectedGene;
+      state.gpa.tab = "search";
+      renderApp();
+    }
+    return;
+  }
+
+  const gpaSearchButton = event.target.closest("[data-gpa-search]");
+  if (gpaSearchButton) {
+    const compound = document.querySelector('[data-gpa-field="compound"]')?.value?.trim() || "";
+    const phenotype = document.querySelector('[data-gpa-field="phenotype"]')?.value?.trim() || "";
+    const chassis = document.querySelector('[data-gpa-field="chassis"]')?.value?.trim() || "";
+    if (compound && !phenotype) {
+      showToast("请选择表型类型");
+      return;
+    }
+    state.gpa.compound = compound;
+    state.gpa.phenotype = phenotype;
+    state.gpa.chassis = chassis;
+    state.gpa.pathContext = gpaCurrentQueryLabel();
+    const first = gpaFilteredSearchRecords()[0];
+    state.gpa.selectedGene = first?.id || "";
+    if (!first) {
+      showToast(`未找到与“${compound || phenotype || "当前条件"}”相关的数据`);
+    }
+    renderApp();
+    return;
+  }
+
+  const gpaSelectGene = event.target.closest("[data-gpa-select-gene]");
+  if (gpaSelectGene) {
+    state.gpa.selectedGene = gpaSelectGene.dataset.gpaSelectGene;
+    renderApp();
+    return;
+  }
+
+  const gpaSelectPath = event.target.closest("[data-gpa-path]");
+  if (gpaSelectPath) {
+    state.gpa.selectedPath = gpaSelectPath.dataset.gpaPath;
+    renderApp();
+    return;
+  }
+
+  const gpaSelectDesign = event.target.closest("[data-gpa-design]");
+  if (gpaSelectDesign) {
+    state.gpa.selectedDesign = gpaSelectDesign.dataset.gpaDesign;
+    renderApp();
+    return;
+  }
+
+  const gpaPathMark = event.target.closest("[data-gpa-path-mark]");
+  if (gpaPathMark) {
+    const path = getGpaPath(gpaPathMark.dataset.gpaPathMark);
+    if (path) {
+      path.status = "重点关注";
+      renderApp();
+      showToast("已标记为重点关注");
+    }
+    return;
+  }
+
+  const gpaPathIgnore = event.target.closest("[data-gpa-path-ignore]");
+  if (gpaPathIgnore) {
+    const path = getGpaPath(gpaPathIgnore.dataset.gpaPathIgnore);
+    if (path) {
+      path.status = "已忽略";
+      renderApp();
+      showToast("已从后续分析中忽略");
+    }
+    return;
+  }
+
+  const gpaActionButton = event.target.closest("[data-gpa-action]");
+  if (gpaActionButton) {
+    const action = gpaActionButton.dataset.gpaAction;
+    if (action === "clear-search") {
+      state.gpa.compound = "";
+      state.gpa.phenotype = "";
+      state.gpa.chassis = "";
+      state.gpa.pathContext = "全部GPA数据";
+      state.gpa.selectedGene = gpaFilteredSearchRecords()[0]?.id || "";
+      state.gpa.tab = "search";
+      renderApp();
+      return;
+    }
+    if (action === "view-network") {
+      if (!state.gpa.selectedGene) {
+        showToast("请先选择基因");
+        return;
+      }
+      state.gpa.pathContext = gpaCurrentQueryLabel();
+      state.gpa.tab = "path";
+      renderApp();
+      return;
+    }
+    if (["join-dataset", "generate-dataset", "generate-dataset-from-path"].includes(action)) {
+      state.modal = { type: "gpa-dataset-generate", source: action === "generate-dataset-from-path" ? "path" : "search" };
+      renderApp();
+      return;
+    }
+    if (action === "import-dataset") {
+      state.modal = { type: "gpa-dataset-import" };
+      renderApp();
+      return;
+    }
+    if (action === "run-stat") {
+      window.clearTimeout(gpaStatTimer);
+      state.gpa.statRunning = true;
+      state.gpa.statDone = false;
+      renderApp();
+      gpaStatTimer = window.setTimeout(() => {
+        state.gpa.statRunning = false;
+        state.gpa.statDone = true;
+        renderApp();
+        showToast("统计分析已完成");
+      }, 900);
+      return;
+    }
+    if (action === "run-ai") {
+      window.clearTimeout(gpaAiTimer);
+      state.gpa.aiTraining = true;
+      state.gpa.aiTrained = false;
+      state.gpa.aiStep = 4;
+      renderApp();
+      gpaAiTimer = window.setTimeout(() => {
+        state.gpa.aiTraining = false;
+        state.gpa.aiTrained = true;
+        state.gpa.aiStep = 5;
+        renderApp();
+        showToast("AI分析训练已完成");
+      }, 1100);
+      return;
+    }
+    if (action === "save-ai-model") {
+      const dataset = getGpaDataset(state.gpa.selectedDataset);
+      const model = gpaBuildModelPayload({ modelName: `${dataset?.name || "GPA"}AI模型`, datasetId: dataset?.id || "", algorithm: "XGBoost", source: "ai" });
+      gpaStoreModel(model);
+      renderApp();
+      showToast("已保存至模型管理");
+      return;
+    }
+    if (action === "train-model") {
+      state.modal = { type: "gpa-train-model", datasetId: state.gpa.selectedDataset };
+      renderApp();
+      return;
+    }
+    if (action === "download-gpa-template") {
+      downloadGpaDatasetTemplate();
+      showToast("导入模板已下载");
+      return;
+    }
+    if (action === "download-prediction") {
+      downloadGpaPredictionResult();
+      showToast("预测结果已导出");
+      return;
+    }
+    if (action === "add-ai-prediction") {
+      gpaAppendPredictionDataset();
+      renderApp();
+      showToast("预测数据已加入数据集");
+      return;
+    }
+    if (action === "generate-design-from-ai") {
+      gpaCreateDesignFromModel(state.gpa.selectedModel);
+      renderApp();
+      showToast("已根据预测结果生成设计方案");
+      return;
+    }
+    if (action === "generate-design") {
+      gpaCreateDesignFromModel(state.gpa.selectedModel);
+      renderApp();
+      showToast("已生成设计方案");
+      return;
+    }
+    if (action === "verify-design") {
+      state.modal = { type: "gpa-verification", designId: state.gpa.selectedDesign };
+      renderApp();
+      return;
+    }
+  }
+
+  const gpaDatasetAction = event.target.closest("[data-gpa-dataset-action]");
+  if (gpaDatasetAction) {
+    const [action, datasetId] = gpaDatasetAction.dataset.gpaDatasetAction.split("|");
+    const dataset = getGpaDataset(datasetId);
+    if (!dataset) {
+      showToast("未找到数据集");
+      return;
+    }
+    if (action === "ai") {
+      state.gpa.selectedDataset = dataset.id;
+      state.gpa.aiStep = 1;
+      state.gpa.tab = "analysis";
+      renderApp();
+      return;
+    }
+    if (action === "train") {
+      state.gpa.selectedDataset = dataset.id;
+      state.modal = { type: "gpa-train-model", datasetId: dataset.id };
+      renderApp();
+      return;
+    }
+    if (action === "delete") {
+      if (dataset.locked || gpaDatasetInUse(dataset.id)) {
+        showToast("数据集正在被任务使用，不能删除");
+        return;
+      }
+      state.modal = { type: "gpa-dataset-delete", datasetId: dataset.id };
+      renderApp();
+      return;
+    }
+  }
+
+  const gpaModelAction = event.target.closest("[data-gpa-model-action]");
+  if (gpaModelAction) {
+    const [action, modelId] = gpaModelAction.dataset.gpaModelAction.split("|");
+    const model = getGpaModel(modelId);
+    if (!model) {
+      showToast("未找到模型");
+      return;
+    }
+    if (action === "detail") {
+      state.modal = { type: "gpa-model-detail", modelId: model.id };
+      renderApp();
+      return;
+    }
+    if (action === "design") {
+      if (model.status !== "已完成") {
+        showToast("仅已完成模型可生成设计方案");
+        return;
+      }
+      state.modal = null;
+      state.gpa.selectedModel = model.id;
+      gpaCreateDesignFromModel(model.id);
+      renderApp();
+      showToast("已生成设计方案");
+      return;
+    }
+  }
+
+  const gpaAiStepButton = event.target.closest("[data-gpa-ai-step]");
+  if (gpaAiStepButton) {
+    state.gpa.aiStep = Math.max(1, Math.min(5, Number(gpaAiStepButton.dataset.gpaAiStep) || 1));
+    renderApp();
+    return;
+  }
+
+  const gpaAiPrevButton = event.target.closest("[data-gpa-ai-prev]");
+  if (gpaAiPrevButton) {
+    state.gpa.aiStep = Math.max(1, (state.gpa.aiStep || 1) - 1);
+    renderApp();
+    return;
+  }
+
+  const gpaAiNextButton = event.target.closest("[data-gpa-ai-next]");
+  if (gpaAiNextButton) {
+    state.gpa.aiStep = Math.min(5, (state.gpa.aiStep || 1) + 1);
+    renderApp();
+    return;
+  }
+
+  const gpaSubmitButton = event.target.closest("[data-gpa-submit]");
+  if (gpaSubmitButton) {
+    const [action, value = ""] = gpaSubmitButton.dataset.gpaSubmit.split("|");
+    try {
+      if (action === "generate-dataset") {
+        const dataset = {
+          id: generateSystemLocalId("gpa-data"),
+          name: gpaReadValue("gpaDatasetName") || "GPA生成数据集",
+          source: gpaReadValue("gpaDatasetSource") || "检索生成",
+          records: Number(gpaReadValue("gpaDatasetRecords")) || 0,
+          features: Number(gpaReadValue("gpaDatasetFeatures")) || 0,
+          status: "就绪",
+          time: gpaNowDateTag(),
+          locked: false,
+          note: gpaReadValue("gpaDatasetNote") || (value === "path" ? "由调控路径分析生成" : "由GPA检索结果生成")
+        };
+        gpaStoreDataset(dataset);
+        state.modal = null;
+        renderApp();
+        showToast("数据集已生成");
+        return;
+      }
+      if (action === "import-dataset") {
+        const name = gpaReadValue("gpaImportName") || state.gpa.importFileName;
+        if (!name) {
+          throw new Error("请输入数据集名称或选择文件");
+        }
+        const dataset = {
+          id: generateSystemLocalId("gpa-data"),
+          name,
+          source: gpaReadValue("gpaImportSource") || "实验导入",
+          records: Number(gpaReadValue("gpaImportRecords")) || 0,
+          features: Number(gpaReadValue("gpaImportFeatures")) || 0,
+          status: "就绪",
+          time: gpaNowDateTag(),
+          locked: false,
+          note: state.gpa.importFileName ? `文件：${state.gpa.importFileName}` : "用户手动导入"
+        };
+        state.gpa.importFileName = "";
+        state.gpa.importFileSize = 0;
+        gpaStoreDataset(dataset);
+        state.modal = null;
+        renderApp();
+        showToast("数据集已导入");
+        return;
+      }
+      if (action === "train-model") {
+        const datasetId = gpaReadValue("trainDataset") || state.gpa.selectedDataset;
+        const algorithm = gpaReadValue("gpaAlgorithm") || "随机森林";
+        const model = gpaBuildModelPayload({ modelName: gpaReadValue("gpaModelName"), datasetId, algorithm });
+        state.modal = null;
+        state.gpa.tab = "model";
+        window.clearTimeout(gpaTrainTimer);
+        gpaTrainTimer = window.setTimeout(() => {
+          gpaStoreModel(model);
+          renderApp();
+          showToast("模型训练已完成");
+        }, 500);
+        renderApp();
+        return;
+      }
+      if (action === "delete-dataset") {
+        const dataset = getGpaDataset(value);
+        if (!dataset) {
+          throw new Error("未找到数据集");
+        }
+        if (dataset.locked || gpaDatasetInUse(dataset.id)) {
+          throw new Error("数据集正在被任务使用，不能删除");
+        }
+        state.gpaDatasets = state.gpaDatasets.filter((item) => item.id !== dataset.id);
+        if (state.gpa.selectedDataset === dataset.id) {
+          state.gpa.selectedDataset = state.gpaDatasets[0]?.id || "";
+        }
+        state.modal = null;
+        renderApp();
+        showToast("数据集已删除");
+        return;
+      }
+      if (action === "verify") {
+        gpaCompleteVerification(value);
+        state.modal = null;
+        renderApp();
+        showToast("验证结果已回流，模型版本已更新");
+        return;
+      }
+    } catch (error) {
+      showToast(error.message || "操作失败");
+    }
     return;
   }
 
@@ -12946,8 +14648,9 @@ document.addEventListener("click", async (event) => {
   if (batchGenerateButton && state.modal?.type === "batch") {
     const nameInput = document.querySelector('[data-gene-field="batchCellName"]');
     const batchInput = document.querySelector('[data-gene-field="batchId"]');
+    const concentrationInput = document.querySelector('[data-gene-field="batchConcentration"]');
     if (batchInput) {
-      batchInput.value = generateSensorBatchId(nameInput?.value || "");
+      batchInput.value = generateSensorBatchId(nameInput?.value || "", new Date(), concentrationInput?.value || "中浓度");
       showToast("已生成建议批号");
     }
     return;
@@ -13053,6 +14756,15 @@ document.addEventListener("input", (event) => {
     return;
   }
 
+  if (event.target.matches("[data-gpa-field]")) {
+    const field = event.target.dataset.gpaField;
+    state.gpa[field] = event.target.value.trim();
+    if (["compound", "phenotype", "chassis"].includes(field)) {
+      state.gpa.pathContext = gpaCurrentQueryLabel();
+    }
+    return;
+  }
+
   if (event.target.matches("[data-service-field]") && state.modal?.type === "analysis-form" && state.modal.moduleKey === "service") {
     state.modal = {
       ...state.modal,
@@ -13084,6 +14796,28 @@ document.addEventListener("change", async (event) => {
         [event.target.dataset.serviceField]: event.target.value.trim()
       }
     };
+    return;
+  }
+
+  if (event.target.matches("[data-gpa-field]")) {
+    const field = event.target.dataset.gpaField;
+    state.gpa[field] = event.target.value.trim();
+    if (["compound", "phenotype", "chassis"].includes(field)) {
+      state.gpa.pathContext = gpaCurrentQueryLabel();
+    }
+    renderApp();
+    return;
+  }
+
+  if (event.target.matches("[data-gpa-import-file]")) {
+    const [file] = [...(event.target.files || [])];
+    if (!file) {
+      return;
+    }
+    state.gpa.importFileName = file.name;
+    state.gpa.importFileSize = file.size;
+    renderApp();
+    showToast(`已选择文件：${file.name}`);
     return;
   }
 

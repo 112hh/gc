@@ -120,7 +120,7 @@ button {
   height: 100vh;
   margin: 0;
   display: grid;
-  grid-template-columns: clamp(180px, 14vw, 220px) minmax(0, 1fr);
+  grid-template-columns: clamp(220px, 17vw, 260px) minmax(0, 1fr);
   overflow: hidden;
   background: #fff;
   box-shadow: none;
@@ -148,6 +148,8 @@ button {
 }
 
 .sidebar {
+  position: relative;
+  z-index: 10;
   display: flex;
   flex-direction: column;
   min-height: 0;
@@ -261,6 +263,13 @@ button {
   border-radius: var(--radius-sm);
 }
 
+.nav-link span:last-child,
+.group-label span:last-child,
+.nav-sub-link span:last-child {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
 .nav-link.is-active,
 .nav-group-head.is-active {
   background: rgba(255, 255, 255, 0.14);
@@ -334,6 +343,8 @@ button {
 }
 
 .workspace {
+  position: relative;
+  z-index: 1;
   min-width: 0;
   min-height: 0;
   overflow: auto;
@@ -2750,7 +2761,8 @@ button {
 
 .modal {
   width: min(100%, 760px);
-  max-height: calc(100vh - 32px);
+  max-height: calc(100dvh - 32px);
+  margin: auto;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -2758,6 +2770,10 @@ button {
   border-radius: var(--radius-md);
   background: var(--panel-bg);
   box-shadow: var(--shadow-high);
+}
+
+.modal-layer > .modal {
+  margin: auto;
 }
 
 .modal.is-detail {
@@ -2980,6 +2996,11 @@ button {
   padding: 16px;
 }
 
+.omics-upload-panel .modal-outline {
+  min-height: 36px;
+  padding: 0 14px;
+}
+
 .upload-plus,
 .gene-upload-icon,
 .omics-upload-icon {
@@ -3186,6 +3207,14 @@ button {
 
 .gene-modal.is-gene-large {
   width: min(100%, 1180px);
+}
+
+.gene-modal.gene-result-modal {
+  width: min(100%, 960px);
+}
+
+.gene-modal.gene-project-detail-modal {
+  width: min(100%, 960px);
 }
 
 .gene-modal.is-gene-delete {
@@ -4713,6 +4742,28 @@ button {
   gap: 18px;
 }
 
+.omics-model-capability {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 14px 16px;
+  border: 1px solid #e6ecf5;
+  border-radius: var(--radius-sm);
+  background: #f8fbff;
+  color: var(--text-secondary);
+  line-height: var(--lh-sm);
+}
+
+.omics-model-capability strong {
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+.omics-model-capability p {
+  margin: 0;
+  font-size: 13px;
+}
+
 .omics-delete-modal .gene-delete-icon {
   border: 2px solid #ff8e8e;
   background: #fff;
@@ -4743,8 +4794,691 @@ button {
   gap: 10px;
 }
 
+.omics-basic-item.is-wide {
+  grid-column: 1 / -1;
+}
+
 .omics-basic-item.is-status-card {
   background: linear-gradient(180deg, #ffffff 0%, #f7fbf2 100%);
+}
+
+button.omics-basic-item,
+button.detail-card-item,
+button.full-material-card {
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+button.omics-basic-item:hover,
+button.detail-card-item:hover,
+button.full-material-card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 10px 24px rgba(49, 94, 251, 0.12);
+}
+
+button.omics-basic-item:active,
+button.detail-card-item:active,
+button.full-material-card:active {
+  transform: translateY(1px);
+}
+
+.analysis-split-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  align-items: start;
+  width: 100%;
+  min-width: 0;
+}
+
+.analysis-split-grid.is-control-main {
+  grid-template-columns: minmax(280px, 300px) minmax(0, 1fr);
+}
+
+.analysis-split-grid.is-kg {
+  grid-template-columns: 220px minmax(420px, 1fr) 280px;
+}
+
+.analysis-split-grid.is-wide-main {
+  grid-template-columns: minmax(0, 1fr) 300px;
+}
+
+.analysis-split-grid > .is-full,
+.gene-section-card.is-full {
+  grid-column: 1 / -1;
+}
+
+.analysis-page .gene-section-card {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.analysis-page .omics-flow-svg {
+  display: block;
+  position: relative;
+  inset: auto;
+  width: 100%;
+  height: clamp(260px, 28vw, 360px);
+  min-height: 260px;
+  max-height: 420px;
+  border-radius: var(--radius-sm);
+  background: #f8fbff;
+}
+
+.analysis-page .service-mode-tabs {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.analysis-page .service-mode-tab {
+  min-width: 132px;
+  min-height: 40px;
+  flex: 0 1 auto;
+  cursor: pointer;
+}
+
+.modal-primary.is-full,
+.modal-outline.is-full {
+  width: 100%;
+  justify-content: center;
+}
+
+.modal-primary.is-loading {
+  opacity: 0.72;
+  pointer-events: none;
+}
+
+.modal-outline.is-disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.analysis-control-stack {
+  display: grid;
+  gap: 14px;
+}
+
+.analysis-node-list {
+  display: grid;
+  gap: 10px;
+}
+
+.analysis-page > .gene-section-card,
+.analysis-page > .analysis-split-grid,
+.analysis-page > .service-mode-tabs {
+  margin-top: 18px;
+}
+
+.analysis-page > .page-title-row + .gene-section-card,
+.analysis-page > .page-title-row + .analysis-split-grid,
+.analysis-page > .page-title-row + .service-mode-tabs {
+  margin-top: 0;
+}
+
+.analysis-page .gene-section-head {
+  gap: 16px;
+}
+
+.analysis-page .table-scroll {
+  max-width: 100%;
+}
+
+.analysis-page .filter-row {
+  align-items: end;
+}
+
+.analysis-page .filter-card,
+.analysis-page .gene-section-card {
+  border: 1px solid var(--border-normal);
+  box-shadow: 0 10px 28px rgba(24, 39, 75, 0.05);
+}
+
+.analysis-page .omics-basic-grid,
+.analysis-page .detail-card-grid,
+.analysis-page .full-material-grid {
+  min-width: 0;
+}
+
+.analysis-page button.omics-basic-item,
+.analysis-page button.detail-card-item,
+.analysis-page button.full-material-card,
+.analysis-page .service-mode-tab,
+.analysis-page .table-link,
+.analysis-page .modal-primary,
+.analysis-page .modal-outline,
+.analysis-page .toolbar-primary {
+  min-height: 40px;
+  touch-action: manipulation;
+}
+
+.analysis-page button.omics-basic-item:focus-visible,
+.analysis-page button.detail-card-item:focus-visible,
+.analysis-page button.full-material-card:focus-visible,
+.analysis-page .service-mode-tab:focus-visible,
+.analysis-page .table-link:focus-visible,
+.analysis-page .modal-primary:focus-visible,
+.analysis-page .modal-outline:focus-visible,
+.analysis-page .toolbar-primary:focus-visible {
+  outline: 2px solid rgba(49, 94, 251, 0.45);
+  outline-offset: 2px;
+}
+
+.nav-link:focus-visible,
+.nav-group-head:focus-visible,
+.nav-sub-link:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.9);
+  outline-offset: 2px;
+}
+
+.analysis-page .gene-control,
+.analysis-page .filter-control-wrap input,
+.analysis-page .filter-control-wrap select {
+  min-height: 40px;
+}
+
+.analysis-page .requirement-list button.table-link {
+  min-height: 32px;
+  padding: 0 10px;
+  border: 1px solid #dce6f5;
+  border-radius: 999px;
+  background: #fff;
+}
+
+.analysis-page .service-info-item small {
+  display: block;
+  margin-top: 6px;
+}
+
+.analysis-page .full-material-card p {
+  margin: 10px 0 0;
+}
+
+.analysis-page .full-material-card,
+.analysis-page .omics-basic-item,
+.analysis-page .detail-card-item,
+.analysis-page .service-info-item {
+  min-width: 0;
+}
+
+.analysis-page .full-material-card strong,
+.analysis-page .omics-basic-value,
+.analysis-page .omics-basic-label,
+.analysis-page .section-caption {
+  overflow-wrap: anywhere;
+}
+
+.analysis-page .service-home-search-card .filter-row {
+  display: grid;
+  grid-template-columns: minmax(320px, 720px) auto;
+  gap: 14px;
+  align-items: end;
+  padding: 0;
+}
+
+.analysis-page .service-home-search-card .inline-field,
+.analysis-page .service-home-search-card .filter-control-wrap {
+  width: 100%;
+}
+
+.analysis-page .service-home-search-card .inline-field input {
+  width: 100%;
+}
+
+.analysis-page .service-home-search-card .modal-primary {
+  min-width: 96px;
+  height: 40px;
+  padding-inline: 24px;
+}
+
+.analysis-page .service-home-search-card .requirement-list {
+  margin-top: 18px;
+}
+
+.analysis-page .gene-form-grid .full-impact-bar {
+  width: 100%;
+}
+
+.analysis-page svg [data-full-kg-node],
+.analysis-page svg [data-fba-node] {
+  cursor: pointer;
+}
+
+.gpa-module-page {
+  display: grid;
+  gap: 18px;
+}
+
+.gpa-flow-card {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid var(--border-normal);
+  border-radius: var(--radius-sm);
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  box-shadow: 0 10px 28px rgba(24, 39, 75, 0.05);
+}
+
+.gpa-flow-title {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px 18px;
+}
+
+.gpa-flow-title h2 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 20px;
+  line-height: 1.35;
+}
+
+.gpa-flow-title p {
+  margin: 4px 0 0;
+  color: var(--text-secondary);
+}
+
+.gpa-flow-steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.gpa-flow-steps span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid #dce6f5;
+  border-radius: 999px;
+  background: #f4f7ff;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.gpa-flow-steps i {
+  width: 22px;
+  height: 1px;
+  background: #cfd7e6;
+  display: inline-block;
+}
+
+.gpa-tabbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 6px;
+  border: 1px solid var(--border-normal);
+  border-radius: var(--radius-sm);
+  background: var(--panel-bg);
+}
+
+.gpa-tab {
+  min-height: 36px;
+  padding: 0 14px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-secondary);
+}
+
+.gpa-tab.is-active {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: #fff;
+  box-shadow: var(--shadow-base);
+}
+
+.gpa-two-column {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.gpa-result-list,
+.gpa-path-list {
+  display: grid;
+  gap: 10px;
+}
+
+.gpa-result-item,
+.gpa-path-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr) auto auto;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #dce6f5;
+  border-radius: var(--radius-sm);
+  background: #fff;
+  text-align: left;
+}
+
+.gpa-result-item strong,
+.gpa-path-row strong {
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+.gpa-result-item span,
+.gpa-path-row span {
+  color: var(--text-secondary);
+  overflow-wrap: anywhere;
+}
+
+.gpa-result-item em,
+.gpa-path-row em {
+  font-style: normal;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.gpa-result-item small {
+  color: var(--text-tertiary);
+}
+
+.gpa-result-item.is-active,
+.gpa-path-row.is-active {
+  border-color: var(--primary);
+  background: #f8fbff;
+  box-shadow: 0 10px 24px rgba(49, 94, 251, 0.12);
+}
+
+.gpa-result-item.is-active strong,
+.gpa-path-row.is-active strong {
+  color: var(--primary);
+}
+
+.gpa-network-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(360px, 0.8fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.gpa-network-canvas {
+  min-height: 340px;
+  border: 1px solid #dce6f5;
+  border-radius: var(--radius-sm);
+  background: #fbfdff;
+  overflow: hidden;
+}
+
+.gpa-network-svg {
+  display: block;
+  width: 100%;
+  height: 340px;
+}
+
+.gpa-edge.native {
+  stroke: #4a74f3;
+}
+
+.gpa-edge.hidden-on {
+  stroke: #42b883;
+  stroke-dasharray: 6 4;
+}
+
+.gpa-edge.hidden-off {
+  stroke: #e8505b;
+  stroke-dasharray: 6 4;
+}
+
+.gpa-node {
+  cursor: pointer;
+}
+
+.gpa-node circle {
+  fill: #fff;
+  stroke: #8aa0c8;
+  stroke-width: 2;
+}
+
+.gpa-node.is-active circle {
+  fill: #edf3ff;
+  stroke: var(--primary);
+}
+
+.gpa-node text {
+  fill: #344663;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.gpa-network-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.gpa-network-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px;
+  border: 1px solid #dce6f5;
+  border-radius: 999px;
+  background: #f8fbff;
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.gpa-network-legend span::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.gpa-path-filter-row {
+  margin-bottom: 14px;
+}
+
+.gpa-empty-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.gpa-check-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.gpa-check-list span {
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  border: 1px solid #dce6f5;
+  border-radius: var(--radius-sm);
+  background: #f8fbff;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.gpa-stepper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.gpa-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid #dce6f5;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--text-secondary);
+}
+
+.gpa-step span {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #e7efff;
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.gpa-step.is-active {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: #f8fbff;
+}
+
+.gpa-step.is-done span {
+  background: var(--primary);
+  color: #fff;
+}
+
+.gpa-ai-block {
+  display: grid;
+  gap: 16px;
+}
+
+.gpa-ai-panels {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+  gap: 16px;
+  margin-top: 16px;
+  align-items: start;
+}
+
+.gpa-config-box {
+  padding: 16px;
+  border: 1px solid #dce6f5;
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
+
+.gpa-config-box h5 {
+  margin: 0 0 12px;
+  color: var(--text-primary);
+  font-size: 15px;
+}
+
+.gpa-progress-list {
+  display: grid;
+  gap: 10px;
+}
+
+.gpa-progress-row {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+}
+
+.gpa-progress-row span {
+  color: var(--text-secondary);
+}
+
+.gpa-progress-row strong {
+  height: 8px;
+  border-radius: 999px;
+  background: #edf2fa;
+  overflow: hidden;
+}
+
+.gpa-progress-row strong i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--primary-active));
+}
+
+.gpa-progress-row em {
+  font-style: normal;
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.gpa-stat-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.gpa-import-empty {
+  display: grid;
+  gap: 14px;
+}
+
+.gpa-import-picker {
+  display: grid;
+  gap: 8px;
+  padding: 18px;
+  border: 1px dashed var(--primary-hover);
+  border-radius: var(--radius-sm);
+  background: #f8fbff;
+  cursor: pointer;
+}
+
+.gpa-import-picker input {
+  display: none;
+}
+
+.gpa-import-picker strong {
+  color: var(--text-primary);
+  font-size: 15px;
+}
+
+.gpa-import-picker span {
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.gpa-import-summary {
+  padding: 16px;
+  border: 1px solid #dce6f5;
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
+
+.gpa-import-summary p {
+  margin: 0;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.gpa-import-summary span {
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.analysis-selected-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.analysis-selected-actions .modal-outline,
+.analysis-selected-actions .modal-primary {
+  min-height: 36px;
+}
+
+.gpa-module-page .gene-section-card {
+  min-width: 0;
 }
 
 .omics-basic-label {
@@ -7828,7 +8562,9 @@ button {
   .form-grid.is-4,
   .record-grid,
   .detail-param-grid,
-  .service-stepper {
+  .service-stepper,
+  .gpa-ai-panels,
+  .gpa-check-list {
     grid-template-columns: 1fr;
   }
 
@@ -7952,8 +8688,39 @@ button {
     width: 100%;
   }
 
+  .gene-modal.gene-result-modal,
+  .gene-modal.gene-project-detail-modal {
+    width: min(100%, 960px);
+  }
+
   .omics-basic-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .analysis-split-grid,
+  .analysis-split-grid.is-control-main,
+  .analysis-split-grid.is-kg,
+  .analysis-split-grid.is-wide-main {
+    grid-template-columns: 1fr;
+  }
+
+  .gpa-two-column,
+  .gpa-network-layout,
+  .gpa-stat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gpa-result-item,
+  .gpa-path-row {
+    grid-template-columns: 1fr;
+  }
+
+  .gpa-progress-row {
+    grid-template-columns: 1fr;
+  }
+
+  .gpa-flow-title {
+    flex-direction: column;
   }
 
   .omics-gpa-grid,
