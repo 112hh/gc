@@ -1,4 +1,4 @@
-const authScreens = {
+﻿const authScreens = {
   login: {
     heroTitle: ["专业的细胞工程", "数据管理平台"],
     bullets: [
@@ -4574,6 +4574,7 @@ const state = {
   gpaModels: gpaInitialModels.map((item) => ({ ...item })),
   gpaDesigns: gpaInitialDesigns.map((item) => ({ ...item, genes: item.genes.map((gene) => ({ ...gene })), dbtl: item.dbtl.map((stage) => ({ ...stage })) })),
   openNavGroup: "",
+  standardsModule: "gpa",
   modal: null,
   sidebarOpen: false,
   currentUser: null,
@@ -4582,6 +4583,17 @@ const state = {
     register: "",
     recover: ""
   }
+};
+
+analysisPages.standards = {
+  key: "standards",
+  title: "工程细胞数据标准体系",
+  breadcrumb: ["首页", "工程细胞主题库", "工程细胞数据标准体系"],
+  primaryButton: "",
+  headerTools: false,
+  filters: [],
+  columns: [],
+  rows: []
 };
 
 const algorithmCapabilityLibrary = {
@@ -5043,6 +5055,9 @@ function getMenuGroupForMenu(menuKey = state.activeMenu) {
   if (isSensorMenu(menuKey)) {
     return "monitor";
   }
+  if (menuKey === "standards") {
+    return "standards";
+  }
   if (isAnalysisMenu(menuKey)) {
     return "analysis";
   }
@@ -5183,6 +5198,7 @@ function renderSidebar() {
   const monitorOpen = state.openNavGroup === "monitor";
   const analysisActive = isAnalysisMenu();
   const analysisOpen = state.openNavGroup === "analysis";
+  const standardsOpen = state.openNavGroup === "standards" || state.activeMenu === "standards";
   const systemActive = isSystemMenu(state.activeMenu);
   const systemOpen = state.openNavGroup === "system";
 
@@ -5203,6 +5219,35 @@ function renderSidebar() {
           <span class="nav-icon">${icon("i-list")}</span>
           <span>数据资源目录</span>
         </button>
+      </section>
+
+      <section class="nav-section">
+        <p class="nav-title">工程细胞数据标准体系</p>
+        <button class="nav-group-head ${state.activeMenu === "standards" || standardsOpen ? "is-active" : ""}" type="button" data-menu-group="standards">
+          <span class="group-label">
+            <span class="nav-icon">${icon("i-doc")}</span>
+            <span>工程细胞数据标准体系</span>
+          </span>
+          <span class="menu-arrow ${standardsOpen ? "is-open" : ""}">${icon("i-chevron")}</span>
+        </button>
+        <div class="nav-submenu ${standardsOpen ? "is-open" : ""}">
+          <button class="nav-sub-link ${state.activeMenu === "standards" && state.standardsModule === "gpa" ? "is-active" : ""}" type="button" data-menu="standards" data-standards-module="gpa">
+            <span class="submenu-dot"></span>
+            <span>GPA获取和分析标准化</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "standards" && state.standardsModule === "cell-model" ? "is-active" : ""}" type="button" data-menu="standards" data-standards-module="cell-model">
+            <span class="submenu-dot"></span>
+            <span>工程细胞模型标准化</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "standards" && state.standardsModule === "pilot-params" ? "is-active" : ""}" type="button" data-menu="standards" data-standards-module="pilot-params">
+            <span class="submenu-dot"></span>
+            <span>小中试参数数字化模型标准化</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "standards" && state.standardsModule === "strain-encrypt" ? "is-active" : ""}" type="button" data-menu="standards" data-standards-module="strain-encrypt">
+            <span class="submenu-dot"></span>
+            <span>菌株保护特殊加密标准化</span>
+          </button>
+        </div>
       </section>
 
       <section class="nav-section">
@@ -8032,6 +8077,17 @@ function downloadAuditRow(row = {}) {
 }
 
 function renderAnalysisPage(page) {
+  if (page.key === "standards") {
+    const standardsModule = state.standardsModule || "gpa";
+    return `
+      <div class="page-section analysis-page standards-embed-page">
+        <section class="standards-frame-shell" aria-label="工程细胞数据标准体系原型">
+          <iframe class="standards-frame" src="./standards.html?embedded=1&module=${standardsModule}" title="工程细胞数据标准体系"></iframe>
+        </section>
+      </div>
+    `;
+  }
+
   if (page.key === "gene") {
     return renderGpaModulePage();
   }
@@ -13636,6 +13692,9 @@ document.addEventListener("click", async (event) => {
   const menuButton = event.target.closest("[data-menu]");
   if (menuButton) {
     state.activeMenu = menuButton.dataset.menu;
+    if (menuButton.dataset.standardsModule) {
+      state.standardsModule = menuButton.dataset.standardsModule;
+    }
     state.openNavGroup = getMenuGroupForMenu(state.activeMenu);
     if (isSensorMenu(state.activeMenu)) {
       state.sensorView[state.activeMenu] = "list";
@@ -14984,3 +15043,4 @@ Promise.all([loadGeneProjects(), loadAnalysisModules(), loadSensorRecords()])
     console.error(error);
     showToast("系统数据加载失败");
   });
+

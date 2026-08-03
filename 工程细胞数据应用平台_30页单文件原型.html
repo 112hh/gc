@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1200, initial-scale=1" />
+  <title>工程细胞数据应用平台 - 30页原型</title>
+  <style>
+    :root {
+      --sidebar: #1e293b;
+      --sidebar-text: #e2e8f0;
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --page-bg: #f1f5f9;
+      --card: #ffffff;
+      --border: #e2e8f0;
+      --text: #1e293b;
+      --muted: #64748b;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --info: #3b82f6;
+      --shadow: 0 1px 3px rgba(15, 23, 42, 0.1);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-width: 1200px; height: 100%; }
+    body {
+      font-family: "Source Han Sans", "Microsoft YaHei", sans-serif;
+      color: var(--text);
+      background: var(--page-bg);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+    #sidebar {
+      position: fixed;
+      inset: 0 auto 0 0;
+      width: 220px;
+      overflow-y: auto;
+      background: var(--sidebar);
+      color: var(--sidebar-text);
+      z-index: 10;
+    }
+    .logo {
+      height: 64px;
+      display: flex;
+      align-items: center;
+      padding: 0 18px;
+      font-size: 18px;
+      font-weight: 700;
+      border-bottom: 1px solid rgba(226, 232, 240, 0.14);
+    }
+    #sidebar-nav { padding: 12px 10px 24px; }
+    .nav-group { margin-bottom: 4px; }
+    .nav-head, .nav-leaf {
+      width: 100%;
+      min-height: 36px;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px 10px;
+      text-align: left;
+    }
+    .nav-head:hover, .nav-leaf:hover { background: rgba(255, 255, 255, 0.08); }
+    .nav-leaf.is-active { background: var(--primary); color: #fff; }
+    .nav-children {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .25s ease;
+      padding-left: 10px;
+    }
+    .nav-group.is-open > .nav-children { max-height: 1600px; }
+    .arrow { transition: transform .2s ease; font-size: 12px; }
+    .nav-group.is-open > .nav-head .arrow { transform: rotate(90deg); }
+    .nav-leaf { font-size: 12px; color: #cbd5e1; }
+    .nav-level-3 .nav-leaf { padding-left: 16px; }
+    .nav-level-4 .nav-leaf { padding-left: 22px; }
+
+    #main-content {
+      margin-left: 220px;
+      height: 100vh;
+      overflow-y: auto;
+      padding: 24px;
+      background: var(--page-bg);
+    }
+    #breadcrumb {
+      min-height: 24px;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 16px;
+    }
+    #breadcrumb span { color: var(--muted); cursor: pointer; }
+    #breadcrumb b { color: var(--text); }
+    .page { display: none; }
+    .page.is-active { display: block; }
+    .page-title {
+      margin: 0 0 16px;
+      font-size: 18px;
+      font-weight: 700;
+    }
+    .grid { display: grid; gap: 16px; }
+    .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .grid.five { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .card-title {
+      margin: -2px 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      font-size: 16px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-title::before {
+      content: "";
+      width: 4px;
+      height: 18px;
+      border-radius: 999px;
+      background: var(--primary);
+    }
+    .form-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-bottom: 14px; }
+    .form-row.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    label.field { display: grid; gap: 6px; color: var(--muted); font-size: 12px; }
+    input, select, textarea {
+      min-height: 38px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 10px;
+      background: #fff;
+      color: var(--text);
+      outline: none;
+    }
+    input:focus, select:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(59, 130, 246, .15); }
+    .actions { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .btn {
+      min-height: 36px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 14px;
+      background: #fff;
+      color: var(--text);
+      transition: background .15s ease, border-color .15s ease, color .15s ease;
+    }
+    .btn:hover { border-color: #bfdbfe; background: #eff6ff; }
+    .btn.primary { border-color: var(--primary); background: var(--primary); color: #fff; }
+    .btn.primary:hover { background: var(--primary-hover); }
+    .btn.link { border-color: transparent; background: transparent; color: var(--muted); }
+    .btn.danger { color: var(--danger); border-color: #fecaca; background: #fff5f5; }
+    .error-text { display: none; color: var(--danger); font-size: 12px; margin-top: -6px; }
+    .error-text.show { display: block; }
+    .loading { display: inline-flex; align-items: center; gap: 10px; color: var(--muted); }
+    .spinner {
+      width: 22px;
+      height: 22px;
+      border: 3px solid #dbeafe;
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .empty {
+      min-height: 110px;
+      border: 1px dashed #cbd5e1;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      background: #f8fafc;
+    }
+    .table-wrap { overflow: auto; border: 1px solid var(--border); border-radius: 8px; }
+    table { width: 100%; border-collapse: collapse; min-width: 760px; }
+    th, td { padding: 10px 12px; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; }
+    th { background: #f8fafc; font-weight: 700; user-select: none; }
+    th.sortable { cursor: pointer; }
+    tbody tr:nth-child(even) { background: #f8fafc; }
+    tbody tr:hover { background: #eff6ff; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      border-radius: 999px;
+      padding: 0 9px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .success { color: #047857; background: #d1fae5; }
+    .warning { color: #b45309; background: #fef3c7; }
+    .danger { color: #b91c1c; background: #fee2e2; }
+    .info { color: #1d4ed8; background: #dbeafe; }
+    .muted { color: #475569; background: #e2e8f0; }
+    .progress { width: 130px; height: 8px; background: #e2e8f0; border-radius: 999px; overflow: hidden; display: inline-block; vertical-align: middle; margin-left: 8px; }
+    .progress i { display: block; height: 100%; background: var(--primary); border-radius: inherit; transition: width .3s ease; }
+    .pagination { display: flex; align-items: center; gap: 6px; padding: 12px 0 0; }
+    .page-btn { min-width: 32px; height: 32px; border: 1px solid var(--border); border-radius: 6px; background: #fff; }
+    .page-btn.is-current { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .page-jump { width: 64px; min-height: 32px; }
+
+    .tabs { display: flex; gap: 8px; border-bottom: 1px solid var(--border); margin-bottom: 14px; }
+    .tab {
+      border: 0;
+      background: transparent;
+      padding: 10px 14px;
+      color: var(--muted);
+      border-bottom: 2px solid transparent;
+    }
+    .tab.is-active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 700; }
+    .tab-panel { display: none; }
+    .tab-panel.is-active { display: block; }
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .25s ease;
+    }
+    .accordion.is-open .accordion-body { max-height: 380px; }
+    .accordion-toggle { width: 100%; justify-content: space-between; display: flex; }
+
+    .metric-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      background: #f8fafc;
+    }
+    .metric-card strong { display: block; font-size: 22px; color: var(--primary); }
+    .metric-card span { color: var(--muted); font-size: 12px; }
+    .split { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; }
+    .network-card svg, .chart-card svg { width: 100%; min-height: 360px; background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; }
+    .node { cursor: pointer; transition: opacity .2s ease, stroke .2s ease; }
+    .node:hover, .node.is-selected { stroke: var(--primary); stroke-width: 4; }
+    .tooltip {
+      position: fixed;
+      display: none;
+      pointer-events: none;
+      z-index: 50;
+      padding: 8px 10px;
+      border-radius: 6px;
+      background: #0f172a;
+      color: #fff;
+      font-size: 12px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, .2);
+    }
+    .legend { display: flex; flex-wrap: wrap; gap: 12px; color: var(--muted); font-size: 12px; margin-top: 10px; }
+    .legend span::before { content: ""; display: inline-block; width: 18px; height: 3px; margin-right: 6px; vertical-align: middle; background: currentColor; }
+    .legend .green { color: var(--success); }
+    .legend .red { color: var(--danger); }
+    .legend .orange { color: var(--warning); }
+    .formula { padding: 14px; border-radius: 8px; background: #f1f5f9; font-family: Consolas, monospace; color: #334155; }
+    .heat-grid { display: grid; grid-template-columns: 180px repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+    .heat-grid div { background: #fff; padding: 10px; }
+    .heat-low { background: #dbeafe !important; }
+    .heat-mid { background: #93c5fd !important; }
+    .heat-high { background: #3b82f6 !important; color: #fff; }
+    .heat-max { background: #1d4ed8 !important; color: #fff; }
+    .dbtl-flow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+    .dbtl-step { padding: 16px; border-radius: 8px; text-align: center; border: 1px solid var(--border); background: #f8fafc; }
+    .dbtl-step.done { background: #d1fae5; color: #047857; }
+    .dbtl-step.active { background: #dbeafe; color: #1d4ed8; animation: pulse 1.4s ease infinite; }
+    @keyframes pulse { 50% { box-shadow: 0 0 0 6px rgba(59, 130, 246, .12); } }
+    .timeline { border-left: 2px solid #bfdbfe; padding-left: 18px; display: grid; gap: 12px; }
+    .timeline-item { position: relative; padding: 12px; background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; }
+    .timeline-item::before { content: ""; position: absolute; left: -27px; top: 16px; width: 14px; height: 14px; border-radius: 50%; background: var(--primary); }
+    .bar-chart { display: flex; align-items: end; gap: 16px; height: 180px; padding: 18px; border: 1px solid var(--border); border-radius: 8px; background: #f8fafc; }
+    .bar { width: 48px; background: var(--primary); border-radius: 6px 6px 0 0; color: #fff; display: flex; align-items: end; justify-content: center; padding-bottom: 6px; font-size: 12px; }
+    .service-card { border-left: 4px solid var(--primary); }
+
+    #modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      place-items: center;
+      background: rgba(0, 0, 0, .5);
+      z-index: 100;
+    }
+    #modal.is-open { display: grid; }
+    .modal-dialog {
+      width: min(900px, calc(100vw - 80px));
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 24px 70px rgba(15, 23, 42, .32);
+      animation: modalIn .18s ease;
+    }
+    @keyframes modalIn { from { opacity: 0; transform: scale(.95); } to { opacity: 1; transform: scale(1); } }
+    .modal-head, .modal-foot { padding: 16px 18px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
+    .modal-foot { border-top: 1px solid var(--border); border-bottom: 0; justify-content: flex-end; gap: 10px; }
+    .modal-body { padding: 18px; max-height: 68vh; overflow: auto; }
+    .modal-close { border: 0; background: transparent; font-size: 20px; color: var(--muted); }
+    #toast {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      display: none;
+      z-index: 120;
+      padding: 12px 14px;
+      border-radius: 8px;
+      background: #0f766e;
+      color: #fff;
+      box-shadow: 0 10px 28px rgba(15, 23, 42, .2);
+    }
+    #toast.show { display: block; }
+  </style>
+</head>
+<body>
+  <aside id="sidebar">
+    <div class="logo">工程细胞数据应用平台</div>
+    <nav id="sidebar-nav"></nav>
+  </aside>
+
+  <main id="main-content">
+    <div id="breadcrumb"></div>
+    <div id="pages-root">
+      <div class="page" id="page-A1"></div>
+      <div class="page" id="page-A2"></div>
+      <div class="page" id="page-A3"></div>
+      <div class="page" id="page-A4"></div>
+      <div class="page" id="page-A5"></div>
+      <div class="page" id="page-A6"></div>
+      <div class="page" id="page-A7"></div>
+      <div class="page" id="page-A8"></div>
+      <div class="page" id="page-B1"></div>
+      <div class="page" id="page-B2"></div>
+      <div class="page" id="page-B3"></div>
+      <div class="page" id="page-B4"></div>
+      <div class="page" id="page-B5"></div>
+      <div class="page" id="page-B6"></div>
+      <div class="page" id="page-B7"></div>
+      <div class="page" id="page-C1"></div>
+      <div class="page" id="page-C2"></div>
+      <div class="page" id="page-C3"></div>
+      <div class="page" id="page-C4"></div>
+      <div class="page" id="page-C5"></div>
+      <div class="page" id="page-D1"></div>
+      <div class="page" id="page-D2"></div>
+      <div class="page" id="page-D3"></div>
+      <div class="page" id="page-D4"></div>
+      <div class="page" id="page-D5"></div>
+      <div class="page" id="page-E1"></div>
+      <div class="page" id="page-E2"></div>
+      <div class="page" id="page-E3"></div>
+      <div class="page" id="page-E4"></div>
+      <div class="page" id="page-E5"></div>
+      <div class="page" id="page-dashboard"></div>
+      <div class="page" id="page-catalog"></div>
+      <div class="page" id="page-physical"></div>
+      <div class="page" id="page-biological"></div>
+    </div>
+  </main>
+
+  <div id="modal" role="dialog" aria-modal="true">
+    <div class="modal-dialog">
+      <div class="modal-head"><strong id="modal-title">详情</strong><button class="modal-close" type="button" data-close-modal>×</button></div>
+      <div class="modal-body" id="modal-body"></div>
+      <div class="modal-foot"><button class="btn" type="button" data-close-modal>取消</button><button class="btn primary" type="button" data-close-modal>确认</button></div>
+    </div>
+  </div>
+  <div id="tooltip" class="tooltip"></div>
+  <div id="toast"></div>
+
+  <script>
+    const routes = {
+      "GPA数据检索": "page-A1",
+      "GPA关联关系展示": "page-A2",
+      "最优基因型组合预测": "page-A3",
+      "DBTL迭代管理": "page-A4",
+      "公开数据分析": "page-A5",
+      "隐性调控关系挖掘": "page-A6",
+      "AI辅助分析": "page-A7",
+      "模型训练与验证": "page-A8",
+      "代谢通路网构建": "page-B1",
+      "酶约束型模型配置": "page-B2",
+      "代谢流优化求解": "page-B3",
+      "代谢路径全景展示": "page-B4",
+      "细胞代谢状态刻画": "page-B5",
+      "代谢平衡分析评估": "page-B6",
+      "能量代谢路径设计与产量预测": "page-B7",
+      "代谢网络模型发酵优化": "page-C1",
+      "ANN模型构建": "page-C2",
+      "ANN模型训练": "page-C3",
+      "发酵过程状态预测": "page-C4",
+      "过程优化与控制建议": "page-C5",
+      "知识图谱检索系统": "page-D1",
+      "外源性回路设计辅助": "page-D2",
+      "专利数据与竞争者警示": "page-D3",
+      "工艺参数数据库管理": "page-D4",
+      "最优工艺参数预测模型": "page-D5",
+      "主题应用交互首页": "page-E1",
+      "细胞基本信息": "page-E2",
+      "细胞培养与优化信息": "page-E3",
+      "细胞分析与检测信息": "page-E4",
+      "工程化应用信息": "page-E5"
+    };
+
+    const routeNames = Object.fromEntries(Object.entries(routes).map(([k, v]) => [v, k]));
+    const state = { activePage: "page-A1", selectedNode: "Gene_A", tablePage: {}, sort: {}, resultVisible: {}, tab: {}, running: {}, accepted: new Set(), secondaryHidden: false };
+
+    const breadcrumbs = {
+      "page-A1": "首页 > 数据分析 > 工程细胞数据应用平台 > 基因型-表型数据分析 > GPA数据分析 > GPA数据检索",
+      "page-A2": "首页 > 数据分析 > 工程细胞数据应用平台 > 基因型-表型数据分析 > GPA数据分析 > 关联关系展示",
+      "page-A3": "首页 > 数据分析 > 工程细胞数据应用平台 > 基因型-表型数据分析 > GPA数据分析 > 最优基因型组合预测",
+      "page-A4": "首页 > 数据分析 > 工程细胞数据应用平台 > 基因型-表型数据分析 > GPA数据分析 > DBTL迭代管理",
+      "page-A5": "首页 > 数据分析 > 工程细胞数据应用平台 > 基因型-表型数据分析 > GWAS分析算法 > 公开数据分析",
+      "page-A6": "首页 > 数据分析 > 工程细胞数据应用平台 > 基因型-表型数据分析 > GWAS分析算法 > 隐性调控关系挖掘",
+      "page-A7": "首页 > 数据分析 > 工程细胞数据应用平台 > 基因型-表型数据分析 > GWAS分析算法 > AI辅助分析",
+      "page-A8": "首页 > 数据分析 > 工程细胞数据应用平台 > 基因型-表型数据分析 > GWAS分析算法 > 模型训练与验证",
+      "page-B1": "首页 > 数据分析 > 工程细胞数据应用平台 > 组学数据分析 > 基因组代谢网络模型构建 > 代谢通路网构建",
+      "page-B2": "首页 > 数据分析 > 工程细胞数据应用平台 > 组学数据分析 > 基因组代谢网络模型构建 > 酶约束型模型配置",
+      "page-B3": "首页 > 数据分析 > 工程细胞数据应用平台 > 组学数据分析 > 基因组代谢网络模型构建 > 代谢流优化求解",
+      "page-B4": "首页 > 数据分析 > 工程细胞数据应用平台 > 组学数据分析 > GPA整合GEMS > 代谢路径全景展示",
+      "page-B5": "首页 > 数据分析 > 工程细胞数据应用平台 > 组学数据分析 > GPA整合GEMS > 细胞代谢状态刻画",
+      "page-B6": "首页 > 数据分析 > 工程细胞数据应用平台 > 组学数据分析 > GPA整合GEMS > 代谢平衡分析评估",
+      "page-B7": "首页 > 数据分析 > 工程细胞数据应用平台 > 组学数据分析 > GPA整合GEMS > 能量代谢路径设计与产量预测",
+      "page-C1": "首页 > 数据分析 > 工程细胞数据应用平台 > 发酵过程数据分析 > 基于代谢网络模型的发酵优化",
+      "page-C2": "首页 > 数据分析 > 工程细胞数据应用平台 > 发酵过程数据分析 > 基于ANN的发酵优化 > ANN模型构建",
+      "page-C3": "首页 > 数据分析 > 工程细胞数据应用平台 > 发酵过程数据分析 > 基于ANN的发酵优化 > ANN模型训练",
+      "page-C4": "首页 > 数据分析 > 工程细胞数据应用平台 > 发酵过程数据分析 > 基于ANN的发酵优化 > 状态预测",
+      "page-C5": "首页 > 数据分析 > 工程细胞数据应用平台 > 发酵过程数据分析 > 基于ANN的发酵优化 > 优化建议",
+      "page-D1": "首页 > 数据分析 > 工程细胞数据应用平台 > 全流程数据分析 > 知识网络图谱 > 知识图谱检索系统",
+      "page-D2": "首页 > 数据分析 > 工程细胞数据应用平台 > 全流程数据分析 > 知识网络图谱 > 外源性回路设计辅助",
+      "page-D3": "首页 > 数据分析 > 工程细胞数据应用平台 > 全流程数据分析 > 知识网络图谱 > 专利数据与竞争者警示",
+      "page-D4": "首页 > 数据分析 > 工程细胞数据应用平台 > 全流程数据分析 > 发酵过程参数预测 > 工艺参数数据库管理",
+      "page-D5": "首页 > 数据分析 > 工程细胞数据应用平台 > 全流程数据分析 > 发酵过程参数预测 > 最优工艺参数预测模型",
+      "page-E1": "首页 > 工程细胞服务 > 主题应用交互首页",
+      "page-E2": "首页 > 工程细胞服务 > 细胞基本信息",
+      "page-E3": "首页 > 工程细胞服务 > 细胞培养与优化信息",
+      "page-E4": "首页 > 工程细胞服务 > 细胞分析与检测信息",
+      "page-E5": "首页 > 工程细胞服务 > 工程化应用信息",
+      "page-dashboard": "首页 > 数据统计 > 数据看板",
+      "page-catalog": "首页 > 数据统计 > 数据资源目录",
+      "page-physical": "首页 > 发酵过程工具 > 发酵过程数据检测物理传感器工具",
+      "page-biological": "首页 > 发酵过程工具 > 发酵过程数据检测生物传感器工具"
+    };
+
+    const menu = [
+      { label: "数据统计", children: [{ label: "数据看板", route: "page-dashboard" }, { label: "数据资源目录", route: "page-catalog" }] },
+      { label: "发酵过程工具", children: [{ label: "发酵过程数据检测工具", children: [{ label: "发酵过程数据检测物理传感器工具", route: "page-physical" }, { label: "发酵过程数据检测生物传感器工具", route: "page-biological" }] }] },
+      { label: "数据分析", children: [{ label: "工程细胞数据应用平台", children: [
+        { label: "基因型-表型数据分析", children: [
+          { label: "GPA数据分析", children: ["GPA数据检索", "GPA关联关系展示", "最优基因型组合预测", "DBTL迭代管理"].map(label => ({ label, route: routes[label] })) },
+          { label: "GWAS分析算法", children: ["公开数据分析", "隐性调控关系挖掘", "AI辅助分析", "模型训练与验证"].map(label => ({ label, route: routes[label] })) }
+        ] },
+        { label: "组学数据分析", children: [
+          { label: "基因组代谢网络模型构建", children: ["代谢通路网构建", "酶约束型模型配置", "代谢流优化求解"].map(label => ({ label, route: routes[label] })) },
+          { label: "GPA整合GEMS", children: ["代谢路径全景展示", "细胞代谢状态刻画", "代谢平衡分析评估", "能量代谢路径设计与产量预测"].map(label => ({ label, route: routes[label] })) }
+        ] },
+        { label: "发酵过程数据分析", children: [
+          { label: "基于代谢网络模型的发酵优化", children: [{ label: "代谢网络模型发酵优化", route: "page-C1" }] },
+          { label: "基于ANN的发酵优化", children: ["ANN模型构建", "ANN模型训练", "发酵过程状态预测", "过程优化与控制建议"].map(label => ({ label, route: routes[label] })) }
+        ] },
+        { label: "全流程数据分析", children: [
+          { label: "知识网络图谱", children: ["知识图谱检索系统", "外源性回路设计辅助", "专利数据与竞争者警示"].map(label => ({ label, route: routes[label] })) },
+          { label: "发酵过程参数预测", children: ["工艺参数数据库管理", "最优工艺参数预测模型"].map(label => ({ label, route: routes[label] })) }
+        ] },
+        { label: "工程细胞服务", children: ["主题应用交互首页", "细胞基本信息", "细胞培养与优化信息", "细胞分析与检测信息", "工程化应用信息"].map(label => ({ label, route: routes[label] })) }
+      ] }] },
+      { label: "系统管理", children: ["用户管理", "角色权限", "系统配置", "操作日志"].map(label => ({ label })) }
+    ];
+
+    const gpaRows = ["Gene_A|苯砜耐受|过表达|0.92|公开数据", "Gene_B|苯砜耐受|敲除|0.87|实验累积", "Gene_C|苯砜耐受|点突变|0.81|公开数据", "Gene_D|苯砜耐受|过表达|0.75|公开数据", "Gene_E|苯砜耐受|敲除|0.72|实验累积", "Gene_F|苯砜耐受|启动子替换|0.68|公开数据", "Gene_G|苯砜耐受|过表达|0.65|实验累积", "Gene_H|苯砜耐受|敲除|0.61|公开数据"].map((r, i) => {
+      const [gene, phenotype, disturb, strength, source] = r.split("|");
+      return { "#": i + 1, "基因名称": gene, "关联表型": phenotype, "扰动方式": disturb, "关联强度": Number(strength), "数据来源": source, "操作": "查看详情" };
+    });
+    const commonRows = [
+      { "名称": "酵母番茄红素优化任务", "对象": "酿酒酵母", "指标": "12.5 g/L", "状态": "已完成", "创建时间": "2026-07-15", "操作": "查看" },
+      { "名称": "大肠杆菌产率提升", "对象": "大肠杆菌", "指标": "0.88", "状态": "进行中", "创建时间": "2026-07-10", "操作": "查看" },
+      { "名称": "蛋白酶工程菌验证", "对象": "芽孢杆菌", "指标": "3.8 g/L", "状态": "待执行", "创建时间": "2026-07-05", "操作": "查看" },
+      { "名称": "专利竞争分析", "对象": "番茄红素", "指标": "高风险", "状态": "已完成", "创建时间": "2026-07-01", "操作": "查看" }
+    ];
+
+    const genericPages = {
+      "page-A5": { title: "GWAS公开数据分析", subtitle: "提供PCA、非参数检验、回归分析，对公开GPA数据进行挖掘验证。", jump: ["关联隐性调控分析", "page-A6"], chart: "scatter", tabs: ["PCA结果", "非参数检验结果", "回归分析结果"] },
+      "page-A6": { title: "隐性调控关系挖掘", subtitle: "整合公开与实验数据，发现多基因隐性关联。", jump: ["导入AI分析", "page-A7"], chart: "networkHidden", tabs: ["调控网络", "隐性发现列表"] },
+      "page-A7": { title: "AI辅助分析", subtitle: "使用降维、稀疏矩阵与机器学习辅助分析。", jump: ["前往训练验证页", "page-A8"], chart: "modelCompare", tabs: ["特征抽提结果", "模型对比", "预测结果"] },
+      "page-A8": { title: "模型训练与验证", subtitle: "划分训练集和测试集，验证不同ML算法。", jump: ["返回AI分析", "page-A7"], chart: "roc", tabs: ["训练进度", "验证结果", "模型报告"] },
+      "page-B2": { title: "酶约束型模型配置", subtitle: "接入基因组、转录组、蛋白组、代谢组并处理缺失数据。", jump: ["构建酶约束模型", "page-B3"], chart: "omics", tabs: ["组学接入", "假设设定", "可行性验证"] },
+      "page-B3": { title: "代谢流优化求解", subtitle: "设置约束项和优化方向，求解最优代谢流分布。", jump: ["导入发酵优化", "page-C1"], chart: "flux", tabs: ["约束配置", "求解结果", "瓶颈分析"] },
+      "page-B4": { title: "代谢路径全景展示", subtitle: "以生物过程和化学反应为核心描绘代谢路径全景。", jump: ["查看代谢状态", "page-B5"], chart: "panorama", tabs: ["全景图", "路径详情"] },
+      "page-B5": { title: "细胞代谢状态刻画", subtitle: "融合转录组和蛋白质组数据刻画代谢状态。", jump: ["查看代谢平衡", "page-B6"], chart: "heat", tabs: ["差异表达基因", "关键酶活性", "时间序列趋势"] },
+      "page-B6": { title: "代谢平衡分析评估", subtitle: "分析中间产物累积、限速反应与酶活影响。", jump: ["查看能量代谢设计", "page-B7"], chart: "balance", tabs: ["中间产物累积分析", "限速反应", "酶活影响"] },
+      "page-B7": { title: "能量代谢路径设计与产量预测", subtitle: "设计能量代谢路径并预测目标产物理论产量。", jump: ["导入发酵优化", "page-C1"], chart: "line", tabs: ["设计方案", "产量趋势"] },
+      "page-C1": { title: "代谢网络模型发酵优化", subtitle: "利用可测状态变量求解不可测物质反应速度。", jump: ["导入ANN模型对比", "page-C4"], chart: "flux", tabs: ["模型配置", "在线预测"] },
+      "page-C2": { title: "ANN模型构建", subtitle: "配置阶层型和相互结合型神经网络结构。", jump: ["进入训练", "page-C3"], chart: "ann", tabs: ["网络结构配置", "结构预览"] },
+      "page-C3": { title: "ANN模型训练", subtitle: "利用教师信号和BP等方法训练ANN模型。", jump: ["进入状态预测", "page-C4"], chart: "loss", tabs: ["训练参数", "训练监控", "训练结果"] },
+      "page-C4": { title: "发酵过程状态预测", subtitle: "使用训练好的ANN模型在线识别发酵过程状态。", jump: ["查看优化建议", "page-C5"], chart: "predict", tabs: ["单次预测", "批量预测"] },
+      "page-C5": { title: "过程优化与控制建议", subtitle: "结合ANN预测和优化方法输出综合控制建议。", jump: ["返回预测", "page-C4"], chart: "suggest", tabs: ["建议列表", "采纳记录"] },
+      "page-D1": { title: "知识图谱检索系统", subtitle: "检索菌株、产物、基因、代谢物、反应与专利实体。", jump: ["外源性回路设计", "page-D2"], chart: "kg", tabs: ["知识图谱", "构建状态"] },
+      "page-D2": { title: "外源性回路设计辅助", subtitle: "基于知识图谱辅助设计外源性基因回路。", jump: ["查看专利警示", "page-D3"], chart: "compat", tabs: ["回路设计", "相容性评估"] },
+      "page-D3": { title: "专利数据与竞争者警示", subtitle: "提供专利检索和潜在竞争者风险警示。", jump: ["导出警示报告", "page-D3"], chart: "patent", tabs: ["专利列表", "竞争者警示"] },
+      "page-D4": { title: "工艺参数数据库管理", subtitle: "管理超过50种发酵工艺参数。", jump: ["新增参数记录", "page-D4"], chart: "params", tabs: ["全部", "物理参数", "发酵过程参数", "生物过程参数"] },
+      "page-D5": { title: "最优工艺参数预测模型", subtitle: "利用ML建立最优工艺参数预测模型。", jump: ["反馈至模块C发酵优化", "page-C1"], chart: "bars", tabs: ["训练数据", "预测结果"] },
+      "page-E2": { title: "细胞基本信息", subtitle: "展示细胞类型、来源、特性与功能信息。", chart: "cellCards", tabs: ["微生物细胞", "工程改造"] },
+      "page-E3": { title: "细胞培养与优化信息", subtitle: "展示培养条件、培养基配方和优化策略。", chart: "culture", tabs: ["YPD培养基", "LB培养基", "合成培养基"] },
+      "page-E4": { title: "细胞分析与检测信息", subtitle: "展示质量检测、功能分析和多组学数据。", chart: "qc", tabs: ["代谢活性", "信号传导途径", "基因表达模式"] },
+      "page-E5": { title: "工程化应用信息", subtitle: "展示细胞治疗、生物制造、环境保护等应用。", chart: "application", tabs: ["细胞治疗", "生物制造", "环境保护"] }
+    };
+
+    function escapeHtml(value) {
+      return String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
+    }
+    function showToast(message, tone = "success") {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.style.background = tone === "error" ? "var(--danger)" : tone === "warning" ? "var(--warning)" : "#0f766e";
+      toast.classList.add("show");
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => toast.classList.remove("show"), 3000);
+    }
+    function openModal(title, body) {
+      document.getElementById("modal-title").textContent = title;
+      document.getElementById("modal-body").innerHTML = body;
+      document.getElementById("modal").classList.add("is-open");
+    }
+    function closeModal() { document.getElementById("modal").classList.remove("is-open"); }
+    function statusBadge(status) {
+      const cls = status.includes("完成") || status.includes("通过") || status.includes("推荐") || status.includes("产业化") ? "success" : status.includes("中") || status.includes("预警") ? "warning" : status.includes("高风险") ? "danger" : "muted";
+      return `<span class="badge ${cls}">${escapeHtml(status)}</span>`;
+    }
+    function renderBreadcrumb(pageId) {
+      const parts = (breadcrumbs[pageId] || routeNames[pageId] || "").split(" > ");
+      document.getElementById("breadcrumb").innerHTML = parts.map((part, index) => index === parts.length - 1 ? `<b>${escapeHtml(part)}</b>` : `<span data-crumb="${index}">${escapeHtml(part)}</span>`).join(" &gt; ");
+    }
+    function navigateTo(pageId, breadcrumbText) {
+      document.querySelectorAll(".page").forEach(p => p.classList.remove("is-active"));
+      const page = document.getElementById(pageId);
+      if (!page) return;
+      page.classList.add("is-active");
+      state.activePage = pageId;
+      if (breadcrumbText) breadcrumbs[pageId] = breadcrumbText;
+      renderBreadcrumb(pageId);
+      document.querySelectorAll(".nav-leaf").forEach(item => item.classList.toggle("is-active", item.dataset.route === pageId));
+      document.getElementById("main-content").scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function renderMenu(items, level = 1) {
+      return items.map(item => {
+        if (item.route) return `<button class="nav-leaf" type="button" data-route="${item.route}">${escapeHtml(item.label)}</button>`;
+        if (!item.children) return `<button class="nav-leaf" type="button" data-modal-title="系统管理" data-modal-body="${escapeHtml(item.label)}页面仅展示标题，未实现子页面。">${escapeHtml(item.label)}</button>`;
+        const open = ["数据分析", "工程细胞数据应用平台", "基因型-表型数据分析", "GPA数据分析"].includes(item.label) ? " is-open" : "";
+        return `<div class="nav-group nav-level-${level}${open}"><button class="nav-head" type="button"><span>${escapeHtml(item.label)}</span><span class="arrow">›</span></button><div class="nav-children">${renderMenu(item.children, level + 1)}</div></div>`;
+      }).join("");
+    }
+
+    function renderTable(id, rows, pageSize = 5) {
+      const page = state.tablePage[id] || 1;
+      const keys = Object.keys(rows[0] || {});
+      const sort = state.sort[id];
+      let data = [...rows];
+      if (sort) data.sort((a, b) => String(a[sort.key]).localeCompare(String(b[sort.key]), "zh-Hans", { numeric: true }) * sort.dir);
+      const count = Math.max(1, Math.ceil(data.length / pageSize));
+      const sliced = data.slice((page - 1) * pageSize, page * pageSize);
+      return `<div class="table-wrap"><table data-table="${id}"><thead><tr>${keys.map(k => `<th class="sortable" data-sort-key="${escapeHtml(k)}">${escapeHtml(k)}${sort?.key === k ? (sort.dir > 0 ? " ↑" : " ↓") : ""}</th>`).join("")}</tr></thead><tbody>${sliced.map(row => `<tr>${keys.map(k => `<td>${renderCell(k, row[k])}</td>`).join("")}</tr>`).join("")}</tbody></table></div>${renderPagination(id, count, page)}`;
+    }
+    function renderCell(key, value) {
+      if (key === "关联强度") return `${value.toFixed(2)} <span class="progress"><i style="width:${value * 100}%"></i></span>`;
+      if (key === "状态" || key === "推荐" || key === "风险等级" || key === "结论") return statusBadge(String(value));
+      if (key === "操作") return `<button class="btn link" type="button" data-modal-title="记录详情" data-modal-body="这里展示${escapeHtml(value)}对应的完整基因功能、实验摘要、调控关系和数据来源。">${escapeHtml(value)}</button>`;
+      return escapeHtml(value);
+    }
+    function renderPagination(id, count, current) {
+      return `<div class="pagination" data-pagination="${id}"><button class="page-btn" data-page-op="prev">上一页</button>${Array.from({ length: Math.min(count, 5) }, (_, i) => `<button class="page-btn ${current === i + 1 ? "is-current" : ""}" data-page="${i + 1}">${i + 1}</button>`).join("")}<span>...</span><button class="page-btn" data-page-op="next">下一页</button><span>跳转至</span><input class="page-jump" type="number" min="1" max="${count}" /><button class="page-btn" data-page-op="jump">确定</button></div>`;
+    }
+
+    function formCard(title, extra = "") {
+      return `<section class="card"><h2 class="card-title">${title}</h2><div class="form-row"><label class="field"><span>目标对象</span><input value="番茄红素" /></label><label class="field"><span>底盘细胞</span><select><option>酵母</option><option>大肠杆菌</option><option>枯草芽孢杆菌</option></select></label></div><div class="form-row three"><label class="field"><span>数据来源</span><select><option>系统数据集</option><option>公开数据</option><option>实验累积</option></select></label><label class="field"><span>时间范围</span><select><option>全部</option><option>近1年</option><option>近3年</option></select></label><label class="field"><span>状态</span><select><option>全部</option><option>已完成</option><option>进行中</option></select></label></div>${extra}<div class="actions"><button class="btn primary" type="button" data-run>开始分析</button><button class="btn" type="button" data-modal-title="参数配置" data-modal-body="这里展示高级参数配置、上传区域或超参数编辑表单。">高级配置</button><button class="btn link" type="button">重置</button></div></section>`;
+    }
+    function tabCard(id, tabs, content) {
+      const active = state.tab[id] || tabs[0];
+      return `<section class="card"><div class="tabs">${tabs.map(t => `<button class="tab ${active === t ? "is-active" : ""}" type="button" data-tab-scope="${id}" data-tab="${escapeHtml(t)}">${escapeHtml(t)}</button>`).join("")}</div>${tabs.map(t => `<div class="tab-panel ${active === t ? "is-active" : ""}">${content(t)}</div>`).join("")}</section>`;
+    }
+    function svgNetwork(kind = "gene") {
+      const nodes = kind === "pathway"
+        ? [["底物A", 90, 180, 28], ["中间产物B", 250, 180, 30], ["中间产物C", 420, 180, 30], ["目标产物E", 610, 180, 32], ["副产物D", 250, 320, 24], ["副产物F", 420, 320, 24]]
+        : [["Gene_A", 400, 200, 28], ["Gene_B", 200, 350, 24], ["Gene_C", 550, 120, 22], ["Gene_D", 600, 300, 20], ["Gene_E", 150, 500, 18], ["Gene_F", 500, 450, 18]];
+      const lines = kind === "pathway"
+        ? [[0,1,"activate","酶X"],[1,2,"activate","酶Y"],[2,3,"activate","酶Z"],[1,4,"deactivate","分支"],[2,5,"deactivate","副产"]]
+        : [[0,1,"activate"],[0,2,"activate"],[0,3,"deactivate"],[1,4,"activate"],[2,3,"activate"],[2,5,"deactivate"],[3,5,"activate"]];
+      return `<div class="network-card"><svg viewBox="0 0 760 560" data-svg-network="${kind}"><defs><marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker></defs>${lines.map(l => `<line x1="${nodes[l[0]][1]}" y1="${nodes[l[0]][2]}" x2="${nodes[l[1]][1]}" y2="${nodes[l[1]][2]}" stroke="${l[2] === "activate" ? "#10b981" : "#ef4444"}" stroke-width="2.5" stroke-dasharray="${l[2] === "deactivate" ? "8 6" : "0"}" marker-end="url(#arrow)"></line>${l[3] ? `<text x="${(nodes[l[0]][1]+nodes[l[1]][1])/2}" y="${(nodes[l[0]][2]+nodes[l[1]][2])/2 - 8}" font-size="12" fill="#475569">${l[3]}</text>` : ""}`).join("")}${nodes.map(n => `<g class="node" data-node="${n[0]}" data-strength="${(n[3] / 32).toFixed(2)}"><circle cx="${n[1]}" cy="${n[2]}" r="${n[3]}" fill="#dbeafe" stroke="#60a5fa" stroke-width="2"></circle><text x="${n[1]}" y="${n[2]+4}" text-anchor="middle" font-size="12" fill="#1e293b">${n[0]}</text></g>`).join("")}</svg><div class="legend"><span class="green">激活关系</span><span class="red">关闭关系</span><span class="orange">隐性关联</span></div></div>`;
+    }
+    function chart(type) {
+      if (type === "heat") return `<div class="heat-grid">${["通路","转录水平","蛋白水平","代谢活性","综合","糖酵解","高","高","高","高","TCA循环","中","中","中","中","氧化磷酸化","低","低","低","低","番茄红素合成","极高","高","中","高"].map((x,i)=>`<div class="${i>4 ? (x==="极高"?"heat-max":x==="高"?"heat-high":x==="中"?"heat-mid":x==="低"?"heat-low":"") : ""}">${x}</div>`).join("")}</div>`;
+      if (["line","loss","roc"].includes(type)) return `<div class="chart-card"><svg viewBox="0 0 760 320"><polyline points="40,270 140,230 240,180 340,120 460,82 580,56 700,38" fill="none" stroke="#3b82f6" stroke-width="4"/><line x1="40" y1="280" x2="720" y2="280" stroke="#cbd5e1"/><line x1="40" y1="20" x2="40" y2="280" stroke="#cbd5e1"/><text x="45" y="30" fill="#64748b">趋势图</text></svg></div>`;
+      if (["bars","params","suggest"].includes(type)) return `<div class="bar-chart">${[70,95,62,82,54,76].map(v=>`<div class="bar" style="height:${v}%">${v}</div>`).join("")}</div>`;
+      if (["networkHidden","kg","panorama","flux","pathway"].includes(type)) return svgNetwork(type === "pathway" ? "pathway" : "gene");
+      return `<div class="grid four"><div class="metric-card"><strong>128</strong><span>节点数</span></div><div class="metric-card"><strong>156</strong><span>反应数</span></div><div class="metric-card"><strong>89</strong><span>代谢物数</span></div><div class="metric-card"><strong>0.92</strong><span>模型评分</span></div></div>`;
+    }
+
+    function renderA1() {
+      return `<h1 class="page-title">GPA数据检索</h1><section class="card"><h2 class="card-title">检索条件</h2><div class="form-row"><label class="field"><span>基因型关键字</span><input id="a1-gene" placeholder="如：苯砜" /></label><label class="field"><span>表型关键字</span><input id="a1-pheno" placeholder="如：耐受" /></label></div><div class="form-row three"><label class="field"><span>底盘细胞</span><select><option>酵母</option><option>大肠杆菌</option><option>枯草芽孢杆菌</option></select></label><label class="field"><span>数据来源</span><select><option>全部</option><option>公开数据</option><option>实验累积</option></select></label><label class="field"><span>数据范围</span><select><option>全部</option><option>近1年</option><option>近3年</option><option>近5年</option></select></label></div><p id="a1-error" class="error-text">请至少输入一个检索关键字</p><div class="accordion" id="a1-advanced"><button class="btn accordion-toggle" type="button" data-accordion="#a1-advanced">高级检索 <span>展开/收起</span></button><div class="accordion-body"><div class="form-row"><label class="field"><span>关联强度</span><input type="range" min="0" max="1" step="0.01" value="0.6" /></label><label class="field"><span>时间范围</span><input type="date" value="2026-07-20" /></label></div></div></div><div class="actions"><button class="btn primary" type="button" data-a1-search>检索</button><button class="btn" type="button" data-accordion="#a1-advanced">高级检索</button><button class="btn link" type="button" data-a1-reset>重置</button></div></section><section class="card" id="a1-result"><h2 class="card-title">检索结果列表</h2>${state.running["page-A1"] ? `<div class="loading"><span class="spinner"></span>加载中...</div>` : state.resultVisible["page-A1"] ? `<div class="actions" style="justify-content:space-between;margin-top:0"><span>共检索到 128 条记录</span><select><option>排序: 相关度降序</option></select></div>${renderTable("a1", gpaRows, 4)}<div class="actions"><button class="btn primary" data-modal-title="导出结果" data-modal-body="选择导出格式：CSV / Excel">导出结果</button><button class="btn primary" data-jump="page-A2">查看关联网络</button><button class="btn primary" data-jump="page-A3">发起预测分析</button></div>` : `<div class="empty">请输入关键字进行检索</div>`}</section><section class="card"><h2 class="card-title">快速统计面板</h2><div class="grid three"><div class="metric-card"><strong>45</strong><span>涉及基因数</span></div><div class="metric-card"><strong>6</strong><span>扰动类型数</span></div><div class="metric-card"><svg viewBox="0 0 120 80" width="120" height="80"><circle cx="40" cy="40" r="30" fill="#dbeafe"/><path d="M40 40 L40 10 A30 30 0 0 1 68 50 Z" fill="#3b82f6"/><path d="M40 40 L68 50 A30 30 0 0 1 22 64 Z" fill="#10b981"/></svg><span>数据来源分布</span></div></div></section>`;
+    }
+    function renderA2() {
+      const selected = state.selectedNode;
+      return `<h1 class="page-title">GPA关联关系展示</h1><section class="card"><h2 class="card-title">工具栏</h2><div class="form-row three"><label class="field"><span>布局切换</span><select data-layout><option>力导向</option><option>层级</option><option>环形</option></select></label><label class="field"><span>筛选节点</span><select><option>全部</option><option>关联强度&gt;0.8</option><option>关联强度&gt;0.6</option></select></label><label class="field"><span>高亮</span><select><option>全部</option><option>激活路径</option><option>关闭路径</option></select></label></div><div class="actions"><button class="btn">放大</button><button class="btn">缩小</button><button class="btn">重置视图</button><button class="btn primary" data-modal-title="导出图片" data-modal-body="网络图片已加入导出队列。">导出图片</button><button class="btn" data-jump="page-A1">返回检索</button></div></section><div class="split"><section class="card"><h2 class="card-title">关联网络图区域</h2>${svgNetwork("gene")}</section><aside class="card"><h2 class="card-title">节点详情</h2>${selected ? `<p><b>基因名称：</b>${selected}</p><p><b>关联表型：</b>苯砜耐受（关联强度: 0.92）</p><p><b>扰动方式：</b>过表达</p><p><b>上游基因：</b>Gene_B, Gene_F</p><p><b>下游基因：</b>Gene_C, Gene_D</p><p><b>调控关系：</b>激活路径</p><div class="actions"><button class="btn primary" data-modal-title="基因详情" data-modal-body="${selected}完整信息、调控关系与实验数据摘要。">查看详情</button><button class="btn" data-jump="page-A4">发起DBTL迭代</button></div>` : "点击网络图中的节点查看详情"}</aside></div>`;
+    }
+    function renderA3() {
+      const rows = ["Gene_A(过表达)+Gene_B(敲除)+Gene_C(点突变)|0.95|耐受浓度150mM|推荐","Gene_A(过表达)+Gene_D(过表达)+Gene_C(点突变)|0.91|耐受浓度138mM|-","Gene_D(过表达)+Gene_B(敲除)+Gene_C(点突变)|0.88|耐受浓度125mM|-","Gene_A(过表达)+Gene_B(敲除)+Gene_D(过表达)|0.85|耐受浓度118mM|-","Gene_B(敲除)+Gene_C(点突变)+Gene_F(过表达)|0.82|耐受浓度108mM|-"].map((r,i)=>{const a=r.split("|");return {"排名":i+1,"基因型组合":a[0],"预测评分":a[1],"预期表型值":a[2],"状态":a[3],"操作":"查看方案详情"}});
+      return `<h1 class="page-title">最优基因型组合预测</h1>${formCard("预测任务配置", `<div class="actions"><label><input type="radio" name="goal"> 最大化耐受性</label><label><input type="radio" name="goal"> 产量优先</label><label><input type="radio" name="goal" checked> 综合优化</label></div><p>候选基因集：<label><input data-candidate checked type="checkbox"> Gene_A(过表达)</label> <label><input data-candidate checked type="checkbox"> Gene_B(敲除)</label> <label><input data-candidate checked type="checkbox"> Gene_C(点突变)</label> <label><input data-candidate checked type="checkbox"> Gene_D(过表达)</label> <label><input data-candidate type="checkbox"> Gene_F(过表达)</label></p><p id="candidate-count">已选: 4个基因</p>`)}${tabCard("a3", ["排行榜视图", "雷达图视图", "矩阵视图"], t => t === "排行榜视图" ? `${renderTable("a3rank", rows, 5)}<div class="actions"><button class="btn primary" data-modal-title="方案详情" data-modal-body="各基因贡献度柱状图、风险和验证建议。">查看方案详情</button><button class="btn" data-jump="page-A4">发起DBTL验证</button></div>` : chart(t === "雷达图视图" ? "line" : "params"))}`;
+    }
+    function renderA4() {
+      return `<h1 class="page-title">DBTL迭代管理</h1><section class="card"><h2 class="card-title">迭代周期总览</h2><p>当前迭代: 第 3 轮 | 目标表型: 苯砜耐受 | 底盘细胞: 酵母</p><div class="dbtl-flow"><div class="dbtl-step done"><b>D 设计</b><br>已完成</div><div class="dbtl-step active"><b>B 构建</b><br>进行中</div><div class="dbtl-step"><b>T 测试</b><br>待执行</div><div class="dbtl-step"><b>L 学习</b><br>待执行</div></div></section><section class="card"><h2 class="card-title">当前阶段: B(构建)</h2><p>基因型组合：Gene_A(过表达)+Gene_B(敲除)+Gene_C(点突变)</p><p>构建进度 <span class="progress"><i style="width:60%"></i></span> 60%</p><ul><li>Gene_A过表达载体构建（已完成）</li><li>Gene_B敲除载体构建（已完成）</li><li>Gene_C点突变载体构建（进行中）</li><li>组合转化与验证（待执行）</li></ul><div class="actions"><button class="btn primary" data-modal-title="录入构建结果" data-modal-body="构建状态选择：成功/失败；备注输入。">录入构建结果</button><button class="btn" data-modal-title="确认" data-modal-body="确认后当前阶段变为已完成，下一阶段变为进行中。">标记阶段完成</button></div></section>${tabCard("a4", ["D.设计", "B.构建", "T.测试", "L.学习"], () => formCard("阶段操作面板"))}`;
+    }
+    function renderB1() {
+      const matrixRows = [
+        {"代谢物/反应":"底物A","反应1":-1,"反应2":0,"反应3":0,"反应4":0,"反应5":0},
+        {"代谢物/反应":"产物B","反应1":1,"反应2":-1,"反应3":0,"反应4":0,"反应5":0},
+        {"代谢物/反应":"产物C","反应1":0,"反应2":1,"反应3":-1,"反应4":0,"反应5":1},
+        {"代谢物/反应":"目标产物E","反应1":0,"反应2":0,"反应3":0,"反应4":1,"反应5":-1},
+        {"代谢物/反应":"副产物F","反应1":0,"反应2":0,"反应3":1,"反应4":0,"反应5":0}
+      ];
+      return `<h1 class="page-title">代谢通路网构建</h1><section class="card"><h2 class="card-title">数据库选择</h2><div class="actions"><label><input type="checkbox" checked> Reactome</label><label><input type="checkbox" checked> KEGG</label><label><input type="checkbox" checked> Rhea-db</label><label><input type="checkbox"> BioCyc</label><button class="btn">添加</button></div><div class="form-row three"><label class="field"><span>底盘细胞</span><select><option>酵母</option><option>大肠杆菌</option></select></label><label class="field"><span>代谢网络范围</span><select><option>全细胞</option><option>中心代谢</option></select></label><label class="field"><span>目标产物</span><input value="番茄红素"></label></div><div class="actions"><button class="btn primary" type="button" data-run>构建代谢通路网</button><button class="btn" data-modal-title="加载已有模型" data-modal-body="请选择已有GEMS或FBA模型。">加载已有模型</button></div></section><section class="card"><h2 class="card-title">代谢通路网络图</h2>${state.running["page-B1"] ? `<div class="loading"><span class="spinner"></span>加载中...</div>` : svgNetwork("pathway")}<p>节点数: 128 | 反应数: 156 | 代谢物数: 89</p><div class="actions"><button class="btn primary" data-accordion="#b1-matrix">矩阵化预览</button><button class="btn">导出S/B文件</button></div></section><section class="card accordion" id="b1-matrix"><h2 class="card-title">化学计量矩阵(S矩阵)预览</h2><div class="accordion-body"><div class="formula">Sv = 0  （代谢通量平衡方程）</div>${renderTable("b1matrix", matrixRows, 5)}<div class="actions"><button class="btn primary" data-jump="page-B3">进入优化求解</button><button class="btn">编辑矩阵</button><button class="btn">导出模型</button></div></div></section>`;
+    }
+    function renderE1() {
+      const services = [
+        ["基因型-表型分析","GPA/GWAS分析预测","page-A1"],["组学数据分析","GEMS构建/代谢平衡","page-B1"],["发酵过程数据分析","代谢模型/ANN优化","page-C1"],["全流程数据分析","知识图谱/参数预测","page-D1"],["AI辅助分析平台","降维/机器学习/深度学习","page-A7"]
+      ];
+      return `<h1 class="page-title">主题应用交互首页</h1><section class="card"><h2 class="card-title">搜索栏</h2><input style="width:100%;height:48px" placeholder="搜索细胞、菌株、基因、产物..." data-search-box /></section><section class="card"><h2 class="card-title">分析服务</h2><div class="grid five">${services.map(([a,b,r])=>`<article class="metric-card service-card"><strong style="font-size:16px">${a}</strong><span>${b}</span><div class="actions"><button class="btn primary" data-jump="${r}">进入</button></div></article>`).join("")}</div></section><section class="card"><h2 class="card-title">快速入口</h2><div class="grid three">${[["细胞基本信息查询","page-E2"],["培养条件查询","page-E3"],["检测数据查询","page-E4"],["工程化应用案例","page-E5"],["上传数据","page-A5"],["我的分析任务","page-E1"]].map(([a,r])=>`<button class="btn" data-jump="${r}">${a}</button>`).join("")}</div></section><section class="card"><h2 class="card-title">我的分析任务</h2>${renderTable("e1task", [{"任务名称":"酵母苯砜耐受优化","类型":"GPA分析","状态":"计算中","创建时间":"07-20 10:30","操作":"查看"},{"任务名称":"番茄红素产量预测","类型":"发酵优化","状态":"已完成","创建时间":"07-18 14:20","操作":"查看"},{"任务名称":"大肠杆菌组学分析","类型":"组学分析","状态":"已完成","创建时间":"07-15 09:10","操作":"查看"},{"任务名称":"专利竞争分析","类型":"全流程分析","状态":"待执行","创建时间":"07-12 16:45","操作":"查看"}], 4)}</section>`;
+    }
+    function renderGeneric(pageId, config) {
+      return `<h1 class="page-title">${config.title}</h1><section class="card"><h2 class="card-title">页面说明</h2><p>${config.subtitle}</p></section>${formCard(config.tabs?.[0] || "配置区")}<section class="card chart-card"><h2 class="card-title">图表与网络展示</h2>${chart(config.chart)}</section>${tabCard(pageId, config.tabs || ["结果"], tab => renderTable(pageId + tab, commonRows, 4))}<div class="actions">${config.jump ? `<button class="btn primary" data-jump="${config.jump[1]}">${config.jump[0]}</button>` : ""}<button class="btn" data-modal-title="${config.title}" data-modal-body="展示详情、上传区域、导出格式选择或确认操作。">查看详情</button><button class="btn">导出结果</button></div>`;
+    }
+    function renderAux(pageId, title) {
+      return `<h1 class="page-title">${title}</h1><section class="card"><h2 class="card-title">${title}</h2><div class="grid four"><div class="metric-card"><strong>1,256</strong><span>资源总数</span></div><div class="metric-card"><strong>98.5%</strong><span>数据完整率</span></div><div class="metric-card"><strong>32</strong><span>今日新增</span></div><div class="metric-card"><strong>12</strong><span>待处理</span></div></div></section><section class="card">${renderTable(pageId+"aux", commonRows, 4)}</section>`;
+    }
+
+    function renderAllPages() {
+      document.getElementById("page-A1").innerHTML = renderA1();
+      document.getElementById("page-A2").innerHTML = renderA2();
+      document.getElementById("page-A3").innerHTML = renderA3();
+      document.getElementById("page-A4").innerHTML = renderA4();
+      document.getElementById("page-B1").innerHTML = renderB1();
+      document.getElementById("page-E1").innerHTML = renderE1();
+      Object.entries(genericPages).forEach(([id, config]) => document.getElementById(id).innerHTML = renderGeneric(id, config));
+      document.getElementById("page-dashboard").innerHTML = renderAux("dashboard", "数据看板");
+      document.getElementById("page-catalog").innerHTML = renderAux("catalog", "数据资源目录");
+      document.getElementById("page-physical").innerHTML = renderAux("physical", "发酵过程数据检测物理传感器工具");
+      document.getElementById("page-biological").innerHTML = renderAux("biological", "发酵过程数据检测生物传感器工具");
+    }
+
+    document.addEventListener("click", event => {
+      const head = event.target.closest(".nav-head");
+      if (head) { head.parentElement.classList.toggle("is-open"); return; }
+      const route = event.target.closest("[data-route], [data-jump]");
+      if (route) { navigateTo(route.dataset.route || route.dataset.jump); return; }
+      const modalBtn = event.target.closest("[data-modal-title]");
+      if (modalBtn) { openModal(modalBtn.dataset.modalTitle, modalBtn.dataset.modalBody || "操作内容"); return; }
+      if (event.target.closest("[data-close-modal]") || event.target.id === "modal") { closeModal(); return; }
+      const accordion = event.target.closest("[data-accordion]");
+      if (accordion) { document.querySelector(accordion.dataset.accordion)?.classList.toggle("is-open"); return; }
+      const tab = event.target.closest("[data-tab-scope]");
+      if (tab) { state.tab[tab.dataset.tabScope] = tab.dataset.tab; renderAllPages(); return; }
+      const th = event.target.closest("th.sortable");
+      if (th) {
+        const id = th.closest("table").dataset.table;
+        const key = th.dataset.sortKey;
+        state.sort[id] = state.sort[id]?.key === key ? { key, dir: -state.sort[id].dir } : { key, dir: 1 };
+        renderAllPages();
+        return;
+      }
+      const pager = event.target.closest("[data-pagination] .page-btn");
+      if (pager) {
+        const wrap = pager.closest("[data-pagination]");
+        const id = wrap.dataset.pagination;
+        const max = Number(wrap.querySelector(".page-jump")?.max || 1);
+        const current = state.tablePage[id] || 1;
+        if (pager.dataset.page) state.tablePage[id] = Number(pager.dataset.page);
+        if (pager.dataset.pageOp === "prev") state.tablePage[id] = Math.max(1, current - 1);
+        if (pager.dataset.pageOp === "next") state.tablePage[id] = Math.min(max, current + 1);
+        if (pager.dataset.pageOp === "jump") state.tablePage[id] = Math.max(1, Math.min(max, Number(wrap.querySelector(".page-jump").value || current)));
+        renderAllPages();
+        return;
+      }
+      if (event.target.closest("[data-run]")) {
+        const page = state.activePage;
+        state.running[page] = true;
+        renderAllPages();
+        setTimeout(() => { state.running[page] = false; state.resultVisible[page] = true; renderAllPages(); showToast("处理完成"); }, page === "page-A3" ? 3000 : 2000);
+        return;
+      }
+      if (event.target.closest("[data-a1-search]")) {
+        const gene = document.getElementById("a1-gene").value.trim();
+        const pheno = document.getElementById("a1-pheno").value.trim();
+        document.getElementById("a1-error").classList.toggle("show", !gene && !pheno);
+        if (!gene && !pheno) return;
+        state.running["page-A1"] = true;
+        renderAllPages();
+        setTimeout(() => { state.running["page-A1"] = false; state.resultVisible["page-A1"] = true; renderAllPages(); }, 2000);
+        return;
+      }
+      if (event.target.closest("[data-a1-reset]")) {
+        state.resultVisible["page-A1"] = false;
+        renderAllPages();
+        return;
+      }
+      const node = event.target.closest(".node");
+      if (node) { state.selectedNode = node.dataset.node; showToast(`已选中 ${node.dataset.node}`); renderAllPages(); return; }
+    });
+
+    document.addEventListener("change", event => {
+      if (event.target.matches("[data-candidate]")) {
+        const count = document.querySelectorAll("[data-candidate]:checked").length;
+        const el = document.getElementById("candidate-count");
+        if (el) el.textContent = `已选: ${count}个基因`;
+      }
+    });
+    document.addEventListener("keydown", event => {
+      if (event.key === "Enter" && event.target.matches("[data-search-box]")) {
+        openModal("搜索结果", "<div class='table-wrap'><table><tbody><tr><td>高产L-赖氨酸工程菌</td><td>细胞档案</td></tr><tr><td>番茄红素产量预测</td><td>分析任务</td></tr><tr><td>Gene_A</td><td>GPA关联基因</td></tr></tbody></table></div>");
+      }
+      if (event.key === "Escape") closeModal();
+    });
+    document.addEventListener("mousemove", event => {
+      const node = event.target.closest(".node");
+      const tooltip = document.getElementById("tooltip");
+      if (!node) { tooltip.style.display = "none"; return; }
+      tooltip.textContent = `${node.dataset.node} | 关联强度 ${node.dataset.strength || "0.86"} | 调控方向 激活`;
+      tooltip.style.display = "block";
+      tooltip.style.left = `${event.clientX + 12}px`;
+      tooltip.style.top = `${event.clientY + 12}px`;
+    });
+
+    document.getElementById("sidebar-nav").innerHTML = renderMenu(menu);
+    renderAllPages();
+    navigateTo("page-A1");
+    window.navigateTo = navigateTo;
+  </script>
+</body>
+</html>

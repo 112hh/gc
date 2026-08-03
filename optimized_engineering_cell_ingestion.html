@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>工程细胞数据入库平台</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif; background: #f5f7fb; color: #1f2937; }
+    .app { display: flex; min-height: 100vh; }
+    .side { width: 248px; background: #173b7a; color: #fff; padding: 18px 14px; position: fixed; inset: 0 auto 0 0; }
+    .brand { font-size: 18px; font-weight: 700; padding: 10px 10px 20px; border-bottom: 1px solid rgba(255,255,255,.16); }
+    .nav { margin-top: 16px; display: grid; gap: 6px; }
+    .nav button { width: 100%; border: 0; background: transparent; color: rgba(255,255,255,.82); text-align: left; padding: 12px 14px; border-radius: 6px; cursor: pointer; font-size: 14px; }
+    .nav button:hover, .nav button.active { color: #fff; background: rgba(255,255,255,.14); }
+    .main { margin-left: 248px; width: calc(100% - 248px); }
+    .top { height: 64px; background: #fff; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: space-between; padding: 0 28px; position: sticky; top: 0; z-index: 2; }
+    .crumb { color: #64748b; font-size: 14px; }
+    .user { display: flex; align-items: center; gap: 10px; font-size: 14px; color: #475569; }
+    .avatar { width: 32px; height: 32px; border-radius: 50%; background: #dbeafe; color: #1d4ed8; display: grid; place-items: center; font-weight: 700; }
+    .content { padding: 24px 28px 40px; }
+    h1 { margin: 0 0 6px; font-size: 24px; }
+    .sub { margin: 0 0 22px; color: #64748b; font-size: 14px; line-height: 1.7; max-width: 1120px; }
+    .grid { display: grid; gap: 16px; }
+    .cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; box-shadow: 0 1px 2px rgba(15,23,42,.04); }
+    .card-h { padding: 16px 18px; border-bottom: 1px solid #edf0f5; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+    .card-h h2 { margin: 0; font-size: 16px; }
+    .card-b { padding: 18px; }
+    .metric { padding: 18px; }
+    .metric .label { color: #64748b; font-size: 13px; }
+    .metric .num { margin-top: 8px; font-size: 28px; font-weight: 700; }
+    .metric .note { margin-top: 8px; font-size: 12px; color: #64748b; }
+    .tag { display: inline-flex; align-items: center; height: 24px; padding: 0 9px; border-radius: 999px; font-size: 12px; background: #e0f2fe; color: #0369a1; white-space: nowrap; }
+    .green { background: #dcfce7; color: #15803d; }
+    .orange { background: #ffedd5; color: #c2410c; }
+    .purple { background: #f3e8ff; color: #7e22ce; }
+    .gray { background: #f1f5f9; color: #475569; }
+    .red { background: #fee2e2; color: #b91c1c; }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 16px; }
+    input, select { height: 36px; border: 1px solid #d8dee8; border-radius: 6px; padding: 0 10px; background: #fff; color: #1f2937; }
+    input { min-width: 260px; }
+    .btn { border: 1px solid #cbd5e1; background: #fff; color: #334155; height: 36px; padding: 0 13px; border-radius: 6px; cursor: pointer; }
+    .primary { background: #1d4ed8; color: #fff; border-color: #1d4ed8; }
+    table { width: 100%; border-collapse: collapse; }
+    th { background: #f8fafc; color: #334155; text-align: left; font-size: 13px; padding: 12px; border-bottom: 1px solid #e5e7eb; white-space: nowrap; }
+    td { padding: 13px 12px; border-bottom: 1px solid #edf0f5; color: #475569; font-size: 13px; vertical-align: top; }
+    td strong { color: #1f2937; }
+    .steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+    .step { border: 1px solid #e5e7eb; border-radius: 8px; padding: 14px; background: #fff; }
+    .step b { display: block; margin-bottom: 8px; }
+    .step p { margin: 0; color: #64748b; font-size: 13px; line-height: 1.6; }
+    .lib { display: grid; gap: 10px; }
+    .lib-row { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid #edf0f5; }
+    .lib-row:last-child { border-bottom: 0; }
+    .progress { height: 8px; background: #e5e7eb; border-radius: 20px; overflow: hidden; margin-top: 8px; }
+    .bar { height: 100%; background: #2563eb; }
+    .hidden { display: none; }
+    @media (max-width: 1100px) { .cols-4, .cols-3, .cols-2, .steps { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 760px) { .side { position: static; width: 100%; } .main { margin-left: 0; width: 100%; } .app { display: block; } .cols-4, .cols-3, .cols-2, .steps { grid-template-columns: 1fr; } input { min-width: 100%; } }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="side">
+      <div class="brand">工程细胞数据入库</div>
+      <div class="nav" id="nav">
+        <button class="active" data-page="dashboard">数据入库总览</button>
+        <button data-page="gpa">GPA数据入库</button>
+        <button data-page="omics">多组学数据入库</button>
+        <button data-page="fermentation">发酵过程数据入库</button>
+        <button data-page="external">外部数据采集</button>
+        <button data-page="audit">入库审核与质控</button>
+        <button data-page="standards">数据标准配置</button>
+      </div>
+    </aside>
+    <main class="main">
+      <header class="top">
+        <div class="crumb" id="crumb">首页 / 数据入库总览</div>
+        <div class="user"><span>数据管理员</span><span class="avatar">管</span></div>
+      </header>
+      <section class="content" id="page"></section>
+    </main>
+  </div>
+
+  <script>
+    const chassis = ["大肠杆菌", "毕赤酵母", "酿酒酵母", "枯草芽孢杆菌", "谷氨酸棒状杆菌"];
+    const pages = {
+      dashboard: {
+        title: "数据入库总览",
+        sub: "面向工程细胞原始数据梳理、标准化、质量校验和文库构建，覆盖GPA数据、多组学数据和发酵过程数据。",
+        html: `
+          <div class="grid cols-4">
+            ${metric("GPA数据集", "128,640", "覆盖5类模式工业底盘、32个工业表型")}
+            ${metric("多组学样本", "46,280", "基因组、转录组、蛋白组、代谢组")}
+            ${metric("发酵批次", "9,312", "小试、中试、大规模生产全过程")}
+            ${metric("待审核数据", "86", "质控、脱敏、标准映射后进入终审")}
+          </div>
+          ${pipeline()}
+          <div class="grid cols-2" style="margin-top:16px">
+            <div class="card"><div class="card-h"><h2>模式工业底盘文库建设</h2><span class="tag">GPA Library</span></div><div class="card-b">${library()}</div></div>
+            <div class="card"><div class="card-h"><h2>近期入库动态</h2><span class="tag green">实时</span></div><div class="card-b">${activity()}</div></div>
+          </div>`
+      },
+      gpa: {
+        title: "GPA数据入库",
+        sub: "采集湿实验、干实验和外部GPA数据，支持全基因组规模建库、表型传感器筛选、测序验证、基因重构和数据集文库沉淀。",
+        html: `${toolbar("底盘/表型/数据集编号")}
+          <div class="grid cols-3">
+            ${feature("常用模式工业底盘数据采集", "围绕全基因组规模扰动建库，记录CRISPR调高、调低、敲除操作，关联液滴微流控筛选和二代测序结果。", "湿实验")}
+            ${feature("干实验GPA数据集采集", "接入代谢模型和数据驱动模型预测位点，跟踪模型版本、预测置信度和湿实验验证状态。", "干实验")}
+            ${feature("外部GPA数据采集", "汇聚DNA、组学、CRISPR sgRNA、微生物基因组、蛋白质分类等公开与合作数据。", "外部")}
+          </div>
+          ${table(["数据集编号","底盘细胞","工业表型","来源","关键流程","状态"], [
+            ["GPA-EC-ETH-20260801","大肠杆菌","乙醇耐受","自产湿实验","CRISPRi/a建库、液滴筛选、NGS测序","待复核"],
+            ["GPA-PP-PRO-20260730","毕赤酵母","重组蛋白表达","干实验预测","GEM模型、AI排序、位点验证","入库中"],
+            ["GPA-SC-ORG-20260728","酿酒酵母","有机酸积累","科研外部","论文抽取、公共库映射、证据标注","已入库"],
+            ["GPA-BS-ENZ-20260726","枯草芽孢杆菌","胞外酶分泌","产业合作","脱敏、字段映射、合规审核","待脱敏"]
+          ])}`
+      },
+      omics: {
+        title: "多组学数据入库",
+        sub: "采集基因组、转录组、蛋白组和代谢组数据，支撑高产工程细胞调控机制解析和多组学关联分析。",
+        html: `${toolbar("菌株/组学类型/项目编号")}
+          <div class="grid cols-4">
+            ${metric("基因组", "12,540", "突变位点、结构变异、注释文件")}
+            ${metric("转录组", "15,860", "表达矩阵、差异基因、条件元数据")}
+            ${metric("蛋白组", "8,920", "蛋白丰度、修饰、通路映射")}
+            ${metric("代谢组", "8,960", "代谢物峰表、定量结果、批次校正")}
+          </div>
+          ${table(["项目编号","数据类型","菌株来源","产生场景","标准化内容","状态"], [
+            ["OMX-HTP-20260801","基因组+转录组","超高通量GPA筛选株","高生产力细胞机制解析","样本元数据、参考基因组、表达矩阵","已入库"],
+            ["OMX-MUT-20260729","全基因组+代谢组","传统诱变育种株","长期诱变筛选后关联分析","变异注释、峰识别、代谢物ID映射","质控中"],
+            ["OMX-PRO-20260725","蛋白组","合作企业菌株","产业生产性能评估","脱敏企业信息、蛋白分类、通路注释","待审核"],
+            ["OMX-PUB-20260720","转录组","NCBI/EBI公开数据","公开发表科研数据补充","样本编号映射、物种校验、许可证记录","已入库"]
+          ])}`
+      },
+      fermentation: {
+        title: "发酵过程数据入库",
+        sub: "采集小试、中试和大规模生产发酵过程数据，接入高通量平行反应器、在线物理/生物传感器和发酵系统云平台。",
+        html: `${toolbar("批次号/规模/产物")}
+          <div class="grid cols-3">
+            ${feature("小试规模", "摇瓶、微型反应器和高通量平行反应器批次，重点记录培养基、温控、pH、DO和补料策略。", "实验室")}
+            ${feature("中试规模", "放大验证批次，记录罐体参数、在线传感器、关键控制点和放大偏差。", "中试")}
+            ${feature("大规模生产", "生产级批次全过程参数，支持企业脱敏、批次追溯和公开字段分级。", "产业")}
+          </div>
+          ${table(["批次编号","规模","底盘细胞","产物/表型","采集来源","入库状态"], [
+            ["FER-LAB-20260801-A","5L小试","大肠杆菌","赖氨酸前体","高通量平行反应器","实时接入"],
+            ["FER-PILOT-20260730-B","300L中试","谷氨酸棒状杆菌","谷氨酸产量","发酵系统云平台","标准化中"],
+            ["FER-PROD-20260722-C","5000L生产","毕赤酵母","重组蛋白","企业MES/传感器组","脱敏审核"],
+            ["FER-PUB-20260718-D","论文案例","酿酒酵母","乙醇发酵","文献参数抽取","已入库"]
+          ])}`
+      },
+      external: {
+        title: "外部数据采集",
+        sub: "统一管理科研方、公开数据库和产业方数据采集任务，沉淀知识产权协议、数据脱敏、许可证和可公开范围。",
+        html: `${toolbar("数据库/合作单位/采集任务")}
+          ${table(["任务名称","数据方向","来源类型","采集对象","合规处理","状态"], [
+            ["NCBI/EBI多组学增量采集","多组学","公开数据库","基因组、转录组项目","许可证记录、样本元数据映射","运行中"],
+            ["CRISPR sgRNA数据库同步","GPA","公开数据库","sgRNA序列、靶点、编辑效果","物种校验、靶点统一编号","已完成"],
+            ["合作科学家GPA共享","GPA/发酵","科研合作","未公开实验数据","知识产权共享协议、证据分级","待确认"],
+            ["合作企业发酵参数汇聚","发酵过程","产业合作","生产批次过程参数","商业字段脱敏、公开范围分级","脱敏中"]
+          ])}`
+      },
+      audit: {
+        title: "入库审核与质控",
+        sub: "围绕字段完整性、格式标准、物种/底盘匹配、实验条件、脱敏合规和证据链完成入库审核。",
+        html: `${pipeline()}
+          ${table(["申请编号","数据类型","提交方","质控结果","合规结果","处理动作"], [
+            ["AUD-20260801-016","GPA湿实验","湿实验平台","通过：测序文件、位点表、表型读数完整","通过","复核 / 入库"],
+            ["AUD-20260801-015","多组学产业数据","合作企业A","警告：缺少2个培养条件字段","待脱敏复核","退回补充"],
+            ["AUD-20260731-042","发酵生产批次","合作企业B","通过：传感器时间序列完整","公开字段待确认","合规审核"],
+            ["AUD-20260731-039","外部论文数据","文献采集任务","警告：单位需换算","通过","标准化修正"]
+          ])}`
+      },
+      standards: {
+        title: "数据标准配置",
+        sub: "维护工程细胞数据入库所需字段模板、受控词表、底盘物种字典、表型字典、文件规范和审核规则。",
+        html: `<div class="grid cols-2">
+          <div class="card"><div class="card-h"><h2>核心字典</h2><span class="tag">受控词表</span></div><div class="card-b">${dictionary()}</div></div>
+          <div class="card"><div class="card-h"><h2>入库规则</h2><span class="tag orange">规则引擎</span></div><div class="card-b">${rules()}</div></div>
+        </div>`
+      }
+    };
+
+    function metric(label, num, note) {
+      return `<div class="card metric"><div class="label">${label}</div><div class="num">${num}</div><div class="note">${note}</div></div>`;
+    }
+    function feature(title, text, tag) {
+      return `<div class="card"><div class="card-h"><h2>${title}</h2><span class="tag purple">${tag}</span></div><div class="card-b" style="line-height:1.8;color:#475569">${text}</div></div>`;
+    }
+    function toolbar(placeholder) {
+      return `<div class="toolbar"><input placeholder="搜索${placeholder}" /><select><option>全部底盘</option>${chassis.map(x=>`<option>${x}</option>`).join("")}</select><select><option>全部状态</option><option>待审核</option><option>标准化中</option><option>已入库</option></select><button class="btn">导入模板</button><button class="btn primary">新建入库任务</button></div>`;
+    }
+    function table(headers, rows) {
+      return `<div class="card" style="margin-top:16px"><div class="card-h"><h2>数据列表</h2><span class="tag gray">共 ${rows.length} 条示例</span></div><div style="overflow:auto"><table><thead><tr>${headers.map(h=>`<th>${h}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map((c,i)=>`<td>${i===0?`<strong>${c}</strong>`:badge(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div></div>`;
+    }
+    function badge(text) {
+      const s = String(text);
+      if (["已入库","通过","已完成","实时接入"].some(x=>s.includes(x))) return `<span class="tag green">${s}</span>`;
+      if (["待","警告","脱敏","审核","复核"].some(x=>s.includes(x))) return `<span class="tag orange">${s}</span>`;
+      if (["运行中","入库中","标准化中","质控中"].some(x=>s.includes(x))) return `<span class="tag">${s}</span>`;
+      return s;
+    }
+    function pipeline() {
+      const items = [
+        ["数据采集", "自产湿实验、干实验模型、公共库、科研合作、产业合作"],
+        ["标准化", "字段模板、单位换算、物种字典、表型字典、文件格式"],
+        ["质量校验", "完整性、重复性、测序质量、传感器连续性、证据链"],
+        ["脱敏合规", "企业数据脱敏、商业机密保护、知识产权协议记录"],
+        ["文库构建", "GPA文库、多组学文库、发酵过程文库统一发布"]
+      ];
+      return `<div class="card" style="margin-top:16px"><div class="card-h"><h2>入库流程</h2><span class="tag green">全流程追踪</span></div><div class="card-b"><div class="steps">${items.map((x,i)=>`<div class="step"><span class="tag ${i<3?"green":"gray"}">0${i+1}</span><b>${x[0]}</b><p>${x[1]}</p></div>`).join("")}</div></div></div>`;
+    }
+    function library() {
+      return `<div class="lib">${chassis.map((x,i)=>`<div class="lib-row"><div><strong>${x}</strong><div class="progress"><div class="bar" style="width:${[86,72,68,54,49][i]}%"></div></div></div><span class="tag">${[86,72,68,54,49][i]}%</span></div>`).join("")}</div>`;
+    }
+    function activity() {
+      return `<div class="lib">
+        <div class="lib-row"><div><strong>GPA-EC-ETH-20260801</strong><br><span class="sub">大肠杆菌乙醇耐受表型完成测序文件校验</span></div><span class="tag green">通过</span></div>
+        <div class="lib-row"><div><strong>FER-PROD-20260722-C</strong><br><span class="sub">生产级发酵批次进入脱敏审核</span></div><span class="tag orange">待处理</span></div>
+        <div class="lib-row"><div><strong>OMX-PUB-20260720</strong><br><span class="sub">公开转录组数据完成许可证记录</span></div><span class="tag green">已入库</span></div>
+      </div>`;
+    }
+    function dictionary() {
+      return `<div class="lib">${["模式工业底盘：大肠杆菌、毕赤酵母、酿酒酵母、枯草芽孢杆菌、谷氨酸棒状杆菌","工业表型：产量、耐受性、蛋白表达、胞外酶分泌、有机酸积累","组学类型：基因组、转录组、蛋白组、代谢组","发酵规模：小试、中试、大规模生产、论文案例"].map(x=>`<div class="lib-row"><strong>${x}</strong><button class="btn">维护</button></div>`).join("")}</div>`;
+    }
+    function rules() {
+      return `<div class="lib">${["必填字段完整性校验","测序文件格式与MD5校验","表型单位自动换算","企业敏感字段脱敏规则","公开数据许可证与引用记录"].map((x,i)=>`<div class="lib-row"><strong>${x}</strong><span class="tag ${i<3?"green":"orange"}">${i<3?"启用":"需复核"}</span></div>`).join("")}</div>`;
+    }
+    function render(key) {
+      const page = pages[key];
+      document.getElementById("crumb").textContent = "首页 / " + page.title;
+      document.getElementById("page").innerHTML = `<h1>${page.title}</h1><p class="sub">${page.sub}</p>${page.html}`;
+      document.querySelectorAll(".nav button").forEach(btn => btn.classList.toggle("active", btn.dataset.page === key));
+    }
+    document.getElementById("nav").addEventListener("click", e => {
+      if (e.target.dataset.page) render(e.target.dataset.page);
+    });
+    render("dashboard");
+  </script>
+</body>
+</html>
