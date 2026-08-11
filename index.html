@@ -7,24 +7,24 @@
 <meta name="description" content="工程细胞主题库门户，覆盖基因型-表型关联、多组学、发酵过程、培养营养四大核心数据库及分析应用场景。">
 <style>
 :root {
-  --bg: #eef3f7;
+  --bg: #f5f7fa;
   --surface: #ffffff;
-  --surface-soft: #f6f9fc;
-  --surface-dark: #0d1b2a;
-  --text: #182538;
-  --text-soft: #5f6f86;
-  --text-weak: #7b8aa0;
-  --line: #d9e3ee;
-  --primary: #2264d8;
-  --primary-strong: #154ab0;
-  --secondary: #0f9d91;
-  --accent: #f59e0b;
-  --danger: #cf4d4d;
-  --shadow-sm: 0 10px 24px rgba(19, 38, 68, 0.06);
-  --shadow-lg: 0 24px 60px rgba(12, 28, 54, 0.16);
-  --radius-sm: 10px;
-  --radius-md: 16px;
-  --radius-lg: 24px;
+  --surface-soft: #fafafa;
+  --surface-dark: #0d2d5c;
+  --text: #262626;
+  --text-soft: #595959;
+  --text-weak: #8c8c8c;
+  --line: #e8e8e8;
+  --primary: #1677ff;
+  --primary-strong: #0958d9;
+  --secondary: #52c41a;
+  --accent: #faad14;
+  --danger: #ff4d4f;
+  --shadow-sm: 0 2px 8px 0 rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 4px 16px 0 rgba(0, 0, 0, 0.08);
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
   --maxw: 1280px;
 }
 
@@ -41,7 +41,7 @@ html {
 
 body {
   margin: 0;
-  font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
   color: var(--text);
   background:
     linear-gradient(180deg, #f4f7fb 0%, #eef3f7 100%);
@@ -1649,6 +1649,122 @@ body.is-detail-open {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+/* 2026-07 UI spec normalization for portal preview. */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+  background:
+    radial-gradient(circle at 12% 0, rgba(22, 119, 255, 0.12), transparent 30%),
+    linear-gradient(180deg, #e9f4ff 0, var(--bg) 260px, var(--bg) 100%);
+  color: var(--text);
+}
+
+.topbar {
+  border-bottom: 1px solid rgba(232, 232, 232, 0.72);
+  background: linear-gradient(90deg, rgba(220, 238, 255, 0.9), rgba(255, 255, 255, 0.86));
+}
+
+.topbar.is-scrolled,
+.portal-return-tip,
+.hero-main,
+.card,
+.overview,
+.detail-section-card,
+.portal-detail-shell {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: var(--shadow-sm);
+}
+
+.brand-mark,
+.hero-badge,
+.hero-audience-tags span,
+.hero-tags span,
+.metric-icon,
+.db-icon,
+.tool-icon {
+  border-radius: 50%;
+  background: #e6f4ff;
+  color: var(--primary);
+}
+
+.hero {
+  min-height: auto;
+  padding: 112px 0 56px;
+  background: transparent;
+}
+
+.hero::before,
+.hero::after,
+.card::before,
+.hero-main::after {
+  opacity: 0.18;
+}
+
+.hero-inner {
+  gap: 32px;
+}
+
+.hero-title {
+  color: #1a1a2e;
+  font-size: clamp(32px, 5vw, 56px);
+  letter-spacing: 0;
+}
+
+.hero-title span {
+  color: var(--primary);
+}
+
+.hero-desc,
+.section-head p,
+.card p,
+.detail-section-card p {
+  color: var(--text-soft);
+}
+
+.hero-btn,
+.portal-return-tip button,
+.detail-close,
+.detail-back {
+  min-height: 32px;
+  border-radius: var(--radius-sm);
+}
+
+.hero-btn-primary {
+  background: var(--primary);
+  color: #fff;
+}
+
+.hero-btn-primary:hover {
+  background: #4096ff;
+}
+
+.hero-btn-secondary {
+  border: 1px solid #d9d9d9;
+  background: #fff;
+  color: var(--text-soft);
+}
+
+.section,
+.band-soft {
+  background: transparent;
+}
+
+.section-head h2,
+.detail-title h1 {
+  color: #1a1a2e;
+  letter-spacing: 0;
+}
+
+.card {
+  transform: none;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
 }
 </style>
 </head>

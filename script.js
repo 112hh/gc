@@ -1,4 +1,4 @@
-﻿const authScreens = {
+const authScreens = {
   login: {
     heroTitle: ["专业的细胞工程", "数据管理平台"],
     bullets: [
@@ -4575,6 +4575,7 @@ const state = {
   gpaDesigns: gpaInitialDesigns.map((item) => ({ ...item, genes: item.genes.map((gene) => ({ ...gene })), dbtl: item.dbtl.map((stage) => ({ ...stage })) })),
   openNavGroup: "",
   standardsModule: "gpa",
+  qualityModule: "gpa",
   modal: null,
   sidebarOpen: false,
   currentUser: null,
@@ -4595,6 +4596,68 @@ analysisPages.standards = {
   columns: [],
   rows: []
 };
+
+const ingestionPageConfig = {
+  "ingestion-gpa": {
+    title: "GPA数据管理",
+    breadcrumb: ["首页", "工程细胞数据入库", "GPA数据管理"],
+    entryPage: "gpa-wet"
+  },
+  "ingestion-omics": {
+    title: "多组学数据管理",
+    breadcrumb: ["首页", "工程细胞数据入库", "多组学数据管理"],
+    entryPage: "multiomics-research"
+  },
+  "ingestion-fermentation": {
+    title: "发酵过程数据",
+    breadcrumb: ["首页", "工程细胞数据入库", "发酵过程数据"],
+    entryPage: "ferm-scale"
+  }
+};
+
+Object.entries(ingestionPageConfig).forEach(([key, config]) => {
+  analysisPages[key] = {
+    key,
+    title: config.title,
+    breadcrumb: config.breadcrumb,
+    primaryButton: "",
+    headerTools: false,
+    filters: [],
+    columns: [],
+    rows: []
+  };
+});
+
+const qualityPageConfig = {
+  "quality-gpa": {
+    title: "GPA 数据质量控制",
+    breadcrumb: ["首页", "工程细胞质量控制", "GPA 数据质量控制"],
+    panel: "gpa"
+  },
+  "quality-omics": {
+    title: "组学数据质量控制",
+    breadcrumb: ["首页", "工程细胞质量控制", "组学数据质量控制"],
+    panel: "omics"
+  },
+  "quality-ferment": {
+    title: "发酵过程数据质控",
+    breadcrumb: ["首页", "工程细胞质量控制", "发酵过程数据质控"],
+    panel: "ferment"
+  }
+};
+
+Object.entries(qualityPageConfig).forEach(([key, config]) => {
+  analysisPages[key] = {
+    key,
+    title: config.title,
+    breadcrumb: config.breadcrumb,
+    primaryButton: "",
+    headerTools: false,
+    filters: [],
+    columns: [],
+    rows: []
+  };
+});
 
 const algorithmCapabilityLibrary = {
   "algo-1": {
@@ -5051,12 +5114,26 @@ function isAnalysisMenu(menuKey = state.activeMenu) {
   return ["gene", "omics", "process", "full", "service"].includes(menuKey);
 }
 
+function isIngestionMenu(menuKey = state.activeMenu) {
+  return ["ingestion-gpa", "ingestion-omics", "ingestion-fermentation"].includes(menuKey);
+}
+
+function isQualityMenu(menuKey = state.activeMenu) {
+  return Object.prototype.hasOwnProperty.call(qualityPageConfig, menuKey);
+}
+
 function getMenuGroupForMenu(menuKey = state.activeMenu) {
   if (isSensorMenu(menuKey)) {
     return "monitor";
   }
   if (menuKey === "standards") {
     return "standards";
+  }
+  if (isIngestionMenu(menuKey)) {
+    return "ingestion";
+  }
+  if (isQualityMenu(menuKey)) {
+    return "quality";
   }
   if (isAnalysisMenu(menuKey)) {
     return "analysis";
@@ -5199,6 +5276,10 @@ function renderSidebar() {
   const analysisActive = isAnalysisMenu();
   const analysisOpen = state.openNavGroup === "analysis";
   const standardsOpen = state.openNavGroup === "standards" || state.activeMenu === "standards";
+  const ingestionActive = isIngestionMenu();
+  const ingestionOpen = state.openNavGroup === "ingestion";
+  const qualityActive = isQualityMenu();
+  const qualityOpen = state.openNavGroup === "quality";
   const systemActive = isSystemMenu(state.activeMenu);
   const systemOpen = state.openNavGroup === "system";
 
@@ -5246,6 +5327,56 @@ function renderSidebar() {
           <button class="nav-sub-link ${state.activeMenu === "standards" && state.standardsModule === "strain-encrypt" ? "is-active" : ""}" type="button" data-menu="standards" data-standards-module="strain-encrypt">
             <span class="submenu-dot"></span>
             <span>菌株保护特殊加密标准化</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="nav-section">
+        <p class="nav-title">工程细胞数据入库</p>
+        <button class="nav-group-head ${ingestionActive || ingestionOpen ? "is-active" : ""}" type="button" data-menu-group="ingestion">
+          <span class="group-label">
+            <span class="nav-icon">${icon("i-upload")}</span>
+            <span>工程细胞数据入库</span>
+          </span>
+          <span class="menu-arrow ${ingestionOpen ? "is-open" : ""}">${icon("i-chevron")}</span>
+        </button>
+        <div class="nav-submenu ${ingestionOpen ? "is-open" : ""}">
+          <button class="nav-sub-link ${state.activeMenu === "ingestion-gpa" ? "is-active" : ""}" type="button" data-menu="ingestion-gpa">
+            <span class="submenu-dot"></span>
+            <span>GPA数据管理</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "ingestion-omics" ? "is-active" : ""}" type="button" data-menu="ingestion-omics">
+            <span class="submenu-dot"></span>
+            <span>多组学数据管理</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "ingestion-fermentation" ? "is-active" : ""}" type="button" data-menu="ingestion-fermentation">
+            <span class="submenu-dot"></span>
+            <span>发酵过程数据</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="nav-section">
+        <p class="nav-title">工程细胞质量控制</p>
+        <button class="nav-group-head ${qualityActive || qualityOpen ? "is-active" : ""}" type="button" data-menu-group="quality">
+          <span class="group-label">
+            <span class="nav-icon">${icon("i-check")}</span>
+            <span>工程细胞质量控制</span>
+          </span>
+          <span class="menu-arrow ${qualityOpen ? "is-open" : ""}">${icon("i-chevron")}</span>
+        </button>
+        <div class="nav-submenu ${qualityOpen ? "is-open" : ""}">
+          <button class="nav-sub-link ${state.activeMenu === "quality-gpa" ? "is-active" : ""}" type="button" data-menu="quality-gpa" data-quality-module="gpa">
+            <span class="submenu-dot"></span>
+            <span>GPA 数据质量控制</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "quality-omics" ? "is-active" : ""}" type="button" data-menu="quality-omics" data-quality-module="omics">
+            <span class="submenu-dot"></span>
+            <span>组学数据质量控制</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "quality-ferment" ? "is-active" : ""}" type="button" data-menu="quality-ferment" data-quality-module="ferment">
+            <span class="submenu-dot"></span>
+            <span>发酵过程数据质控</span>
           </button>
         </div>
       </section>
@@ -8083,6 +8214,28 @@ function renderAnalysisPage(page) {
       <div class="page-section analysis-page standards-embed-page">
         <section class="standards-frame-shell" aria-label="工程细胞数据标准体系原型">
           <iframe class="standards-frame" src="./standards.html?embedded=1&module=${standardsModule}" title="工程细胞数据标准体系"></iframe>
+        </section>
+      </div>
+    `;
+  }
+
+  if (ingestionPageConfig[page.key]) {
+    const entryPage = ingestionPageConfig[page.key].entryPage;
+    return `
+      <div class="page-section analysis-page ingestion-embed-page">
+        <section class="ingestion-frame-shell" aria-label="工程细胞数据入库">
+          <iframe class="ingestion-frame" src="./engineering-cell-ingestion.html?embedded=1&page=${entryPage}" title="工程细胞数据入库"></iframe>
+        </section>
+      </div>
+    `;
+  }
+
+  if (qualityPageConfig[page.key]) {
+    const panel = qualityPageConfig[page.key].panel;
+    return `
+      <div class="page-section analysis-page quality-embed-page">
+        <section class="quality-frame-shell" aria-label="工程细胞质量控制">
+          <iframe class="quality-frame" src="./quality-control.html?embedded=1&panel=${panel}" title="工程细胞质量控制"></iframe>
         </section>
       </div>
     `;
@@ -13418,15 +13571,707 @@ function renderDashboardView() {
             headerTools: analysisPages[state.activeMenu].headerTools,
             content: renderAnalysisPage(analysisPages[state.activeMenu])
           };
+  const qualityPage = isQualityMenu(state.activeMenu);
 
   return `
-    <section class="app-page">
-      ${renderHeader(page)}
+    <section class="app-page ${qualityPage ? "is-quality-page" : ""}">
+      ${qualityPage ? "" : renderHeader(page)}
       <div class="page-content">${page.content}</div>
     </section>
     ${renderModal()}
   `;
 }
+
+const visualListPageSize = 10;
+
+function renderSpecBreadcrumb(items = []) {
+  return `
+    <div class="spec-breadcrumb">
+      <span class="spec-breadcrumb-home">${icon("i-home")}</span>
+      ${items
+        .filter((item) => item !== "首页")
+        .map((item, index, list) =>
+          index === list.length - 1
+            ? `<strong>${escapeHtml(item)}</strong>`
+            : `<span>${escapeHtml(item)}</span><em>/</em>`
+        )
+        .join("")}
+    </div>
+  `;
+}
+
+function renderSpecPagination(key, current = 1, pageCount = 20) {
+  const visiblePages = [1, 2, 3, 4, 5];
+  return `
+    <div class="spec-pagination">
+      <span class="spec-total">共计 200 条</span>
+      <button class="page-button is-plain" type="button" data-page="${key}|${Math.max(1, current - 1)}" aria-label="上一页">‹</button>
+      ${visiblePages
+        .map(
+          (page) => `
+            <button class="page-button ${page === current ? "is-active" : ""}" type="button" data-page="${key}|${page}">
+              ${page}
+            </button>
+          `
+        )
+        .join("")}
+      <span class="spec-page-ellipsis">...</span>
+      <button class="page-button" type="button" data-page="${key}|${pageCount}">${pageCount}</button>
+      <button class="page-button is-plain" type="button" data-page="${key}|${Math.min(pageCount, current + 1)}" aria-label="下一页">›</button>
+      <button class="spec-page-size" type="button">10条/页 ${icon("i-chevron")}</button>
+    </div>
+  `;
+}
+
+function renderSpecSelect(filterName, label, options, value, pageKey = "") {
+  const attr = pageKey === "catalog" ? `data-catalog-filter="${escapeHtml(filterName)}"` : "";
+  return `
+    <label class="inline-field">
+      <span>${escapeHtml(label)}:</span>
+      <span class="filter-control-wrap">
+        <select ${attr}>
+          ${options.map((option) => `<option ${option === value ? "selected" : ""}>${escapeHtml(option)}</option>`).join("")}
+        </select>
+        <span class="filter-field-icon is-right">${icon("i-chevron")}</span>
+      </span>
+    </label>
+  `;
+}
+
+function checkedBox(index, selected = []) {
+  return `<div class="row-check ${selected.includes(index) ? "is-checked" : ""}"></div>`;
+}
+
+renderHeader = function renderHeader() {
+  const currentUser = getCurrentUserProfile();
+  const userName = currentUser.name || currentUser.username || "管理员9527";
+  const userOrg = currentUser.organization || currentUser.department || "平台运维部";
+  return `
+    <header class="app-header">
+      <div class="top-search" role="search">
+        <span>${icon("i-search")}</span>
+        <input type="search" placeholder="请输入" aria-label="全局搜索" />
+      </div>
+      <div class="top-actions">
+        <button class="top-tool" type="button" aria-label="应用">${icon("i-table")}<span>应用</span></button>
+        <button class="top-tool" type="button" aria-label="帮助">${icon("i-info")}<span>帮助</span></button>
+        <div class="top-user-dropdown">
+          <button class="top-user" type="button" data-user-menu-trigger aria-haspopup="true">
+            <span class="top-user-avatar">${icon("i-user")}</span>
+            <span>${escapeHtml(userName)}</span>
+            <span class="top-user-caret">${icon("i-chevron")}</span>
+          </button>
+          <div class="header-user-menu top-user-menu">
+            <div class="header-user-menu-head">
+              <span class="header-user-avatar is-large">${icon("i-user")}</span>
+              <div class="header-user-menu-meta">
+                <strong title="${escapeHtml(userName)}">${escapeHtml(userName)}</strong>
+                <span title="${escapeHtml(userOrg)}">${escapeHtml(userOrg)}</span>
+              </div>
+            </div>
+            <button class="header-user-menu-item" type="button" data-user-menu-action="portal">
+              <span class="header-icon">${icon("i-home")}</span>
+              <span>返回门户</span>
+            </button>
+            <button class="header-user-menu-item" type="button" data-user-menu-action="profile">
+              <span class="header-icon">${icon("i-user")}</span>
+              <span>用户中心</span>
+            </button>
+            <button class="header-user-menu-item is-danger" type="button" data-user-menu-action="logout">
+              <span class="header-icon">${icon("i-arrow-left")}</span>
+              <span>退出登录</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+  `;
+};
+
+renderSidebar = function renderSidebar() {
+  if (state.scene !== "dashboard") {
+    sidebarRoot.innerHTML = "";
+    return;
+  }
+
+  const monitorActive = ["physical", "biological"].includes(state.activeMenu);
+  const monitorOpen = state.openNavGroup === "monitor";
+  const analysisActive = isAnalysisMenu();
+  const analysisOpen = state.openNavGroup === "analysis";
+  const standardsOpen = state.openNavGroup === "standards" || state.activeMenu === "standards";
+  const ingestionActive = isIngestionMenu();
+  const ingestionOpen = state.openNavGroup === "ingestion";
+  const qualityActive = isQualityMenu();
+  const qualityOpen = state.openNavGroup === "quality";
+  const systemOpen = isSystemMenu(state.activeMenu) || state.openNavGroup === "system";
+
+  sidebarRoot.innerHTML = `
+    <div class="sidebar-brand">
+      <span class="brand-icon">${icon("i-logo")}</span>
+      <p class="brand-text">工程细胞主题库</p>
+      <button class="sidebar-collapse" type="button" aria-label="收起侧边栏">${icon("i-menu")}</button>
+    </div>
+
+    <div class="sidebar-nav">
+      <section class="nav-section">
+        <p class="nav-title">数据统计</p>
+        <button class="nav-link ${state.activeMenu === "dashboard" ? "is-active" : ""}" type="button" data-menu="dashboard">
+          <span class="nav-icon">${icon("i-chart")}</span>
+          <span>数据看板</span>
+        </button>
+        <button class="nav-link ${state.activeMenu === "catalog" ? "is-active" : ""}" type="button" data-menu="catalog">
+          <span class="nav-icon">${icon("i-list")}</span>
+          <span>数据资源目录</span>
+        </button>
+      </section>
+
+      <section class="nav-section">
+        <p class="nav-title">工程细胞数据标准体系</p>
+        <button class="nav-group-head ${state.activeMenu === "standards" || standardsOpen ? "is-active" : ""}" type="button" data-menu-group="standards">
+          <span class="group-label">
+            <span class="nav-icon">${icon("i-doc")}</span>
+            <span>工程细胞数据标准体系</span>
+          </span>
+          <span class="menu-arrow ${standardsOpen ? "is-open" : ""}">${icon("i-chevron")}</span>
+        </button>
+        <div class="nav-submenu ${standardsOpen ? "is-open" : ""}">
+          <button class="nav-sub-link ${state.activeMenu === "standards" && state.standardsModule === "gpa" ? "is-active" : ""}" type="button" data-menu="standards" data-standards-module="gpa">
+            <span>GPA获取和分析标准化</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "standards" && state.standardsModule === "cell-model" ? "is-active" : ""}" type="button" data-menu="standards" data-standards-module="cell-model">
+            <span>工程细胞模型标准化</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "standards" && state.standardsModule === "pilot-params" ? "is-active" : ""}" type="button" data-menu="standards" data-standards-module="pilot-params">
+            <span>小中试参数数字化模型标准化</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "standards" && state.standardsModule === "strain-encrypt" ? "is-active" : ""}" type="button" data-menu="standards" data-standards-module="strain-encrypt">
+            <span>菌株保护特殊加密标准化</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="nav-section">
+        <p class="nav-title">工程细胞数据入库</p>
+        <button class="nav-group-head ${ingestionActive || ingestionOpen ? "is-active" : ""}" type="button" data-menu-group="ingestion">
+          <span class="group-label">
+            <span class="nav-icon">${icon("i-upload")}</span>
+            <span>工程细胞数据入库</span>
+          </span>
+          <span class="menu-arrow ${ingestionOpen ? "is-open" : ""}">${icon("i-chevron")}</span>
+        </button>
+        <div class="nav-submenu ${ingestionOpen ? "is-open" : ""}">
+          <button class="nav-sub-link ${state.activeMenu === "ingestion-gpa" ? "is-active" : ""}" type="button" data-menu="ingestion-gpa">
+            <span>GPA数据管理</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "ingestion-omics" ? "is-active" : ""}" type="button" data-menu="ingestion-omics">
+            <span>多组学数据管理</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "ingestion-fermentation" ? "is-active" : ""}" type="button" data-menu="ingestion-fermentation">
+            <span>发酵过程数据</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="nav-section">
+        <p class="nav-title">工程细胞质量控制</p>
+        <button class="nav-group-head ${qualityActive || qualityOpen ? "is-active" : ""}" type="button" data-menu-group="quality">
+          <span class="group-label">
+            <span class="nav-icon">${icon("i-check")}</span>
+            <span>工程细胞质量控制</span>
+          </span>
+          <span class="menu-arrow ${qualityOpen ? "is-open" : ""}">${icon("i-chevron")}</span>
+        </button>
+        <div class="nav-submenu ${qualityOpen ? "is-open" : ""}">
+          <button class="nav-sub-link ${state.activeMenu === "quality-gpa" ? "is-active" : ""}" type="button" data-menu="quality-gpa" data-quality-module="gpa">
+            <span>GPA 数据质量控制</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "quality-omics" ? "is-active" : ""}" type="button" data-menu="quality-omics" data-quality-module="omics">
+            <span>组学数据质量控制</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "quality-ferment" ? "is-active" : ""}" type="button" data-menu="quality-ferment" data-quality-module="ferment">
+            <span>发酵过程数据质控</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="nav-section">
+        <p class="nav-title">发酵过程工具</p>
+        <button class="nav-group-head ${monitorActive || monitorOpen ? "is-active" : ""}" type="button" data-menu-group="monitor">
+          <span class="group-label">
+            <span class="nav-icon">${icon("i-clock")}</span>
+            <span>发酵过程数据检测工具</span>
+          </span>
+          <span class="menu-arrow ${monitorOpen ? "is-open" : ""}">${icon("i-chevron")}</span>
+        </button>
+        <div class="nav-submenu ${monitorOpen ? "is-open" : ""}">
+          <button class="nav-sub-link ${state.activeMenu === "physical" ? "is-active" : ""}" type="button" data-menu="physical">
+            <span>发酵过程数据检测物理传感器工具</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "biological" ? "is-active" : ""}" type="button" data-menu="biological">
+            <span>发酵过程数据检测生物传感器工具</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="nav-section">
+        <p class="nav-title">数据分析</p>
+        <button class="nav-group-head ${analysisActive || analysisOpen ? "is-active" : ""}" type="button" data-menu-group="analysis">
+          <span class="group-label">
+            <span class="nav-icon">${icon("i-chip")}</span>
+            <span>工程细胞数据应用平台</span>
+          </span>
+          <span class="menu-arrow ${analysisOpen ? "is-open" : ""}">${icon("i-chevron")}</span>
+        </button>
+        <div class="nav-submenu ${analysisOpen ? "is-open" : ""}">
+          <button class="nav-sub-link ${state.activeMenu === "gene" ? "is-active" : ""}" type="button" data-menu="gene">
+            <span>基因型-表型数据分析</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "omics" ? "is-active" : ""}" type="button" data-menu="omics">
+            <span>组学数据分析</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "process" ? "is-active" : ""}" type="button" data-menu="process">
+            <span>发酵过程分析</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "full" ? "is-active" : ""}" type="button" data-menu="full">
+            <span>全流程数据分析</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "service" ? "is-active" : ""}" type="button" data-menu="service">
+            <span>工程细胞服务</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="nav-section">
+        <p class="nav-title">系统管理</p>
+        <button class="nav-group-head ${systemOpen ? "is-active" : ""}" type="button" data-menu-group="system">
+          <span class="group-label">
+            <span class="nav-icon">${icon("i-settings")}</span>
+            <span>系统管理</span>
+          </span>
+          <span class="menu-arrow ${systemOpen ? "is-open" : ""}">${icon("i-chevron")}</span>
+        </button>
+        <div class="nav-submenu ${systemOpen ? "is-open" : ""}">
+          <button class="nav-sub-link ${state.activeMenu === "system-users" ? "is-active" : ""}" type="button" data-menu="system-users">
+            <span>用户管理</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "system-roles" ? "is-active" : ""}" type="button" data-menu="system-roles">
+            <span>角色管理</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "system-menus" ? "is-active" : ""}" type="button" data-menu="system-menus">
+            <span>菜单管理</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "system-logs" ? "is-active" : ""}" type="button" data-menu="system-logs">
+            <span>操作日志</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "system-audit" ? "is-active" : ""}" type="button" data-menu="system-audit">
+            <span>审核管理</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "system-config" ? "is-active" : ""}" type="button" data-menu="system-config">
+            <span>平台配置</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "system-portal-config" ? "is-active" : ""}" type="button" data-menu="system-portal-config">
+            <span>门户页配置</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "system-apis" ? "is-active" : ""}" type="button" data-menu="system-apis">
+            <span>接口管理</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "system-algorithms" ? "is-active" : ""}" type="button" data-menu="system-algorithms">
+            <span>算法管理</span>
+          </button>
+          <button class="nav-sub-link ${state.activeMenu === "system-datasets" ? "is-active" : ""}" type="button" data-menu="system-datasets">
+            <span>数据管理</span>
+          </button>
+        </div>
+      </section>
+    </div>
+  `;
+};
+
+function renderCatalogSpecCard(item, index) {
+  const cards = [
+    { icon: "i-user", tone: "green" },
+    { icon: "i-table", tone: "blue" },
+    { icon: "i-bio", tone: "purple" },
+    { icon: "i-eye", tone: "orange" }
+  ];
+  const meta = cards[index] || cards[0];
+  return `
+    <article class="catalog-category-card is-${meta.tone}">
+      <span class="catalog-category-icon">${icon(meta.icon)}</span>
+      <div class="catalog-category-main">
+        <h3>${escapeHtml(item.name)}</h3>
+        <p class="catalog-category-desc">${escapeHtml(item.desc)}</p>
+      </div>
+      <span class="catalog-card-pattern" aria-hidden="true"></span>
+    </article>
+  `;
+}
+
+renderCatalogPage = function renderCatalogPage(page) {
+  const filteredRows = getFilteredCatalogRows(page);
+  const pageCount = 20;
+  const current = Math.min(state.pagination.catalog || 1, pageCount);
+  state.pagination.catalog = current;
+  const visualRows = filteredRows.length
+    ? Array.from({ length: visualListPageSize }, (_, index) => filteredRows[index % filteredRows.length])
+    : [];
+  const columns = [
+    { key: "name", label: "数据库名称" },
+    { key: "category", label: "资源类型" },
+    { key: "status", label: "标准化状态" },
+    { key: "fields", label: "核心字段" },
+    { key: "records", label: "数据量" },
+    { key: "format", label: "格式" },
+    { key: "actions", label: "操作" }
+  ];
+  const formats = ["全部", ...new Set(page.rows.map((row) => row.format))];
+  const categories = ["全部", ...page.categories.map((item) => item.name)];
+
+  return `
+    <div class="page-section catalog-page">
+      <section class="catalog-category-grid">
+        ${page.categories.map(renderCatalogSpecCard).join("")}
+      </section>
+
+      <section class="filter-card catalog-filter-card spec-inline-filters">
+        <div class="filter-row">
+          <label class="inline-field is-name">
+            <span>数据库名称:</span>
+            <span class="filter-control-wrap">
+              <input data-catalog-filter="keyword" value="${escapeHtml(state.catalogFilters.keyword)}" placeholder="请输入" />
+            </span>
+          </label>
+          ${renderSpecSelect("category", "资源类型", categories, state.catalogFilters.category, "catalog")}
+          ${renderSpecSelect("format", "数据格式", formats, state.catalogFilters.format, "catalog")}
+          ${renderSpecSelect("status", "标准化状态", ["全部", "已标准化"], state.catalogFilters.status, "catalog")}
+          <div class="filter-actions">
+            <button class="filter-button" type="button" data-filter-action="search|catalog">查询</button>
+            <button class="reset-link" type="button" data-filter-action="reset|catalog">重置</button>
+          </div>
+        </div>
+      </section>
+
+      <div class="spec-toolbar">
+        <button class="toolbar-primary" type="button" data-primary-action="catalog-add">${icon("i-plus")}<span>新增</span></button>
+        <button class="outline-button" type="button" data-open-modal="import|catalog">批量导入</button>
+      </div>
+
+      <section class="table-wrap catalog-table-wrap list-table-wrap">
+        <div class="table-scroll">
+          <table class="data-table catalog-data-table">
+            <thead>
+              <tr>
+                <th class="checkbox-cell"><div class="row-check is-indeterminate"></div></th>
+                ${columns.map((column) => `<th>${escapeHtml(column.label)}${["name", "fields"].includes(column.key) ? '<span class="sort-mark">↕</span>' : ""}</th>`).join("")}
+              </tr>
+            </thead>
+            <tbody>
+              ${visualRows
+                .map(
+                  (row, index) => `
+                    <tr>
+                      <td class="checkbox-cell">${checkedBox(index, [1, 2, 6])}</td>
+                      ${columns.map((column) => `<td>${renderTableCell(row, column, page.key)}</td>`).join("")}
+                    </tr>
+                  `
+                )
+                .join("")}
+            </tbody>
+          </table>
+        </div>
+        <div class="table-footer">${renderSpecPagination(page.key, current, pageCount)}</div>
+      </section>
+    </div>
+  `;
+};
+
+function renderSensorBatchList(module, activeBatch) {
+  const batches = [
+    { label: "FB2024010101001", dissolved: "5.6mg/L", badge: "高浓度", badgeClass: "badge-high", state: "异常", tone: "error" },
+    { label: "FB2024010101001", dissolved: "5.4mg/L", badge: "中浓度", badgeClass: "badge-mid", state: "预警", tone: "warning" },
+    { label: "FB2024010101001", dissolved: "4.6mg/L", badge: "低浓度", badgeClass: "badge-low", state: "运行中", tone: "running" },
+    { label: "FB2024010101001", dissolved: "3.6mg/L", badge: "其他", badgeClass: "badge-other", state: "运行中", tone: "running" }
+  ];
+  const dataId = activeBatch?.id || module.batches[0]?.id || "";
+  return batches
+    .map(
+      (item, index) => `
+        <div class="batch-card ${index === 0 ? "is-active" : ""}">
+          <button class="batch-select-button" type="button" data-batch="${module.key}|${escapeHtml(dataId)}">
+            <div class="batch-top">
+              <span class="batch-id">${item.label}</span>
+              <span class="batch-badge ${item.badgeClass}">${item.badge}</span>
+            </div>
+            <p class="batch-dissolved">溶氧：${item.dissolved}</p>
+            <div class="batch-status tone-${item.tone}">
+              <span class="status-dot"></span>
+              <span>${item.state}</span>
+            </div>
+          </button>
+        </div>
+      `
+    )
+    .join("");
+}
+
+function renderSensorVisualRows(moduleKey) {
+  const rows = [
+    ["张三", "37.5℃", "1.2kPa", "6.85", "4.6mg/L", "2024-01-15 10:30:00", "正常", "is-normal"],
+    ["李四", "37.8℃", "1.3kPa", "6.92", "5.4mg/L", "2024-01-15 11:00:00", "预警", "is-warning"],
+    ["王五", "38.5℃", "1.6kPa", "5.8", "5.6mg/L", "2024-01-15 11:30:00", "异常", "is-error"],
+    ["王五", "37.5℃", "1.2kPa", "5.8", "4.6mg/L", "2024-01-15 11:30:00", "正常", "is-normal"],
+    ["王五", "37.5℃", "1.2kPa", "5.8", "4.6mg/L", "2024-01-15 11:30:00", "正常", "is-normal"],
+    ["王五", "37.5℃", "1.2kPa", "5.8", "4.6mg/L", "2024-01-15 11:30:00", "正常", "is-normal"],
+    ["王五", "37.5℃", "1.2kPa", "5.8", "4.6mg/L", "2024-01-15 11:30:00", "正常", "is-normal"],
+    ["王五", "37.5℃", "1.2kPa", "5.8", "4.6mg/L", "2024-01-15 11:30:00", "正常", "is-normal"],
+    ["王五", "37.5℃", "1.2kPa", "5.8", "4.6mg/L", "2024-01-15 11:30:00", "正常", "is-normal"],
+    ["王五", "37.5℃", "1.2kPa", "5.8", "4.6mg/L", "2024-01-15 11:30:00", "正常", "is-normal"]
+  ];
+  return rows
+    .map(
+      (row, index) => `
+        <tr>
+          <td class="checkbox-cell">${checkedBox(index, [1, 2, 6])}</td>
+          <td>${row[0]}</td>
+          <td>${row[1]}</td>
+          <td>${row[2]}</td>
+          <td>${row[3]}</td>
+          <td>${row[4]}</td>
+          <td>${row[5]}</td>
+          <td><span class="table-status ${row[7]}">${row[6]}</span></td>
+          <td><button class="table-link" type="button" data-open-modal="detail|${moduleKey}|${sensorModules[moduleKey].batches[0].id}|${sensorModules[moduleKey].batches[0].records[0].id}">查看详情</button></td>
+        </tr>
+      `
+    )
+    .join("");
+}
+
+renderSensorListPage = function renderSensorListPage(module) {
+  const batch = module.batches.find((item) => item.id === state.activeBatch[module.key]) || module.batches[0];
+  const current = Math.min(state.pagination[module.key] || 1, 20);
+  state.pagination[module.key] = current;
+
+  return `
+    <div class="page-section sensor-page">
+      <div class="sensor-layout">
+        <aside class="batch-panel">
+          <div class="sensor-tabs">
+            <button class="${module.key === "physical" ? "is-active" : ""}" type="button" data-menu="physical">物理传感器</button>
+            <button class="${module.key === "biological" ? "is-active" : ""}" type="button" data-menu="biological">生物传感器</button>
+          </div>
+          <div class="batch-list">${renderSensorBatchList(module, batch)}</div>
+        </aside>
+
+        <section class="sensor-main">
+          <div class="summary-strip">
+            ${renderSummaryCards([
+              { value: "666", label: "总记录数", tone: "blue", note: "同比上周新增" },
+              { value: "433", label: "正常数", tone: "green", note: "同比上周新增" },
+              { value: "26", label: "预警数", tone: "orange", note: "同比上周新增" },
+              { value: "6", label: "异常数", tone: "red", note: "同比上周减少 1↓" }
+            ])}
+          </div>
+
+          <section class="filter-card sensor-filter-card spec-inline-filters">
+            <div class="filter-row">
+              <label class="inline-field">
+                <span>录入人:</span>
+                <span class="filter-control-wrap"><input type="text" placeholder="请输入" /></span>
+              </label>
+              <label class="inline-field">
+                <span>录入时间:</span>
+                <span class="filter-control-wrap">
+                  <input type="text" placeholder="请选择" />
+                  <span class="filter-field-icon is-right">${icon("i-calendar")}</span>
+                </span>
+              </label>
+              <label class="inline-field">
+                <span>状态:</span>
+                <span class="filter-control-wrap">
+                  <select data-status-filter="${module.key}">
+                    <option value="all">请选择</option>
+                    <option value="is-normal">正常</option>
+                    <option value="is-warning">预警</option>
+                    <option value="is-error">异常</option>
+                  </select>
+                  <span class="filter-field-icon is-right">${icon("i-chevron")}</span>
+                </span>
+              </label>
+              <div class="filter-actions">
+                <button class="filter-button" type="button">查询</button>
+                <button class="reset-link" type="button">重置</button>
+              </div>
+            </div>
+          </section>
+
+          <div class="spec-toolbar">
+            <button class="outline-button" type="button" data-open-modal="import|${module.key}">批量导入</button>
+            <button class="outline-button" type="button" data-open-modal="threshold|${module.key}">阈值配置</button>
+            <button class="toolbar-primary" type="button" data-open-form="${module.key}">${icon("i-plus")}<span>新增</span></button>
+          </div>
+
+          <section class="table-wrap sensor-table-wrap">
+            <div class="table-scroll">
+              <table class="data-table sensor-data-table">
+                <thead>
+                  <tr>
+                    <th class="checkbox-cell"><div class="row-check is-indeterminate"></div></th>
+                    <th>录入人</th>
+                    <th>温度</th>
+                    <th>压力</th>
+                    <th>pH <span class="sort-mark">↕</span></th>
+                    <th>溶氧</th>
+                    <th>录入时间 <span class="sort-mark">↕</span></th>
+                    <th>状态</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>${renderSensorVisualRows(module.key)}</tbody>
+              </table>
+            </div>
+            <div class="table-footer">${renderSpecPagination(module.key, current, 20)}</div>
+          </section>
+        </section>
+      </div>
+    </div>
+  `;
+};
+
+function renderFullAnalysisSpecPage(page) {
+  const current = Math.min(state.pagination[page.key] || 1, 20);
+  state.pagination[page.key] = current;
+  const rows = [
+    ["谷氨酸全流程优化分析", "谷氨酸棒杆菌", "已验证", "is-valid"],
+    ["赖氨酸生产菌株全流程分析", "大肠杆菌", "待验证", "is-warning"],
+    ["乙醇发酵全流程优化", "酵母菌", "验证中", "is-progress"],
+    ["芽孢杆菌蛋白酶全流程分析", "芽孢杆菌", "已验证", "is-valid"],
+    ["有机酸生产菌株全流程优化", "大肠杆菌", "已验证", "is-valid"],
+    ["有机酸生产菌株全流程优化", "芽孢杆菌", "已验证", "is-valid"],
+    ["有机酸生产菌株全流程优化", "芽孢杆菌", "已验证", "is-valid"],
+    ["有机酸生产菌株全流程优化", "芽孢杆菌", "已验证", "is-valid"],
+    ["有机酸生产菌株全流程优化", "芽孢杆菌", "已验证", "is-valid"],
+    ["有机酸生产菌株全流程优化", "芽孢杆菌", "已验证", "is-valid"]
+  ];
+
+  return `
+    <div class="page-section analysis-page visual-list-page">
+      <section class="filter-card analysis-filter-card spec-inline-filters">
+        <div class="filter-row">
+          <label class="inline-field is-project">
+            <span>项目名称:</span>
+            <span class="filter-control-wrap"><input placeholder="请输入" /></span>
+          </label>
+          ${renderSpecSelect("strain", "菌株类型", ["请选择", "谷氨酸棒杆菌", "大肠杆菌", "酵母菌", "芽孢杆菌"], "请选择")}
+          ${renderSpecSelect("model", "模型类型", ["请选择", "全流程模型", "代谢网络模型", "参数预测模型"], "请选择")}
+          ${renderSpecSelect("status", "分析状态", ["请选择", "已验证", "待验证", "验证中"], "请选择")}
+          <div class="filter-actions">
+            <button class="filter-button" type="button" data-filter-action="search|${page.key}">查询</button>
+            <button class="reset-link" type="button" data-filter-action="reset|${page.key}">重置</button>
+          </div>
+        </div>
+      </section>
+
+      <div class="spec-toolbar is-split">
+        <button class="outline-button" type="button" data-open-modal="import|${page.key}">批量导入</button>
+        <button class="toolbar-primary" type="button" data-primary-action="${page.key}">${icon("i-plus")}<span>新增</span></button>
+      </div>
+
+      <section class="table-wrap analysis-table-wrap list-table-wrap">
+        <div class="table-scroll">
+          <table class="data-table full-data-table">
+            <thead>
+              <tr>
+                <th class="checkbox-cell"><div class="row-check is-indeterminate"></div></th>
+                <th>项目名称 <span class="sort-mark">↕</span></th>
+                <th>菌株类型</th>
+                <th>状态</th>
+                <th>创建时间</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rows
+                .map(
+                  (row, index) => `
+                    <tr>
+                      <td class="checkbox-cell">${checkedBox(index, [1, 2, 6])}</td>
+                      <td>${row[0]}</td>
+                      <td>${row[1]}</td>
+                      <td><span class="table-status ${row[3]}">${row[2]}</span></td>
+                      <td>2024-01-15 10:30</td>
+                      <td>
+                        <div class="table-actions">
+                          <button class="table-link" type="button" data-table-page="${page.key}" data-table-action="编辑" data-table-target="${escapeHtml(row[0])}">编辑</button>
+                          <button class="table-link" type="button" data-table-page="${page.key}" data-table-action="查看结果" data-table-target="${escapeHtml(row[0])}">详情</button>
+                          <button class="table-link is-danger" type="button" data-table-page="${page.key}" data-table-action="删除" data-table-target="${escapeHtml(row[0])}">删除</button>
+                        </div>
+                      </td>
+                    </tr>
+                  `
+                )
+                .join("")}
+            </tbody>
+          </table>
+        </div>
+        <div class="table-footer">${renderSpecPagination(page.key, current, 20)}</div>
+      </section>
+    </div>
+  `;
+}
+
+const renderAnalysisPageBase = renderAnalysisPage;
+renderAnalysisPage = function renderAnalysisPage(page) {
+  if (page.key === "full") {
+    return renderFullAnalysisSpecPage(page);
+  }
+  return renderAnalysisPageBase(page);
+};
+
+renderDashboardView = function renderDashboardView() {
+  const page =
+    isSensorMenu() && state.sensorView[state.activeMenu] === "form"
+      ? {
+          breadcrumb: sensorModules[state.activeMenu].formBreadcrumb,
+          headerTools: false,
+          content: renderSensorFormPage(sensorModules[state.activeMenu])
+        }
+      : isSensorMenu()
+        ? {
+            breadcrumb: sensorModules[state.activeMenu].listBreadcrumb,
+            headerTools: false,
+            content: renderSensorListPage(sensorModules[state.activeMenu])
+          }
+        : state.activeMenu === "dashboard"
+          ? {
+              breadcrumb: analysisPages.dashboard.breadcrumb,
+              headerTools: analysisPages.dashboard.headerTools,
+              content: renderDashboardPage()
+            }
+        : state.activeMenu === "catalog"
+          ? {
+              breadcrumb: analysisPages.catalog.breadcrumb,
+              headerTools: analysisPages.catalog.headerTools,
+              content: renderCatalogPage(analysisPages.catalog)
+            }
+        : {
+            breadcrumb: analysisPages[state.activeMenu].breadcrumb,
+            headerTools: analysisPages[state.activeMenu].headerTools,
+            content: renderAnalysisPage(analysisPages[state.activeMenu])
+          };
+
+  return `
+    <section class="app-page">
+      ${renderHeader(page)}
+      <div class="page-content">
+        <div class="spec-frame">
+          ${renderSpecBreadcrumb(page.breadcrumb)}
+          <div class="spec-workarea">${page.content}</div>
+        </div>
+      </div>
+      ${renderModal()}
+    </section>
+  `;
+};
 
 function renderView() {
   viewRoot.innerHTML = state.scene === "auth" ? renderAuthView(state.authView) : renderDashboardView();
@@ -13694,6 +14539,9 @@ document.addEventListener("click", async (event) => {
     state.activeMenu = menuButton.dataset.menu;
     if (menuButton.dataset.standardsModule) {
       state.standardsModule = menuButton.dataset.standardsModule;
+    }
+    if (menuButton.dataset.qualityModule) {
+      state.qualityModule = menuButton.dataset.qualityModule;
     }
     state.openNavGroup = getMenuGroupForMenu(state.activeMenu);
     if (isSensorMenu(state.activeMenu)) {

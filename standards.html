@@ -6,8 +6,8 @@
 <title>工程细胞数据标准体系</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:'Noto Sans SC',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:#F7F9FC; color:#1E293B; }
-:root { --primary:#2563EB; --primary-light:#DBEAFE; --primary-dark:#1D4ED8; --border:#E2E8F0; --muted:#64748B; --bg:#F7F9FC; }
+body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB','Microsoft YaHei','Helvetica Neue',Arial,sans-serif; background:#F5F7FA; color:#262626; }
+:root { --primary:#1677FF; --primary-light:#E6F4FF; --primary-dark:#0958D9; --border:#E8E8E8; --muted:#595959; --bg:#F5F7FA; --divider:#F0F0F0; --success:#52C41A; --warning:#FAAD14; --danger:#FF4D4F; --shadow-1:0 2px 8px 0 rgba(0,0,0,.05); --shadow-2:0 4px 16px 0 rgba(0,0,0,.08); }
 /* layout */
 .app { display:flex; min-height:100vh; }
 .sidebar { width:260px; background:#fff; border-right:1px solid var(--border); flex-shrink:0; position:fixed; top:0; bottom:0; left:0; z-index:100; overflow-y:auto; transition:width .3s; }
@@ -226,6 +226,47 @@ body.embedded .header { display:none; }
 body.embedded .main { margin-left:0; min-height:100vh; }
 body.embedded .content { padding:32px; }
 body.embedded .toolbar { margin-top:24px; }
+
+/* 2026-07 UI spec normalization for embedded standards page. */
+.sidebar { width:220px; background:linear-gradient(180deg,#DCEEFF 0%,#CFE5FF 42%,#EDF6FF 100%); color:#595959; border-right:1px solid rgba(22,119,255,.12); }
+.main { margin-left:220px; }
+.sidebar.collapsed ~ .main { margin-left:64px; }
+.sidebar-header { height:56px; padding:0 16px; border-bottom:1px solid rgba(22,119,255,.12); }
+.logo { width:32px; height:32px; border-radius:50%; background:#fff; color:var(--primary); box-shadow:var(--shadow-1); }
+.sidebar-title { color:#1A1A2E; }
+.sidebar-subtitle { color:#8C8C8C; }
+.menu-item { border-radius:4px; color:#595959; min-height:36px; }
+.menu-item:hover { background:#fff; color:var(--primary); }
+.menu-item.active { background:#fff; color:var(--primary); box-shadow:var(--shadow-1); }
+.menu-sub .menu-item { color:#666; }
+.header { height:56px; background:linear-gradient(90deg,rgba(226,241,255,.96),rgba(255,255,255,.94)); border-bottom-color:var(--divider); backdrop-filter:none; }
+.content { padding:24px; }
+.banner { border-radius:8px; background:linear-gradient(135deg,#7AB8FF,#1677FF); padding:24px; margin-bottom:16px; box-shadow:var(--shadow-1); }
+.banner h1 { font-size:20px; line-height:1.4; }
+.kpi-grid, .module-grid { gap:16px; }
+.kpi-card, .module-card, .toolbar, .table-card, .modal, .drawer, .comment-card, .timeline-item, .element-table, .empty-box, .upload-box { border-color:var(--border); border-radius:8px; box-shadow:var(--shadow-1); background:#fff; }
+.module-card:hover { border-color:#91CAFF; box-shadow:var(--shadow-2); transform:translateY(-2px); }
+.module-icon, .kpi-icon { border-radius:50%; background:var(--primary-light); color:var(--primary); }
+.toolbar input, .toolbar select, .search-box input, .form-group input, .form-group select, .form-group textarea { height:32px; border-color:#D9D9D9; border-radius:4px; background:#fff; }
+.toolbar input:focus, .toolbar select:focus, .search-box input:focus, .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color:var(--primary); box-shadow:0 0 0 2px rgba(22,119,255,.2); }
+.btn { min-height:32px; padding:0 14px; border-radius:4px; font-weight:500; }
+.btn-primary { background:var(--primary); }
+.btn-primary:hover { background:#4096FF; }
+.btn-outline { color:#595959; border-color:#D9D9D9; }
+.btn-outline:hover { border-color:#4096FF; color:var(--primary); }
+th { height:40px; padding:10px 16px; background:#F5F5F5; color:#262626; font-weight:500; }
+td { height:44px; padding:10px 16px; border-top-color:var(--border); color:#595959; }
+tr:hover { background:#FAFAFA; }
+.badge { border-radius:999px; font-weight:400; }
+.badge-published, .comment-result.approve { background:#F6FFED; color:var(--success); border-color:#B7EB8F; }
+.badge-reviewing { background:#FFFBE6; color:var(--warning); border-color:#FFE58F; }
+.drawer-overlay, .modal-overlay { background:rgba(0,0,0,.45); }
+.drawer { width:500px; box-shadow:-12px 0 32px rgba(0,0,0,.12); border-radius:0; }
+.modal { border-radius:6px; box-shadow:0 4px 8px 2px rgba(0,0,0,.08),0 8px 16px 2px rgba(0,0,0,.1),0 16px 32px 2px rgba(0,0,0,.1); }
+.modal-header, .drawer-header, .modal-footer { border-color:var(--divider); }
+body.embedded { background:#F5F7FA; }
+body.embedded .content { padding:24px; }
+@media (max-width:768px) { .main { margin-left:64px; } }
 </style>
 </head>
 <body>
