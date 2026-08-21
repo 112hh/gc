@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "run_id": "ec_b36_cenpk_full_4omics_x86_v2",
+  "enabled_modalities": [
+    "dna",
+    "metabolomics",
+    "proteomics",
+    "rna"
+  ],
+  "approved_assay_count": 8,
+  "approved_reference_count": 4,
+  "verified_asset_count": 393,
+  "approved_mapping_table_count": 6,
+  "issue_count": 0,
+  "sample_manifest": "config/samples/full_four_omics.tsv",
+  "reference_manifest": "config/references/references.tsv",
+  "config_sha256": "7b3266c7c61f0df8d583a73e9e1949e6631ab9d251579752d81059581dac42e0"
+}

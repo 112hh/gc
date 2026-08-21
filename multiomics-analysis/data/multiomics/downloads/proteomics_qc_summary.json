@@ -1,0 +1,25 @@
+{
+  "status": "PASS",
+  "modality": "proteomics",
+  "assay_count": 2,
+  "records": [
+    {
+      "assay_id": "EC_B36_PROTEOME_50977",
+      "input_adapter": "thermo_dda_sage",
+      "size_bytes": 2342422791,
+      "sha256": "069ccce88d6324634ca1d8c8efc60a885ca29dbee42f59a1cec729015b23c6ce",
+      "first_64_bytes_hex": "01a1460069006e006e006900670061006e00000000000000000000000000000000000800420000000002d0ba76c2d3015800630061006c006900620075007200",
+      "status": "PASS",
+      "note": "Instrument file retained unchanged; identification is handled by the guarded search stage."
+    },
+    {
+      "assay_id": "SC_CENPK_PROTEOME_S1",
+      "input_adapter": "thermo_dda_sage",
+      "size_bytes": 4313116983,
+      "sha256": "e4f010a61a41fc5af8a0a6fac2bcf327735edc7a86685a748faae3a28f94e5f5",
+      "first_64_bytes_hex": "01a1460069006e006e006900670061006e0000000000000000000000000000000000080042000000009013a85319d2015800630061006c006900620075007200",
+      "status": "PASS",
+      "note": "Instrument file retained unchanged; identification is handled by the guarded search stage."
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "modality": "dna",
+  "records": [
+    {
+      "assay_id": "EC_B36_DNA_ERR2929695",
+      "status": "PASS",
+      "bam": "results/ec_b36_cenpk_full_4omics_x86_v2/modalities/dna/assays/EC_B36_DNA_ERR2929695/preprocessed/aligned.sorted.bam",
+      "candidate_vcf": "results/ec_b36_cenpk_full_4omics_x86_v2/modalities/dna/assays/EC_B36_DNA_ERR2929695/preprocessed/candidate.vcf.gz",
+      "vcf": "results/ec_b36_cenpk_full_4omics_x86_v2/modalities/dna/assays/EC_B36_DNA_ERR2929695/preprocessed/filtered.vcf.gz",
+      "filter_policy": "results/ec_b36_cenpk_full_4omics_x86_v2/modalities/dna/assays/EC_B36_DNA_ERR2929695/preprocessed/filter_policy.json"
+    },
+    {
+      "assay_id": "SC_CENPK_DNA_SRR445715",
+      "status": "PASS",
+      "bam": "results/ec_b36_cenpk_full_4omics_x86_v2/modalities/dna/assays/SC_CENPK_DNA_SRR445715/preprocessed/aligned.sorted.bam",
+      "candidate_vcf": "results/ec_b36_cenpk_full_4omics_x86_v2/modalities/dna/assays/SC_CENPK_DNA_SRR445715/preprocessed/candidate.vcf.gz",
+      "vcf": "results/ec_b36_cenpk_full_4omics_x86_v2/modalities/dna/assays/SC_CENPK_DNA_SRR445715/preprocessed/filtered.vcf.gz",
+      "filter_policy": "results/ec_b36_cenpk_full_4omics_x86_v2/modalities/dna/assays/SC_CENPK_DNA_SRR445715/preprocessed/filter_policy.json"
+    }
+  ]
+}

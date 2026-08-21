@@ -1,0 +1,2 @@
+total_reads	mapped_reads	mapping_rate_percent	properly_paired_reads	host_id	workflow_id
+3500934	3500574	99.99	3484572	HOST-ECOLI-B36	transfer_repository_20260805:v1.0.0

@@ -1,0 +1,3 @@
+biological_sample_id	organism_id	organism_name	strain_id	condition_id	dataset_id	available_modalities	complete_requested_modality_set
+ECOLI-B36-RPMI	NCBITaxon:562	Escherichia coli	B36	RPMI	EC_B36_CENPK_RAW_ANCHORS	dna;metabolomics;proteomics;rna	True
+YEAST-CENPK-LOWGROWTH	NCBITaxon:4932	Saccharomyces cerevisiae	CEN.PK113-7D	low_growth	EC_B36_CENPK_RAW_ANCHORS	dna;metabolomics;proteomics;rna	True

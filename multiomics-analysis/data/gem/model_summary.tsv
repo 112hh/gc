@@ -1,0 +1,3 @@
+model_id	reactions	metabolites	genes	fba_status	fba_objective	pfba_total_absolute_flux	glucose_exchange	oxygen_exchange	cobra_version	source_dataset	upstream_baseline	analysis_methods	claim_scope
+iML1515	2712	1877	1516	optimal	0.8217979336266042	726.0984984950846	EX_glc__D_e	EX_o2_e	0.31.1	BiGG_iML1515	micro_pilot_processing_20260730:v1.0.0	FBA;pFBA;FVA	execution_and_interface_qualification_only
+yeast_GEM_v9_1_0	4102	2748	1143	optimal	0.7692836224643453	892.781241957857	r_1714	r_1992	0.31.1	yeast_GEM_v9.1.0	micro_pilot_processing_20260730:v1.0.0	FBA;pFBA;FVA	execution_and_interface_qualification_only

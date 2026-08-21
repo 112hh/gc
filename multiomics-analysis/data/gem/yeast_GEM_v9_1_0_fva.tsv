@@ -1,0 +1,12 @@
+reaction_id	minimum	maximum	model_id	upstream_baseline	analysis_method
+r_0001	0.0	4.8685534945270454	yeast_GEM_v9_1_0	micro_pilot_processing_20260730:v1.0.0	FVA_at_90_percent_optimum
+r_0002	0.0	4.868553494527044	yeast_GEM_v9_1_0	micro_pilot_processing_20260730:v1.0.0	FVA_at_90_percent_optimum
+r_0003	-2.07439267331828	0.0	yeast_GEM_v9_1_0	micro_pilot_processing_20260730:v1.0.0	FVA_at_90_percent_optimum
+r_0004	0.0	4.279568072977652	yeast_GEM_v9_1_0	micro_pilot_processing_20260730:v1.0.0	FVA_at_90_percent_optimum
+r_0005	0.5117474670374653	0.5686082967082959	yeast_GEM_v9_1_0	micro_pilot_processing_20260730:v1.0.0	FVA_at_90_percent_optimum
+r_0006	0.17098405506341485	0.18998228340379467	yeast_GEM_v9_1_0	micro_pilot_processing_20260730:v1.0.0	FVA_at_90_percent_optimum
+r_0007	0.05785811270356313	0.06428679189284806	yeast_GEM_v9_1_0	micro_pilot_processing_20260730:v1.0.0	FVA_at_90_percent_optimum
+r_0012	0.0	3.8303333333331633	yeast_GEM_v9_1_0	micro_pilot_processing_20260730:v1.0.0	FVA_at_90_percent_optimum
+r_0013	0.0001315475036756844	0.9480256163894603	yeast_GEM_v9_1_0	micro_pilot_processing_20260730:v1.0.0	FVA_at_90_percent_optimum
+r_0014	0.0006923552402087711	0.0007692836002319656	yeast_GEM_v9_1_0	micro_pilot_processing_20260730:v1.0.0	FVA_at_90_percent_optimum
+r_2111	0.6923552602179092	0.7692836224643449	yeast_GEM_v9_1_0	micro_pilot_processing_20260730:v1.0.0	FVA_at_90_percent_optimum

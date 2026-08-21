@@ -1,0 +1,7 @@
+organism	target	target_label	unit	n_batches	grouped_cv	rmse	normalized_rmse_fraction_of_mean	r_squared	scope
+Escherichia coli	target_titer_g_l	Titer	g/L	12	leave_one_replicate_id_out	4.6142836	0.0744518	0.86055	synthetic_demo_not_external_validation
+Escherichia coli	target_productivity_g_l_h	Productivity	g/L/h	12	leave_one_replicate_id_out	0.1281749	0.0744520	0.86055	synthetic_demo_not_external_validation
+Escherichia coli	target_yield_g_g	Yield	g/g	12	leave_one_replicate_id_out	0.0397235	0.0690063	0.86102	synthetic_demo_not_external_validation
+Saccharomyces cerevisiae	target_titer_g_l	Titer	g/L	12	leave_one_replicate_id_out	1.6418901	0.0197270	0.97323	synthetic_demo_not_external_validation
+Saccharomyces cerevisiae	target_productivity_g_l_h	Productivity	g/L/h	12	leave_one_replicate_id_out	0.0228037	0.0197267	0.97324	synthetic_demo_not_external_validation
+Saccharomyces cerevisiae	target_yield_g_g	Yield	g/g	12	leave_one_replicate_id_out	0.0133619	0.0328461	0.86800	synthetic_demo_not_external_validation

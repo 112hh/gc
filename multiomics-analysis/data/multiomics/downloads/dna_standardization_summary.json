@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "modality": "dna",
+  "records": [
+    {
+      "assay_id": "EC_B36_DNA_ERR2929695",
+      "variant_count": 2,
+      "candidate_variant_count": 2,
+      "ploidy": 1,
+      "min_alt_allele_fraction": 0.9,
+      "status": "PASS"
+    },
+    {
+      "assay_id": "SC_CENPK_DNA_SRR445715",
+      "variant_count": 320,
+      "candidate_variant_count": 1458,
+      "ploidy": 1,
+      "min_alt_allele_fraction": 0.8,
+      "status": "PASS"
+    }
+  ]
+}

@@ -1,0 +1,136 @@
+{
+  "status": "PASS",
+  "future_interfaces": {
+    "status": "PASS",
+    "fermentation_batches": 24,
+    "fermentation_feature_source": "extensions/data/synthetic_fermentation_v2/example_data/manifests/batch_feature_vector.csv",
+    "fermentation_batch_source": "extensions/data/synthetic_fermentation_v2/example_data/manifests/batch_master.csv",
+    "fermentation_input_features": 28,
+    "fermentation_targets": 5,
+    "observed_omics_samples": 2,
+    "observed_omics_training_eligible": false,
+    "graph_nodes": 43581,
+    "graph_edges": 43601,
+    "duplicate_node_ids": 0,
+    "missing_edge_endpoint_count": 0
+  },
+  "fermentation_extension": {
+    "status": "PASS",
+    "version": "fermentation_extension_v2",
+    "batches": 24,
+    "organisms": 2,
+    "conditions": 6,
+    "features": [
+      "biomass_dcw_max",
+      "residual_glucose_min",
+      "acetate_max",
+      "dissolved_oxygen_min"
+    ],
+    "targets": [
+      {
+        "column": "target_titer_g_l",
+        "label": "Titer",
+        "unit": "g/L"
+      },
+      {
+        "column": "target_productivity_g_l_h",
+        "label": "Productivity",
+        "unit": "g/L/h"
+      },
+      {
+        "column": "target_yield_g_g",
+        "label": "Yield",
+        "unit": "g/g"
+      }
+    ],
+    "metrics": [
+      {
+        "organism": "Escherichia coli",
+        "target": "target_titer_g_l",
+        "target_label": "Titer",
+        "unit": "g/L",
+        "n_batches": 12,
+        "grouped_cv": "leave_one_replicate_id_out",
+        "rmse": "4.6142836",
+        "normalized_rmse_fraction_of_mean": "0.0744518",
+        "r_squared": "0.86055",
+        "scope": "synthetic_demo_not_external_validation"
+      },
+      {
+        "organism": "Escherichia coli",
+        "target": "target_productivity_g_l_h",
+        "target_label": "Productivity",
+        "unit": "g/L/h",
+        "n_batches": 12,
+        "grouped_cv": "leave_one_replicate_id_out",
+        "rmse": "0.1281749",
+        "normalized_rmse_fraction_of_mean": "0.0744520",
+        "r_squared": "0.86055",
+        "scope": "synthetic_demo_not_external_validation"
+      },
+      {
+        "organism": "Escherichia coli",
+        "target": "target_yield_g_g",
+        "target_label": "Yield",
+        "unit": "g/g",
+        "n_batches": 12,
+        "grouped_cv": "leave_one_replicate_id_out",
+        "rmse": "0.0397235",
+        "normalized_rmse_fraction_of_mean": "0.0690063",
+        "r_squared": "0.86102",
+        "scope": "synthetic_demo_not_external_validation"
+      },
+      {
+        "organism": "Saccharomyces cerevisiae",
+        "target": "target_titer_g_l",
+        "target_label": "Titer",
+        "unit": "g/L",
+        "n_batches": 12,
+        "grouped_cv": "leave_one_replicate_id_out",
+        "rmse": "1.6418901",
+        "normalized_rmse_fraction_of_mean": "0.0197270",
+        "r_squared": "0.97323",
+        "scope": "synthetic_demo_not_external_validation"
+      },
+      {
+        "organism": "Saccharomyces cerevisiae",
+        "target": "target_productivity_g_l_h",
+        "target_label": "Productivity",
+        "unit": "g/L/h",
+        "n_batches": 12,
+        "grouped_cv": "leave_one_replicate_id_out",
+        "rmse": "0.0228037",
+        "normalized_rmse_fraction_of_mean": "0.0197267",
+        "r_squared": "0.97324",
+        "scope": "synthetic_demo_not_external_validation"
+      },
+      {
+        "organism": "Saccharomyces cerevisiae",
+        "target": "target_yield_g_g",
+        "target_label": "Yield",
+        "unit": "g/g",
+        "n_batches": 12,
+        "grouped_cv": "leave_one_replicate_id_out",
+        "rmse": "0.0133619",
+        "normalized_rmse_fraction_of_mean": "0.0328461",
+        "r_squared": "0.86800",
+        "scope": "synthetic_demo_not_external_validation"
+      }
+    ],
+    "leakage_controls": [
+      "target columns excluded from predictors",
+      "condition_id excluded from predictors",
+      "replicate_id grouped holdout",
+      "models fit separately by organism"
+    ],
+    "plot_files": [
+      "01_process_trajectories.svg",
+      "02_condition_performance.svg",
+      "03_grouped_cv_predictions.svg",
+      "04_process_tradeoffs.svg",
+      "05_feature_heatmap.svg"
+    ],
+    "failures": [],
+    "scope": "synthetic process extension demonstration; not biological or external validation"
+  }
+}

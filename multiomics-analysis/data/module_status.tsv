@@ -1,0 +1,13 @@
+module	checks	passed_checks	all_passed	status
+M0 upstream freeze	5	5	True	PASS
+M1A Bloom QTL	13	13	True	PASS
+M1B EcoRef GWAS	13	13	True	PASS
+M2A MatrixEQTL	8	8	True	PASS
+M2B pQTL	9	9	True	PASS
+M2C wine QTL	5	5	True	PASS
+M3A WGCNA	9	9	True	PASS
+M3B MOFA2	10	10	True	PASS
+M3C DIABLO	1	1	True	PASS
+M4A GEM/MEMOTE	9	9	True	PASS
+M4B grouped prediction	9	9	True	PASS
+Bundle portability	3	3	True	PASS

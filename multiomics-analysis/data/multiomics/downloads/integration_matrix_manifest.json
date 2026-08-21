@@ -1,0 +1,80 @@
+{
+  "matrix_id": "ec_b36_cenpk_full_4omics_x86_v2::multiomics_feature_matrix",
+  "modality": "multiomics",
+  "sample_count": 2,
+  "feature_count": 41877,
+  "value_type": "mixed_modality_namespaced_values",
+  "normalization": "modality-specific; see modality result manifests",
+  "sample_order_file": "results/ec_b36_cenpk_full_4omics_x86_v2/integration/sample_metadata.tsv",
+  "feature_order_file": "results/ec_b36_cenpk_full_4omics_x86_v2/integration/feature_dictionary.tsv",
+  "source_matrices": [
+    {
+      "assay_id": "EC_B36_DNA_ERR2929695",
+      "biological_sample_id": "ECOLI-B36-RPMI",
+      "modality": "dna",
+      "source_path": "results/ec_b36_cenpk_full_4omics_x86_v2/modalities/dna/assays/EC_B36_DNA_ERR2929695/standardized/genotype_feature_matrix.parquet",
+      "source_sha256": "f711a0da016ea6431896398e08afc005462fde3c9fe155ebe871e07e93f7b098",
+      "feature_count": 2
+    },
+    {
+      "assay_id": "SC_CENPK_DNA_SRR445715",
+      "biological_sample_id": "YEAST-CENPK-LOWGROWTH",
+      "modality": "dna",
+      "source_path": "results/ec_b36_cenpk_full_4omics_x86_v2/modalities/dna/assays/SC_CENPK_DNA_SRR445715/standardized/genotype_feature_matrix.parquet",
+      "source_sha256": "3a593ebb60cee7f5f66f2d7d92558bd6ee7b8d85a110aef55582302daecf0486",
+      "feature_count": 320
+    },
+    {
+      "assay_id": "EC_B36_RNA_SRR12067163",
+      "biological_sample_id": "ECOLI-B36-RPMI",
+      "modality": "rna",
+      "source_path": "results/ec_b36_cenpk_full_4omics_x86_v2/modalities/rna/assays/EC_B36_RNA_SRR12067163/standardized/tpm_expression.tsv",
+      "source_sha256": "bceafc0860260ea052a895ff95d16fd90f03d8bc3ca1898989f093224595a30b",
+      "feature_count": 5118
+    },
+    {
+      "assay_id": "SC_CENPK_RNA_SRR8594115",
+      "biological_sample_id": "YEAST-CENPK-LOWGROWTH",
+      "modality": "rna",
+      "source_path": "results/ec_b36_cenpk_full_4omics_x86_v2/modalities/rna/assays/SC_CENPK_RNA_SRR8594115/standardized/tpm_expression.tsv",
+      "source_sha256": "b73c7a7887948ede0f777cd34f7e45c59a15b805ec8e4fb5b76ecd344ad68f4d",
+      "feature_count": 5451
+    },
+    {
+      "assay_id": "EC_B36_PROTEOME_50977",
+      "biological_sample_id": "ECOLI-B36-RPMI",
+      "modality": "proteomics",
+      "source_path": "results/ec_b36_cenpk_full_4omics_x86_v2/modalities/proteomics/assays/EC_B36_PROTEOME_50977/standardized/protein_abundance.tsv",
+      "source_sha256": "a4b1ed82f39393afa82d8edd5a66d0cd40d2bca893938bdc8fc0913b1563a709",
+      "feature_count": 2022
+    },
+    {
+      "assay_id": "SC_CENPK_PROTEOME_S1",
+      "biological_sample_id": "YEAST-CENPK-LOWGROWTH",
+      "modality": "proteomics",
+      "source_path": "results/ec_b36_cenpk_full_4omics_x86_v2/modalities/proteomics/assays/SC_CENPK_PROTEOME_S1/standardized/protein_abundance.tsv",
+      "source_sha256": "677a0740b0ce93a4ef61a10c4902e71251329c72a02156a438bf8c96892b3647",
+      "feature_count": 2506
+    },
+    {
+      "assay_id": "EC_B36_METAB_50913",
+      "biological_sample_id": "ECOLI-B36-RPMI",
+      "modality": "metabolomics",
+      "source_path": "results/ec_b36_cenpk_full_4omics_x86_v2/modalities/metabolomics/assays/EC_B36_METAB_50913/standardized/normalized_feature_matrix.tsv",
+      "source_sha256": "6afa834ba9693bb70d220d64aca421650376c89dad3ff4aebc21155c7b3c95a7",
+      "feature_count": 23782
+    },
+    {
+      "assay_id": "SC_CENPK_METAB_QXA10",
+      "biological_sample_id": "YEAST-CENPK-LOWGROWTH",
+      "modality": "metabolomics",
+      "source_path": "results/ec_b36_cenpk_full_4omics_x86_v2/modalities/metabolomics/assays/SC_CENPK_METAB_QXA10/standardized/normalized_feature_matrix.tsv",
+      "source_sha256": "07a561f63067f5b37d715951d667cda0535d97b726ad6b9afb3d5f1b9ce8cf0d",
+      "feature_count": 2676
+    }
+  ],
+  "workflow_run": "ec_b36_cenpk_full_4omics_x86_v2",
+  "pairing_level": "declared biological_sample_id",
+  "source_layer": "model_derived",
+  "missing_value_semantics": "NA means feature not measured or not present in that modality/sample; zero is retained only when emitted by the modality workflow"
+}

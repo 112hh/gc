@@ -1,0 +1,14 @@
+{
+  "status": "PASS_SYNTHETIC_FEASIBILITY",
+  "row_count": 1000,
+  "group_count": 250,
+  "group_column": "strain_id",
+  "fold_count": 5,
+  "numeric_feature_count": 33,
+  "categorical_feature_count": 3,
+  "forbidden_target_terms_excluded": true,
+  "best_model_by_mae": "random_forest",
+  "best_mae": 0.35668266384955905,
+  "best_r2": 0.9982294775758866,
+  "production_ready": false
+}

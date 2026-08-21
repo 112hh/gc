@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "modality": "rna",
+  "records": [
+    {
+      "assay_id": "EC_B36_RNA_SRR12067163",
+      "status": "PASS",
+      "bam": "results/ec_b36_cenpk_full_4omics_x86_v2/modalities/rna/assays/EC_B36_RNA_SRR12067163/preprocessed/aligned.sorted.bam",
+      "counts": "results/ec_b36_cenpk_full_4omics_x86_v2/modalities/rna/assays/EC_B36_RNA_SRR12067163/preprocessed/gene_counts.txt"
+    },
+    {
+      "assay_id": "SC_CENPK_RNA_SRR8594115",
+      "status": "PASS",
+      "bam": "results/ec_b36_cenpk_full_4omics_x86_v2/modalities/rna/assays/SC_CENPK_RNA_SRR8594115/preprocessed/aligned.sorted.bam",
+      "counts": "results/ec_b36_cenpk_full_4omics_x86_v2/modalities/rna/assays/SC_CENPK_RNA_SRR8594115/preprocessed/gene_counts.txt"
+    }
+  ]
+}

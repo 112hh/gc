@@ -1,0 +1,15 @@
+{
+  "status": "PASS_INGESTION_FEASIBILITY",
+  "node_count": 48572,
+  "edge_count": 55249,
+  "node_id_unique": true,
+  "edge_endpoints_resolved": true,
+  "predicate_count": 3,
+  "source_layers": [
+    "model_derived",
+    "public_processed",
+    "public_raw"
+  ],
+  "deployed_graph_database": false,
+  "causal_reasoning_validated": false
+}

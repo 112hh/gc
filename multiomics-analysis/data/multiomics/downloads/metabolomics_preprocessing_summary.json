@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "modality": "metabolomics",
+  "records": [
+    {
+      "assay_id": "EC_B36_METAB_50913",
+      "status": "PASS",
+      "output_directory": "results/ec_b36_cenpk_full_4omics_x86_v2/modalities/metabolomics/assays/EC_B36_METAB_50913/preprocessed"
+    },
+    {
+      "assay_id": "SC_CENPK_METAB_QXA10",
+      "status": "PASS",
+      "output_directory": "results/ec_b36_cenpk_full_4omics_x86_v2/modalities/metabolomics/assays/SC_CENPK_METAB_QXA10/preprocessed"
+    }
+  ]
+}

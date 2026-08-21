@@ -1,0 +1,10 @@
+metric	value
+matched_samples	814
+rna_features	100
+protein_features	100
+factors	5
+configured_max_iterations	300
+actual_iterations	19
+random_seed	20260731
+target_label	none_unsupervised
+claim_scope	execution_and_interface_qualification_only

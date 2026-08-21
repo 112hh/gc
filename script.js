@@ -14536,6 +14536,10 @@ document.addEventListener("click", async (event) => {
 
   const menuButton = event.target.closest("[data-menu]");
   if (menuButton) {
+    if (menuButton.dataset.menu === "omics") {
+      window.location.href = "./multiomics-analysis/index.html";
+      return;
+    }
     state.activeMenu = menuButton.dataset.menu;
     if (menuButton.dataset.standardsModule) {
       state.standardsModule = menuButton.dataset.standardsModule;

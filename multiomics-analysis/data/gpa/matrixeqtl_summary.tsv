@@ -1,0 +1,5 @@
+metric	value
+cis_tests_reported	546
+trans_tests_reported	4851
+cis_distance_bp	10000
+model	MatrixEQTL_modelLINEAR_with_3_genotype_PCs

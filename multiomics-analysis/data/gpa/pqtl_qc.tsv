@@ -1,0 +1,8 @@
+metric	value
+selected_proteins	50
+pqtl_rows	105
+cis_pqtl_rows	4
+trans_pqtl_rows	101
+matched_rna_rows	46
+shared_gene_snp_rows	2
+association_fit_mode	author_processed_GWAS_results_reused_no_individual_genotypes_in_archive

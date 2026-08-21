@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "modality": "dna",
+  "assay_count": 2,
+  "records": [
+    {
+      "assay_id": "EC_B36_DNA_ERR2929695",
+      "input_reads": 3810802,
+      "retained_reads": 3594746,
+      "retained_fraction": 0.9433043228170868,
+      "q30_rate_after": 0.954872,
+      "status": "PASS"
+    },
+    {
+      "assay_id": "SC_CENPK_DNA_SRR445715",
+      "input_reads": 35912470,
+      "retained_reads": 35770304,
+      "retained_fraction": 0.996041319352303,
+      "q30_rate_after": 1.0,
+      "status": "PASS"
+    }
+  ]
+}

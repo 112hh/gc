@@ -1,0 +1,184 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1360" height="780" viewBox="0 0 1360 780">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="40" y="34" font-family="Arial,sans-serif" font-size="22" font-weight="700" fill="#20242b">Grouped cross-validation predictions</text>
+<text x="40" y="57" font-family="Arial,sans-serif" font-size="12" fill="#667085">Leave-one-replicate-ID-out ridge models; identity line is a calibration reference, not external validation</text>
+<text x="35" y="105" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#20242b">E. coli — synthetic succinate</text>
+<line x1="85" y1="360.0" x2="380" y2="360.0" stroke="#d9dde3" stroke-width="1"/>
+<text x="78" y="364.0" text-anchor="end" font-family="Arial,sans-serif" font-size="10" fill="#667085">37</text>
+<line x1="85" y1="301.2" x2="380" y2="301.2" stroke="#d9dde3" stroke-width="1"/>
+<text x="78" y="305.2" text-anchor="end" font-family="Arial,sans-serif" font-size="10" fill="#667085">51</text>
+<line x1="85" y1="242.5" x2="380" y2="242.5" stroke="#d9dde3" stroke-width="1"/>
+<text x="78" y="246.5" text-anchor="end" font-family="Arial,sans-serif" font-size="10" fill="#667085">64</text>
+<line x1="85" y1="183.8" x2="380" y2="183.8" stroke="#d9dde3" stroke-width="1"/>
+<text x="78" y="187.8" text-anchor="end" font-family="Arial,sans-serif" font-size="10" fill="#667085">77</text>
+<line x1="85" y1="125.0" x2="380" y2="125.0" stroke="#d9dde3" stroke-width="1"/>
+<text x="78" y="129.0" text-anchor="end" font-family="Arial,sans-serif" font-size="10" fill="#667085">90</text>
+<line x1="85" y1="125" x2="85" y2="360" stroke="#20242b"/>
+<line x1="85" y1="360" x2="380" y2="360" stroke="#20242b"/>
+<line x1="85.0" y1="360.0" x2="380.0" y2="125.0" stroke="#667085" stroke-dasharray="5,4"/>
+<circle cx="294.3" cy="210.8" r="4.5" fill="#2563eb" stroke="#fff" stroke-width="1"><title>FERM-EC-B36-TWO-STAGE-REFERENCE-01</title></circle>
+<circle cx="207.1" cy="269.3" r="4.5" fill="#d97706" stroke="#fff" stroke-width="1"><title>FERM-EC-B36-LOW-BICARBONATE-01</title></circle>
+<circle cx="152.6" cy="306.5" r="4.5" fill="#c2416c" stroke="#fff" stroke-width="1"><title>FERM-EC-B36-OXYGEN-LEAK-01</title></circle>
+<circle cx="351.5" cy="184.4" r="4.5" fill="#2563eb" stroke="#fff" stroke-width="1"><title>FERM-EC-B36-TWO-STAGE-REFERENCE-02</title></circle>
+<circle cx="175.5" cy="269.9" r="4.5" fill="#d97706" stroke="#fff" stroke-width="1"><title>FERM-EC-B36-LOW-BICARBONATE-02</title></circle>
+<circle cx="156.3" cy="281.0" r="4.5" fill="#c2416c" stroke="#fff" stroke-width="1"><title>FERM-EC-B36-OXYGEN-LEAK-02</title></circle>
+<circle cx="318.6" cy="184.7" r="4.5" fill="#2563eb" stroke="#fff" stroke-width="1"><title>FERM-EC-B36-TWO-STAGE-REFERENCE-03</title></circle>
+<circle cx="208.6" cy="239.1" r="4.5" fill="#d97706" stroke="#fff" stroke-width="1"><title>FERM-EC-B36-LOW-BICARBONATE-03</title></circle>
+<circle cx="173.8" cy="284.3" r="4.5" fill="#c2416c" stroke="#fff" stroke-width="1"><title>FERM-EC-B36-OXYGEN-LEAK-03</title></circle>
+<circle cx="299.6" cy="203.7" r="4.5" fill="#2563eb" stroke="#fff" stroke-width="1"><title>FERM-EC-B36-TWO-STAGE-REFERENCE-04</title></circle>
+<circle cx="203.4" cy="228.4" r="4.5" fill="#d97706" stroke="#fff" stroke-width="1"><title>FERM-EC-B36-LOW-BICARBONATE-04</title></circle>
+<circle cx="139.2" cy="337.3" r="4.5" fill="#c2416c" stroke="#fff" stroke-width="1"><title>FERM-EC-B36-OXYGEN-LEAK-04</title></circle>
+<text x="85" y="117" font-family="Arial,sans-serif" font-size="13" font-weight="600" fill="#20242b">Titer (g/L)</text>
+<text x="380" y="117" text-anchor="end" font-family="Arial,sans-serif" font-size="10" fill="#667085">R² 0.86055 · RMSE 4.61</text>
+<text x="232.5" y="388" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" fill="#667085">Observed</text>
+<text x="43" y="242.5" text-anchor="middle" transform="rotate(-90 43 242.5)" font-family="Arial,sans-serif" font-size="10" fill="#667085">Predicted</text>
+<line x1="515" y1="360.0" x2="810" y2="360.0" stroke="#d9dde3" stroke-width="1"/>
+<text x="508" y="364.0" text-anchor="end" font-family="Arial,sans-serif" font-size="10" fill="#667085">1</text>
+<line x1="515" y1="301.2" x2="810" y2="301.2" stroke="#d9dde3" stroke-width="1"/>
+<text x="508" y="305.2" text-anchor="end" font-family="Arial,sans-serif" font-size="10" fill="#667085">1.4</text>
+<line x1="515" y1="242.5" x2="810" y2="242.5" stroke="#d9dde3" stroke-width="1"/>
+<text x="508" y="246.5" text-anchor="end" font-family="Arial,sans-serif" font-size="10" fill="#667085">1.8</text>
+<line x1="515" y1="183.8" x2="810" y2="183.8" stroke="#d9dde3" stroke-width="1"/>
+<text x="508" y="187.8" text-anchor="end" font-family="Arial,sans-serif" font-size="10" fill="#667085">2.1</text>
+<line x1="515" y1="125.0" x2="810" y2="125.0" stroke="#d9dde3" stroke-width="1"/>
+<text x="508" y="129.0" text-anchor="end" font-family="Arial,sans-serif" font-size="10" fill="#667085">2.5</text>
+<line x1="515" y1="125" x2="515" y2="360" stroke="#20242b"/>
+<line x1="515" y1="360" x2="810" y2="360" stroke="#20242b"/>
+<line x1="515.0" y1="360.0" x2="810.0" y2="125.0" stroke="#667085" stroke-dasharray="5,4"/>
+<circle cx="724.3" cy="210.8" r="4.5" fill="#2563eb" stroke="#fff" stroke-width="1"><title>FERM-EC-B36-TWO-STAGE-REFERENCE-01</title></circle>
+<circle cx="637.1" cy="269.3" r="4.5" fill="#d97706" stroke="#fff" stroke-width="1"><title>FERM-EC-B36-LOW-BICARBONATE-01</title></circle>
+<circle cx="582.6" cy="306.5" r="4.5" fill="#c2416c" stroke="#fff" stroke-width="1"><title>FERM-EC-B36-OXYGEN-LEAK-01</title></circle>
+<circle cx="781.5" cy="184.4" r="4.5" fill="#2563eb" stroke="#fff" stroke-width="1"><title>FERM-EC-B36-TWO-STAGE-REFERENCE-02</title></circle>
+<circle cx="605.5" cy="269.9" r="4.5" fill="#d97706" stroke="#fff" stroke-width="1"><title>FERM-EC-B36-LOW-BICARBONATE-02</title></circle>
+<circle cx="586.3" cy="281.0" r="4.5" fill="#c2416c" stroke="#fff" stroke-width="1"><title>FERM-EC-B36-OXYGEN-LEAK-02</title></circle>
+<circle cx="748.6" cy="184.7" r="4.5" fill="#2563eb" stroke="#fff" stroke-width="1"><title>FERM-EC-B36-TWO-STAGE-REFERENCE-03</title></circle>
+<circle cx="638.6" cy="239.1" r="4.5" fill="#d97706" stroke="#fff" stroke-width="1"><title>FERM-EC-B36-LOW-BICARBONATE-03</title></circle>
+<circle cx="603.8" cy="284.3" r="4.5" fill="#c2416c" stroke="#fff" stroke-width="1"><title>FERM-EC-B36-OXYGEN-LEAK-03</title></circle>
+<circle cx="729.6" cy="203.7" r="4.5" fill="#2563eb" stroke="#fff" stroke-width="1"><title>FERM-EC-B36-TWO-STAGE-REFERENCE-04</title></circle>
+<circle cx="633.4" cy="228.4" r="4.5" fill="#d97706" stroke="#fff" stroke-width="1"><title>FERM-EC-B36-LOW-BICARBONATE-04</title></circle>
+<circle cx="569.2" cy="337.3" r="4.5" fill="#c2416c" stroke="#fff" stroke-width="1"><title>FERM-EC-B36-OXYGEN-LEAK-04</title></circle>
+<text x="515" y="117" font-family="Arial,sans-serif" font-size="13" font-weight="600" fill="#20242b">Productivity (g/L/h)</text>
+<text x="810" y="117" text-anchor="end" font-family="Arial,sans-serif" font-size="10" fill="#667085">R² 0.86055 · RMSE 0.128</text>
+<text x="662.5" y="388" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" fill="#667085">Observed</text>
+<text x="473" y="242.5" text-anchor="middle" transform="rotate(-90 473 242.5)" font-family="Arial,sans-serif" font-size="10" fill="#667085">Predicted</text>
+<line x1="945" y1="360.0" x2="1240" y2="360.0" stroke="#d9dde3" stroke-width="1"/>
+<text x="938" y="364.0" text-anchor="end" font-family="Arial,sans-serif" font-size="10" fill="#667085">0.37</text>
+<line x1="945" y1="301.2" x2="1240" y2="301.2" stroke="#d9dde3" stroke-width="1"/>
+<text x="938" y="305.2" text-anchor="end" font-family="Arial,sans-serif" font-size="10" fill="#667085">0.47</text>
+<line x1="945" y1="242.5" x2="1240" y2="242.5" stroke="#d9dde3" stroke-width="1"/>
+<text x="938" y="246.5" text-anchor="end" font-family="Arial,sans-serif" font-size="10" fill="#667085">0.56</text>
+<line x1="945" y1="183.8" x2="1240" y2="183.8" stroke="#d9dde3" stroke-width="1"/>
+<text x="938" y="187.8" text-anchor="end" font-family="Arial,sans-serif" font-size="10" fill="#667085">0.66</text>
+<line x1="945" y1="125.0" x2="1240" y2="125.0" stroke="#d9dde3" stroke-width="1"/>
+<text x="938" y="129.0" text-anchor="end" font-family="Arial,sans-serif" font-size="10" fill="#667085">0.76</text>
+<line x1="945" y1="125" x2="945" y2="360" stroke="#20242b"/>
+<line x1="945" y1="360" x2="1240" y2="360" stroke="#20242b"/>
+<line x1="945.0" y1="360.0" x2="1240.0" y2="125.0" stroke="#667085" stroke-dasharray="5,4"/>
+<circle cx="1211.5" cy="179.5" r="4.5" fill="#2563eb" stroke="#fff" stroke-width="1"><title>FERM-EC-B36-TWO-STAGE-REFERENCE-01</title></circle>
+<circle cx="1088.9" cy="251.6" r="4.5" fill="#d97706" stroke="#fff" stroke-width="1"><title>FERM-EC-B36-LOW-BICARBONATE-01</title></circle>
+<circle cx="1012.3" cy="306.6" r="4.5" fill="#c2416c" stroke="#fff" stroke-width="1"><title>FERM-EC-B36-OXYGEN-LEAK-01</title></circle>
+<circle cx="1211.5" cy="177.9" r="4.5" fill="#2563eb" stroke="#fff" stroke-width="1"><title>FERM-EC-B36-TWO-STAGE-REFERENCE-02</title></circle>
+<circle cx="1088.9" cy="229.1" r="4.5" fill="#d97706" stroke="#fff" stroke-width="1"><title>FERM-EC-B36-LOW-BICARBONATE-02</title></circle>
+<circle cx="1012.3" cy="278.9" r="4.5" fill="#c2416c" stroke="#fff" stroke-width="1"><title>FERM-EC-B36-OXYGEN-LEAK-02</title></circle>
+<circle cx="1211.5" cy="161.3" r="4.5" fill="#2563eb" stroke="#fff" stroke-width="1"><title>FERM-EC-B36-TWO-STAGE-REFERENCE-03</title></circle>
+<circle cx="1088.9" cy="217.3" r="4.5" fill="#d97706" stroke="#fff" stroke-width="1"><title>FERM-EC-B36-LOW-BICARBONATE-03</title></circle>
+<circle cx="1012.3" cy="305.1" r="4.5" fill="#c2416c" stroke="#fff" stroke-width="1"><title>FERM-EC-B36-OXYGEN-LEAK-03</title></circle>
+<circle cx="1194.9" cy="180.5" r="4.5" fill="#2563eb" stroke="#fff" stroke-width="1"><title>FERM-EC-B36-TWO-STAGE-REFERENCE-04</title></circle>
+<circle cx="1076.0" cy="208.6" r="4.5" fill="#d97706" stroke="#fff" stroke-width="1"><title>FERM-EC-B36-LOW-BICARBONATE-04</title></circle>
+<circle cx="1001.7" cy="337.3" r="4.5" fill="#c2416c" stroke="#fff" stroke-width="1"><title>FERM-EC-B36-OXYGEN-LEAK-04</title></circle>
+<text x="945" y="117" font-family="Arial,sans-serif" font-size="13" font-weight="600" fill="#20242b">Yield (g/g)</text>
+<text x="1240" y="117" text-anchor="end" font-family="Arial,sans-serif" font-size="10" fill="#667085">R² 0.86102 · RMSE 0.0397</text>
+<text x="1092.5" y="388" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" fill="#667085">Observed</text>
+<text x="903" y="242.5" text-anchor="middle" transform="rotate(-90 903 242.5)" font-family="Arial,sans-serif" font-size="10" fill="#667085">Predicted</text>
+<text x="35" y="445" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#20242b">Yeast — synthetic ethanol</text>
+<line x1="85" y1="700.0" x2="380" y2="700.0" stroke="#d9dde3" stroke-width="1"/>
+<text x="78" y="704.0" text-anchor="end" font-family="Arial,sans-serif" font-size="10" fill="#667085">64</text>
+<line x1="85" y1="641.2" x2="380" y2="641.2" stroke="#d9dde3" stroke-width="1"/>
+<text x="78" y="645.2" text-anchor="end" font-family="Arial,sans-serif" font-size="10" fill="#667085">72</text>
+<line x1="85" y1="582.5" x2="380" y2="582.5" stroke="#d9dde3" stroke-width="1"/>
+<text x="78" y="586.5" text-anchor="end" font-family="Arial,sans-serif" font-size="10" fill="#667085">81</text>
+<line x1="85" y1="523.8" x2="380" y2="523.8" stroke="#d9dde3" stroke-width="1"/>
+<text x="78" y="527.8" text-anchor="end" font-family="Arial,sans-serif" font-size="10" fill="#667085">89</text>
+<line x1="85" y1="465.0" x2="380" y2="465.0" stroke="#d9dde3" stroke-width="1"/>
+<text x="78" y="469.0" text-anchor="end" font-family="Arial,sans-serif" font-size="10" fill="#667085">97</text>
+<line x1="85" y1="465" x2="85" y2="700" stroke="#20242b"/>
+<line x1="85" y1="700" x2="380" y2="700" stroke="#20242b"/>
+<line x1="85.0" y1="700.0" x2="380.0" y2="465.0" stroke="#667085" stroke-dasharray="5,4"/>
+<circle cx="342.7" cy="509.8" r="4.5" fill="#2563eb" stroke="#fff" stroke-width="1"><title>FERM-YE-CENPK-OXYGEN-LIMITED-REFERENCE-01</title></circle>
+<circle cx="338.0" cy="498.6" r="4.5" fill="#d97706" stroke="#fff" stroke-width="1"><title>FERM-YE-CENPK-OSMOTIC-STRESS-01</title></circle>
+<circle cx="135.3" cy="665.2" r="4.5" fill="#c2416c" stroke="#fff" stroke-width="1"><title>FERM-YE-CENPK-OXYGEN-INGRESS-01</title></circle>
+<circle cx="351.5" cy="503.8" r="4.5" fill="#2563eb" stroke="#fff" stroke-width="1"><title>FERM-YE-CENPK-OXYGEN-LIMITED-REFERENCE-02</title></circle>
+<circle cx="288.1" cy="544.9" r="4.5" fill="#d97706" stroke="#fff" stroke-width="1"><title>FERM-YE-CENPK-OSMOTIC-STRESS-02</title></circle>
+<circle cx="127.4" cy="677.3" r="4.5" fill="#c2416c" stroke="#fff" stroke-width="1"><title>FERM-YE-CENPK-OXYGEN-INGRESS-02</title></circle>
+<circle cx="293.0" cy="537.1" r="4.5" fill="#2563eb" stroke="#fff" stroke-width="1"><title>FERM-YE-CENPK-OXYGEN-LIMITED-REFERENCE-03</title></circle>
+<circle cx="299.2" cy="533.6" r="4.5" fill="#d97706" stroke="#fff" stroke-width="1"><title>FERM-YE-CENPK-OSMOTIC-STRESS-03</title></circle>
+<circle cx="140.3" cy="642.7" r="4.5" fill="#c2416c" stroke="#fff" stroke-width="1"><title>FERM-YE-CENPK-OXYGEN-INGRESS-03</title></circle>
+<circle cx="326.4" cy="503.8" r="4.5" fill="#2563eb" stroke="#fff" stroke-width="1"><title>FERM-YE-CENPK-OXYGEN-LIMITED-REFERENCE-04</title></circle>
+<circle cx="304.0" cy="516.4" r="4.5" fill="#d97706" stroke="#fff" stroke-width="1"><title>FERM-YE-CENPK-OSMOTIC-STRESS-04</title></circle>
+<circle cx="121.8" cy="644.7" r="4.5" fill="#c2416c" stroke="#fff" stroke-width="1"><title>FERM-YE-CENPK-OXYGEN-INGRESS-04</title></circle>
+<text x="85" y="457" font-family="Arial,sans-serif" font-size="13" font-weight="600" fill="#20242b">Titer (g/L)</text>
+<text x="380" y="457" text-anchor="end" font-family="Arial,sans-serif" font-size="10" fill="#667085">R² 0.97323 · RMSE 1.64</text>
+<text x="232.5" y="728" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" fill="#667085">Observed</text>
+<text x="43" y="582.5" text-anchor="middle" transform="rotate(-90 43 582.5)" font-family="Arial,sans-serif" font-size="10" fill="#667085">Predicted</text>
+<line x1="515" y1="700.0" x2="810" y2="700.0" stroke="#d9dde3" stroke-width="1"/>
+<text x="508" y="704.0" text-anchor="end" font-family="Arial,sans-serif" font-size="10" fill="#667085">0.89</text>
+<line x1="515" y1="641.2" x2="810" y2="641.2" stroke="#d9dde3" stroke-width="1"/>
+<text x="508" y="645.2" text-anchor="end" font-family="Arial,sans-serif" font-size="10" fill="#667085">1</text>
+<line x1="515" y1="582.5" x2="810" y2="582.5" stroke="#d9dde3" stroke-width="1"/>
+<text x="508" y="586.5" text-anchor="end" font-family="Arial,sans-serif" font-size="10" fill="#667085">1.1</text>
+<line x1="515" y1="523.8" x2="810" y2="523.8" stroke="#d9dde3" stroke-width="1"/>
+<text x="508" y="527.8" text-anchor="end" font-family="Arial,sans-serif" font-size="10" fill="#667085">1.2</text>
+<line x1="515" y1="465.0" x2="810" y2="465.0" stroke="#d9dde3" stroke-width="1"/>
+<text x="508" y="469.0" text-anchor="end" font-family="Arial,sans-serif" font-size="10" fill="#667085">1.3</text>
+<line x1="515" y1="465" x2="515" y2="700" stroke="#20242b"/>
+<line x1="515" y1="700" x2="810" y2="700" stroke="#20242b"/>
+<line x1="515.0" y1="700.0" x2="810.0" y2="465.0" stroke="#667085" stroke-dasharray="5,4"/>
+<circle cx="772.7" cy="509.8" r="4.5" fill="#2563eb" stroke="#fff" stroke-width="1"><title>FERM-YE-CENPK-OXYGEN-LIMITED-REFERENCE-01</title></circle>
+<circle cx="768.0" cy="498.6" r="4.5" fill="#d97706" stroke="#fff" stroke-width="1"><title>FERM-YE-CENPK-OSMOTIC-STRESS-01</title></circle>
+<circle cx="565.3" cy="665.2" r="4.5" fill="#c2416c" stroke="#fff" stroke-width="1"><title>FERM-YE-CENPK-OXYGEN-INGRESS-01</title></circle>
+<circle cx="781.5" cy="503.8" r="4.5" fill="#2563eb" stroke="#fff" stroke-width="1"><title>FERM-YE-CENPK-OXYGEN-LIMITED-REFERENCE-02</title></circle>
+<circle cx="718.1" cy="544.9" r="4.5" fill="#d97706" stroke="#fff" stroke-width="1"><title>FERM-YE-CENPK-OSMOTIC-STRESS-02</title></circle>
+<circle cx="557.4" cy="677.3" r="4.5" fill="#c2416c" stroke="#fff" stroke-width="1"><title>FERM-YE-CENPK-OXYGEN-INGRESS-02</title></circle>
+<circle cx="723.0" cy="537.1" r="4.5" fill="#2563eb" stroke="#fff" stroke-width="1"><title>FERM-YE-CENPK-OXYGEN-LIMITED-REFERENCE-03</title></circle>
+<circle cx="729.2" cy="533.6" r="4.5" fill="#d97706" stroke="#fff" stroke-width="1"><title>FERM-YE-CENPK-OSMOTIC-STRESS-03</title></circle>
+<circle cx="570.3" cy="642.7" r="4.5" fill="#c2416c" stroke="#fff" stroke-width="1"><title>FERM-YE-CENPK-OXYGEN-INGRESS-03</title></circle>
+<circle cx="756.4" cy="503.8" r="4.5" fill="#2563eb" stroke="#fff" stroke-width="1"><title>FERM-YE-CENPK-OXYGEN-LIMITED-REFERENCE-04</title></circle>
+<circle cx="734.1" cy="516.4" r="4.5" fill="#d97706" stroke="#fff" stroke-width="1"><title>FERM-YE-CENPK-OSMOTIC-STRESS-04</title></circle>
+<circle cx="551.8" cy="644.7" r="4.5" fill="#c2416c" stroke="#fff" stroke-width="1"><title>FERM-YE-CENPK-OXYGEN-INGRESS-04</title></circle>
+<text x="515" y="457" font-family="Arial,sans-serif" font-size="13" font-weight="600" fill="#20242b">Productivity (g/L/h)</text>
+<text x="810" y="457" text-anchor="end" font-family="Arial,sans-serif" font-size="10" fill="#667085">R² 0.97324 · RMSE 0.0228</text>
+<text x="662.5" y="728" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" fill="#667085">Observed</text>
+<text x="473" y="582.5" text-anchor="middle" transform="rotate(-90 473 582.5)" font-family="Arial,sans-serif" font-size="10" fill="#667085">Predicted</text>
+<line x1="945" y1="700.0" x2="1240" y2="700.0" stroke="#d9dde3" stroke-width="1"/>
+<text x="938" y="704.0" text-anchor="end" font-family="Arial,sans-serif" font-size="10" fill="#667085">0.34</text>
+<line x1="945" y1="641.2" x2="1240" y2="641.2" stroke="#d9dde3" stroke-width="1"/>
+<text x="938" y="645.2" text-anchor="end" font-family="Arial,sans-serif" font-size="10" fill="#667085">0.37</text>
+<line x1="945" y1="582.5" x2="1240" y2="582.5" stroke="#d9dde3" stroke-width="1"/>
+<text x="938" y="586.5" text-anchor="end" font-family="Arial,sans-serif" font-size="10" fill="#667085">0.4</text>
+<line x1="945" y1="523.8" x2="1240" y2="523.8" stroke="#d9dde3" stroke-width="1"/>
+<text x="938" y="527.8" text-anchor="end" font-family="Arial,sans-serif" font-size="10" fill="#667085">0.44</text>
+<line x1="945" y1="465.0" x2="1240" y2="465.0" stroke="#d9dde3" stroke-width="1"/>
+<text x="938" y="469.0" text-anchor="end" font-family="Arial,sans-serif" font-size="10" fill="#667085">0.47</text>
+<line x1="945" y1="465" x2="945" y2="700" stroke="#20242b"/>
+<line x1="945" y1="700" x2="1240" y2="700" stroke="#20242b"/>
+<line x1="945.0" y1="700.0" x2="1240.0" y2="465.0" stroke="#667085" stroke-dasharray="5,4"/>
+<circle cx="1209.8" cy="522.8" r="4.5" fill="#2563eb" stroke="#fff" stroke-width="1"><title>FERM-YE-CENPK-OXYGEN-LIMITED-REFERENCE-01</title></circle>
+<circle cx="1094.1" cy="558.8" r="4.5" fill="#d97706" stroke="#fff" stroke-width="1"><title>FERM-YE-CENPK-OSMOTIC-STRESS-01</title></circle>
+<circle cx="1001.6" cy="677.3" r="4.5" fill="#c2416c" stroke="#fff" stroke-width="1"><title>FERM-YE-CENPK-OXYGEN-INGRESS-01</title></circle>
+<circle cx="1209.8" cy="508.3" r="4.5" fill="#2563eb" stroke="#fff" stroke-width="1"><title>FERM-YE-CENPK-OXYGEN-LIMITED-REFERENCE-02</title></circle>
+<circle cx="1094.1" cy="586.5" r="4.5" fill="#d97706" stroke="#fff" stroke-width="1"><title>FERM-YE-CENPK-OSMOTIC-STRESS-02</title></circle>
+<circle cx="1001.6" cy="658.9" r="4.5" fill="#c2416c" stroke="#fff" stroke-width="1"><title>FERM-YE-CENPK-OXYGEN-INGRESS-02</title></circle>
+<circle cx="1209.8" cy="529.7" r="4.5" fill="#2563eb" stroke="#fff" stroke-width="1"><title>FERM-YE-CENPK-OXYGEN-LIMITED-REFERENCE-03</title></circle>
+<circle cx="1094.1" cy="595.7" r="4.5" fill="#d97706" stroke="#fff" stroke-width="1"><title>FERM-YE-CENPK-OSMOTIC-STRESS-03</title></circle>
+<circle cx="1001.6" cy="621.0" r="4.5" fill="#c2416c" stroke="#fff" stroke-width="1"><title>FERM-YE-CENPK-OXYGEN-INGRESS-03</title></circle>
+<circle cx="1194.0" cy="487.7" r="4.5" fill="#2563eb" stroke="#fff" stroke-width="1"><title>FERM-YE-CENPK-OXYGEN-LIMITED-REFERENCE-04</title></circle>
+<circle cx="1080.1" cy="562.3" r="4.5" fill="#d97706" stroke="#fff" stroke-width="1"><title>FERM-YE-CENPK-OSMOTIC-STRESS-04</title></circle>
+<circle cx="988.9" cy="640.2" r="4.5" fill="#c2416c" stroke="#fff" stroke-width="1"><title>FERM-YE-CENPK-OXYGEN-INGRESS-04</title></circle>
+<text x="945" y="457" font-family="Arial,sans-serif" font-size="13" font-weight="600" fill="#20242b">Yield (g/g)</text>
+<text x="1240" y="457" text-anchor="end" font-family="Arial,sans-serif" font-size="10" fill="#667085">R² 0.86800 · RMSE 0.0134</text>
+<text x="1092.5" y="728" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" fill="#667085">Observed</text>
+<text x="903" y="582.5" text-anchor="middle" transform="rotate(-90 903 582.5)" font-family="Arial,sans-serif" font-size="10" fill="#667085">Predicted</text>
+<circle cx="400" cy="758" r="4.5" fill="#2563eb"/><text x="412" y="762" font-family="Arial,sans-serif" font-size="10" fill="#20242b">reference</text>
+<circle cx="620" cy="758" r="4.5" fill="#d97706"/><text x="632" y="762" font-family="Arial,sans-serif" font-size="10" fill="#20242b">stress / limitation</text>
+<circle cx="840" cy="758" r="4.5" fill="#c2416c"/><text x="852" y="762" font-family="Arial,sans-serif" font-size="10" fill="#20242b">oxygen perturbation</text>
+</svg>

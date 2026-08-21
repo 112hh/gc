@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "modality": "rna",
+  "records": [
+    {
+      "assay_id": "EC_B36_RNA_SRR12067163",
+      "feature_count": 5118,
+      "display_label_coverage": 1.0,
+      "status": "PASS"
+    },
+    {
+      "assay_id": "SC_CENPK_RNA_SRR8594115",
+      "feature_count": 5451,
+      "display_label_coverage": 1.0,
+      "status": "PASS"
+    }
+  ]
+}

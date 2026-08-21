@@ -1,0 +1,7 @@
+{
+  "status": "PASS",
+  "comparison_count": 2,
+  "modality_table_count": 8,
+  "all_tables_nonempty": true,
+  "same_study_and_cross_study_scopes_explicit": true
+}

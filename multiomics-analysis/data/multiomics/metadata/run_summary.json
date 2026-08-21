@@ -1,0 +1,33 @@
+{
+  "run_id": "ec_b36_cenpk_full_4omics_x86_v2",
+  "status": "success",
+  "enabled_modalities": [
+    "dna",
+    "rna",
+    "proteomics",
+    "metabolomics"
+  ],
+  "requested_analyses": [
+    "integration",
+    "comparison",
+    "crispr",
+    "caller_regression",
+    "validation_replay",
+    "qtl",
+    "molecular_qtl",
+    "wgcna",
+    "mofa2",
+    "diablo",
+    "gem",
+    "fermentation",
+    "mlp",
+    "kg"
+  ],
+  "stage_count": 19,
+  "artifact_count": 318,
+  "event_count": 388,
+  "last_event_status": "progress",
+  "updated_utc": "2026-08-14T04:29:08.274824Z",
+  "completed_utc": "2026-08-14T04:30:57.356175Z",
+  "validation_status": "PASS"
+}

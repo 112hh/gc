@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "modality": "proteomics",
+  "records": [
+    {
+      "assay_id": "EC_B36_PROTEOME_50977",
+      "status": "PASS_REUSED_VALIDATED_CACHE"
+    },
+    {
+      "assay_id": "SC_CENPK_PROTEOME_S1",
+      "status": "PASS_REUSED_VALIDATED_CACHE"
+    }
+  ]
+}

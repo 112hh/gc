@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "modality": "metabolomics",
+  "records": [
+    {
+      "assay_id": "EC_B36_METAB_50913",
+      "feature_count": 23782,
+      "evidence_assigned_fraction": 0.0,
+      "publisher_reported_named_row_count": 170,
+      "status": "PASS"
+    },
+    {
+      "assay_id": "SC_CENPK_METAB_QXA10",
+      "feature_count": 2676,
+      "evidence_assigned_fraction": 0.0,
+      "publisher_reported_named_row_count": 367,
+      "status": "PASS"
+    }
+  ]
+}

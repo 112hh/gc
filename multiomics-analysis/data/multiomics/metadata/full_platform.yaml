@@ -1,0 +1,151 @@
+schema_version: 1.0.0
+platform: linux-x86_64
+run_id: ec_b36_cenpk_full_4omics_x86_v2
+description: Full local E. coli B36 and CEN.PK113-7D four-omics processing plus evidence-scoped extensions.
+defaults: config/defaults.yaml
+modalities: [dna, rna, proteomics, metabolomics]
+
+inputs:
+  sample_manifest: config/samples/full_four_omics.tsv
+  reference_manifest: config/references/references.tsv
+  mapping_registry: config/mapping_registry.tsv
+  auxiliary_asset_registry: config/auxiliary_asset_registry.tsv
+  proteomics_cache_registry: config/proteomics_cache_registry.tsv
+  named_metabolite_registry: config/named_metabolite_registry.tsv
+  comparison_registry: config/comparison_registry.tsv
+  crispr_evidence_directory: data/processed_public/crispr
+  fermentation_directory: data/fermentation/platform_fixture
+  mlp_dataset_directory: data/synthetic_multiomics/hybrid_fixture
+  gpa_directory: data/gpa
+  validation_anchor_root: data/validation_anchors/standardized_plan_examples
+  dna_caller_regression_directory: data/controls/example_data/b36_positive_control
+
+resources:
+  dna_threads: 8
+  dna_mem_mb: 12288
+  rna_threads: 8
+  rna_mem_mb: 12288
+  proteomics_threads: 4
+  proteomics_mem_mb: 14336
+  metabolomics_threads: 2
+  metabolomics_mem_mb: 8192
+  sage_jobs: 1
+  proteomics_jobs: 1
+  sage_max_rss_gib: 12
+  sage_max_vmem_gib: 14
+  sage_min_available_gib: 8
+
+thresholds:
+  dna:
+    min_read_quality: 20
+    min_length: 50
+    min_mapping_quality: 20
+    min_variant_depth: 10
+    variant_min_quality: 30
+  rna:
+    min_read_quality: 20
+    min_length: 30
+    min_gene_count: 10
+    min_samples_expressed: 1
+    max_rrna_fraction: 0.50
+    formal_fdr: 0.05
+  proteomics:
+    psm_fdr: 0.01
+    peptide_fdr: 0.01
+    protein_fdr: 0.01
+    min_unique_peptides: 1
+    max_missing_fraction: 0.50
+  metabolomics:
+    ppm: 3
+    peakwidth_seconds: [5, 20]
+    prefilter: [3, 5000]
+    noise: 1000
+    grouping_bw_seconds: 5
+    grouping_min_fraction: 0.90
+    retention_min_fraction: 0.70
+    qc_rsd_max: 0.30
+    blank_ratio_max: 0.50
+
+adapters:
+  proteomics:
+    EC_B36_PROTEOME_50977:
+      run_sage: false
+      search_config: config/search/ecoli_sage_memory_safe.json
+      executable_fallback: guarded_memory_bounded_sage
+    SC_CENPK_PROTEOME_S1:
+      run_sage: false
+      search_config: config/search/yeast_sage_memory_safe.json
+      executable_fallback: guarded_memory_bounded_sage
+
+analyses:
+  integration:
+    enabled: true
+    pairing_key: biological_sample_id
+  comparison:
+    enabled: true
+    registry: config/comparison_registry.tsv
+  crispr:
+    enabled: true
+    transfer_policy: remap_guides_before_cross_strain_use
+  caller_regression:
+    enabled: true
+    expected_variants: 8
+    downstream_use: workflow_qualification_only
+  validation_replay:
+    enabled: true
+    workflow: workflow/validation_replay/Snakefile
+    scope: fresh CPU replay of public QTL, GWAS, molecular-QTL, WGCNA, MOFA2, GEM and grouped-prediction validation cohorts
+  qtl:
+    enabled: true
+    execution_scope: separate public validation cohorts
+    validation_anchor_directories:
+      bloom_yeast_qtl: data/validation_anchors/standardized_plan_examples/results/M1A_bloom_qtl
+      ecoref_ecoli_gwas: data/validation_anchors/standardized_plan_examples/results/M1B_ecoref_gwas
+      wine_yeast_qtl: data/validation_anchors/standardized_plan_examples/results/M2C_wine_qtl
+    replay_modules: [M1A_bloom_qtl, M1B_ecoref_gwas, M2C_wine_qtl]
+  molecular_qtl:
+    enabled: true
+    execution_scope: separate public validation cohorts
+    validation_anchor_directories:
+      yeast_eqtl: data/validation_anchors/standardized_plan_examples/results/M2A_eqtl
+      yeast_pqtl: data/validation_anchors/standardized_plan_examples/results/M2B_pqtl
+    replay_modules: [M2A_eqtl, M2B_pqtl]
+  wgcna:
+    enabled: true
+    validation_anchor_directory: data/validation_anchors/standardized_plan_examples/results/M3A_wgcna
+    execution_scope: matched public yeast validation cohort
+    replay_modules: [M3A_wgcna]
+  mofa2:
+    enabled: true
+    validation_anchor_directory: data/validation_anchors/standardized_plan_examples/results/M3B_mofa
+    execution_scope: matched public yeast validation cohort
+    replay_modules: [M3B_mofa]
+  diablo:
+    enabled: true
+    validation_anchor_directory: data/validation_anchors/standardized_plan_examples/results/M3C_diablo
+    execution_scope: governed eligibility check; no public-cohort supervised target was predeclared
+    replay_modules: [M3C_diablo]
+  gem:
+    enabled: true
+    validation_anchor_directory: data/validation_anchors/standardized_plan_examples/results/M4A_gem
+    execution_scope: E. coli and yeast model validation
+    replay_modules: [M4A_gem]
+  fermentation:
+    enabled: true
+    source_layer: synthetic_test_fixture
+  mlp:
+    enabled: true
+    target_column: titer
+    group_column: strain_id
+    folds: 5
+    source_layer: synthetic_test_fixture
+  kg:
+    enabled: true
+    deployment_scope: exchange_and_integrity_feasibility
+
+evidence_policy:
+  keep_source_layers_separate: true
+  reject_implicit_cross_study_differential_claims: true
+  reject_anonymous_metabolite_name_invention: true
+  require_provenance_for_every_artifact: true
+  production_prediction_claims_allowed: false

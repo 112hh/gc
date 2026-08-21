@@ -1,0 +1,5 @@
+model	n	mae	r2	split_policy	claim_boundary
+random_forest	1000	0.35668266384955905	0.9982294775758866	GroupKFold(5) by strain_id	synthetic_feasibility_only
+ridge	1000	1.152554173208982	0.9978761821697627	GroupKFold(5) by strain_id	synthetic_feasibility_only
+mlp	1000	2.2720976620089774	0.9895284574678475	GroupKFold(5) by strain_id	synthetic_feasibility_only
+training_mean	1000	33.983189330399995	-0.0004045673341745992	GroupKFold(5) by strain_id	synthetic_feasibility_only

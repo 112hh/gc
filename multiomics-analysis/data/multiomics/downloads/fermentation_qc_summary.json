@@ -1,0 +1,16 @@
+{
+  "status": "PASS_SYNTHETIC_FIXTURE",
+  "batch_count": 280,
+  "organism_count": 2,
+  "strain_count": 7,
+  "process_row_count": 510240,
+  "phenotype_row_count": 1400,
+  "batch_master_keys_unique": true,
+  "feature_composite_keys_unique": true,
+  "feature_prediction_stages": [
+    "completed",
+    "design",
+    "early"
+  ],
+  "foreign_keys_resolve": true
+}

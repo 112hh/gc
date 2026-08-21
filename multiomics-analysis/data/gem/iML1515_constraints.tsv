@@ -1,0 +1,3 @@
+reaction_id	lower_bound	upper_bound	rationale	model_id	upstream_baseline	analysis_method
+EX_glc__D_e	-10.0	1000.0	glucose uptake cap	iML1515	micro_pilot_processing_20260730:v1.0.0	explicit_exchange_constraint
+EX_o2_e	-20.0	1000.0	oxygen uptake cap	iML1515	micro_pilot_processing_20260730:v1.0.0	explicit_exchange_constraint

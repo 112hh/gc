@@ -1,0 +1,16 @@
+metric	value
+source_samples	4390
+phenotyped_samples	4331
+source_markers	28220
+analyzed_markers	5000
+ld_pruned_markers	107
+pca_components	10
+naive_rows	5000
+lmm_rows	5000
+naive_lambda_gc	10.167209387938376
+lmm_lambda_gc	0.5212975225519741
+plink_memory_cap_mib	4096
+max_threads	2
+hwe_policy	not_applied_haploid_derived_panel_encoded_as_homozygous_calls
+pca_policy	exact_PCA_after_LD_pruning
+claim_scope	execution_and_interface_qualification_only_no_causal_gene_claim

@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "modality": "rna",
+  "assay_count": 2,
+  "records": [
+    {
+      "assay_id": "EC_B36_RNA_SRR12067163",
+      "input_reads": 25421556,
+      "retained_reads": 24625678,
+      "retained_fraction": 0.9686927896939117,
+      "q30_rate_after": 0.951818,
+      "status": "PASS"
+    },
+    {
+      "assay_id": "SC_CENPK_RNA_SRR8594115",
+      "input_reads": 16372248,
+      "retained_reads": 15789648,
+      "retained_fraction": 0.9644153936588304,
+      "q30_rate_after": 0.947168,
+      "status": "PASS"
+    }
+  ]
+}

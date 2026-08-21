@@ -1,0 +1,34 @@
+{
+  "status": "PASS",
+  "modality": "metabolomics",
+  "assay_count": 2,
+  "records": [
+    {
+      "assay_id": "EC_B36_METAB_50913",
+      "status": "PASS",
+      "archive_member_count": 46,
+      "contains_mspeak_bin": true,
+      "contains_msscan_bin": true
+    },
+    {
+      "assay_id": "SC_CENPK_METAB_QXA10",
+      "status": "PASS",
+      "validated_at_utc": "2026-08-14T03:28:25.773396+00:00",
+      "input": "/data/engineering_cell_consolidated_platform_x86_zh_CN_20260812/data/raw/EC_B36_CENPK_ANCHORS/metabolomics/yeast/QXA10POSLAT20160809_CHAL0116VW_YEAST_15.mzML",
+      "size_bytes": 11719028,
+      "sha256": "70ccbc375997c68dca2bf25ea1fb7df7aec80eb0b42888ff4867274a6cafa45e",
+      "spectrum_count": 913,
+      "ms_level_counts": {
+        "1": 913
+      },
+      "polarity_counts": {
+        "positive": 913
+      },
+      "retention_time_count": 913,
+      "retention_time_min_minutes": 0.002729117,
+      "retention_time_max_minutes": 3.4975302,
+      "retention_time_monotonic": true,
+      "errors": []
+    }
+  ]
+}

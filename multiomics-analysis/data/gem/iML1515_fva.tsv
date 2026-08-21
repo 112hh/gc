@@ -1,0 +1,12 @@
+reaction_id	minimum	maximum	model_id	upstream_baseline	analysis_method
+CYTDK2	0.0	10.31400000000161	iML1515	micro_pilot_processing_20260730:v1.0.0	FVA_at_90_percent_optimum
+XPPT	0.0	5.157000000000818	iML1515	micro_pilot_processing_20260730:v1.0.0	FVA_at_90_percent_optimum
+HXPRT	0.0	5.157000000000801	iML1515	micro_pilot_processing_20260730:v1.0.0	FVA_at_90_percent_optimum
+NDPK5	-6.7711932696483235	5.1744844803843595	iML1515	micro_pilot_processing_20260730:v1.0.0	FVA_at_90_percent_optimum
+SHK3Dr	0.28188252599925057	1.1780961679176223	iML1515	micro_pilot_processing_20260730:v1.0.0	FVA_at_90_percent_optimum
+NDPK6	0.0	2.7684626583746437	iML1515	micro_pilot_processing_20260730:v1.0.0	FVA_at_90_percent_optimum
+NDPK8	-6.7711932696483075	5.17393374222669	iML1515	micro_pilot_processing_20260730:v1.0.0	FVA_at_90_percent_optimum
+DHORTS	-1.8014921713876828	-0.24466198270860848	iML1515	micro_pilot_processing_20260730:v1.0.0	FVA_at_90_percent_optimum
+OMPDC	0.24466198270860837	1.8014921713878773	iML1515	micro_pilot_processing_20260730:v1.0.0	FVA_at_90_percent_optimum
+PYNP2r	-10.313999999998869	5.176352848258254	iML1515	micro_pilot_processing_20260730:v1.0.0	FVA_at_90_percent_optimum
+BIOMASS_Ec_iML1515_core_75p37M	0.7396181402639351	0.8217979336265927	iML1515	micro_pilot_processing_20260730:v1.0.0	FVA_at_90_percent_optimum
