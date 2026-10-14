@@ -605,6 +605,8 @@
     }
     .data-analysis-page .page-heading { margin-bottom: 18px; }
     .analysis-query-panel { padding: 0; overflow: hidden; }
+    /* GPA 模糊搜索下拉是绝对定位的，若父面板 overflow:hidden 会被裁掉看不见 */
+    .analysis-query-panel.gpa-query-panel { overflow: visible; }
     .analysis-query-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 18px; border-bottom: 1px solid var(--line); }
     .analysis-query-head h3 { margin: 0; font-size: 15px; }
     .analysis-query-head p { margin: 5px 0 0; color: var(--muted); font-size: 11px; }
@@ -1230,13 +1232,14 @@
     .search-box.analysis-search { min-width: 0; height: 42px; border-radius: 8px; padding: 0 13px; gap: 10px; }
     .search-box.analysis-search input { font-size: 13px; }
     .analysis-search-row .btn.primary { min-height: 42px; padding: 0 20px; flex: 0 0 auto; }
-    .analysis-search-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; padding: 16px 18px 12px; }
+    /* 查询条件只剩「菌株编号/名称」一项：缩短的输入框（flex 0 1 460px）+ 分析/重置按钮同一行 */
+    .analysis-search-pair { display: flex; align-items: flex-end; gap: 12px; padding: 16px 18px 12px; }
     .analysis-search-pair label { display: flex; flex-direction: column; gap: 6px; }
     .analysis-search-pair label > span { color: var(--muted); font-size: 11px; font-weight: 600; }
     .analysis-search-pair .search-box.analysis-search { height: 42px; border-radius: 8px; padding: 0 13px; gap: 10px; }
     .analysis-search-pair .search-box.analysis-search input { font-size: 13px; }
     .analysis-search-pair .filter-select { width: 100%; height: 42px; border-radius: 8px; padding: 0 12px; font-size: 13px; }
-    .analysis-search-pair .gpa-query-field { display: flex; flex-direction: column; gap: 6px; }
+    .analysis-search-pair .gpa-query-field { display: flex; flex-direction: column; gap: 6px; flex: 0 1 460px; min-width: 260px; }
     .analysis-search-pair .gpa-query-field > span { color: var(--muted); font-size: 11px; font-weight: 600; }
     .gpa-strain-cell { position: relative; }
     .gpa-strain-suggest { position: absolute; top: calc(100% + 6px); left: 0; right: 0; z-index: 40; display: none; max-height: 262px; overflow: auto; border: 1px solid #c9d7ea; border-radius: 8px; background: #fff; box-shadow: 0 12px 28px rgba(20, 45, 82, 0.16); }
@@ -1247,8 +1250,9 @@
     .gpa-strain-option strong { font-weight: 600; word-break: break-word; }
     .gpa-strain-option small { flex: 0 0 auto; color: var(--muted); font-size: 11px; }
     .gpa-strain-suggest-empty { padding: 13px; color: var(--muted); font-size: 12px; }
-    .analysis-search-actions { display: flex; justify-content: flex-end; align-items: center; gap: 10px; padding: 0 18px 15px; }
-    .analysis-search-actions .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 38px; min-width: 96px; padding: 0 22px; }
+    .analysis-search-actions { display: flex; align-items: center; gap: 10px; }
+    /* 按钮与输入框同行：容器 align-items:flex-end 让按钮底对齐输入框，高度对齐 42px；分析/重置仍等宽等高 */
+    .analysis-search-actions .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 42px; min-width: 96px; padding: 0 22px; }
     .gpa-card-empty { padding: 34px 18px; text-align: center; color: var(--muted); font-size: 13px; }
     .gpa-conclusion { margin: 0; padding: 14px 18px; background: var(--green-soft); border-left: 3px solid var(--green); color: var(--ink); font-size: 13px; line-height: 1.7; }
     .gpa-conclusion::before { content: "结论："; color: var(--green); font-weight: 700; }
@@ -3450,22 +3454,28 @@
       return String(value == null ? "" : value).toLowerCase().replace(/[\s\-_·、，,。.；;：:／/\\|（）()【】\[\]{}<>+×*"'’“”]+/g, "");
     }
     function filterGpaRecords() {
-      /* 仅按菌株编号 / 菌株名称过滤（已去掉基因特征过滤） */
+      /* 仅按菌株编号 / 名称模糊过滤（已去掉基因特征过滤）：点选的菌株以编号精确命中 */
       const query = window.gpaQueryState || {};
-      const strainNo = gpaNormalize(query.strainNo);
-      const strainName = gpaNormalize(query.strainName);
+      const name = gpaNormalize(query.name);
       return GPA_RECORDS.filter(record => {
-        if (strainNo && gpaNormalize(record.strainNo) !== strainNo) return false;
-        if (strainName && gpaNormalize(record.strainName) !== strainName) return false;
+        if (name) {
+          const nameText = gpaNormalize([record.strainNo, record.strainName].join(" "));
+          if (!nameText.includes(name)) return false;
+        }
         return true;
       });
     }
+    // 菌株下拉候选：一株 = 一个数据集；关键字按编号/名称归一化做模糊匹配
     function gpaStrainCatalog() {
       const catalog = new Map();
       GPA_RECORDS.forEach(record => {
-        if (!catalog.has(record.strainNo)) catalog.set(record.strainNo, { strainNo: record.strainNo, strainName: record.strainName });
+        if (!catalog.has(record.strainNo)) catalog.set(record.strainNo, { strainNo: record.strainNo, strainName: record.strainName, key: gpaNormalize(record.strainNo + " " + record.strainName) });
       });
       return [...catalog.values()];
+    }
+    function hideGpaStrainSuggest() {
+      const box = document.getElementById("gpaStrainSuggest");
+      if (box) { box.classList.remove("open"); box.innerHTML = ""; }
     }
     function gpaRankRecord(record) {
       const order = { env: 0, growth: 1, yield: 2, stability: 3 };
@@ -3521,9 +3531,11 @@
       return `共 ${records.length} 条记录`;
     }
     function renderGpaPhenotypeAnalysis() {
-      /* GPA 数据查询：仅按「菌株编号」「菌株名称」下拉查询（已去掉基因特征选项） */
-      window.gpaQueryState = window.gpaQueryState || { strainNo: "", strainName: "", searched: false };
+      /* GPA 数据查询：菌株编号/名称模糊搜索（下拉点选唯一菌株，已去掉基因特征选项），只有点「分析」才检索 */
+      window.gpaQueryState = window.gpaQueryState || { name: "", label: "", searched: false };
       const query = window.gpaQueryState;
+      // 输入框展示点选菌株名称（label）；为空说明尚未点选/未分析，作废旧点选，要求重新从下拉选择
+      if (!query.label) window.gpaStrainPicked = null;
       const searched = query.searched === true;
       const hits = searched ? filterGpaRecords() : [];
       // 命中按菌株分组：一株菌株的数据完整展示完（基本信息 + 各类结论），再在下方继续展示第二株
@@ -3536,12 +3548,6 @@
         }
         strainGroups[strainIndex[record.strainNo]].records.push(record);
       });
-      /* 菌株编号下拉：全部已登记菌株；菌株名称下拉随所选编号联动（按编号过滤候选） */
-      const catalog = gpaStrainCatalog();
-      const strainNoList = [...new Set(catalog.map(item => item.strainNo))].sort();
-      const strainNameList = query.strainNo ? catalog.filter(item => item.strainNo === query.strainNo) : catalog;
-      const strainNoOptions = strainNoList.map(no => `<option value="${escapeHtml(no)}" ${query.strainNo === no ? "selected" : ""}>${escapeHtml(no)}</option>`).join("");
-      const strainNameOptions = strainNameList.map(item => `<option value="${escapeHtml(item.strainName)}" ${query.strainName === item.strainName ? "selected" : ""}>${escapeHtml(item.strainName)}</option>`).join("");
       const resultHead = searched
         ? (strainGroups.length
             ? statusTag("共 " + strainGroups.length + " 个菌株 · " + hits.length + " 条记录", "green")
@@ -3592,39 +3598,38 @@
       }
 
       const resultBody = searched
-        ? (hits.length ? conclusion : `<div class="gpa-card-empty">未分析到符合条件的记录，请调整菌株编号或菌株名称后重新分析</div>`)
-        : `<div class="gpa-card-empty">请从下拉列表选择菌株编号与菌株名称，再点击「分析」查看结论</div>`;
+        ? (hits.length ? conclusion : `<div class="gpa-card-empty">未分析到符合条件的记录，请调整菌株编号/名称后重新分析</div>`)
+        : `<div class="gpa-card-empty">请先搜索并从下拉列表选择 1 个菌株，再点击「分析」查看结论</div>`;
 
       return `<div class="data-analysis-page">
         <div class="page-heading"><div><h2>基因-表型数据分析</h2></div></div>
-        <section class="panel analysis-query-panel"><div class="analysis-query-head"><div><h3>GPA 数据查询</h3><p>以「菌株编号 + 菌株名称」下拉组合检索基因型-表型关联记录，按菌株分组完整展示各类数据的分析结论</p></div></div>
+        <section class="panel analysis-query-panel gpa-query-panel"><div class="analysis-query-head"><div><h3>GPA 数据查询</h3><p>以「菌株编号/名称」检索基因型-表型关联记录，按菌株分组完整展示各类数据的分析结论</p></div></div>
           <div class="analysis-search-pair">
-            <label><span>菌株编号</span><select class="filter-select" id="gpaStrainNoSelect" aria-label="菌株编号"><option value="">全部菌株编号</option>${strainNoOptions}</select></label>
-            <label><span>菌株名称</span><select class="filter-select" id="gpaStrainNameSelect" aria-label="菌株名称"><option value="">全部菌株名称</option>${strainNameOptions}</select></label>
-          </div>
-          <div class="analysis-search-actions"><button class="btn primary" data-analysis-query="gpa">${icon("search")}分析</button><button class="btn" data-analysis-reset="gpa">重置</button></div></section>
+            <div class="gpa-query-field"><span>菌株编号/名称</span><div class="gpa-strain-cell"><span class="search-box analysis-search">${icon("search")}<input type="text" id="gpaStrainInput" autocomplete="off" value="${query.label || ""}" placeholder="请输入菌株编号/名称"></span><div id="gpaStrainSuggest" class="gpa-strain-suggest"></div></div></div>
+            <div class="analysis-search-actions"><button class="btn primary" data-analysis-query="gpa">${icon("search")}分析</button><button class="btn" data-analysis-reset="gpa">重置</button></div>
+          </div></section>
         <section class="panel analysis-section"><div class="panel-head"><div><h3>分析结论</h3></div>${resultHead}</div>
           ${resultBody}</section>
       </div>`;
     }
+    // GPA 重置：清空菌株输入与点选，状态回到未分析；输入框由renderPage 重渲染回默认空值
     function resetGpaQuery() {
-      window.gpaQueryState = { strainNo: "", strainName: "", searched: false };
+      window.gpaStrainPicked = null;
+      window.gpaQueryState = { name: "", label: "", searched: false };
+      hideGpaStrainSuggest();
       renderPage();
       showToast("已重置查询条件");
     }
     function runAnalysisSearch(kind, sourceId) {
       if (kind !== "gpa") return;
-      /* 菌株编号与菌株名称为下拉选择（至少选择一项），只有点击「分析」才执行检索 */
-      const strainNoSelect = document.getElementById("gpaStrainNoSelect");
-      const strainNameSelect = document.getElementById("gpaStrainNameSelect");
-      const strainNo = strainNoSelect ? strainNoSelect.value : "";
-      const strainName = strainNameSelect ? strainNameSelect.value : "";
-      if (!strainNo && !strainName) { showToast("请选择菌株编号或菌株名称"); return; }
-      window.gpaQueryState = { strainNo, strainName, searched: true };
+      /* 菌株必须来自模糊搜索下拉的点选（只能选 1 个）；只有点击「分析」才执行检索 */
+      const picked = window.gpaStrainPicked || null;
+      if (!picked) { hideGpaStrainSuggest(); showToast("请先搜索并从下拉列表中选择 1 个菌株"); return; }
+      window.gpaQueryState = { name: picked.strainNo, label: picked.strainName, searched: true };
       const matched = filterGpaRecords();
       const strainCount = [...new Set(matched.map(record => record.strainNo))].length;
       renderPage();
-      showToast("已按「菌株编号：" + (strainNo || "全部") + " · 菌株名称：" + (strainName || "全部") + "」完成分析，" + (matched.length ? "共 " + strainCount + " 个菌株 " + matched.length + " 条记录" : "未找到匹配记录"));
+      showToast("已按「菌株：" + picked.strainNo + " " + picked.strainName + "」完成分析，" + (matched.length ? "共 " + strainCount + " 个菌株 " + matched.length + " 条记录" : "未找到匹配记录"));
     }
 
     function dataAnalysisQueryState(mode) {
@@ -4054,30 +4059,51 @@
         }));
       }
 
-      // 基因-表型数据分析：菌株编号 + 菌株名称 下拉组合检索（联动：选择编号后名称下拉按编号过滤）
+      // 基因-表型数据分析：菌株编号/名称 模糊搜索（下拉点选唯一菌株）→ 点「分析」才检索
       document.querySelectorAll("[data-analysis-query]").forEach(button => button.addEventListener("click", () => {
-        runAnalysisSearch(button.dataset.analysisQuery, "gpaStrainNoSelect");
+        runAnalysisSearch(button.dataset.analysisQuery, "gpaStrainInput");
       }));
       document.querySelectorAll("[data-analysis-reset]").forEach(button => button.addEventListener("click", () => resetGpaQuery()));
-      const gpaStrainNoSelect = document.getElementById("gpaStrainNoSelect");
-      const gpaStrainNameSelect = document.getElementById("gpaStrainNameSelect");
-      if (gpaStrainNoSelect) {
-        gpaStrainNoSelect.addEventListener("change", () => {
-          const no = gpaStrainNoSelect.value;
-          const names = gpaStrainCatalog().filter(item => !no || item.strainNo === no);
-          if (gpaStrainNameSelect) {
-            const kept = names.some(item => item.strainName === gpaStrainNameSelect.value) ? gpaStrainNameSelect.value : "";
-            gpaStrainNameSelect.innerHTML = `<option value="">全部菌株名称</option>${names.map(item => `<option value="${escapeHtml(item.strainName)}" ${item.strainName === kept ? "selected" : ""}>${escapeHtml(item.strainName)}</option>`).join("")}`;
-          }
-          window.gpaQueryState.strainNo = no;
-          window.gpaQueryState.strainName = gpaStrainNameSelect ? gpaStrainNameSelect.value : "";
-          window.gpaQueryState.searched = false;
+      // GPA 菌株模糊搜索下拉：输入即出候选，点选唯一菌株；不自动触发检索（检索只由「分析」按钮或回车发起）
+      const gpaStrainInput = document.getElementById("gpaStrainInput");
+      const gpaStrainSuggest = document.getElementById("gpaStrainSuggest");
+      if (gpaStrainInput && gpaStrainSuggest) {
+        const renderGpaStrainSuggest = () => {
+          const keyword = gpaNormalize(gpaStrainInput.value);
+          const options = gpaStrainCatalog().filter(item => !keyword || item.key.includes(keyword));
+          gpaStrainSuggest.innerHTML = options.length
+            ? options.map(item => `<button type="button" class="gpa-strain-option" data-gpa-strain="${escapeHtml(item.strainNo)}"><strong>${escapeHtml(item.strainName)}</strong><small>${escapeHtml(item.strainNo)}</small></button>`).join("")
+            : `<div class="gpa-strain-suggest-empty">未找到匹配菌株，请更换菌株编号/名称关键字</div>`;
+          gpaStrainSuggest.classList.add("open");
+        };
+        gpaStrainInput.addEventListener("input", () => {
+          window.gpaStrainPicked = null;
+          if (window.gpaQueryState) window.gpaQueryState.label = "";
+          if (!gpaStrainInput.value.trim()) { hideGpaStrainSuggest(); return; }
+          renderGpaStrainSuggest();
+        });
+        gpaStrainInput.addEventListener("focus", () => { if (gpaStrainInput.value.trim()) renderGpaStrainSuggest(); });
+        gpaStrainSuggest.addEventListener("click", event => {
+          const option = event.target.closest("[data-gpa-strain]");
+          if (!option) return;
+          const item = gpaStrainCatalog().find(entry => entry.strainNo === option.dataset.gpaStrain);
+          if (!item) return;
+          window.gpaStrainPicked = item;
+          gpaStrainInput.value = item.strainName;
+          // label 与点选同步写入状态：重渲染后输入框仍显示所点选菌株，点选不会因「未分析」被守卫作废
+          if (window.gpaQueryState) window.gpaQueryState.label = item.strainName;
+          hideGpaStrainSuggest();
+        });
+        gpaStrainInput.addEventListener("keydown", event => {
+          if (event.key !== "Enter") return;
+          event.preventDefault();
+          runAnalysisSearch("gpa", "gpaStrainInput");
         });
       }
-      if (gpaStrainNameSelect) {
-        gpaStrainNameSelect.addEventListener("change", () => {
-          window.gpaQueryState.strainName = gpaStrainNameSelect.value;
-          window.gpaQueryState.searched = false;
+      if (!window.gpaSuggestOutsideBound) {
+        window.gpaSuggestOutsideBound = true;
+        document.addEventListener("click", event => {
+          if (!event.target.closest(".gpa-strain-cell")) hideGpaStrainSuggest();
         });
       }
 
