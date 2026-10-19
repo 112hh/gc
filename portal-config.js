@@ -293,40 +293,64 @@
         summary: "提供统一的数据管理入口，支撑检索、可视化分析与报告生成。"
       }
     ],
-    casesTitle: "合作案例",
-    casesDescription: "面向基因科技、生命科学、微生物研发与农业微生物领域的头部机构合作场景。",
-    caseItems: [
+    papersTitle: "推荐优秀论文",
+    papersDescription: "精选覆盖基础研究到临床转化的关键成果，串联群体基因组、代谢网络模型、细胞工厂构建与活体生物药全链条。",
+    paperItems: [
       {
-        detailKey: "case-bgi",
-        unit: "华大基因（BGI）",
-        title: "工业底盘菌株高产关联基因靶点挖掘",
-        direction: "基因科技头部企业",
-        summary:
-          "基于全基因组关联分析（GWAS），联合挖掘工业底盘菌株的高产关联基因靶点，共建基因型-表型关联数据集，加速知识转化。"
+        detailKey: "paper-population",
+        badge: "BASIC",
+        title: "1,011 株酿酒酵母的群体基因组与表型全景",
+        journal: "Nature · 2018",
+        summary: "绘制群体尺度酿酒酵母基因组进化图谱，为基因型-表型关联研究奠定数据基座。"
       },
       {
-        detailKey: "case-01life",
-        unit: "零一生命（01 LIFE）",
-        title: "微生物代谢通路优化与功能基因筛选",
-        direction: "生命科学与健康领域",
-        summary:
-          "依托多组学数据集与代谢网络模型，合作开展微生物代谢通路优化，筛选关键功能基因组合，缩短工程菌株理性设计周期。"
+        detailKey: "paper-fba",
+        badge: "METHOD",
+        title: "什么是通量平衡分析（What is flux balance analysis?）",
+        journal: "Nature Biotechnology · 2010",
+        summary: "系统阐述 FBA 原理与约束建模方法，是 GSMM 构建与代谢通量预测的奠基性方法论。"
       },
       {
-        detailKey: "case-xbiome",
-        unit: "未知君（XBIOME）",
-        title: "培养条件参数预测与发酵工艺放大",
-        direction: "微生物组研发",
-        summary:
-          "利用发酵过程数据集与人工神经网络优化算法，协同进行培养条件参数预测与发酵工艺放大，提升中试转化成功率。"
+        detailKey: "paper-iml1515",
+        badge: "MODEL",
+        title: "iML1515：可计算大肠杆菌性状的知识库模型",
+        journal: "Nature Biotechnology · 2017",
+        summary: "发布最完整的大肠杆菌基因组尺度代谢模型，将基因、反应、代谢物与性状连成可计算知识库。"
       },
       {
-        detailKey: "case-sicau",
-        unit: "四川农业大学",
-        title: "饲用/农用工程菌株高效构建",
-        direction: "农业微生物科研",
-        summary:
-          "基于培养营养数据集与基因组代谢网络模型，开展农业微生物菌株的基因型-表型关联研究，推动工程菌株高效构建。"
+        detailKey: "paper-bdo",
+        badge: "ENGINEER",
+        title: "大肠杆菌直接合成 1,4-丁二醇的代谢工程",
+        journal: "Nature Chemical Biology · 2011",
+        summary: "理性设计非天然代谢通路，实现葡萄糖一步发酵生产大宗化学品，开创细胞工厂经典范例。"
+      },
+      {
+        detailKey: "paper-artemisinin",
+        badge: "APPLIED",
+        title: "工程酵母合成抗疟药物前体青蒿酸",
+        journal: "Nature · 2006",
+        summary: "重构甲羟戊酸通路实现抗疟药物前体微生物量产，是合成生物学产业化的里程碑成果。"
+      },
+      {
+        detailKey: "paper-opioid",
+        badge: "APPLIED",
+        title: "酵母中完成阿片类生物碱的全合成",
+        journal: "Science · 2015",
+        summary: "整合 20 余步酶催化反应于单一酵母底盘，验证复杂天然产物细胞工厂的可行性。"
+      },
+      {
+        detailKey: "paper-pku",
+        badge: "CLINICAL",
+        title: "苯丙酮尿症合成活体生物药（SYNB1618）的开发",
+        journal: "Nature Biotechnology · 2018",
+        summary: "工程化大肠杆菌 Nissle 在肠道内降解苯丙氨酸，完成从菌株设计到临床转化的关键跨越。"
+      },
+      {
+        detailKey: "paper-tumor",
+        badge: "CLINICAL",
+        title: "可编程工程菌诱导肿瘤持久消退与长期存活",
+        journal: "Nature Medicine · 2019",
+        summary: "将肿瘤靶向定殖与药物释放回路编程进减毒沙门氏菌，推动工程菌肿瘤疗法进入临床开发。"
       }
     ],
     footerTitle: "工程细胞主题库 · 科学数据中心",
@@ -341,7 +365,7 @@
       { name: "数据总览", url: "#dataviz" },
       { name: "场景应用", url: "#scenes" },
       { name: "工具算法", url: "#tools" },
-      { name: "合作案例", url: "#cases" }
+      { name: "推荐优秀论文", url: "#papers" }
     ],
     contactUnit: "工程细胞研究中心",
     contactPhone: "0755-83949389",
@@ -462,11 +486,11 @@
       title: String(item.title ?? fallback.title ?? "").trim(),
       summary: String(item.summary ?? fallback.summary ?? "").trim()
     }));
-    merged.caseItems = normalizeObjectList(merged.caseItems, defaultPortalPlatformConfig.caseItems, (item, fallback) => ({
+    merged.paperItems = normalizeObjectList(merged.paperItems, defaultPortalPlatformConfig.paperItems, (item, fallback) => ({
       detailKey: fallback.detailKey,
-      unit: String(item.unit ?? fallback.unit ?? "").trim(),
+      badge: String(item.badge ?? fallback.badge ?? "").trim(),
       title: String(item.title ?? fallback.title ?? "").trim(),
-      direction: String(item.direction ?? fallback.direction ?? "").trim(),
+      journal: String(item.journal ?? fallback.journal ?? "").trim(),
       summary: String(item.summary ?? fallback.summary ?? "").trim()
     }));
     merged.links = normalizeLinks(merged.links, defaultPortalPlatformConfig.links);

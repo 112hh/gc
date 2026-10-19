@@ -782,6 +782,7 @@ button {
 
 .value-card[data-detail],
 .tool-card[data-detail],
+.paper-card[data-detail],
 .data-copy[data-detail],
 .chart-card[data-detail],
 .scene-copy[data-detail],
@@ -789,8 +790,7 @@ button {
   padding-bottom: 58px;
 }
 
-.db-card[data-detail] .db-body,
-.case-card[data-detail] .case-body {
+.db-card[data-detail] .db-body {
   padding-bottom: 58px;
 }
 
@@ -798,7 +798,7 @@ button {
 .value-mark,
 .tool-mark,
 .db-count,
-.case-unit,
+.paper-mark,
 .mini-chip {
   display: inline-flex;
   align-items: center;
@@ -848,7 +848,7 @@ button {
 .value-card h3,
 .db-card h3,
 .tool-card h3,
-.case-card h3,
+.paper-card h3,
 .scene-copy h3 {
   margin: 16px 0 10px;
   font-size: 17px;
@@ -861,7 +861,7 @@ button {
 .value-card p,
 .db-card p,
 .tool-card p,
-.case-card p,
+.paper-card p,
 .scene-copy p,
 .data-copy p,
 .footer p {
@@ -929,20 +929,17 @@ button {
 }
 
 .db-media,
-.scene-media,
-.case-media {
+.scene-media {
   overflow: hidden;
   background: var(--bg-alt);
 }
 
-.db-media,
-.case-media {
+.db-media {
   aspect-ratio: 16 / 9;
 }
 
 .db-media img,
-.scene-media img,
-.case-media img {
+.scene-media img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -950,13 +947,11 @@ button {
 }
 
 .db-card:hover .db-media img,
-.case-card:hover .case-media img,
 .scene-media:hover img {
   transform: scale(1.03);
 }
 
-.db-body,
-.case-body {
+.db-body {
   padding: 26px 28px;
 }
 
@@ -1208,24 +1203,28 @@ button {
   margin-top: 16px;
 }
 
-/* ═══ 合作案例 ═══ */
-.case-card {
-  padding: 0;
+/* ═══ 推荐优秀论文 ═══ */
+.paper-card {
+  padding: 26px 22px 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
-.case-body h3 {
-  margin: 12px 0 8px;
-  font-size: 17px;
+.paper-card h3 {
+  margin-top: 16px;
 }
 
-.case-direction {
-  margin: 0 0 10px;
+.paper-card .paper-meta {
+  margin: 9px 0 0;
   font-size: 12px;
+  line-height: 1.6;
   color: var(--text-weak);
+  letter-spacing: .2px;
 }
 
-.case-unit {
-  letter-spacing: .6px;
+.paper-card .paper-summary {
+  margin-top: 12px;
 }
 
 /* ═══ 详情弹窗 ═══ */
@@ -1892,7 +1891,7 @@ body.is-detail-open {
         <li><a href="#dataviz">数据总览</a></li>
         <li><a href="#scenes">场景应用</a></li>
         <li><a href="#tools">工具算法</a></li>
-        <li><a href="#cases">合作案例</a></li>
+        <li><a href="#papers">推荐优秀论文</a></li>
       </ul>
       <a class="nav-cta" href="./app.html?auth=login">登录系统</a>
     </nav>
@@ -2051,13 +2050,13 @@ body.is-detail-open {
     </div>
   </section>
 
-  <section class="section" id="cases">
+  <section class="section" id="papers">
     <div class="section-shell">
       <div class="section-head">
-        <h2 data-portal-text="casesTitle">合作案例</h2>
-        <p data-portal-text="casesDescription">面向基因科技、生命科学、微生物研发与农业微生物领域的头部机构合作场景。</p>
+        <h2 data-portal-text="papersTitle">推荐优秀论文</h2>
+        <p data-portal-text="papersDescription">精选覆盖基础研究到临床转化的关键成果，串联群体基因组、代谢网络模型、细胞工厂构建与活体生物药全链条。</p>
       </div>
-      <div class="grid-2" data-portal-case-grid></div>
+      <div class="grid-4" data-portal-paper-grid></div>
     </div>
   </section>
 
@@ -2085,7 +2084,7 @@ body.is-detail-open {
       <a href="#dataviz">数据总览</a>
       <a href="#scenes">场景应用</a>
       <a href="#tools">工具算法</a>
-      <a href="#cases">合作案例</a>
+      <a href="#papers">推荐优秀论文</a>
     </div>
   </div>
   <div class="footer-bottom" data-portal-text="copyright">工程细胞主题库门户 · 面向实际研发场景的高保真数据门户原型</div>
@@ -2355,41 +2354,77 @@ const portalDetails = {
     tags: ["数据管理", "检索", "可视化", "报告"],
     sections: [["能力说明", "面向数据入库、审核、管理和应用分析提供完整操作界面。"], ["使用价值", "让科研数据从分散文件转为可协作、可追溯的数据资产。"]]
   },
-  "case-bgi": {
-    category: "合作案例",
-    title: "华大基因（BGI）合作案例",
+  "paper-population": {
+    category: "推荐优秀论文",
+    title: "1,011 株酿酒酵母的群体基因组与表型全景",
     image: pexelsImage("8325954"),
-    summary: "联合开展工业底盘菌株高产关联基因靶点挖掘，共建基因型-表型关联数据集。",
-    metrics: [["合作方向", "基因科技"], ["核心方法", "GWAS"], ["目标", "靶点挖掘"]],
-    tags: ["华大基因", "工业底盘菌", "关联分析", "靶点挖掘"],
-    sections: [["合作内容", "围绕高产性状开展基因型-表型关联研究，沉淀可复用数据集。"], ["预期成果", "形成候选功能基因和关联位点列表，加速工程菌株构建。"]]
+    summary: "系统解析 1,011 株酿酒酵母分离株的基因组变异与表型多样性，为基因型-表型关联研究提供群体尺度的数据基座。",
+    metrics: [["研究对象", "1,011 株分离株"], ["数据类型", "群体基因组"], ["应用价值", "表型关联基座"]],
+    tags: ["群体基因组", "酿酒酵母", "基因型-表型", "基础研究"],
+    sections: [["成果要点", "首次在群体尺度上绘制酿酒酵母基因组进化与表型关联图谱，揭示遗传变异与复杂性状之间的规律。"], ["平台关联", "为基因型-表型关联数据库的构建标准与统计分析方法提供直接参照。"]]
   },
-  "case-01life": {
-    category: "合作案例",
-    title: "零一生命（01 LIFE）合作案例",
+  "paper-fba": {
+    category: "推荐优秀论文",
+    title: "什么是通量平衡分析（What is flux balance analysis?）",
+    image: pexelsImage("8533087"),
+    summary: "系统阐述 FBA 的原理与约束建模方法，是基因组代谢网络模型（GSMM）构建与代谢通量预测的奠基性方法论。",
+    metrics: [["方法类型", "约束建模"], ["研究对象", "GSMM"], ["应用方向", "通量预测"]],
+    tags: ["FBA", "GSMM", "代谢通量", "方法论奠基"],
+    sections: [["成果要点", "将代谢网络表达为线性约束下的优化问题，使基因组尺度模型可用于预测细胞生长与产物得率。"], ["平台关联", "平台的代谢网络模型与通量优化算法均以该方法为核心基础。"]]
+  },
+  "paper-iml1515": {
+    category: "推荐优秀论文",
+    title: "iML1515：可计算大肠杆菌性状的知识库模型",
+    image: pexelsImage("9629706"),
+    summary: "发布迄今最完整的大肠杆菌基因组尺度代谢模型 iML1515，将基因、反应、代谢物与表型性状连接为可计算知识库。",
+    metrics: [["模型规模", "1,515 基因"], ["覆盖反应", "2,719+"], ["输出能力", "性状计算"]],
+    tags: ["iML1515", "大肠杆菌", "知识库模型", "底盘细胞"],
+    sections: [["成果要点", "通过模型模拟与实验数据闭环验证，可预测基因敲除、底物利用与生长表型。"], ["平台关联", "为底盘细胞代谢网络建模与靶点预测提供标准化参考模型。"]]
+  },
+  "paper-bdo": {
+    category: "推荐优秀论文",
+    title: "大肠杆菌直接合成 1,4-丁二醇的代谢工程",
     image: pexelsImage("8851634"),
-    summary: "依托多组学数据集与代谢网络模型开展微生物代谢通路优化和功能基因筛选。",
-    metrics: [["合作方向", "生命科学"], ["核心方法", "多组学"], ["目标", "通路优化"]],
-    tags: ["零一生命", "多组学", "代谢网络", "功能基因"],
-    sections: [["合作内容", "将多组学证据映射至代谢网络，筛选关键功能基因组合。"], ["预期成果", "缩短工程菌株理性设计周期，提高候选方案解释性。"]]
+    summary: "通过理性设计非天然代谢通路，实现工程大肠杆菌从葡萄糖一步发酵生产 1,4-丁二醇，开创细胞工厂化学品合成的经典范例。",
+    metrics: [["底盘菌株", "E. coli"], ["产物类型", "非天然化学品"], ["策略", "理性通路设计"]],
+    tags: ["代谢工程", "细胞工厂", "非天然通路", "工业发酵"],
+    sections: [["成果要点", "结合途径计算设计与定向进化，在模式底盘菌中构建全新生物合成路线。"], ["平台关联", "平台的代谢网络优化与靶点预测能力可直接支撑同类工程改造。"]]
   },
-  "case-xbiome": {
-    category: "合作案例",
-    title: "未知君（XBIOME）合作案例",
+  "paper-artemisinin": {
+    category: "推荐优秀论文",
+    title: "工程酵母合成抗疟药物前体青蒿酸",
     image: pexelsImage("8325965"),
-    summary: "利用发酵过程数据和 ANN 优化算法进行培养条件参数预测与发酵工艺放大。",
-    metrics: [["合作方向", "微生物组"], ["核心方法", "ANN"], ["目标", "工艺放大"]],
-    tags: ["未知君", "发酵过程", "参数预测", "中试放大"],
-    sections: [["合作内容", "围绕培养条件、过程参数和产物结果训练预测模型。"], ["预期成果", "提升过程稳定性和中试转化成功率。"]]
+    summary: "在酿酒酵母中重构甲羟戊酸途径并导入青蒿酸合成通路，实现抗疟一线药物前体的微生物量产，是合成生物学产业化的里程碑。",
+    metrics: [["底盘菌株", "酿酒酵母"], ["目标产物", "青蒿酸"], ["转化阶段", "产业化"]],
+    tags: ["合成生物学", "青蒿素", "酿酒酵母", "产业转化"],
+    sections: [["成果要点", "通过模块化通路工程与代谢流重定向，大幅提升前体供应并降低药物成本。"], ["平台关联", "是平台“工程菌株构建—过程优化—放大生产”全链条理念的标杆案例。"]]
   },
-  "case-sicau": {
-    category: "合作案例",
-    title: "四川农业大学合作案例",
+  "paper-opioid": {
+    category: "推荐优秀论文",
+    title: "酵母中完成阿片类生物碱的全合成",
     image: pexelsImage("3825379"),
-    summary: "基于培养营养数据集与代谢网络模型开展农业微生物菌株的高效构建研究。",
-    metrics: [["合作方向", "农业微生物"], ["核心数据", "培养营养"], ["目标", "菌株构建"]],
-    tags: ["四川农业大学", "培养营养", "农业微生物", "菌株构建"],
-    sections: [["合作内容", "结合培养配方、菌株生长曲线和代谢模型优化工程菌株构建策略。"], ["预期成果", "沉淀面向饲用/农用工程菌株的培养和改造经验。"]]
+    summary: "将糖发酵路径与 20 余步酶催化反应整合进单一酵母底盘，首次实现阿片类药物的完全生物合成，验证复杂天然产物的细胞工厂可行性。",
+    metrics: [["通路规模", "20+ 酶促步骤"], ["底盘菌株", "酿酒酵母"], ["转化阶段", "概念验证"]],
+    tags: ["全合成", "天然产物", "酵母底盘", "复杂通路"],
+    sections: [["成果要点", "通过酶工程与代谢分区策略突破中间体积累瓶颈，完成植物源药物的微生物重构。"], ["平台关联", "示范了多组学数据与代谢模型协同支撑复杂通路设计的路径。"]]
+  },
+  "paper-pku": {
+    category: "推荐优秀论文",
+    title: "苯丙酮尿症合成活体生物药（SYNB1618）的开发",
+    image: pexelsImage("8325916"),
+    summary: "对大肠杆菌 Nissle 进行系统性基因工程改造，构建可在肠道内降解苯丙氨酸的活体生物药，完成从菌株设计到临床转化的关键跨越。",
+    metrics: [["底盘菌株", "E. coli Nissle"], ["适应症", "苯丙酮尿症"], ["转化阶段", "临床研究"]],
+    tags: ["活体生物药", "工程菌疗法", "临床转化", "遗传代谢病"],
+    sections: [["成果要点", "通过基因线路精确控制代谢活性与生物安全开关，为工程菌作为口服治疗奠定范式。"], ["平台关联", "体现工程细胞研究从基础数据积累走向临床应用的核心价值。"]]
+  },
+  "paper-tumor": {
+    category: "推荐优秀论文",
+    title: "可编程工程菌诱导肿瘤持久消退与长期存活",
+    image: pexelsImage("8325984"),
+    summary: "将肿瘤靶向定殖与药物释放回路编程进减毒沙门氏菌，动物实验中诱导肿瘤持久消退并显著延长生存期，推动工程菌肿瘤疗法进入临床开发。",
+    metrics: [["底盘菌株", "减毒沙门氏菌"], ["应用方向", "肿瘤治疗"], ["转化阶段", "临床开发"]],
+    tags: ["合成免疫学", "肿瘤靶向", "基因线路", "临床开发"],
+    sections: [["成果要点", "利用细菌缺氧趋向性实现肿瘤区富集，并以感应回路触发治疗分子定点释放。"], ["平台关联", "代表工程细胞从代谢制造向活体治疗器械拓展的前沿方向。"]]
   }
 };
 
@@ -2826,26 +2861,21 @@ function renderPortalToolGrid(root, items) {
     .join("");
 }
 
-function renderPortalCaseGrid(root, items) {
+function renderPortalPaperGrid(root, items) {
   if (!root) {
     return;
   }
   root.innerHTML = (items || [])
-    .map((item) => {
-      const detail = portalDetails[item.detailKey] || {};
-      const image = detail.image ? `<div class="case-media"><img src="${portalEscape(detail.image)}" alt="${portalEscape(item.title)}" loading="lazy" decoding="async"></div>` : "";
-      return `
-        <article class="card case-card reveal" data-detail="${portalEscape(item.detailKey)}" tabindex="0" role="button" aria-label="查看${portalEscape(item.title)}详情">
-          ${image}
-          <div class="case-body">
-            <span class="case-unit">${portalEscape(item.unit)}</span>
-            <h3>${portalEscape(item.title)}</h3>
-            <div class="case-direction">${portalEscape(item.direction)}</div>
-            <p>${portalEscape(item.summary)}</p>
-          </div>
+    .map(
+      (item) => `
+        <article class="card paper-card reveal" data-detail="${portalEscape(item.detailKey)}" tabindex="0" role="button" aria-label="查看论文《${portalEscape(item.title)}》详情">
+          <span class="paper-mark">${portalEscape(item.badge)}</span>
+          <h3>${portalEscape(item.title)}</h3>
+          <p class="paper-meta">${portalEscape(item.journal)}</p>
+          <p class="paper-summary">${portalEscape(item.summary)}</p>
         </article>
-      `;
-    })
+      `
+    )
     .join("");
 }
 
@@ -2882,7 +2912,7 @@ function applyPortalPlatformConfig() {
   renderPortalSceneTabs(document.querySelector("[data-portal-scene-tabs]"), config.sceneItems);
   renderPortalScenePanels(document.querySelector("[data-portal-scene-panels]"), config.sceneItems);
   renderPortalToolGrid(document.querySelector("[data-portal-tool-grid]"), config.toolItems);
-  renderPortalCaseGrid(document.querySelector("[data-portal-case-grid]"), config.caseItems);
+  renderPortalPaperGrid(document.querySelector("[data-portal-paper-grid]"), config.paperItems);
 
   const brandTitle = document.querySelector(".brand-copy strong");
   if (brandTitle && config.siteTitle) {
